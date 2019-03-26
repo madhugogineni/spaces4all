@@ -1,0 +1,17 @@
+/* line 5, ../sass/theme.scss */
+body {
+  /* color: #666666;
+  font-family: 'Raleway', sans-serif;
+  line-height: 1.8; */
+}
+
+/* map */
+/* line 222, ../sass/theme.scss */
+.pgl-properties-map {
+  padding-top: 53px;
+}
+
+/* line 225, ../sass/theme.scss */
+.map {
+  height: 700px;
+}
