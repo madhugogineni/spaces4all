@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_name%> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url%>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%= base_url%>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url%>javascripts/modernizr.js"></script>
+
+
+
+</head>
+
+<body class="home">
+
+    <div class="body">
+
+
+
+        <% include includes/header.ejs %>
+
+
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header" id="contact-map">
+
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30452.883290528684!2d78.43803392984218!3d17.43047443505988!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb90da3a774759%3A0xc5f3bb016cf194d0!2sMadhura+Nagar%2C+Hyderabad%2C+Telangana!5e0!3m2!1sen!2sin!4v1449231215183"
+                    width="100%" height="220" frameborder="0" style="border:0" allowfullscreen></iframe>
+
+            </div>
+
+            <!-- End Page Header -->
+
+
+
+            <!-- Start Content -->
+
+            <div class="main" role="main">
+
+                <div id="content" class="content full">
+
+                    <div class="container">
+
+                        <div class="page">
+
+                            <div class="row">
+
+                                <div class="col-md-6 col-sm-6">
+
+                                    <h3>Contact Form</h3>
+                                    <% if(errorMsg != "") {
+                                        if(isError == 0) {%>
+                                    <div class="alert alert-success fade in"> <a href="#" data-dismiss="alert"
+                                            class="close">x</a>
+                                        <strong><%=errorMsg %></strong></div>
+
+                                    <%} else {%>
+
+                                    <div class="alert alert-danger fade in"> <a href="#" data-dismiss="alert"
+                                            class="close">x</a>
+                                        <strong><%=errorMsg %></strong></div>
+                                    <% }%>
+
+                                    <%} %>
+                                    <div class="row">
+
+                                        <form method="post" id="" name="contactform" class=""
+                                            action="<%=base_url %>home/add_contact">
+
+                                            <div class="col-md-11 margin-15">
+
+                                                <div class="form-group">
+
+                                                    <input type="text" id="name" name="name"
+                                                        class="form-control input-sm" placeholder="Name*"
+                                                        required="required">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <input type="email" id="email" name="email"
+                                                        class="form-control input-sm" placeholder="Email*"
+                                                        required="required">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <input type="text" id="phone" name="phone"
+                                                        class="form-control input-sm" placeholder="Phone*"
+                                                        required="required">
+
+                                                </div>
+
+
+
+                                                <div class="form-group">
+
+                                                    <textarea cols="6" rows="5" id="message" name="message"
+                                                        class="form-control input-lg" placeholder="Message"
+                                                        required="required"></textarea>
+
+                                                    <input name="submit" type="submit" class="btn btn-primary btn-lg"
+                                                        value="Submit now!">
+
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                    </div>
+
+                                    <div class="clearfix"></div>
+
+                                    <div id="message"></div>
+
+                                </div>
+
+                                <div class="col-md-6 col-sm-6">
+
+                                    <h3>Our Location</h3>
+
+                                    <div class="padding-as25 lgray-bg addss">
+
+                                        <p><i class="fa fa-map-marker"></i> &nbsp; #502, Divya residency, plot no 82 &
+                                            83, c-block ,<br /> madhura nagar , Hyderabad -500038 </p>
+                                        <p><i class="fa fa-phone"></i> &nbsp;<a href="tel:+918374778800"> +91 8374778800
+                                            </a>/<a href="tel:+919100100955"> +91 9100100955
+                                            </a> </p>
+
+                                        <p><i class="fa fa-envelope"></i> &nbsp; <a href="mailto:info@spaces4all.com">
+                                                info@spaces4all.com </a></p>
+
+                                        <p><i class="fa fa-globe"></i> &nbsp; <a href="<%=base_url%>">
+                                                www.spaces4all.com </a></p>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Start Site Footer -->
+
+
+
+            <% include includes/footer.ejs %>
+
+
+
+</body>
+
+</html>

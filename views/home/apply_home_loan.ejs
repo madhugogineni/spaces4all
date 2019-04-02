@@ -1,0 +1,441 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
+    <script type="text/javascript">
+        function Validate_Form() {
+
+            var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
+
+            var filter = /^[0-9-+]+$/;
+
+            var purpose = $("#purpose").val();
+
+            var bank = $("#bank").val();
+
+            var loan_amount = $("#loan_amount").val();
+
+            var annual_income = $("#annual_income").val();
+
+            var name = $("#name").val();
+
+            var email = $("#email").val();
+
+            var phone = $("#mobile").val();
+
+            var dob = $("#dob").val();
+
+            var city = $("#city").val();
+
+
+
+            if (purpose == "") {
+
+                $("#purpose").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Select Purpose ?</strong></div>");
+
+                return false;
+
+            } else if (bank == "") {
+
+                $("#bank").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Select A Bank ?</strong></div>");
+
+                return false;
+
+            } else if (loan_amount == "") {
+
+                $("#loan_amount").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Loan Amount ?</strong></div>");
+
+                return false;
+
+            } else if (!filter.test(loan_amount)) {
+
+                $("#loan_amount").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Loan Amount Should Be Numeric Value </strong></div>");
+
+                return false;
+
+            } else if (annual_income == "") {
+
+                $("#annual_income").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Annual Income ?</strong></div>");
+
+                return false;
+
+            } else if (!filter.test(annual_income)) {
+
+                $("#annual_income").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Annual Income Should Be Numeric Value ?</strong></div>");
+
+                return false;
+
+            } else if (name == "") {
+
+                $("#name").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name ?</strong></div>");
+
+                return false;
+
+            } else if (name.length <= "2") {
+
+                $("#name").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Name Should Be Min 3 Charactors ?</strong></div>");
+
+                return false;
+
+            } else if (email == "") {
+
+                $("#email").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Email Id ?</strong></div>");
+
+                return false;
+
+            } else if (!emailRegex.test(email)) {
+
+                $("#email").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id ?</strong></div>");
+
+                return false;
+
+            } else if (phone == "") {
+
+                $("#mobile").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Phone Number ?</strong></div>");
+
+                return false;
+
+            } else if (!filter.test(phone)) {
+
+                $("#mobile").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Phone Number Should Be Numeric Values ?</strong></div>");
+
+                return false;
+
+            } else if (phone.length != "10") {
+
+                $("#mobile").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Phone Number Should Be 10 Charactors ?</strong></div>");
+
+                return false;
+
+            } else if (dob == "") {
+
+                $("#dob").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Date Of Birth ?</strong></div>");
+
+                return false;
+
+            } else if (city == "") {
+
+                $("#city").focus();
+
+                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter City ?</strong></div>");
+
+                return false;
+
+            } else {
+
+                return true;
+
+            }
+
+        }
+
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1>Apply Home Loan</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+                            <div class="col-md-9">
+
+                                <form action="<%= base_url %>home/add_home_loan" onsubmit="return Validate_Form();"
+                                    method="post">
+
+                                    <% console.log("=====");console.log(loanErrorMsg); if(!loanError) {
+                                        if(loanErrorMsg != "") {  %>
+                                    <div class="block-heading" id="" align="center">
+                                        <h4 style="color: green"><%= loanErrorMsg %></h4>
+                                    </div>
+                                    <% } }else { %>
+                                    <div class="block-heading" id="" align="center">
+                                        <h4 style="color: red"><%= loanErrorMsg %></h4>
+                                    </div>
+                                    <%}%>
+                                    <div id="errorBox"></div>
+
+                                    <div class="padding-as25 margin-30 lgray-bg">
+
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-10">
+
+                                                <label>Purpose*</label> <select id="purpose" name="purpose"
+                                                    class="form-control">
+
+                                                    <option value="">Select Purpose</option>
+
+                                                    <option value="Buy Ready-to-occupy Home">Buy Ready-to-occupy Home
+                                                    </option>
+
+                                                    <option value="Buy Under-Construction Home">Buy Under-Construction
+                                                        Home</option>
+
+                                                    <option value="Buy a Plot Of Land">Buy a Plot Of Land</option>
+
+                                                    <option value="Transfer Existing Home Loan">Transfer Existing Home
+                                                        Loan</option>
+
+                                                    <option value="Repair &amp; Renovate Own Home">Repair &amp; Renovate
+                                                        Own Home</option>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-10">
+
+                                                <label>Bank*</label> <select id="bank" name="bank" class="form-control">
+
+                                                    <option value="">Select Bank</option>
+
+                                                    <% for(var i=0;i < banks.length;i++) {
+                                                        var bank = banks[i]; %>
+                                    <option value="<%= bank.bank_id %>"><%= bank.bank_name %></option>
+                                    <% } %>
+                                    </select>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>Loan Amount (Rs)* </label> <input type="text" name="loan_amount" id="loan_amount"
+                                    class="form-control" placeholder="Loan Amount (Rs)" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>Annual Income*</label>
+
+                                <input type="text" id="annual_income" name="annual_income" class="form-control"
+                                    placeholder="Annual Income (Rs)" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>Name*</label> <input type="text" name="name" id="name" class="form-control"
+                                    placeholder=" Enter Name" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>Mobile*</label> <input type="text" name="mobile" id="mobile" class="form-control"
+                                    placeholder=" Enter Mobile" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>Email*</label> <input type="text" name="email" id="email" class="form-control"
+                                    placeholder=" Enter Email" value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>DOB*</label> <input type="date" name="dob" id="dob" class="form-control"
+                                    value="">
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+
+                                <label>City*</label> <input type="text" name="city" id="city" class="form-control"
+                                    placeholder=" Enter City" value="">
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row">
+
+                            <div class="col-md-12 col-sm-5 padding-as25">
+
+                                <button type="submit" name="submit" class="btn btn-primary btn-lg">
+
+                                    <i class="fa fa-check"></i> Apply Now
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    </form>
+
+
+
+                </div>
+
+                <!-- Start Sidebar -->
+
+                <div class="sidebar right-sidebar col-md-3">
+
+                    <div class="widget sidebar-widget">
+
+                        <% include includes/sidebar.ejs %>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    </div>
+
+    </div>
+
+    <!-- Start Site Footer -->
+    <% include includes/footer.ejs %>
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+<script>
+    function calculateStampDuty() {
+        var propertyValue = $('input[name=stampduty_property_value]').val(), stampdutyId = $('select[name=stamp_duty_id]').val();
+        console.log(stampdutyId);
+        if (propertyValue != "" && stampdutyId != "") {
+            $.ajax({
+                type: "GET",
+                url: "<%= api_url%>calculate_stamp_duty",
+                data: {
+                    id: stampdutyId,
+                    propertyValue: propertyValue
+                },
+                success: function (response) {
+                    console.log(response);
+                    $("input[name=stamp_duty").val(response);
+                }
+            });
+        }
+    }
+    function calculateEmi(amount, interest, tenure) {
+        var intr = interest / 1200;
+        var principle = amount;
+        var emi = Math.ceil(amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure))));
+        var total_interest = Math.ceil((amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure)))) * tenure) - amount;
+        var total_amount = amount + total_interest;
+        var response = '<div class="padding-as25 margin-30"><div>';
+        response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class="">Rs. ' + emi + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Amount Payable</h5><b><span class="">Rs. ' + total_amount + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Principle Amount Payable</h5><b><span class="">Rs. ' + principle + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class="">Rs. ' + total_interest + ' /-</span></b></div></div></div>';
+        $('#emi_value').html(response);
+    }
+    function loadEligibilityCheck(loanAmount, netIncome, tenure, interest) {
+        // console.log(loanAmount, netIncome, tenure, interest);
+        var intr = interest / 1200;
+        var amount = netIncome * 60;
+        var maxLoan = netIncome * 60;
+        var loanEmi = Math.ceil(loanAmount * intr / (1 - (Math.pow(1 / (1 + intr), tenure))));
+        maxEmi = Math.ceil(amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure))));
+        if (loanAmount <= amount) {
+            var response = '<h5><i class="fa fa-check"></i> You are Eligible for this loan</h5><b style="font-size: 18px">Rs.' + loanAmount + ' at EMI Rs. ' + loanEmi + ' </b><br><br><hr>';
+            response += '<p style="font-size: 15px">You are Eligible for a maximum loan of </p><b><span class="">Rs. ' + maxLoan + ' at EMI Rs.' + maxEmi + '</span></b>';
+        } else {
+            var response = '<h5><i class="fa fa-check"></i>Sorry You are Not Eligible for this loan</h5><b style="font-size: 18px">Rs.' + loanAmount + ' at EMI Rs. ' + loanEmi + ' </b><br><br><hr>';
+            response += '<p style="font-size: 15px">You are Eligible for a maximum loan of </p><b><span class="">Rs. ' + maxLoan + ' at EMI Rs.' + maxEmi + '</span></b>';
+        }
+        response += '<br/><br/><br/><br/>';
+        response += '<a href = "<%= base_url %>home/apply_home_loan" class="btn btn-primary btn-lg" > Apply For a Loan</a>';
+        $('#loan_eligibility_response').html(response);
+    }
+    function setUpHomeSlider() {
+        $.ajax({
+            method: "GET",
+            url: "<%=api_url %>get_home_slider",
+            success: function (response) {
+                var result = '';
+                for (var i = 0; i < response.length; i++) {
+                    var slide = response[i];
+                    result += '<li class="parallax" style="background-image:url(uploads/home-slide/' + slide.image + ');">';
+                    result += '<a href="' + slide.url + '" class="btn" style="width: 100%; height: 100%;"> </a></li>';
+                }
+                $("#slides").html(result);
+            }
+
+        });
+    }
+    function setUpPropertyTypes() {
+        $.ajax({
+            method: "GET",
+            url: "<%= api_url %>get_property_types",
+            success: function (response) {
+                var result = '';
+                for (var i = 0; i < response.length; i++) {
+                    var row = response[i];
+                    result += '<option value="' + row.property_type_id + '">' + row.type + '</option>'
+                }
+                $("#property_type").append(result);
+            }
+        });
+    }
+    function setUpCities(divId) {
+        $.ajax({
+            method: "GET",
+            url: "<%= api_url %>get_cities",
+            success: function (response) {
+                var result = '';
+                for (var i = 0; i < response.length; i++) {
+                    var row = response[i];
+                    result += '<option value="' + row.city_id + '">' + row.city + '</option>'
+                }
+                $(divId).append(result);
+            }
+        });
+    }
+    function setUpProjectTypes() {
+        $.ajax({
+            method: "GET",
+            url: "<%= api_url %>get_project_types",
+            success: function (response) {
+                var result = '';
+                for (var i = 0; i < response.length; i++) {
+                    var row = response[i];
+                    result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                }
+                $("#project_type").append(result);
+            }
+        });
+    }
+    function showLocality(cityId) {
+        console.log("welcome");
+        $.ajax({
+            method: "GET",
+            url: "<%= api_url %>get_localities",
+            data: {
+                city_id: cityId
+            },
+            success: function (response) {
+                console.log(response);
+                var result = '';
+                for (var i = 0; i < response.length; i++) {
+                    var row = response[i];
+                    result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+                }
+                $("#locality").append(result);
+            }
+        });
+    }
+    function getPropertyDetails(listPropertyId) {
+        console.log(listPropertyId);
+    }
+    function getPropertyImage(listPropertyId) {
+        console.log("-------------------------------");
+        console.log(listPropertyId);
+    }
+</script>

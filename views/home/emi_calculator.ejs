@@ -1,0 +1,235 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<title> Spaces4All - <%= page_name %> </title>
+
+<meta name="description" content="">
+
+<meta name="keywords" content="">
+
+<meta name="author" content="">
+
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+<link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+<link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+<link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+<link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+<link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+<!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]--> 
+
+<link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">  
+
+<script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+<script src="<%= base_url %>javascripts/modernizr.js"></script> 
+
+
+
+<script type="text/javascript">
+
+function Search_Emi()
+
+{
+
+	var amount  = $("#amount").val();
+
+	var interest= $("#interest").val();
+
+	var tenure = $("#tenure").val();
+
+	if(!$.isNumeric(amount) || !$.isNumeric(interest) || !$.isNumeric(tenure)){
+
+		$('#emi_value').html('<h5>Please Enter Numeric Values Only</h5>');
+
+    }else {
+		calculateEmi(amount,interest,tenure);
+	}
+}
+
+</script>
+
+
+
+</head>
+
+<body>
+
+<div class="body">
+
+  <!-- Start Site Header -->
+
+  <% include includes/header.ejs %>
+
+  <!-- End Site Header -->
+
+  <!-- Site Showcase -->
+
+  <div class="site-showcase">
+
+  <!-- Start Page Header -->
+
+  <div class="parallax page-header">
+
+  		<div class="container">
+
+        	<div class="row">
+
+            	<div class="col-md-12">
+
+  					<h1> EMI CALCULATOR </h1>
+
+        		</div>
+
+           </div>
+
+       </div>
+
+  </div>
+
+  <!-- End Page Header -->
+
+  </div>
+
+  <!-- Start Content -->
+  <div class="main" role="main">
+
+      <div id="content" class="content full">
+
+        	<div class="container">
+
+          		<div class="page">
+
+        			<div class="row">
+
+                  <div class="col-md-9">
+
+                      <div class="row">
+
+                      
+
+                  		<div class="col-md-7">
+
+                  		  <form onsubmit="return false;" id="Emi">
+
+                  			
+
+                  			<div class="padding-as25 margin-30 lgray-bg">
+
+                              <div class="row">
+
+                                  <div class="col-md-10 col-sm-10">
+
+                                  <label>Enter Loan Amount*</label>
+
+                                      <input type="text" name="amount" id="amount" class="form-control" placeholder="Loan Amount ( INR )" required="required">
+
+                                  </div> 
+
+                              </div>  
+
+                              <div class="row">
+
+                                  <div class="col-md-10 col-sm-10">
+
+                                  <label>Enter Loan Interest*</label>
+
+                                      <input type="text" name="interest" id="interest" class="form-control" placeholder="Loan Interest ( % ) " required="required">
+
+                                  </div> 
+
+                              </div>  
+
+                              <div class="row">
+
+                                  <div class="col-md-10 col-sm-10">
+
+                                  <label>Enter Tenure ( Months )*</label>
+
+                                      <input type="text" name="tenure" id="tenure" class="form-control" placeholder="Tenure ( Months ) " required="required">
+
+                                  </div> 
+
+                              </div>
+
+                              <div class="row">
+
+                                  <div class="col-md-5 col-sm-5 padding-as25">
+
+                              			<button type="button" name="submit" onclick="Search_Emi(this.value)" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Calculate</button>
+
+                                  </div>
+
+                              </div>                             
+
+                          </div>
+
+                          
+
+                  		 </form>
+
+                  			
+
+                  		</div>
+
+                  		
+
+                  		<div class="col-md-5">
+
+                  			<div id="emi_value">
+
+                  		 
+
+                  		 	  </div>
+
+                  		</div>
+
+                  	  </div>                    
+
+                  </div>
+
+                  <!-- Start Sidebar -->
+
+                  <div class="sidebar right-sidebar col-md-3">
+
+                      <div class="widget sidebar-widget">
+
+                            <% include includes/sidebar.ejs %> 
+
+                    </div>
+
+                     
+
+                  </div>  
+
+              </div>
+
+        		</div>
+
+      		</div>
+
+    	</div>
+
+  </div>
+
+  <!-- Start Site Footer -->
+
+  
+
+  		<% include includes/footer.ejs %>   
+
+    
+
+ </body>
+
+</html>

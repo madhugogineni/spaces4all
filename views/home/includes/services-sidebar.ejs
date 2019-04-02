@@ -1,0 +1,85 @@
+<div class="widget sidebar-widget">
+
+    <form action="<%= base_url%>home/send_services_request" onsubmit="return Submit_Enquiry();" method="post">
+
+        <h3 class="widgettitle">ENQUIRY FORM</h3>
+
+        <div id="errorBox">
+
+
+
+        </div>
+
+        <!-- <?php 
+
+if ($this->session->flashdata('request_msg')) {
+
+    echo "<div class='alert alert-success fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>".$this->session->flashdata('request_msg')."</strong></div>";
+
+}
+
+?> -->
+
+        <div class="padding-as25 lgray-bg">
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12">
+
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Your Name*">
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12">
+
+                    <input type="email" name="email" id="email" class="form-control" placeholder="EMail Id*">
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12">
+
+                    <input type="text" name="phone" id="phone" class="form-control" placeholder="Phone No*">
+
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-12 col-sm-12">
+
+                    <input type="text" name="city" id="city" class="form-control" placeholder="City*">
+
+
+
+                </div>
+            </div>
+
+            <input type="hidden" name="request_for" value="<?=$page_title?>">
+
+            <input type="hidden" name="page_name" value="<?=$page_name?>">
+
+            <div class="row">
+
+                <div class="col-md-5 col-sm-5 padding-as45">
+
+                    <button type="submit" name="submit" class="btn btn-primary btn-lg"><i class="fa fa-check"></i>
+                        Submit</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>

@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_name %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
+
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1>Stamp Duty Calculator</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+        <!-- Start Content -->
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+                            <div class="col-md-9">
+
+                                <div class="row">
+
+                                    <h3 class=""> Stamp Duty Calculator</h3>
+                                    <hr>
+                                    <div class="padding-as25 margin-30 lgray-bg">
+
+                                        <form onsubmit="return false;">
+                                            <!--  action="<%= base_url %>home/calculate_stamp_duty" method="post"-->
+
+                                            <div class="row">
+
+                                                <div class="col-md-6 col-sm-10">
+
+                                                    <label>State*</label>
+
+                                                    <select name=stamp_duty_id id="stamp_duty_select_tag"
+                                                        class="form-control" required="required">
+
+                                                        <option value="">Select State</option>
+                                                        <% for(var i=0;i< stamp_duty.length;i++) {
+                                                            var stampDutyRow = stamp_duty[i]; %>
+
+                                                        <option value="<%= stampDutyRow.stamp_duty_id %>">
+                                                            <%= stampDutyRow.state %></option>
+                                                        <%} %>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-6 col-sm-10">
+
+                                                    <label>Property Value (Rs.)*</label>
+
+                                                    <input type="number" name="stampduty_property_value"
+                                                        class="form-control" placeholder="Property Value (Rs.)" value=""
+                                                        required="required">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-5 col-sm-5 padding-as25">
+
+                                                    <button type="submit" name="submit" class="btn btn-primary btn-lg"
+                                                        onclick="calculateStampDuty()">
+                                                        Calculate</button>
+
+                                                    <button type="reset" class="btn btn-primary btn-lg">Reset</button>
+                                                </div>
+
+                                            </div>
+
+                                        </form>
+
+                                        <div class="row">
+
+                                            <div class="col-md-6 col-sm-10">
+
+                                                <label>Stamp Duty (Rs.)</label>
+
+                                                <input type="text" name="stamp_duty" class="form-control"
+                                                    readonly="readonly">
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Start Sidebar -->
+
+                            <div class="sidebar right-sidebar col-md-3">
+
+                                <% include includes/sidebar.ejs %>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Site Footer -->
+
+
+
+        <% include includes/footer.ejs %>
+
+
+
+</body>
+
+</html>

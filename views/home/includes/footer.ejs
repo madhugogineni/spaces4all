@@ -1,0 +1,182 @@
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="col-md-2 col-sm-6 footer-widget widget">
+
+        <h3 class="widgettitle">Quick Links</h3>
+
+        <ul>
+
+          <li><a href="<%=base_url%>">Home</a></li>
+
+          <li><a href="<%= base_url%>home/search">Buy</a></li>
+
+          <li><a href="<%= base_url%>home/list_property">Sell</a></li>
+
+          <li><a href="<%= base_url%>home/rent_in">Rent</a></li>
+
+          <li><a href="<%= base_url%>home/property_management">Services</a></li>
+
+          <li><a href="<%= base_url%>home/apply_home_loan">Mortgage</a></li>
+
+          <li><a href="<%= base_url%>home/popular_agents">Advice</a></li>
+
+          <li><a href="<%= base_url%>home/contact">Contact Us</a></li>
+
+          <li><a href="<%= base_url%>home/terms">Terms of use</a></li>
+
+        </ul>
+
+      </div>
+
+      <div class="col-md-2 col-sm-6 footer-widget widget">
+
+        <h3 class="widgettitle">In India</h3>
+
+        <ul>
+
+          <li><a href="<%= base_url%>home/">Guntur</a></li>
+
+          <li><a href="<%= base_url%>home/">Hyderabad</a></li>
+
+          <li><a href="<%= base_url%>home/">Vijayawada</a></li>
+
+          <li><a href="<%= base_url%>home/">Vishakapatnam</a></li>
+
+        </ul>
+
+      </div>
+
+      <div class="col-md-2 col-sm-6 footer-widget widget">
+
+        <h3 class="widgettitle">Useful Links</h3>
+
+        <ul>
+
+          <li><a href="<%= base_url%>home/emi_calculator">EMI Calculator</a></li>
+
+          <li><a href="<%= base_url%>home/area_conversion_calculator">Area Conversion Table</a></li>
+
+          <li><a href="<%= base_url%>home/stamp_duty_calculator">Stamp Duty Calculator</a></li>
+
+          <li><a href="<%= base_url%>home/loan_eligibility_check">Loan Eligibility Check</a></li>
+
+          <li><a href="<%= base_url%>home/information">Information</a></li>
+
+          <li><a href="<%= base_url%>home/price_trends">Price Trends / Rates</a></li>
+
+          <br>
+
+
+
+          <li><a href="<%= base_url%>home/disclaimer">Disclaimer </a></li>
+
+          <li><a href="<%= base_url%>home/feedback">Feedback </a></li>
+
+        </ul>
+
+      </div>
+
+      <div class="col-md-3 col-sm-6 footer-widget widget">
+
+        <h3 class="widgettitle">Project Video</h3>
+
+        <div style="width: 100%">
+
+          <% var footerLinks = footer_project_link;
+          for(var i = 0;i < footerLinks.length;i++) { %>
+          <%-footerLinks[i].link %>
+          <% } %>
+
+        </div>
+
+      </div>
+
+      <div class="col-md-3 col-sm-6 footer-widget widget">
+
+        <h3 class="widgettitle">Our Newsletter</h3>
+
+        <p>Follow Our Newsletter</p>
+
+        <div id="news_letter_response"></div>
+
+        <form action="#">
+
+          <input type="email" name="news_email" id="news_email" placeholder="Enter your email address"
+            class="form-control" required="required">
+
+          <button type="button" name="submit" class="btn btn-primary btn-block btn-lg"
+            onclick="news_letter();">Subscribe</button>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<footer class="site-footer-bottom">
+
+  <div class="container">
+
+    <div class="row">
+
+      <div class="copyrights-col-left col-md-6 col-sm-6">
+
+        <p>&copy; 2015 Spaces4all. All Rights Reserved</p>
+
+      </div>
+
+      <div class="copyrights-col-right col-md-6 col-sm-6" align="right">
+
+        <p>Powered by <a href="http://ativaishna.com" target="_blank"><span>Ativaishna Pvt. Ltd</span> </a> </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+
+<!-- End Site Footer -->
+
+<a id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+</div>
+
+<script src="<%= base_url%>javascripts/jquery-2.0.0.min.js"></script> <!-- Jquery Library Call -->
+
+<script src="<%= base_url%>plugins/prettyphoto/js/prettyphoto.js"></script> <!-- PrettyPhoto Plugin -->
+
+<script src="<%= base_url%>plugins/owl-carousel/js/owl.carousel.min.js"></script> <!-- Owl Carousel -->
+
+<script src="<%= base_url%>plugins/flexslider/js/jquery.flexslider.js"></script> <!-- FlexSlider -->
+
+<script src="<%= base_url%>javascripts/helper-plugins.js"></script> <!-- Plugins -->
+
+<script src="<%= base_url%>javascripts/bootstrap.js"></script> <!-- UI -->
+
+<script src="<%= base_url%>javascripts/waypoints.js"></script> <!-- Waypoints -->
+
+<script src="<%= base_url%>javascripts/init.js"></script> <!-- All Scripts -->
+
+<!--[if lte IE 9]><script src="js/script_ie.js"></script><![endif]-->
+
+
+
+
+
+</body>
+
+</html>

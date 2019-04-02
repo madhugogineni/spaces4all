@@ -1,0 +1,1081 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_name %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url%>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url%>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%= base_url%>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url%>javascripts/modernizr.js"></script>
+
+    <script>
+
+
+
+        function show_sub_type(str) {
+
+            //alert(1);
+
+            if (str.length == 0) {
+
+                document.getElementById("property_sub_type").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    //alert(xmlhttp.responseText);
+
+                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            //alert(str);
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+
+
+        function Show_locality(str) {
+
+            //alert(str);
+
+            if (str.length == 0) {
+
+                document.getElementById("Showlocality").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    //alert(xmlhttp.responseText);
+
+                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+        function ShowButton(str) {
+
+
+
+            if (str == 'BUY') {
+
+                document.getElementById("action_type").innerHTML = "<button type='submit' name='search_type' value='BUY' formaction='<%= base_url %>home/properties' class='btn btn-primary btn-block btn-lg'><i class='fa fa-search'></i> Search</button>";
+
+            }
+
+            if (str == 'RENT') {
+
+                document.getElementById("action_type").innerHTML = "<button type='submit' name='search_type' value='RENT' formaction='<%= base_url %>home/rent' class='btn btn-primary btn-block btn-lg'><i class='fa fa-search'></i> Search</button>";
+
+            }
+
+        }
+
+
+
+        function showAjaxModal(url) {
+
+            // SHOWING AJAX PRELOADER IMAGE
+
+            jQuery('#modal_ajax .modal-body').html('');
+
+
+
+            // LOADING THE AJAX MODAL
+
+            jQuery('#modal_ajax').modal('show', { backdrop: 'true' });
+
+
+
+            // SHOW AJAX RESPONSE ON REQUEST SUCCESS
+
+            $.ajax({
+
+                url: url,
+
+                success: function (response) {
+
+                    jQuery('#modal_ajax .modal-body').html(response);
+
+                }
+
+            });
+
+        }
+
+
+        function showAjaxModal1(url) {
+
+            // SHOWING AJAX PRELOADER IMAGE
+
+            jQuery('#modal_ajax1 .modal-body').html('');
+
+
+
+            // LOADING THE AJAX MODAL
+
+            jQuery('#modal_ajax1').modal('show', { backdrop: 'true' });
+
+
+
+            // SHOW AJAX RESPONSE ON REQUEST SUCCESS
+
+            $.ajax({
+
+                url: url,
+
+                success: function (response) {
+
+                    jQuery('#modal_ajax1 .modal-body').html(response);
+
+                }
+
+            });
+
+        }
+
+
+
+        function send_Callback() {
+
+            var filter = /^[0-9-+]+$/;
+
+            var name = $("#call_name").val();
+
+            var phone = $("#call_phone").val();
+
+            var project_id = $("#call_project").val();
+
+            var dataString = 'name=' + name + '&phone=' + phone + '&project_id=' + project_id;
+
+
+
+            if ($("#call_name").val() == "") {
+
+                $("#call_name").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+
+            } else if ($("#call_phone").val() == "") {
+
+                $("#call_phone").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else if (phone.length != "10") {
+
+                $("#call_phone").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else if (!filter.test(phone)) {
+
+                $("#call_phone").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else {
+
+
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "<%= base_url %>home/add_call_back",
+
+                    data: dataString,
+
+                    success: function (response) {
+
+                        jQuery('#call_back_response').html(response);
+
+                    }
+
+                });
+
+
+
+            }
+
+        }
+
+        function send_Property_Callback() {
+
+            var filter = /^[0-9-+]+$/;
+
+            var name = $("#call_name1").val();
+
+            var phone = $("#call_phone1").val();
+
+            var property_id = $("#call_property").val();
+
+            var dataString = 'name=' + name + '&phone=' + phone + '&property_id=' + property_id;
+
+
+
+            if ($("#call_name1").val() == "") {
+
+                $("#call_name1").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+
+            } else if ($("#call_phone1").val() == "") {
+
+                $("#call_phone1").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else if (phone.length != "10") {
+
+                $("#call_phone1").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else if (!filter.test(phone)) {
+
+                $("#call_phone1").focus();
+
+                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            } else {
+
+
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: "<%= base_url %>home/add_property_call_back",
+
+                    data: dataString,
+
+                    success: function (response) {
+
+                        jQuery('#call_back_response1').html(response);
+
+                    }
+
+                });
+
+
+
+            }
+
+        }
+
+
+        $(document).ready(function () {
+
+            $('#compare').load("<%= base_url %>home/compare_count");
+
+        });
+
+
+
+        function add_Compare(url) {
+
+            $.ajax({
+
+                url: url,
+
+                success: function () {
+
+                    $('#compare').load("<%= base_url %>home/compare_count");
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+
+
+
+
+
+
+</head>
+
+<body class="home">
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase" id="success">
+
+            <div class="slider-mask overlay-transparent"></div>
+
+            <!-- Start Hero Slider -->
+
+            <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
+                data-style="fade" data-pause="yes">
+
+                <ul class="slides" id="slides">
+                    <script>
+                        setUpHomeSlider();
+                    </script>
+                </ul>
+
+            </div>
+
+            <!-- End Hero Slider -->
+
+            <!-- Site Search Module -->
+
+            <div class="site-search-module">
+
+                <div class="container">
+
+                    <div class="site-search-module-inside">
+
+                        <ul class="nav nav-tabs">
+
+                            <li class="active"><i class="fa fa-caret-down fa-4x"></i> <a data-toggle="tab"
+                                    href="#sampletab2"> Projects</a> </li>
+
+                            <li><i class="fa fa-caret-down fa-4x "></i> <a data-toggle="tab" href="#sampletab1">
+                                    Properties </a> </li>
+
+                        </ul>
+
+
+
+                        <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
+
+                            <div id="sampletab1" class="tab-pane">
+
+                                <br>
+
+                                <form method="get">
+
+                                    <div class="form-group">
+
+                                        <div class="row">
+
+                                            <div class="col-md-1">
+
+                                            </div>
+
+                                            <div class="col-md-2">
+
+                                                <select id="search_type" onchange="ShowButton(this.value)"
+                                                    class="form-control input-lg selectpicker">
+
+                                                    <option value="BUY">BUY</option>
+
+                                                    <option value="RENT">RENT</option>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <select name="property_type" id="property_type"
+                                                    class="form-control input-lg selectpicker">
+
+                                                    <option value="">Type</option>
+                                                    <script>setUpPropertyTypes();</script>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <select name="city" id="property_city"
+                                                    class="form-control input-lg selectpicker">
+
+                                                    <option value="">City</option>
+                                                    <script>setUpCities("#property_city");</script>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="col-md-2" id="action_type"> <button type="submit"
+                                                    formaction="<%= base_url %>home/properties"
+                                                    class="btn btn-primary btn-block btn-lg"><i
+                                                        class="fa fa-search"></i> Search</button></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+
+
+
+                            <div id="sampletab2" class="tab-pane active">
+
+                                <br>
+
+                                <form action="<%= base_url %>home/projects" method="get">
+
+                                    <div class="form-group">
+
+                                        <div class="row">
+
+                                            <div class="col-md-1">
+                                            </div>
+
+                                            <div class="col-md-2">
+
+                                                <select name="project_type" id="project_type"
+                                                    class="form-control input-md selectpicker">
+
+                                                    <option value="">Type</option>
+                                                    <script> setUpProjectTypes(); </script>
+                                                </select>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+
+                                                <select name="city" id="project_city"
+                                                    onchange="showLocality(this.value)"
+                                                    class="form-control input-md selectpicker">
+                                                    <option value="">City</option>
+                                                    <script> setUpCities("#project_city"); </script>
+
+                                                </select>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select name="locality" id="locality" class="form-control input-md">
+                                                    <option value="">Locality</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-2"> <button type="submit"
+                                                    class="btn btn-primary btn-block btn-lg"><i
+                                                        class="fa fa-search"></i> Search</button></div>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div id="featured-properties">
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="property_success"></div>
+
+                                <div class="block-heading">
+
+                                    <h4><span class="heading-icon"><i class="fa fa-star"></i></span>Latest Properties
+                                    </h4>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <ul class="owl-carousel owl-alt-controls" data-columns="4" data-autoplay="no"
+                                data-pagination="no" data-arrows="yes" data-single-item="no">
+                                <% 
+                                for(var i=0;i < latest_properties.length;i++) {
+                                    
+                                    var latest_property = latest_properties[i];
+                                    %>
+                                <li class="item property-block">
+
+                                    <a href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"
+                                        class="property-featured-image">
+                                        <img src="<%= base_url %>uploads/list_property/<%= latest_property.property_photo %>"
+                                            style="height: 170px" alt="Spacel4all">
+                                    </a>
+                                    <div class="property-info" style="line-height: 5px">
+                                        <h4>
+                                            <a
+                                                href="<%= base_url %>home/property_details/<%=latest_property.property_id %>"><%=latest_property.property_sub_type %></a>
+                                        </h4>
+                                        <hr />
+                                        <span><%=latest_property.property_type %></span>
+                                        <hr />
+
+                                        <span class="location"><%=latest_property.locality_name %>,
+                                            <%=latest_property.city_name %></span>
+                                        <hr>
+
+                                        <% if(latest_property.property_sub_type_id == '14' || latest_property.property_sub_type_id == '18'){ %>
+
+                                        <span><%=latest_property.area%> Sq.Yds</span>
+                                        <hr>
+
+                                        <% }else if(latest_property.property_type_id == '1' && latest_property.property_sub_type_id != '18') { %>
+
+                                        <span><%=latest_property.area%> Sq.Ft</span>
+                                        <hr>
+
+                                        <% }else { %>
+
+                                        <span><%= latest_property.bedrooms %> BHK</span>
+                                        <hr>
+
+                                        <% } %>
+
+                                        <span><% if(latest_property.quotes_price != ""){ %><span
+                                                class="WebRupee">Rs.</span>
+                                            <% } %> <%= latest_property.quoted_price %></span>
+                                        <hr>
+
+                                        <a
+                                            href="<%= base_url %>home/property_details/<%= latest_property.property_id %>">
+                                            <button type="button" class="btn btn-danger"> <i
+                                                    class="fa fa-angle-double-right"></i>&nbsp; View Details </button>
+                                        </a>&nbsp;&nbsp;&nbsp;
+                                        <a href="#"
+                                            onclick="showAjaxModal1('<%= base_url %>home/popup/property-call-back/<%= latest_property.list_property_id %>')">
+                                            <button type="button" class="btn"><i class="fa fa-phone"></i>&nbsp;
+                                                &nbsp;Call Back </button> </a>
+                                    </div>
+
+                                </li>
+                                <% } %>
+                            </ul>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <br />
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-9">
+
+                            <div class="block-heading">
+
+                                <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
+                                            class="fa fa-leaf"></i></span>Featured Projects</h4>
+                            </div>
+
+                            <div class="property-listing">
+
+                                <ul>
+
+                                    <?php 
+
+              	foreach ($latest_projects as $row12){
+
+				$projects1 = $this->crud_model->get_project_details_by_id($row12['project_id']);
+
+				foreach ($projects1 as $row5){
+
+				$photoss = $this->crud_model->get_latest_photo_by_project($row5['project_id']);
+
+				if($photoss){
+
+				foreach ($photoss as $row7){
+
+				$image1 = $row7['photo'];
+
+				}
+
+				}else {
+
+					$image1 = "no-photo.jpg";
+
+				}
+
+				
+
+				$city2		 	= $this->crud_model->get_city_by_id($row5['city']);
+
+				$locality2	 	= $this->crud_model->get_locality_by_id($row5['locality']);	
+
+				$project_sub_type 	= $this->crud_model->get_project_sub_type_by_id($row5['project_sub_type']);
+
+				foreach ($city2 as $row3){
+
+					$city  		= $row3['city'];
+
+				}
+
+				foreach ($locality2 as $row4){
+
+					$locality   = $row4['locality'];
+
+				}
+
+				foreach ($project_sub_type as $row6){
+
+					$project_sub_name = $row6['sub_type'];
+
+				}
+
+                
+
+                if ($row5['plans'] != NULL && $row5['plans'] != '') {
+
+    				$plans = explode(',', $row5['plans']);				
+
+					foreach ($plans as $plan){
+
+					$plan_value[] = $plan.'BHK ';
+
+					}
+
+					$value = implode(',', $plan_value);
+
+				}else {
+
+					$value ='';
+
+				}
+
+				
+if(!empty($row5['min_price'])){
+				if($row5['min_price'] > 10000000)
+
+				{
+
+					$min = round(((float)$row5['min_price']) / 10000000,2);
+
+					$min = $min.' Cr';
+
+				}
+
+				else if($row5['min_price'] > 100000)
+
+				{
+
+					$min = round(((float)$row5['min_price']) / 100000,2);
+
+					$min = $min.' Lac';
+
+				}
+
+				}else {
+					$min = 'Price On Request';
+				}
+
+				?>
+
+                                    <li class="type-rent col-md-12">
+
+                                        <div class="col-md-4">
+
+                                            <a href="<%= base_url %>home/project_details/<?=$row5['project_id']?>/<?php echo $row5['project_name'];?>"
+                                                class="property-featured-image">
+
+                                                <img src="<%= base_url %>uploads/projects/<?=$image1?>"
+                                                    style="height: 180px; width:100%" alt="">
+
+                                                <span class="images-count"> <?=$city?> </span>
+
+                                            </a>
+
+                                        </div>
+
+                                        <div class="col-md-8">
+
+
+
+                                            <div class="row">
+
+                                                <div class="col-md-8">
+
+                                                    <div class="property-info" style="line-height: 5px">
+
+                                                        <h3><a
+                                                                href="<%= base_url %>home/project_details/<?=$row5['project_id']?>/<?php echo $row5['project_name'];?>"><?=$row5['project_name']?></a>
+                                                        </h3>
+
+                                                        <hr>
+
+                                                        <span><?=$row5['group_name']?></span>
+                                                        <hr>
+
+                                                        <span class="location"> <?=$locality?>, <?=$city?></span>
+                                                        <hr>
+
+                                                        <span>Sizes ( Range) :
+                                                            <?=$row5['min_builtup_area'].' - '.$row5['max_builtup_area']?>
+                                                            Sq.Ft</span>
+                                                        <hr>
+
+                                                        <span>Plans : <?=$row5['plans'].' BHK'?></span>
+                                                        <hr>
+
+                                                        <span><?php if(!empty($row5['min_price'])){?><span
+                                                                class="WebRupee">Rs.</span> <?=$min?>
+                                                            Onwards<?php }else {echo $min;}?></span>
+                                                        <hr>
+
+                                                    </div>
+
+
+
+                                                </div><br />
+
+
+
+                                                <div class="col-md-4 pad-2 brbtm">
+
+                                                    <ul class="">
+
+                                                        <li> <a href="#success"
+                                                                onclick="add_Compare('<%= base_url %>home/add_compare/project/<?=$row5['project_id']?>')">
+                                                                <button type="button" class="btn btn-default"> <i
+                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
+                                                                    &nbsp;&nbsp;</button> </a> <br /><br /> </li>
+
+                                                        <li> <a href="#"
+                                                                onclick="showAjaxModal('<%= base_url %>home/popup/call-back/<?=$row5['project_id']?>')">
+                                                                <button type="button" class="btn"><i
+                                                                        class="fa fa-phone"></i>&nbsp; &nbsp;Call Back
+                                                                    &nbsp;&nbsp;&nbsp;</button> </a> <br /><br /> </li>
+
+                                                        <li> <a
+                                                                href="<%= base_url %>home/project_details/<?=$row5['project_id']?>/<?php echo $row5['project_name'];?>">
+                                                                <button type="button" class="btn btn-danger"><i
+                                                                        class="fa  fa-angle-double-right"></i> View
+                                                                    Details</button> </a> </li>
+
+                                                    </ul>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="property-amenities clearfix">
+
+                                                <span
+                                                    class="area"><strong><?=$row5['total_area']?></strong>&nbsp;</span>
+
+                                                <span
+                                                    class="baths"><strong><?=$row5['total_units']?></strong>Units</span>
+
+                                                <span class="parking"><strong>&nbsp;Type :
+                                                    </strong><?=$project_sub_name?></span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </li>
+
+                                    <?php 
+
+                    $plan_value='';
+
+					}
+
+					}
+
+            		?>
+
+
+
+
+
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <!-- Start Sidebar -->
+
+                        <div class="sidebar right-sidebar col-md-3">
+                            <% include includes/sidebar.ejs %>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="container"><br />
+
+                    <div class="block-heading">
+
+                        <h4><span class="heading-icon"><i class="fa fa-users"></i></span>Our Partners</h4>
+
+
+
+                    </div>
+
+                    <div class="row nans">
+
+                        <?php 
+
+         $partners = $this->crud_model->get_partners();
+
+         if ($partners) {
+
+         ?>
+
+                        <ul class="owl-carousel" id="clients-slider" data-columns="6" data-autoplay="yes"
+                            data-pagination="no" data-arrows="no" data-single-item="no" data-items-desktop="6"
+                            data-items-desktop-small="4" data-items-mobile="2" data-items-tablet="4">
+
+                            <?php 
+
+             
+
+             foreach ($partners as $row10){
+
+             ?>
+
+                            <li class="item"> <a href="<?=$row10['url']?>" target="_blank"><img
+                                        src="<%= base_url %>uploads/partners/<?=$row10['image']?>" alt="Spaces4all"></a>
+                            </li>
+
+                            <?php 
+
+             }
+
+             ?>
+
+                        </ul>
+
+                        <?php 
+
+          }else {
+
+              echo "<h4 align='center'>There Are No Partners Available.</h4>";
+
+		  }
+
+          ?>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Site Footer -->
+
+
+
+        <!-- (Ajax Modal)-->
+
+        <div class="modal fade" id="modal_ajax">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <form method="post">
+
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                            <h4 class="modal-title">Call Back</h4>
+
+                        </div>
+
+
+
+                        <div class="modal-body">
+
+
+
+                        </div>
+
+
+
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                            <button type="button" onclick="send_Callback();" class="btn btn-primary">Send</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="modal fade" id="modal_ajax1">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <form method="post">
+
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                            <h4 class="modal-title">Call Back</h4>
+
+                        </div>
+
+
+
+                        <div class="modal-body">
+
+
+
+                        </div>
+
+
+
+                        <div class="modal-footer">
+
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                            <button type="button" onclick="send_Property_Callback();"
+                                class="btn btn-primary">Send</button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <% include includes/footer.ejs %>
+        </style>
+        <script type="text/javascript">
+            function ticker() {
+                $('#ticker li:first').slideUp(function () {
+                    $(this).appendTo($('#ticker')).slideDown();
+                });
+            }
+            setInterval(ticker, 3000);
+        </script>
