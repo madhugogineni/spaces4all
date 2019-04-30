@@ -2,13 +2,18 @@ var express = require('express');
 var router = express.Router();
 var crudModel = require("../models/crudModel");
 var validatorpackage = require('node-input-validator');
+var multer = require('multer');
+var upload = multer();
+var moment = require("moment");
+var dateFormat = "YYYY-MM-DD HH:mm:ss";
+
+
 var addContactMessage = "", isError = 0;
 var loanErrorMsg = "", loanError = false;
-
 router.get("/index", function (req, res) {
 	res.redirect("/");
 });
-router.get("/", function (req,res) {
+router.get("/", function (req, res) {
 	res.redirect("/");
 });
 // footer news letter api url are defined here
@@ -103,5 +108,150 @@ router.post("/add_home_loan", function (req, res) {
 });
 router.get("/req_docs_forloan", function (req, res) {
 	res.render("home/req_docs_forloan", { page_name: "Apply Home Loan", page_title: "Apply Home Loan" });
+});
+router.get("/hot_properties/:cityId", function (req, res) {
+	var cityId = req.params.cityId || "";
+	crudModel.getHotPropertyDetails(cityId).then(function (hotProperties) {
+		var finalHotProperties = [];
+		var propertyIds = [];
+		for (var i = 0; i < hotProperties.length; i++) {
+			var hotProperty = hotProperties[i];
+			if (!propertyIds.includes(hotProperty.list_property_id)) {
+				propertyIds.push(hotProperty.list_property_id);
+				if (hotProperty.property_photo == null) {
+					hotProperty.property_photo = "no-photo.jpg";
+				}
+				if (hotProperty.quoted_price != "") {
+					var price = hotProperty.quoted_price.replace(',', '');
+					var price1;
+					if (price > 10000000) {
+						price1 = Math.round((parseFloat(price)) / 10000000, 2);
+						price1 = price1 + ' Crore';
+					}
+					else if (price > 100000) {
+						price1 = Math.round((parseFloat(price)) / 100000, 2);
+						if (price1 == '100') {
+							price1 = '1 Crore';
+						} else {
+							price1 = price1 + ' Lac';
+						}
+					}
+				} else {
+					price1 = 'Price On Request';
+				}
+				hotProperty.quoted_price = price1;
+				finalHotProperties.push(hotProperty);
+			}
+		}
+		// console.log(finalHotProperties);
+		res.render("home/hot_properties", { page_name: "properties", page_title: "Hot Properties", hot_properties: finalHotProperties, city_id: cityId });
+	});
+});
+router.post("/hot_properties", function (req, res) {
+	var cityId = req.body.city;
+	if (cityId != "" && cityId != undefined)
+		res.redirect("hot_properties/" + cityId);
+	else
+		res.redirect("/");
+});
+router.get("/exclusive_projects/:cityId", function (req, res) {
+	var cityId = req.params.cityId || "";
+	crudModel.getExclusiveProjectDetails(cityId).then(function (exclusiveProjects) {
+		var finalExclusiveProjects = [];
+		var projectIds = [];
+		for (var i = 0; i < exclusiveProjects.length; i++) {
+			var exclusiveProject = exclusiveProjects[i];
+			if (!projectIds.includes(exclusiveProject.project_id)) {
+				projectIds.push(exclusiveProject.project_id);
+				if (exclusiveProject.project_photo == null) {
+					exclusiveProject.project_photo = "no-photo.jpg";
+				}
+				var plans = exclusiveProject.plans;
+				var plansString = "", finalMinPrice;
+				if (plans != null && plans != '') {
+					var plansArray = plans.split(',');
+					for (var i = 0; i < plansArray.length; i++) {
+						plansString += plansArray[i] + ' BHK';
+						if (i != (plansArray.length - 1)) {
+							plansString += ", ";
+						}
+					}
+					// console.log("plans String = ", plansString);
+				} else {
+					plansString = '';
+				}
+				exclusiveProject.plans = plansString;
+				if (exclusiveProject.min_price != "") {
+					var price = exclusiveProject.min_price.replace(',', '');
+					var price1;
+					if (price > 10000000) {
+						price1 = Math.round((parseFloat(price)) / 10000000, 2);
+						price1 = price1 + ' Crore';
+					}
+					else if (price > 100000) {
+						price1 = Math.round((parseFloat(price)) / 100000, 2);
+						if (price1 == '100') {
+							price1 = '1 Crore';
+						} else {
+							price1 = price1 + ' Lac';
+						}
+					}
+				} else {
+					price1 = 'Price On Request';
+				}
+				exclusiveProject.price = price1;
+
+				finalExclusiveProjects.push(exclusiveProject);
+			}
+		}
+		// console.log(finalExclusiveProjects);
+		res.render("home/exclusive-projects", { page_name: "Exclusive Projects", page_title: "Exclusive Projects", exclusive_projects: finalExclusiveProjects, city_id: cityId });
+	});
+});
+router.post("/exclusive_projects", function (req, res) {
+	var cityId = req.body.city;
+	if (cityId != "" && cityId != undefined)
+		res.redirect("exclusive_projects/" + cityId);
+	else
+		res.redirect("/");
+});
+
+router.get("/list_property",function(req,res) {
+	res.render("home/list-property",{ page_name: "List Property", page_title: "List Property" });
+});
+router.post("/add_list_property",upload.array('photos[]'),async function(req,res) {
+	// console.log(req.body);
+	// console.log(req.files);
+
+	if(req.body.property_sub_type == 14) {
+		var name = req.body.name,
+			email = req.body.email,
+			phone = req.body.phone,
+			propertyName = req.body.property_name,
+			propertyType = req.body.property_type,
+			subType = req.body.property_sub_type,
+			facing = req.body.facing1,
+			city = req.body.city1,
+			locality = req.body.locality1,
+			state = req.body.state1,
+			quotedPrice = req.body.quoted_price1,
+			plotArea = req.body.plot_area,
+			east = req.body.east,
+			west = req.body.west,
+			north = req.body.north,
+			south = req.body.south,
+			floors = req.body.floors1,
+			openSlides = req.body.open_slides,
+			width = req.body.width,
+			constructionDone = req.body.construction_done,
+			boundaryWall = req.body.boundary_wall,
+			gatedColony = req.body.gated_colony,
+			description = req.body.description1,
+			amenities = req.body.amenities1,
+			postedBy = req.body.posted_by;
+			var date = moment().format(dateFormat);
+			var city1 = await crudModel.getCityById(city);
+	}
+	res.send("welcome");
 });
 module.exports = router;

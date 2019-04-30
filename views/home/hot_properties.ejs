@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%=page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
+
+    <!-- <script>
+        function show_sub_type(str) {
+            //alert(1);
+            if (str.length == 0) {
+                document.getElementById("property_sub_type").innerHTML = "";
+                return;
+            }
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
+            xmlhttp.send();
+        }
+        function Show_locality(str) {
+            if (str.length == 0) {
+                document.getElementById("Showlocality").innerHTML = "";
+                return;
+            }
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
+                }
+            }
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
+            xmlhttp.send();
+        }
+    </script> -->
+
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1><%= page_title %></h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+
+
+
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="row">
+
+                                        <div class="col-md-3" style="float: right;">
+
+                                            <form action="<%= base_url %>home/hot_properties" method="POST">
+
+                                                <select name="city" id="hot_property_cities"
+                                                    class="form-control input-lg"
+                                                    onchange="this.form.submit()">
+                                                    <script>
+                                                        setUpCities("#hot_property_cities", "<%=city_id %>");
+                                                    </script>
+                                                </select>
+
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="property-listing">
+                                        <% if(hot_properties.length > 0) { %>
+                                        <ul>
+                                            <% for(var i=0;i < hot_properties.length;i++) { 
+                                                var hot_property = hot_properties[i];
+                                                %>
+                                            <li class="type-rent col-md-12">
+
+                                                <div class="col-md-5">
+
+                                                    <a
+                                                        href="<%= base_url %>home/property_details/<?=$row['list_property_id']?>">
+
+                                                        <h4 class="page-title">
+                                                            <% if(hot_property.property_sub_type != '14' && hot_property.property_type != '1') { %>
+                                                            <%=hot_property.bedrooms + 'BHK'+ hot_property.property_type_name %><% } %>
+                                                            <%=hot_property.property_sub_type_name %> in
+                                                            <span class="location"> <%=hot_property.locality %></span>
+                                                        </h4>
+                                                    </a>
+
+                                                    <a href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>"
+                                                        class="property-featured-image">
+                                                        <div class="overlay" style="line-height: 151px"></div> <img
+                                                            src="<%= base_url %>uploads/list_property/<%=hot_property.property_photo %>"
+                                                            style="height: 260px" alt=""> <span class="images-count">
+                                                            <%= hot_property.city %> </span>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-md-7">
+
+                                                    <div class="row">
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="property-info">
+
+                                                                <div class="property-amenities clearfix">
+
+                                                                    <% if(hot_property.property_sub_type == '14') { %>
+
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Yds</span>
+
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.facing %></strong><br>Facing</span>
+                                                                    <span
+                                                                        class="baths"><strong><%=hot_property.open_slides %></strong><br>Open
+                                                                        Sides</span>
+
+                                                                    <% }else if(hot_property.property_type == '1') { %>
+
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Ft</span>
+
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.facing %></strong><br>Facing</span>
+                                                                    <span
+                                                                        class="baths"><strong><%=hot_property.car_parking %></strong><br>Parking</span>
+
+                                                                    <%}else { %>
+
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Ft</span>
+                                                                    <span
+                                                                        class="area"><strong><%=hot_property.bedrooms %></strong><br>Bedrooms</span>
+                                                                    <span
+                                                                        class="baths"><strong><%=hot_property.bathrooms %></strong><br>Bathrooms</span>
+                                                                    <% } %>
+                                                                    <span class="parking">
+                                                                        <strong>
+                                                                            <span class="WebRupee">Rs.</span>
+                                                                            <%=hot_property.quoted_price %>
+                                                                        </strong><br>Price
+                                                                    </span>
+
+                                                                </div><br>
+
+
+
+                                                                <ul class="">
+
+                                                                    <li><span>Property Type :
+                                                                            <%=hot_property.property_name %></span></li>
+                                                                    <hr>
+                                                                    <li><span>Property Sub Type :
+                                                                            <%=hot_property.property_sub_name %></span>
+                                                                    </li>
+                                                                    <hr>
+                                                                    <li><span class="location">Location :
+                                                                            <%=hot_property.locality %>,
+                                                                            <%=hot_property.city %></span></li>
+                                                                    <hr>
+                                                                    <li><span>Posted By :
+                                                                            <%=hot_property.posted_by %></span>
+                                                                    </li>
+                                                                    <hr>
+
+                                                                    <li>&nbsp;</li>
+
+                                                                </ul>
+                                                                <div class="price">
+                                                                    <a
+                                                                        href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>">
+                                                                        <button class="btn btn-danger" type="button">
+                                                                            <i
+                                                                                class="fa fa-angle-double-right"></i>&nbsp;
+                                                                            View Details
+                                                                        </button>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <% } %>
+                                        </ul>
+
+                                        <% }else { %>
+                                        <br><br>
+                                        <h4 align='center'>There are No Results Available....</h4>
+                                        <% } %>
+
+                                    </div>
+
+
+
+                                </div>
+
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- Start Site Footer -->
+            <% include includes/footer.ejs %>

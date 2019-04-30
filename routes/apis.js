@@ -37,4 +37,44 @@ router.get("/get_localities", function (req, res) {
         res.send(response);
     });
 });
+router.get("/add_property_call_back", function (req, res) {
+    console.log(req.query);
+    var query = req.query;
+    crudModel.addPropertyCallback(query.property_id, query.name, query.phone).then(function (response) {
+        console.log(response);
+        if (response.success) {
+            res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
+        } else {
+            res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");
+        }
+
+    });
+});
+router.get("/add_project_call_back", function (req, res) {
+    var query = req.query;
+    crudModel.addProjectCallback(query.project_id, query.name, query.phone).then(function (response) {
+        if (response.success) {
+            res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
+        } else {
+            res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");
+        }
+
+    });
+});
+router.get("/get_emenities",function(req,res) {
+    crudModel.getAmenities().then(function(response) {
+        res.send(response);
+    })
+});
+router.get("/get_property_sub_types",function(req,res) {
+    crudModel.getPropertySubTypeById(req.query.property_type).then(function(response) {
+        res.send(response);
+    });
+});
+router.get('/get_states',function(req,res) {
+    crudModel.getStates().then(function(response) {
+        console.log(response);
+        res.send(response);
+    });
+});
 module.exports = router;

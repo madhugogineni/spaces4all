@@ -17,6 +17,10 @@ app.set('view engine', 'ejs');
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// app.use(upload.array());
+// app.use(upload.single());
+// app.use(upload.array());
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -57,9 +61,51 @@ app.get("/", function (req, res) {
         finalLatestProperties.push(latestProperty);
       }
     }
-    console.log(finalLatestProperties);
-    crudModel.getLatestProjects().then(function (latestProjects) {
-      res.render("home/index", { page_title: 'Index', page_name: 'Index', latest_properties: finalLatestProperties, latest_projects: latestProjects });
+    // console.log(finalLatestProperties);
+    crudModel.getLatestProjectDetails().then(function (latestProjectDetails) {
+      var finalLatestProjects = [];
+      var projectIds = [];
+      for (var i = 0; i < latestProjectDetails.length; i++) {
+        var latestProject = latestProjectDetails[i];
+        if (!projectIds.includes(latestProject.project_id)) {
+          projectIds.push(latestProject.project_id);
+          if (latestProject.project_photo == null) {
+            latestProject.project_photo = "no-photo.jpg";
+          }
+          var plans = latestProject.plans, minPrice = latestProject.min_price;
+          var plansString = "", finalMinPrice;
+          if (plans != null && plans != '') {
+            var plansArray = plans.split(',');
+            // console.log("plansArray");
+            // console.log(plansArray);
+            // console.log("-----------------------");
+            for (var i = 0; i < plansArray.length; i++) {
+              plansString += plansArray[i] + ' BHK';
+              if (i != (plansArray.length - 1)) {
+                plansString += ", ";
+              }
+            }
+            // console.log("plans String = ", plansString);
+          } else {
+            plansString = '';
+          }
+          latestProject.plans = plansString;
+          if (minPrice != "") {
+            if (minPrice > 10000000) {
+              finalMinPrice = Math.round((parseFloat(minPrice)) / 10000000, 2);
+              finalMinPrice += ' Cr';
+            } else if (minPrice > 100000) {
+              finalMinPrice = Math.round((parseFloat(minPrice)) / 100000, 2);
+              finalMinPrice += ' Lac';
+            }
+          } else {
+            finalMinPrice = 'Price On Request';
+          }
+          latestProject.min_price = finalMinPrice;
+          finalLatestProjects.push(latestProject);
+        }
+      }
+      res.render("home/index", { page_title: 'Index', page_name: 'Index', latest_properties: finalLatestProperties, latest_projects: finalLatestProjects });
     });
   });
 });

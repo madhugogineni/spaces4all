@@ -64,31 +64,25 @@
 
         });
     }
-    function setUpPropertyTypes() {
-        $.ajax({
-            method: "GET",
-            url: "<%= api_url %>get_property_types",
-            success: function (response) {
-                var result = '';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    result += '<option value="' + row.property_type_id + '">' + row.type + '</option>'
-                }
-                $("#property_type").append(result);
-            }
-        });
-    }
-    function setUpCities(divId) {
+    function setUpCities(divId, cityId) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_cities",
             success: function (response) {
-                var result = '';
+                var result = '<option value="">---CITY---</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
-                    result += '<option value="' + row.city_id + '">' + row.city + '</option>'
+                    if (cityId != "" && cityId != undefined) {
+                        if (cityId == row.city_id) {
+                            result += '<option value="' + row.city_id + '" selected >' + row.city + '</option>';
+                        } else {
+                            result += '<option value="' + row.city_id + '">' + row.city + '</option>';
+                        }
+                    } else {
+                        result += '<option value="' + row.city_id + '">' + row.city + '</option>';
+                    }
                 }
-                $(divId).append(result);
+                $(divId).html(result);
             }
         });
     }
@@ -97,7 +91,7 @@
             method: "GET",
             url: "<%= api_url %>get_project_types",
             success: function (response) {
-                var result = '';
+                var result = '<option value="">Type</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
                     result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
@@ -106,8 +100,7 @@
             }
         });
     }
-    function showLocality(cityId) {
-        console.log("welcome");
+    function showLocality(cityId,divId) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_localities",
@@ -115,21 +108,109 @@
                 city_id: cityId
             },
             success: function (response) {
-                console.log(response);
                 var result = '';
+                result += '<option value="">Locality</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
                     result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
                 }
-                $("#locality").append(result);
+
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
             }
         });
     }
-    function getPropertyDetails(listPropertyId) {
-        console.log(listPropertyId);
+    function send_Property_Callback() {
+        console.log($("#call_project").val());
+        var filter = /^[0-9-+]+$/;
+
+        var name = $("#call_name").val();
+
+        var phone = $("#call_phone").val();
+
+        var property_id = $("#call_project").val();
+
+        // var dataString = 'name=' + name + '&phone=' + phone + '&property_id=' + property_id;
+
+        if ($("#call_name1").val() == "") {
+
+            $("#call_name1").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+
+        } else if ($("#call_phone1").val() == "") {
+
+            $("#call_phone1").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else if (phone.length != "10") {
+
+            $("#call_phone1").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else if (!filter.test(phone)) {
+
+            $("#call_phone1").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else {
+
+            $.ajax({
+                type: "GET",
+                url: "<%= api_url %>add_property_call_back",
+                // data: dataString,
+                data: {
+                    name: name,
+                    phone: phone,
+                    property_id: property_id
+                },
+                success: function (response) {
+                    $('#call_back_response').html(response);
+                }
+            });
+        }
     }
-    function getPropertyImage(listPropertyId) {
-        console.log("-------------------------------");
-        console.log(listPropertyId);
+    function setUpEminities(divId) {
+        $.ajax({
+            type: 'GET',
+            url: "<%=api_url %>get_emenities",
+            success: function (response) {
+                var result = "";
+                for (var i = 0; i < response.length; i++) {
+                    result += "<div class='col-md-3'><label><input type='checkbox' name='amenities1[]' value=" + response[i].amenity_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + response[i].amenity + "</div>";
+                }
+                $(divId).html(result);
+            }
+        });
     }
+    function setUpPropertyTypes(divId) {
+        $.ajax({
+            type: 'GET',
+            url: "<%=api_url %>get_property_types",
+            success: function (response) {
+                var result = '<option value="">---SELECT---</option>';
+                for (var i = 0; i < response.length; i++) {
+                    result += '<option value="' + response[i].property_type_id + '">' + response[i].type + '</option>';
+                }
+                $(divId).html(result);
+            }
+        });
+    }
+    function setUpStates(divId) {
+        $.ajax({
+            method: 'GET',
+            url: '<%= api_url %>get_states',
+            success: function (response) {
+                var result = '<option value="">---SELECT---</option>';
+                for(var i =0;i< response.length;i++) {
+                    result += '<option value="'+response[i].state_id+'">'+response[i].state_name+'</option>'
+                }
+                $(divId).html(result);
+            }
+        });
+    }
+    
 </script>

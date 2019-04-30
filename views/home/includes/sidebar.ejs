@@ -50,7 +50,7 @@
 
 
 
-<div class="widget sidebar-widget latest-testimonials  bckk" style="margin-top: 13px; height: 400px;">
+<div class="widget sidebar-widget latest-testimonials  bckk" style="margin-top: 13px; height: 420px;">
 
   <h3 class="widgettitle">Customer Testimonials</h3>
 
@@ -78,19 +78,14 @@
 <% var ads = sidebar_home_ads;
   for(var i=0;i< ads.length;i++) { var ad = ads[i]; %>
 
-
-
-
-
-<div class="widget sidebar-widget popular-agent  bckk" style="margin-top: 14px; height: 260px">
+<div class="widget sidebar-widget popular-agent  bckk" style="margin-top: 14px; height: 231px">
 
   <a href="<%= ad.url %>"><img alt="spaces4all" src="<%= base_url %>uploads/home-ads/<%= ad.image %>"
-      style="height: 177px; width:100%">
+      style="height: 150px; width:100%">
 
     <div class="" style="text-align: center;">
 
       <h5><%= ad.project_name %></h5>
-
       <b style="padding-bottom: 4px;"><%= ad.builder %></b>
   </a>
 

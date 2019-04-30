@@ -42,7 +42,7 @@ module.exports = {
     },
     getPropertySubTypeById: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from property_sub_type where property_sub_type_id=" + id, function (error, result) {
+            con.query("select * from property_sub_type where property_type_id=" + id, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
@@ -443,6 +443,20 @@ module.exports = {
             });
         });
     },
+    getHotPropertyDetails: function (city) {
+        return new Promise(function (resolve, reject) {
+            con.query("SELECT list_property.*,city.city,locality.locality,property_sub_type.sub_type as property_sub_type_name, property_type.type as property_type_name, property_photos.photo as" +
+                " property_photo,residential_plot_details.east,residential_plot_details.west,residential_plot_details.north,residential_plot_details.south,residential_plot_details.open_slides FROM list_property inner join city on list_property.city = city.city_id inner join locality on list_property.locality = locality.locality_id inner join property_sub_type on" +
+                " list_property.property_sub_type = property_sub_type.property_sub_type_id inner join property_type on list_property.property_type = property_type.property_type_id left join residential_plot_details on list_property.list_property_id =  residential_plot_details.list_property_id left join property_photos" +
+                " on list_property.list_property_id = property_photos.property_id where list_property.list_property_id !=0 and hot_property='1' and list_property.city=" + city +
+                " ORDER BY datetime DESC;", function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    resolve(result);
+                });
+        });
+    },
     getSimilarProperties: function (listPropertyId, propertyType, city) {
         return new Promise(function (resolve, reject) {
             console.log("select * from list_property where property_type like '%" + propertyType + "%' and city like '%" + city + "%' and list_property_id !='" + listPropertyId + "' and status='1' order by datetime DESC limit 4");
@@ -526,6 +540,23 @@ module.exports = {
                     console.log(error);
                 resolve(result);
             });
+        });
+    },
+    getLatestProjectDetails: function () {
+        return new Promise(function (resolve, reject) {
+            con.query("select projects.project_id as project_id,project_photos.photo as project_photo,city.city as city, locality.locality as locality," +
+                " project_type.type as project_type, project_sub_type.sub_type as project_sub_type,projects.plans as plans,projects.min_builtup_area as min_builtup_area," +
+                " projects.max_builtup_area as max_builtup_area, projects.group_name as group_name,projects.total_units as total_units, projects.total_area" +
+                " as total_area,projects.project_name as project_name, projects.min_price as min_price from featured_projects inner join projects on featured_projects.project_id = projects.project_id inner join city on" +
+                " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
+                " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
+                " left join project_photos on projects.project_id = project_photos.project_id order by featured_project_id ASC", function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    // console.log(result);
+                    resolve(result);
+                });
         });
     },
     getProjectDetailsById: function (projectId) {
@@ -640,6 +671,21 @@ module.exports = {
                     console.log(error);
                 resolve(result);
             });
+        });
+    },
+    getExclusiveProjectDetails: function (city) {
+        return new Promise(function (resolve, reject) {
+            con.query("SELECT projects.*, project_type.type as project_type_name, project_sub_type.sub_type as project_sub_type_name, city.city as city_name," +
+                " locality.locality as locality_name,project_photos.photo as project_photo FROM projects inner join project_type on" +
+                " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
+                " inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id left join project_photos on" +
+                " projects.project_id = project_photos.project_id where projects.project_id !=0 and projects.project_status=1 and projects.exclusive='1' and" +
+                " projects.city=" + city + " ORDER BY datetime DESC;", function (error, result) {
+                    if (error) {
+                        console.log(error);
+                    }
+                    resolve(result);
+                });
         });
     },
     getProjectsSearchCount: function (projectType, projectSubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, searchType) {
@@ -1145,6 +1191,30 @@ module.exports = {
                         resolve({ success: true, data: result1 });
                     });
                 }
+            });
+        });
+    },
+    addPropertyCallback: function (propertyId, name, phone) {
+        var datetime = moment().format(dateFormat);
+        return new Promise(function (resolve, reject) {
+            con.query("insert into property_call_back(property_id,name,phone,datetime) values(" + propertyId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false });
+                }
+                resolve({ success: true, result: result });
+            });
+        });
+    },
+    addProjectCallback: function (projectId, name, phone) {
+        var datetime = moment().format(dateFormat);
+        return new Promise(function (resolve, reject) {
+            con.query("insert into call_back(project_id,name,phone,datetime) values(" + projectId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false });
+                }
+                resolve({ success: true, result: result });
             });
         });
     }
