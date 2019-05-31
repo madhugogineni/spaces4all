@@ -1217,5 +1217,70 @@ module.exports = {
                 resolve({ success: true, result: result });
             });
         });
+    },
+    addResidentialPlotToListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, posession, status) {
+        var datetime = moment().format(dateFormat);
+        return new Promise(function (resolve, reject) {
+            con.query("insert into list_property(name,email,phone,property_name,property_type,property_sub_type," +
+                "facing,city,locality,state,quoted_price,saleable_area,floors,description,amenities,posted_by,lat,lan," +
+                "possession,status,datetime) values('" + name + "','" + email + "','" + phone + "','" + propertyName + "','" +
+                propertyType + "','" + subType + "','" + facing + "','" + city + "','" + locality + "','" + state + "','" + quotedPrice + "','" +
+                plotArea + "','" + floors + "','" + description + "','" + amenities + "','" + postedBy + "','" + latitude + "','" + longitude + "','" +
+                posession + "','" + status + "','" + datetime + "')", function (error, result) {
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false });
+                    }
+                    resolve({ success: true, propertyId: result.insertId });
+                })
+        });
+    },
+
+    addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into residential_plot_details set ?",
+                {
+                    list_property_id: propertyId,
+                    east: direction.east,
+                    west: direction.west,
+                    north: direction.north,
+                    south: direction.south,
+                    open_slides: openSlides,
+                    width: width,
+                    construction_done: constructionDone,
+                    boundary_wall: boundaryWall,
+                    gated_colony: gatedColony
+                }, function (error, result) {
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false });
+                    } else {
+                        console.log(result);
+                        resolve({ success: true });
+                    }
+                })
+        });
+    },
+    addPropertyPhotos: function (files) {
+        console.log(files);
+        return new Promise(function (resolve, reject) {
+            con.query("insert into property_photos(property_id,photo,datetime) values ?",[files], function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false });
+                } else {
+                    resolve({ success: true });
+                }
+            });
+        });
+    },
+    addListProperty: function() {
+        con.query("insert into list_property() values()",function(error,result) {
+            if(error) {
+                console.log(error);
+                resolve({ success: false });
+            }
+            resolve({ success: true, propertyId: result.insertId });
+        });
     }
 };

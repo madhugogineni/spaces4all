@@ -81,102 +81,7 @@
           $("#property_sub_type").find('option').remove().end();
           $("#property_sub_type").append(result);
         }
-
       });
-    }
-
-
-
-
-
-    function Show_locality(str) {
-
-      //alert(str);
-
-      if (str.length == 0) {
-
-        document.getElementById("Showlocality").innerHTML = "";
-
-        return;
-
-      }
-
-
-
-      if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-        xmlhttp = new XMLHttpRequest();
-
-      }
-
-      else {// code for IE6, IE5
-
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-      }
-
-      xmlhttp.onreadystatechange = function () {
-
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-          //alert(xmlhttp.responseText);
-
-          document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-        }
-
-      }
-
-      xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-      xmlhttp.send();
-
-    }
-
-
-
-    function Show_locality1(str) {
-
-      //alert(str);
-
-      if (str.length == 0) {
-
-        document.getElementById("Showlocality1").innerHTML = "";
-
-        return;
-
-      }
-
-
-
-      if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-        xmlhttp = new XMLHttpRequest();
-
-      }
-
-      else {// code for IE6, IE5
-
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-      }
-
-      xmlhttp.onreadystatechange = function () {
-
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-          //alert(xmlhttp.responseText);
-
-          document.getElementById("Showlocality1").innerHTML = xmlhttp.responseText;
-
-        }
-
-      }
-
-      xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-      xmlhttp.send();
-
     }
 
 
@@ -185,37 +90,25 @@
 
       var value = document.getElementById("property_type").value;
 
-      //alert(str);
-
       if (str == '14') {
-
-        //alert(str);
 
         $('#normalfields').hide();
 
         $('#residentialfields').show();
 
-        //$('#normalfields').attr("disabled", true);
+        $('#posted_by').attr('required', false);
 
-        //$('#residentialfields').attr("disabled", false);
-
-        //$('#bathrooms').attr("disabled", true);
-
-        /* $('#construction_age').attr("disabled", true);
-      
-        $('#floor_no').attr("disabled", true);
-      
-        $('#floors').attr("disabled", true);
-      
-        $('#car_parking').attr("disabled", true);
-      
-        $('#furnishing').attr("disabled", true); */
+        $('#posted_by1').attr('required', true);
 
       } else if (str == '') {
 
         $('#normalfields').show();
 
         $('#residentialfields').hide();
+
+        $('#posted_by').attr('required', true);
+
+        $('#posted_by1').attr('required', false);
 
         if (value == '1') {
 
@@ -249,6 +142,10 @@
 
         $('#residentialfields').hide();
 
+        $('#posted_by').attr('required', true);
+
+        $('#posted_by1').attr('required', false);
+
         if (value == '1') {
 
           $('#bedrooms').attr("disabled", true);
@@ -277,39 +174,25 @@
 
     }
 
-
-
     $(document).ready(function () {
 
       $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1001; display: none;"></div>');
 
       $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%=base_url %>assets/images/loading.gif'/></div>");
 
-    });
-
-
-
-    $('#list_propery').submit(function () {
-
-      var pass = true;
-
-      //some validations
-
-
-
-      if (pass == false) {
-
-        return false;
-
-      }
-
+      $('#list_property').submit(function (e) {
+      
+        
+      e.preventDefault(e);
       $("#overlay, #PleaseWait").show();
 
-
-
-      return true;
+    });
 
     });
+
+
+
+    
 
 
 
@@ -323,15 +206,7 @@
 
     <!-- Start Site Header -->
 
-
-
-
-
     <%  include includes/header.ejs %>
-
-
-
-
 
     <!-- End Site Header -->
 
@@ -377,7 +252,8 @@
 
               <div class="col-md-12">
 
-                <form action="<%=base_url %>home/add_list_property" method="POST" id="list_propery" enctype="multipart/form-data">
+                <form action="<%=base_url %>home/add_list_property" method="POST" id="list_property"
+                  enctype="multipart/form-data">
 
 
                   <!-- 
@@ -460,7 +336,7 @@
 
                   </div>
 
-                  <div class="block-heading" id="amenities">
+                  <div class="block-heading">
 
                     <h4><span class="heading-icon"><i class="fa fa-home"></i></span>Your Property Details</h4>
 
@@ -536,9 +412,9 @@
 
                         <div class="col-md-4 col-sm-4">
 
-                          <label>BEDROOMS:</label>
+                          <label>BEDROOMS*:</label>
 
-                          <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+                          <select name="bedrooms" id="bedrooms" class="form-control margin-0">
 
                             <option value="">---SELECT---</option>
                             <% for(var i = 0;i <= 8;i++) { %>
@@ -598,7 +474,7 @@
 
                           <select name="city" id="city" onchange="showLocality(this.value,'#locality')"
                             class="form-control margin-0 ">
-                          <script>setUpCities('#city'); </script>
+                            <script>setUpCities('#city'); </script>
                             <!--  <?php if ($this->session->flashdata('city_value')){if($this->session->flashdata('city_value') == $row1['city_id']){echo 'selected';}}?> -->
                           </select>
 
@@ -680,9 +556,9 @@
                             <option value="">---SELECT---</option>
 
                             <% for(var i = 0;i <= 10;i++) { %>
-                              <option value="<%=i %>"><%=i %></option>
-                              <% } %>
-                           
+                            <option value="<%=i %>"><%=i %></option>
+                            <% } %>
+
                             <!--  <?php if ($this->session->flashdata('car_parking_value')){if($this->session->flashdata('car_parking_value') == $j){echo 'selected';}}?> -->
 
                           </select>
@@ -739,9 +615,9 @@
 
                         <div class="col-md-4 col-sm-4">
 
-                          <label>POSTED BY:</label>
+                          <label>POSTED BY*:</label>
 
-                          <select name="posted_by" id="posted_by" class="form-control margin-0 ">
+                          <select name="posted_by" id="posted_by" class="form-control margin-0">
 
                             <option value="">---SELECT---</option>
 
@@ -826,7 +702,7 @@
 
                         <div class="col-md-4 col-sm-4">
 
-                          <label>PLOT AREA(SQYDS):</label>
+                          <label>PLOT AREA(SQYDS)*:</label>
 
                           <input type="text" name="plot_area" id="plot_area" class="form-control"
                             placeholder="Plot Area(Sq.yds)">
@@ -851,8 +727,8 @@
                             <option value="">---SELECT---</option>
 
                             <% for(var i = 0;i <= 20;i++) { %>
-                              <option value="<%=i %>"><%=i %></option>
-                              <% } %>
+                            <option value="<%=i %>"><%=i %></option>
+                            <% } %>
 
                           </select>
 
@@ -867,8 +743,8 @@
                             <option value="">---SELECT---</option>
 
                             <% for(var i = 0;i <= 10;i++) { %>
-                              <option value="<%=i %>"><%=i %></option>
-                              <% } %>
+                            <option value="<%=i %>"><%=i %></option>
+                            <% } %>
 
                           </select>
 
@@ -891,9 +767,10 @@
 
                         <div class="col-md-4 col-sm-4">
 
-                          <label>ANY CONSTRUCTION DONE:</label>
+                          <label>ANY CONSTRUCTION DONE*: </label>
 
-                          <select name="construction_done" id="construction_done" class="form-control margin-0 ">
+                          <select name="construction_done" id="construction_done" class="form-control margin-0"
+                            required="required">
 
                             <option value="NO">NO</option>
 
@@ -941,9 +818,9 @@
 
                         <div class="col-md-4 col-sm-4">
 
-                          <label>POSTED BY:</label>
+                          <label>POSTED BY*:</label>
 
-                          <select name="posted_by1" id="posted_by1" class="form-control margin-0 ">
+                          <select name="posted_by1" id="posted_by1" class="form-control margin-0">
 
                             <option value="">---SELECT---</option>
 
@@ -1035,7 +912,7 @@
                   </div>
                   <div class="text-align-center" id="submit-property">
 
-                    <button type="submit" name="add_list_property" value="add_list_property"
+                    <button type="submit" name="add_list_property" value="add_list_property" id="list_property_submit_button"
                       class="btn btn-primary btn-lg">Submit</button>
 
                   </div>

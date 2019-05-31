@@ -32,16 +32,13 @@ router.get("/get_cities", function (req, res) {
     });
 });
 router.get("/get_localities", function (req, res) {
-    console.log(req.query.city_id);
     crudModel.getLocalityByCity(req.query.city_id).then(function (response) {
         res.send(response);
     });
 });
 router.get("/add_property_call_back", function (req, res) {
-    console.log(req.query);
     var query = req.query;
     crudModel.addPropertyCallback(query.property_id, query.name, query.phone).then(function (response) {
-        console.log(response);
         if (response.success) {
             res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
         } else {
@@ -73,7 +70,6 @@ router.get("/get_property_sub_types",function(req,res) {
 });
 router.get('/get_states',function(req,res) {
     crudModel.getStates().then(function(response) {
-        console.log(response);
         res.send(response);
     });
 });

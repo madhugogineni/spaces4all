@@ -17,16 +17,10 @@ app.set('view engine', 'ejs');
 // app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(upload.array());
-// app.use(upload.single());
-// app.use(upload.array());
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-crudModel.getLatestPropertyDetails().then(function (response) {
-
-});
 
 app.get("/", function (req, res) {
   crudModel.getLatestPropertyDetails().then(function (latestPropertyDetails) {
@@ -61,7 +55,6 @@ app.get("/", function (req, res) {
         finalLatestProperties.push(latestProperty);
       }
     }
-    // console.log(finalLatestProperties);
     crudModel.getLatestProjectDetails().then(function (latestProjectDetails) {
       var finalLatestProjects = [];
       var projectIds = [];
@@ -76,16 +69,12 @@ app.get("/", function (req, res) {
           var plansString = "", finalMinPrice;
           if (plans != null && plans != '') {
             var plansArray = plans.split(',');
-            // console.log("plansArray");
-            // console.log(plansArray);
-            // console.log("-----------------------");
             for (var i = 0; i < plansArray.length; i++) {
               plansString += plansArray[i] + ' BHK';
               if (i != (plansArray.length - 1)) {
                 plansString += ", ";
               }
             }
-            // console.log("plans String = ", plansString);
           } else {
             plansString = '';
           }
