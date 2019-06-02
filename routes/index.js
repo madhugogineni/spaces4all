@@ -231,201 +231,180 @@ router.post("/exclusive_projects", function (req, res) {
 router.get("/list_property", function (req, res) {
 	res.render("home/list-property", { page_name: "List Property", page_title: "List Property" });
 });
-router.post("/list_property", function (req, res) {
+// router.post("/list_property", function (req, res) {
 
-	var obj = { page_name: "List Property", page_title: "List Property" };
-	if (validationError) {
-		obj.error = validationError;
-	}
-	console.log(obj);
-	res.render("home/list-property", obj);
-	delete validationError;
-});
+// 	var obj = { page_name: "List Property", page_title: "List Property" };
+// 	if (validationError) {
+// 		obj.error = validationError;
+// 	}
+// 	console.log(obj);
+// 	res.render("home/list-property", obj);
+// 	delete validationError;
+// });
 router.post("/add_list_property", upload.fields([{ name: 'photos[]', maxCount: 10 }, { name: 'photos1[]', maxCount: 10 }]), async function (req, res) {
 	// console.log(req.body);
-	// if (req.body.property_sub_type == 14 || req.body.property_sub_type == 18) {
-	// 	var name = req.body.name || "",
-	// 		email = req.body.email || "",
-	// 		phone = req.body.phone || "",
-	// 		propertyName = req.body.property_name || "",
-	// 		propertyType = req.body.property_type || "",
-	// 		subType = req.body.property_sub_type || "",
-	// 		facing = req.body.facing1 || "",
-	// 		city = req.body.city1 || "",
-	// 		locality = req.body.locality1 || "",
-	// 		state = req.body.state1 || 1,
-	// 		quotedPrice = req.body.quoted_price1 || "",
-	// 		plotArea = req.body.plot_area || "",
-	// 		east = req.body.east || "",
-	// 		west = req.body.west || "",
-	// 		north = req.body.north || "",
-	// 		south = req.body.south || "",
-	// 		floors = req.body.floors1 || "",
-	// 		openSlides = req.body.open_slides || "",
-	// 		width = req.body.width || "",
-	// 		constructionDone = req.body.construction_done || "",
-	// 		boundaryWall = req.body.boundary_wall || "",
-	// 		gatedColony = req.body.gated_colony || "",
-	// 		description = req.body.description1 || "",
-	// 		amenities = req.body.amenities1 || "",
-	// 		postedBy = req.body.posted_by || "Owner";
-	// 	let validator = new validatorpackage(req.body, {
-	// 		facing1: 'required|alpha',
-	// 		plot_area: "numeric",
-	// 		quoted_price1: "numeric",
-	// 		width: "numeric",
-	// 		east: "numeric",
-	// 		west: "numeric",
-	// 		north: "numeric",
-	// 		south: "numeric"
-	// 	});
-	// 	var validatorResult = await validator.check()
+	if (req.body.property_sub_type == 14 || req.body.property_sub_type == 18) {
+		var name = req.body.name || "",
+			email = req.body.email || "",
+			phone = req.body.phone || "",
+			propertyName = req.body.property_name || "",
+			propertyType = req.body.property_type || "",
+			subType = req.body.property_sub_type || "",
+			facing = req.body.facing1 || "",
+			city = req.body.city1 || "",
+			locality = req.body.locality1 || "",
+			state = req.body.state1 || 1,
+			quotedPrice = req.body.quoted_price1 || "",
+			plotArea = req.body.plot_area || "",
+			east = req.body.east || "",
+			west = req.body.west || "",
+			north = req.body.north || "",
+			south = req.body.south || "",
+			floors = req.body.floors1 || "",
+			openSlides = req.body.open_slides || "",
+			width = req.body.width || "",
+			constructionDone = req.body.construction_done || "",
+			boundaryWall = req.body.boundary_wall || "",
+			gatedColony = req.body.gated_colony || "",
+			description = req.body.description1 || "",
+			amenities = req.body.amenities1 || "",
+			postedBy = req.body.posted_by || "Owner";
+		let validator = new validatorpackage(req.body, {
+			facing1: 'required|alpha',
+			plot_area: "numeric",
+			quoted_price1: "numeric",
+			width: "numeric",
+			east: "numeric",
+			west: "numeric",
+			north: "numeric",
+			south: "numeric"
+		});
+		var validatorResult = await validator.check()
 
-	// 	if (!validatorResult) {
-	// 		validationError = validator.errors;
-	// 		res.redirect(307, "list_property");
-	// 	} else {
-	// 		var date = moment().format(dateFormat);
-	// 		var city1 = await crudModel.getCityById(city);
-	// 		var cityName = city1[0].city;
-	// 		var locality1 = await crudModel.getLocalityById(locality);
-	// 		var localityName = locality1[0].locality;
-	// 		var address = localityName + ',' + cityName;
-	// 		var geocoderResponse = await geocoder.geocode(address, function (err, res) {
-	// 			return res;
-	// 		});
-	// 		var latitude = geocoderResponse[0].latitude, longitude = geocoderResponse[0].longitude;
-	// 		var queryResult = await crudModel.addResidentialPlotToListProperty(name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, '', 0);
-	// 		if (queryResult.success) {
-	// 			var propertyId = queryResult.propertyId;
-	// 			await crudModel.addResidentialPlotDetails(queryResult.propertyId, { north: north, south: south, east: east, west: west }, openSlides, width, constructionDone, boundaryWall, gatedColony);
-	// 			// console.log(req.files);
-	// 			var photoFiles = req.files["photos1[]"] || [];
+		if (!validatorResult) {
+			var validationError = validator.errors;
+			var errorMsg = "";
+			for (var keys in validationError) {
+				errorMsg += validationError[keys].message + "<br/>";
+			}
+			res.send({ success: false, message: errorMsg });
+		} else {
+			var date = moment().format(dateFormat);
+			var city1 = await crudModel.getCityById(city);
+			var cityName = city1[0].city;
+			var locality1 = await crudModel.getLocalityById(locality);
+			var localityName = locality1[0].locality;
+			var address = localityName + ',' + cityName;
+			var geocoderResponse = await geocoder.geocode(address, function (err, res) {
+				return res;
+			});
+			var latitude = geocoderResponse[0].latitude, longitude = geocoderResponse[0].longitude;
+			var queryResult = await crudModel.addResidentialPlotToListProperty(name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, '', 0);
+			if (queryResult.success) {
+				var propertyId = queryResult.propertyId;
+				await crudModel.addResidentialPlotDetails(queryResult.propertyId, { north: north, south: south, east: east, west: west }, openSlides, width, constructionDone, boundaryWall, gatedColony);
+				var photoFiles = req.files["photos1[]"] || [];
+				var uploadImagesResult = await uploadImages(photoFiles, propertyId);
+				if (uploadImagesResult) {
+					res.send({ success: true, message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !" });
+				} else {
+					res.send({ success: false, message: "Your Property Listing Has Failed ! Please Try Again." });
+					// removeProperty(propertyId, "14");
+				}
+			} else {
+				res.send({ success: false, message: "Your Property Listing Has Failed ! Please Try Again." });
+			}
+		}
+	} else {
+		let validator = new validatorpackage(req.body, {
+			name: 'required|minLength:3',
+			email: 'required|email',
+			phone: 'required|numeric|digits:10',
+			property_name: 'required',
+			property_type: 'required',
+			property_sub_type: 'required',
+			facing: 'required|alpha',
+			city: 'required',
+			locality: 'required',
+			saleable_area: 'required|numeric',
+			posted_by: 'required'
+		});
+		var validatorResult = await validator.check();
 
-	// 			awaituploadImages(photoFiles, propertyId);
+		if (!validatorResult) {
 
-	// 			console.log('message', 'Thank you for your trust in space4all. Just wait few hours, we are on the job. !');
-	// 			res.redirect("/home");
+			var validationError = validator.errors;
+			var errorMsg = "";
+			for (var keys in validationError) {
+				errorMsg += validationError[keys].message + "<br/>";
+			}
+			res.send({ success: false, message: errorMsg });
+		} else {
 
-	// 		} else {
-	// 			console.log('message1', 'Your Property Listing Has Failed ! Please Try Again.')
-	// 		}
-	// 	}
-	// } else {
-	// 	let validator = new validatorpackage(req.body, {
-	// 		name: 'required|minLength:3',
-	// 		email: 'required|email',
-	// 		phone: 'required|numeric|digits:10',
-	// 		property_name: 'required',
-	// 		property_type: 'required',
-	// 		property_sub_type: 'required',
-	// 		facing: 'required|alpha',
-	// 		city: 'required',
-	// 		locality: 'required',
-	// 		saleable_area: 'required|numeric',
-	// 		posted_by: 'required'
-	// 	});
-	// 	var validatorResult = await validator.check();
-
-	// 	if (!validatorResult) {
-	// 		validationError = validator.errors;
-	// 		res.redirect(307, "list_property");
-	// 	} else {
-
-	// 		var name = req.body.name || "";
-	// 		var email = req.body.email || "";
-	// 		var phone = req.body.phone || "";
-	// 		var propertyName = req.body.property_name || "";
-	// 		var propertyType = req.body.property_type || "";
-	// 		var subType = req.body.property_sub_type || "";
-	// 		var facing = req.body.facing || "";
-	// 		var bedrooms = req.body.bedrooms || "";
-	// 		var bathrooms = req.body.bathrooms || "";
-	// 		var city = req.body.city || "";
-	// 		var locality = req.body.locality || "";
-	// 		var state = req.body.state || 1;
-	// 		var carParking = req.body.car_parking || "";
-	// 		var quotedPrice = req.body.quoted_price || "";
-	// 		var saleableArea = req.body.saleable_area || "";
-	// 		var age = req.body.construction_age || "";
-	// 		var floor_no = req.body.floor_no || "";
-	// 		var floors = req.body.floors || "";
-	// 		var description = req.body.description || "";
-	// 		var amenities1 = req.body.amenities1 || [];
-	// 		var furnishing = req.body.furnishing || "";
-	// 		var posted_by = req.body.posted_by || "Owner";
-	// 		var amenities = "";
-	// 		for (var i = 0; i < amenities1.length; i++) {
-	// 			amenities += amenities1[i];
-	// 			if (i != (amenities1.length - 1)) {
-	// 				amenities += ",";
-	// 			}
-	// 		}
-	// 		var date = moment().format(dateFormat);
-	// 		var city1 = await crudModel.getCityById(city);
-	// 		var cityName = city1[0].city;
-	// 		var locality1 = await crudModel.getLocalityById(locality);
-	// 		var localityName = locality1[0].locality;
-	// 		var address = localityName + ',' + cityName;
-	// 		var geocoderResponse = await geocoder.geocode(address, function (err, res) {
-	// 			return res;
-	// 		});
-	// 		var latitude = geocoderResponse[0].latitude, longitude = geocoderResponse[0].longitude;
-	// 		// 	$data = array(
-	// 		// 		'name' 				=> $name,
-	// 		// 		'email'    			=> $email,
-	// 		// 		'phone'  			=> $phone,
-	// 		// 		'property_name'		=> $property_name,
-	// 		// 		'property_type'		=> $property_type,
-	// 		// 		'property_sub_type'	=> $sub_type,
-	// 		// 		'facing'			=> $facing,
-	// 		// 		'bedrooms'			=> $bedrooms,
-	// 		// 		'bathrooms'			=> $bathrooms,
-	// 		// 		'city'				=> $city,
-	// 		// 		'locality'			=> $locality,
-	// 		// 		'state'				=> $state,
-	// 		// 		'car_parking'		=> $car_parking,
-	// 		// 		'quoted_price'		=> $quoted_price,
-	// 		// 		'saleable_area'		=> $saleable_area,
-	// 		// 		'construction_age'	=> $age,
-	// 		// 		'floor_no'			=> $floor_no,
-	// 		// 		'floors'			=> $floors,
-	// 		// 		'description'		=> $description,
-	// 		// 		'amenities'			=> $amenities,
-	// 		// 		'furnishing_status'	=> $furnishing,
-	// 		// 		'posted_by'			=> $posted_by,
-	// 		// 		'lat'				=> $latitude,
-	// 		// 		'lan'				=> $longitude,
-	// 		// 		'possession'		=> '',
-	// 		// 		'status'			=> '0',
-	// 		// 		'datetime'			=> $date
-	// 		// );
-	// 		// $list_property = $this->db->insert('list_property',$data);
-	// 		var queryResult = await crudModel.addListProperty(name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floor_no, floors, description, amenities1, furnishing, posted_by);
-	// 		if (queryResult.success) {
-	// 			// var propertyId = queryResult.propertyId;
-	// 			// await crudModel.addResidentialPlotDetails(queryResult.propertyId, { north: north, south: south, east: east, west: west }, openSlides, width, constructionDone, boundaryWall, gatedColony);
-	// 			// // console.log(req.files);
-	// 			// var photoFiles = req.files["photos1[]"] || [];
-	// 			// if (photoFiles.length) {
-	// 			// 	var imagesToUpload = [];
-	// 			// 	for (var i = 0; i < photoFiles.length; i++) {
-	// 			// 		var fileName = propertyId + "|" + photoFiles[i].originalname;
-	// 			// 		var uploadResponse = await writeFile(fileName, photoFiles[i].buffer);
-	// 			// 		if (uploadResponse.success) {
-	// 			// 			var photoFile = [propertyId, fileName, moment().format(dateFormat)];
-	// 			// 			imagesToUpload.push(photoFile);
-	// 			// 		}
-	// 			// 	}
-	// 			// 	await crudModel.addPropertyPhotos(imagesToUpload);
-	// 			// }
-	// 			console.log('message', 'Thank you for your trust in space4all. Just wait few hours, we are on the job. !');
-	// 			res.redirect("/home");
-	// 		} else {
-	// 			console.log('message1', 'Your Property Listing Has Failed ! Please Try Again.')
-	// 		}
-	// 	}
-	// }
+			var name = req.body.name || "";
+			var email = req.body.email || "";
+			var phone = req.body.phone || "";
+			var propertyName = req.body.property_name || "";
+			var propertyType = req.body.property_type || "";
+			var subType = req.body.property_sub_type || "";
+			var facing = req.body.facing || "";
+			var bedrooms = req.body.bedrooms || "";
+			var bathrooms = req.body.bathrooms || "";
+			var city = req.body.city || "";
+			var locality = req.body.locality || "";
+			var state = req.body.state || 1;
+			var carParking = req.body.car_parking || "";
+			var quotedPrice = req.body.quoted_price || "";
+			var saleableArea = req.body.saleable_area || "";
+			var age = req.body.construction_age || "";
+			var floorNo = req.body.floor_no || "";
+			var floors = req.body.floors || "";
+			var description = req.body.description || "";
+			var amenities1 = req.body.amenities1 || [];
+			var furnishing = req.body.furnishing || "";
+			var postedBy = req.body.posted_by || "Owner";
+			var amenities = "";
+			for (var i = 0; i < amenities1.length; i++) {
+				amenities += amenities1[i];
+				if (i != (amenities1.length - 1)) {
+					amenities += ",";
+				}
+			}
+			var date = moment().format(dateFormat);
+			var city1 = await crudModel.getCityById(city);
+			var cityName = city1[0].city;
+			var locality1 = await crudModel.getLocalityById(locality);
+			var localityName = locality1[0].locality;
+			var address = localityName + ',' + cityName;
+			var geocoderResponse = await geocoder.geocode(address, function (err, res) {
+				return res;
+			});
+			var latitude = geocoderResponse[0].latitude, longitude = geocoderResponse[0].longitude;
+			var queryResult = await crudModel.addListProperty(name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities, furnishing, postedBy, latitude, longitude, "", 0);
+			if (queryResult.success) {
+				var propertyId = queryResult.propertyId;
+				var photoFiles = req.files["photos[]"] || [];
+				var uploadImagesResult = await uploadImages(photoFiles, propertyId);
+				if (uploadImagesResult) {
+					res.send({ success: true, message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !" });
+				} else {
+					res.send({ success: false, message: "Your Property Listing Has Failed ! Please Try Again." });
+					// removeProperty(propertyId, "");
+				}
+			} else {
+				res.send({ success: false, message: "Your Property Listing Has Failed ! Please Try Again." });
+			}
+		}
+	}
+});
+router.get("/rent_in", function (req, res) {
+	crudModel.getRentAdd().then(function (rentDetails) {
+		res.render("home/rent-in", { page_title: "Rent In", page_name: "Rent In", rent: rentDetails });
+	});
+	// 	$data['page_name']  = 'rent_in';
+	// 	$data['page_title'] = 'Rent In';
+	//     $data['rent'] = $this->crud_model->get_rent_add();
+	// 	$this->load->view('rent-in',$data);
 });
 function writeFile(fileName, fileBuffer) {
 	return new Promise(function (resolve, reject) {
@@ -440,7 +419,6 @@ function writeFile(fileName, fileBuffer) {
 	});
 }
 async function uploadImages(photoFiles, propertyId) {
-
 	if (photoFiles.length) {
 		var imagesToUpload = [];
 		for (var i = 0; i < photoFiles.length; i++) {
@@ -451,8 +429,12 @@ async function uploadImages(photoFiles, propertyId) {
 				imagesToUpload.push(photoFile);
 			}
 		}
-		await crudModel.addPropertyPhotos(imagesToUpload);
+		var response = await crudModel.addPropertyPhotos(imagesToUpload);
+		if (response.success) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-
 }
 module.exports = router;

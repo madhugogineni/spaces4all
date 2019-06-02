@@ -1264,7 +1264,7 @@ module.exports = {
     addPropertyPhotos: function (files) {
         console.log(files);
         return new Promise(function (resolve, reject) {
-            con.query("insert into property_photos(property_id,photo,datetime) values ?",[files], function (error, result) {
+            con.query("insert into property_photos(property_id,photo,datetime) values ?", [files], function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({ success: false });
@@ -1274,13 +1274,44 @@ module.exports = {
             });
         });
     },
-    addListProperty: function() {
-        con.query("insert into list_property() values()",function(error,result) {
-            if(error) {
-                console.log(error);
-                resolve({ success: false });
-            }
-            resolve({ success: true, propertyId: result.insertId });
+    addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status) {
+        var datetime = moment().format(dateFormat);
+        return new Promise(function (resolve, reject) {
+            con.query("insert into list_property set ?", {
+                name: name,
+                email: email,
+                phone: phone,
+                property_name: propertyName,
+                property_type: propertyType,
+                property_sub_type: subType,
+                facing: facing,
+                bedrooms: bedrooms,
+                bathrooms: bathrooms,
+                city: city,
+                locality: locality,
+                state: state,
+                car_parking: carParking,
+                quoted_price: quotedPrice,
+                saleable_area: saleableArea,
+                construction_age: age,
+                floor_no: floorNo,
+                floors: floors,
+                description: description,
+                amenities: amenities1,
+                furnishing_status: furnishing,
+                posted_by: postedBy,
+                lat: latitude,
+                lan: longitude,
+                possession: posession,
+                status: status,
+                datetime: datetime,
+            }, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false });
+                }
+                resolve({ success: true, propertyId: result.insertId });
+            });
         });
     }
 };

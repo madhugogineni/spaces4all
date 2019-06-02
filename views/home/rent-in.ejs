@@ -1,0 +1,716 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%=page_title%> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%=base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%=base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%=base_url %>javascripts/modernizr.js"></script>
+
+
+
+    <script>
+
+
+
+        function show_sub_type(str) {
+
+            //alert(1);
+
+            if (str == '') {
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            }
+
+            if (str == '1') {
+
+                $('#bedrooms').attr("disabled", true);
+
+                $('#bathrooms').attr("disabled", true);
+
+            }
+
+            if (str == '4') {
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            }
+
+
+
+            if (str.length == 0) {
+
+                document.getElementById("property_sub_type").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            //alert(str);
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+
+
+        function Show_locality(str) {
+
+            //alert(str);
+
+            if (str.length == 0) {
+
+                document.getElementById("Showlocality").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    //alert(xmlhttp.responseText);
+
+                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+        function hide_bedrooms(str) {
+
+            var value = document.getElementById("property_type").value;
+
+            if (str == '14') {
+
+                $('#bedrooms').attr("disabled", true);
+
+            } else {
+
+                if (value == '1') {
+
+                    $('#bedrooms').attr("disabled", true);
+
+                } else {
+
+                    $('#bedrooms').attr("disabled", false);
+
+                }
+
+            }
+
+        }
+
+
+
+    </script>
+
+
+
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1>RENT IN</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+
+
+                            <div class="sidebar left-sidebar col-md-3">
+
+
+
+                                <div class="property-grid">
+
+                                    <?php  		
+
+					foreach ($rent as $row1){	
+
+						$rent_details = $this->crud_model->get_rent_details_by_id($row1['rent_id']);			                      
+
+                        foreach ($rent_details as $row){
+
+
+
+						  $photos = explode(',', $row['photos']);
+
+						  foreach ($photos as $photo){
+
+						  	$image = $photo;
+
+						  }
+
+						  if ($image == '') {
+
+						  	$image = "no-photo.jpg";
+
+						  }
+
+						  $property 		= $this->crud_model->get_property_type_by_id($row['property_type']);
+
+						  $property_sub 	= $this->crud_model->get_property_sub_type_by_id($row['property_sub_type']);
+
+ 						  $city1		 	= $this->crud_model->get_city_by_id($row['city']);
+
+						  $locality1	 	= $this->crud_model->get_locality_by_id($row['locality']);
+
+	
+
+						  foreach ($property as $row1){
+
+							$property_name 		= $row1['type'];
+
+						  }
+
+						  foreach ($property_sub as $row2){
+
+							$property_sub_name  = $row2['sub_type'];
+
+						  }
+
+						  foreach ($city1 as $row3){
+
+							$city  		= $row3['city'];
+
+						  }
+
+						  foreach ($locality1 as $row4){
+
+							$locality   = $row4['locality'];
+
+						  }
+
+
+						  if(!empty($row['price'])){
+
+						  $price1 = str_replace(',', '', $row['price']);
+
+						  	
+
+						  if($price1 > 100000)
+
+						  {
+
+						  	$price = ((float)$price1) / 100000;
+
+						  	$price = '₹  '.$price.' Lac';
+
+						  }else {
+
+						  	setlocale(LC_MONETARY,"en_IN");
+
+						  	$price = '₹  '.number_format($price1);
+
+						  }
+						  }else{
+						  	$price = 'Price On Request';
+						  }
+
+						  
+
+                       ?>
+
+                                    <div class="property-block">
+
+                                        <a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"
+                                            class="property-featured-image">
+
+                                            <img src="<%=base_url %>uploads/rent/<?=$image?>" style="height: 170px"
+                                                alt="Spacel4all">
+
+                                            <span class="images-count"> <?=$city?> </span>
+
+                                            <span class="badges" style="color: #000">RENT</span>
+
+                                        </a>
+
+                                        <div class="property-info" style="line-height: 5px">
+
+
+
+                                            <h4><a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"
+                                                    style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><?=$property_sub_name?></a>
+                                            </h4>
+
+                                            <hr><span><?=$property_name?></span>
+                                            <hr>
+
+                                            <span class="location"><?=$locality?>, <?=$city?></span>
+                                            <hr>
+
+                                            <?php if($row['property_sub_type'] == '14' || $row['property_type'] == '1'){?>
+
+                                            <span><?=$row['builtup_area']?> Sq.Ft</span>
+                                            <hr>
+
+                                            <?php }else {?>
+
+                                            <span><?=$row['bedrooms']?> BHK</span>
+                                            <hr>
+
+                                            <?php }?>
+
+                                            <span><?=$price?></span>
+                                            <hr><br />
+
+                                            <a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"> <button
+                                                    type="button" class="btn btn-danger"> <i
+                                                        class="fa fa-angle-double-right"></i>&nbsp; View Details
+                                                </button> </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <?php 
+
+                        }  
+
+						}                      
+
+                        ?>
+
+
+
+
+
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col-md-6">
+
+
+
+                                <div class="tabs">
+
+                                    <h3 class="widgettitle">RENT IN SEARCH&nbsp;&nbsp;</h3>
+
+                                    <hr>
+
+
+
+                                    <div class="">
+
+                                        <div id="" class="lgray-bg padding-as25">
+
+                                            <form action="<%=base_url %>home/rent" method="get">
+
+                                                <div class="row ">
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="property_type" id="property_type"
+                                                            onchange="show_sub_type(this.value)"
+                                                            class="form-control margin-0">
+
+                                                            <option value="">Property Type</option>
+
+                                                            <?php
+
+                      									$property = $this->crud_model->get_property_type ();
+
+                      									foreach ( $property as $row ) {
+
+                      									?>
+
+                                                            <option value="<?=$row['property_type_id']?>">
+                                                                <?=$row['type']?></option>
+
+                                                            <?php }?>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="property_sub_type" id="property_sub_type"
+                                                            onchange="hide_bedrooms(this.value)"
+                                                            class="form-control margin-0">
+
+                                                            <option value="">--Property Sub Type--</option>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+                                                <div class="row">
+
+
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="city" id="city"
+                                                            onchange="Show_locality(this.value)"
+                                                            class="form-control margin-0">
+
+                                                            <option value="">City</option>
+
+                                                            <?php
+
+                       									 $city = $this->crud_model->get_city ();
+
+                       									 foreach ( $city as $row1 ) {
+
+                       									 ?>
+
+                                                            <option value="<?=$row1['city_id']?>"><?=$row1['city']?>
+                                                            </option>
+
+                                                            <?php
+
+														 }
+
+														 ?>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="locality" id="Showlocality"
+                                                            class="form-control margin-0">
+
+                                                            <option value="">---Select locality---</option>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+                                                <div class="row">
+
+
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="bedrooms" id="bedrooms"
+                                                            class="form-control margin-0 ">
+
+                                                            <option value="">Bed Rooms</option>
+
+                                                            <?php
+
+														for($i = 1; $i <= 5; $i ++) {
+
+														?>
+
+                                                            <option value="<?=$i?>"><?=$i?></option>
+
+                                                            <?php
+
+														}
+
+														?>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="bedrooms" class="form-control margin-0">
+
+                                                            <option value=""> Posted By </option>
+
+                                                            <option value="Owner">Owner</option>
+
+                                                            <option value="Broker">Broker</option>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="min_price" class="form-control margin-0 ">
+
+                                                            <option value="">Min Price</option>
+
+                                                            <?php
+
+															for($min = 0; $min <= 100000; $min += 5000) {
+
+															if ($min == '0') {
+
+																$value = '1000';
+
+															} else {
+
+																$value = $min;
+
+																}
+
+                                                            if ($value >= 100000) {
+
+    															$value = (( float ) $value) / 100000;
+
+																$value =  $value . ' Lac';
+
+															}
+
+															?>
+
+                                                            <option value="<?=$value?>"
+                                                                <?php if(isset($_GET['min_price'])){if($_GET['min_price']==$value){echo 'selected';}}?>>
+                                                                Rs <?=$value?></option>
+
+                                                            <?php
+
+															}
+
+															?>
+
+                                                        </select>
+
+                                                    </div>
+
+
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <select name="max_price" class="form-control margin-0 ">
+
+                                                            <option value="">Max Price</option>
+
+                                                            <?php
+
+															for($mx = 10000; $mx <= 200000; $mx += 5000) {
+
+															if ($mx >= 100000) {
+
+																$max = (( float ) $mx) / 100000;
+
+																$max = 'Rs ' . $max . ' Lac';
+
+															} else {
+
+																$max = 'Rs ' . $mx;
+
+															}
+
+															?>
+
+                                                            <option value="<?=$mx?>"
+                                                                <?php if(isset($_GET['max_price'])){if($_GET['max_price']==$mx){echo 'selected';}}?>>
+                                                                <?=$max?></option>
+
+                                                            <?php
+
+															}
+
+															?>
+
+                                                        </select>
+
+                                                    </div>
+
+                                                </div>
+
+                                                <br>
+
+
+
+                                                <div class="row">
+
+                                                    <div class="col-md-6 col-sm-4">
+
+                                                        <input type="submit" name="Search"
+                                                            class="btn btn-primary btn-block btn-lg" value="Search">
+
+                                                    </div>
+
+                                                    <div class="col-md-6 col-sm-4"></div>
+
+                                                </div>
+
+                                                <br>
+
+
+
+                                            </form>
+
+                                        </div>
+
+
+
+
+
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                            <!-- Start Sidebar -->
+
+                            <div class="sidebar right-sidebar col-md-3">
+
+                                <% include includes/services-sidebar.ejs %>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Site Footer -->
+
+        <% include includes/footer.ejs %>
+</body>
+
+</html>

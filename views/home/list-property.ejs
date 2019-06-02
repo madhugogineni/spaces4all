@@ -90,7 +90,7 @@
 
       var value = document.getElementById("property_type").value;
 
-      if (str == '14') {
+      if (str == '14' || str == '18') {
 
         $('#normalfields').hide();
 
@@ -180,21 +180,30 @@
 
       $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%=base_url %>assets/images/loading.gif'/></div>");
 
-      $('#list_property').submit(function (e) {
-      
-        
-      e.preventDefault(e);
-      $("#overlay, #PleaseWait").show();
-
+      $("form#list_property").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+          type: "POST",
+          url: "<%=base_url %>home/add_list_property",
+          data: formData,
+          success: function (result) {
+            console.log(result);
+            var className = "";
+            if (result.success) {
+              className = "alert alert-success fade in";
+            } else {
+              className = "alert alert-error fade in";
+            }
+            var displayMsg = '<div class="'+className+'"> <a href="#" data-dismiss="alert" class="close">x</a><strong>'+result.message+'</strong></div>';
+            $("#list_property").prepend(displayMsg);
+          },
+          cache: false,
+          contentType: false,
+          processData: false
+        });
+      });
     });
-
-    });
-
-
-
-    
-
-
 
   </script>
 
@@ -255,38 +264,6 @@
                 <form action="<%=base_url %>home/add_list_property" method="POST" id="list_property"
                   enctype="multipart/form-data">
 
-
-                  <!-- 
-                            <?php 
-
-                             if ($this->session->flashdata('message')) {
-
-                             ?>
-
-                             <div class="alert alert-success fade in"> <a href="#" data-dismiss="alert" class="close">x</a> <strong><?=$this->session->flashdata('message')?></strong></div>
-
-                             <?php 
-
-                             }
-
-                             ?>
-
-                             <?php 
-
-                             if ($this->session->flashdata('message1')) {
-
-                             ?>
-
-                             <div class="alert alert-error fade in"> <a href="#" data-dismiss="alert" class="close">x</a> <strong><?=$this->session->flashdata('message1')?></strong></div>
-
-                             <?php 
-
-                             }
-
-                             ?> -->
-
-
-
                   <div class="block-heading" id="details">
 
                     <h4><span class="heading-icon"><i class="fa fa-user"></i></span>About You</h4>
@@ -301,7 +278,7 @@
 
                         <label>NAME*</label>
 
-                        <input type="text" name="name" class="form-control" value="" placeholder="Name"
+                        <input type="text" name="name" id="name" class="form-control" value="" placeholder="Name"
                           required="required">
 
                         <!-- <?php if ($this->session->flashdata('name')) {?><b style="color: red"><?=$this->session->flashdata('name')?></b><?php }?> -->
@@ -312,7 +289,7 @@
 
                         <label>EMAIL ID*</label>
 
-                        <input type="email" name="email" class="form-control" value="" placeholder="Email Id"
+                        <input type="email" name="email" id="email" class="form-control" value="" placeholder="Email Id"
                           required="required">
 
                         <!-- <?php if ($this->session->flashdata('email')) {?><b style="color: red"><?=$this->session->flashdata('email')?></b><?php }?> -->
@@ -323,7 +300,7 @@
 
                         <label>MOBILE*</label>
 
-                        <input type="text" name="phone" class="form-control" value="" placeholder="Mobile"
+                        <input type="text" name="phone" id="phone" class="form-control" value="" placeholder="Mobile"
                           required="required">
 
                         <!-- <?php if ($this->session->flashdata('phone')) {?><b style="color: red"><?=$this->session->flashdata('phone')?></b><?php }?> -->
@@ -912,8 +889,8 @@
                   </div>
                   <div class="text-align-center" id="submit-property">
 
-                    <button type="submit" name="add_list_property" value="add_list_property" id="list_property_submit_button"
-                      class="btn btn-primary btn-lg">Submit</button>
+                    <button type="submit" name="add_list_property" value="add_list_property"
+                      id="list_property_submit_button" class="btn btn-primary btn-lg">Submit</button>
 
                   </div>
 
