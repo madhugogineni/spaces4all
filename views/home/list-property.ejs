@@ -67,21 +67,22 @@
         document.getElementById("property_sub_type").innerHTML = "";
         return;
       }
-      $.ajax({
-        type: 'GET',
-        url: '<%= api_url %>get_property_sub_types',
-        data: {
-          property_type: str
-        },
-        success: function (response) {
-          var result = '<option value="">---SELECT---</option>';
-          for (var i = 0; i < response.length; i++) {
-            result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
-          }
-          $("#property_sub_type").find('option').remove().end();
-          $("#property_sub_type").append(result);
-        }
-      });
+      // $.ajax({
+      //   type: 'GET',
+      //   url: '<%= api_url %>get_property_sub_types',
+      //   data: {
+      //     property_type: str
+      //   },
+      //   success: function (response) {
+      //     var result = '<option value="">---SELECT---</option>';
+      //     for (var i = 0; i < response.length; i++) {
+      //       result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
+      //     }
+      //     $("#property_sub_type").find('option').remove().end();
+      //     $("#property_sub_type").append(result);
+      //   }
+      // });
+      getPropertySubTypes(str,"#property_sub_type");
     }
 
 

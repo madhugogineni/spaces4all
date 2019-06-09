@@ -304,7 +304,7 @@ router.post("/add_list_property", upload.fields([{ name: 'photos[]', maxCount: 1
 				var propertyId = queryResult.propertyId;
 				await crudModel.addResidentialPlotDetails(queryResult.propertyId, { north: north, south: south, east: east, west: west }, openSlides, width, constructionDone, boundaryWall, gatedColony);
 				var photoFiles = req.files["photos1[]"] || [];
-				var uploadImagesResult = await uploadImages(photoFiles, propertyId);
+				var uploadImagesResult = await uploadImages(photoFiles, propertyId, "public/uploads/list_property/");
 				if (uploadImagesResult) {
 					res.send({ success: true, message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !" });
 				} else {
@@ -384,7 +384,7 @@ router.post("/add_list_property", upload.fields([{ name: 'photos[]', maxCount: 1
 			if (queryResult.success) {
 				var propertyId = queryResult.propertyId;
 				var photoFiles = req.files["photos[]"] || [];
-				var uploadImagesResult = await uploadImages(photoFiles, propertyId);
+				var uploadImagesResult = await uploadImages(photoFiles, propertyId, "public/uploads/list_property/");
 				if (uploadImagesResult) {
 					res.send({ success: true, message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !" });
 				} else {
@@ -398,17 +398,74 @@ router.post("/add_list_property", upload.fields([{ name: 'photos[]', maxCount: 1
 	}
 });
 router.get("/rent_in", function (req, res) {
-	crudModel.getRentAdd().then(function (rentDetails) {
-		res.render("home/rent-in", { page_title: "Rent In", page_name: "Rent In", rent: rentDetails });
+	crudModel.getRentInDetails().then(function (rentDetails) {
+		var responseObj = { page_title: "Rent In", page_name: "Rent In" };
+		if (rentDetails.success && rentDetails.data != undefined) {
+			var finalPrice = "";
+			var rentPrice = rentDetails.data.price;
+			if (rentPrice != "") {
+				var tempPrice = rentPrice.replace(",", "");
+				if (tempPrice > 100000) {
+					finalPrice = (parseFloat(tempPrice) / 100000);
+					finalPrice = '₹  ' + finalPrice + ' Lac';
+				} else {
+					finalPrice = '₹  ' + tempPrice;
+				}
+			} else {
+				finalPrice = 'Price On Request';
+			}
+			if (rentDetails.data.image == "") {
+				rentDetails.data.image = "no-photo.jpg";
+			}
+			rentDetails.data.price = finalPrice;
+			responseObj.rentDetails = rentDetails.data;
+		}//uploads/list_property/
+		console.log(rentDetails.data);
+		res.render("home/rent-in", responseObj);
 	});
-	// 	$data['page_name']  = 'rent_in';
-	// 	$data['page_title'] = 'Rent In';
-	//     $data['rent'] = $this->crud_model->get_rent_add();
-	// 	$this->load->view('rent-in',$data);
 });
-function writeFile(fileName, fileBuffer) {
+router.get("/rent", function (req, res) {
+	var propertyType = req.query.property_type || "",
+		propertySubType = req.query.property_sub_type || "",
+		city = req.query.city || "",
+		locality = req.query.locality || "",
+		bedrooms = req.query.bedrooms || "",
+		postedBy = req.query.posted_by || "",
+		minPrice = req.query.min_price | "",
+		maxPrice = req.query.max_price || "";
+
+	crudModel.getRentDetails(propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice).then(function (rentDetails) {
+		var rentDetailsData = rentDetails.data;
+		for (var i = 0; i < rentDetailsData.length; i++) {
+			var rentDetail = rentDetailsData[i];
+			if (rentDetail.photos == "") {
+				rentDetail.image = "no-photo.jpg";
+			} else {
+				var images = rentDetail.photos.split(",");
+				rentDetail.image = images[images.length - 1];
+			}
+			if (rentDetail.price) {
+				var price = rentDetail.price;
+				price = price.replace(",", "");
+				if (price > 100000) {
+					price = parseFloat(price) / 100000;
+					price = price + 'Lac';
+					rentDetail.price = price;
+				} else {
+					rentDetail.price = price;
+				}
+			} else {
+				rentDetail.price = "Price on Request";
+			}
+			rentDetailsData[i] = rentDetail;
+		}
+		console.log(rentDetailsData);
+		res.render("home/rent", { page_title: "Rent", page_name: "Rent", posted_by: postedBy, rent: rentDetailsData, property_type: propertyType, property_sub_type: propertySubType, city: city, locality: locality, min_price: minPrice, max_price: maxPrice, bedrooms: bedrooms });
+	});
+});
+function writeFile(fileName, fileBuffer, path) {
 	return new Promise(function (resolve, reject) {
-		fs.appendFile("uploads/" + fileName, fileBuffer, function (error) {
+		fs.appendFile(path + fileName, fileBuffer, function (error) {
 			if (error) {
 				console.log("file not saved");
 				resolve({ success: false });
@@ -418,12 +475,12 @@ function writeFile(fileName, fileBuffer) {
 		});
 	});
 }
-async function uploadImages(photoFiles, propertyId) {
+async function uploadImages(photoFiles, propertyId, path) {
 	if (photoFiles.length) {
 		var imagesToUpload = [];
 		for (var i = 0; i < photoFiles.length; i++) {
 			var fileName = propertyId + "|" + photoFiles[i].originalname;
-			var uploadResponse = await writeFile(fileName, photoFiles[i].buffer);
+			var uploadResponse = await writeFile(fileName, photoFiles[i].buffer, path);
 			if (uploadResponse.success) {
 				var photoFile = [propertyId, fileName, moment().format(dateFormat)];
 				imagesToUpload.push(photoFile);

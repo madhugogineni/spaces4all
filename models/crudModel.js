@@ -870,6 +870,7 @@ module.exports = {
         }
 
         query += " AND status='1' ORDER BY datetime DESC ";
+        console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
                 if (error)
@@ -1311,6 +1312,65 @@ module.exports = {
                     resolve({ success: false });
                 }
                 resolve({ success: true, propertyId: result.insertId });
+            });
+        });
+    },
+    getRentInDetails: function () {
+        return new Promise(function (resolve, reject) {
+            con.query("select locality.locality as locality_name, city.city as city_name,property_type.property_type_id as property_type,rent.property_sub_type as property_sub_type,property_sub_type.sub_type as property_sub_type_name," +
+                "rent.property_name,rent.rent_id as rent_id,rent.price as price,rent.bedrooms as bedrooms,rent.photos as image,rent.builtup_area as builtup_area from rent_add inner join rent on rent_add.rent_id = rent.rent_id inner join " +
+                "property_type on rent.property_type = property_type.property_type_id inner join property_sub_type on rent.property_sub_type = property_sub_type.property_sub_type_id inner join city on rent.city = city.city_id inner join " +
+                "locality on rent.locality = locality.locality_id", function (error, result) {
+                    if (error) {
+                        resolve({ success: false });
+                    } else {
+                        resolve({ success: true, data: result[0] });
+                    }
+                });
+        });
+    },
+    getRentDetails: function (propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice) {
+        return new Promise(function (resolve, reject) {
+
+            var query = "SELECT rent.*,property_type.type as property_type_name,property_sub_type.sub_type as property_sub_type_name, city.city as city_name, locality.locality as locality_name from rent inner join property_type on " +
+                "rent.property_type = property_type.property_type_id inner join property_sub_type on rent.property_sub_type = property_sub_type.property_sub_type_id inner join city on rent.city = city.city_id inner join " +
+                "locality on rent.locality = locality.locality_id where rent_id !=0";
+            if (propertyType != "") {
+                if (propertyType != 0) {
+                    query += " AND rent.property_type='" + propertyType + "'";
+                }
+            }
+            if (propertySubType != "") {
+                query += " AND rent.property_sub_type='" + propertySubType + "'";
+            }
+            if (city != "") {
+                query += " AND rent.city='" + city + "'";
+            }
+            if (locality != "") {
+                query += " AND rent.locality='" + locality + "'";
+            }
+            if (bedrooms != "") {
+                query += " AND rent.bedrooms='" + bedrooms + "'";
+            }
+            if (postedBy != "") {
+                query += " AND rent.posted_by='" + postedBy + "'";
+            }
+            if (minPrice != "") {
+                query += " AND rent.price >='" + minPrice + "'";
+            }
+            if (maxPrice != "") {
+                query += " AND rent.price <='" + maxPrice + "'";
+            }
+
+            query += " AND rent.status='1' ORDER BY datetime DESC ";
+            // console.log(query);
+            con.query(query, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false });
+                } else {
+                    resolve({ success: true, data: result })
+                }
             });
         });
     }

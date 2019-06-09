@@ -68,53 +68,8 @@
                 $('#bathrooms').attr("disabled", false);
 
             }
-
-
-
-            if (str.length == 0) {
-
-                document.getElementById("property_sub_type").innerHTML = "";
-
-                return;
-
-            }
-
-
-
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-                xmlhttp = new XMLHttpRequest();
-
-            }
-
-            else {// code for IE6, IE5
-
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-            }
-
-            xmlhttp.onreadystatechange = function () {
-
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
-
-                }
-
-            }
-
-            //alert(str);
-
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
-
-            xmlhttp.send();
-
+            getPropertySubTypes(str, "#property_sub_type");
         }
-
-
-
-
-
         function Show_locality(str) {
 
             //alert(str);
@@ -243,109 +198,16 @@
 
                         <div class="row">
 
-
-
                             <div class="sidebar left-sidebar col-md-3">
 
-
-
                                 <div class="property-grid">
-
-                                    <?php  		
-
-					foreach ($rent as $row1){	
-
-						$rent_details = $this->crud_model->get_rent_details_by_id($row1['rent_id']);			                      
-
-                        foreach ($rent_details as $row){
-
-
-
-						  $photos = explode(',', $row['photos']);
-
-						  foreach ($photos as $photo){
-
-						  	$image = $photo;
-
-						  }
-
-						  if ($image == '') {
-
-						  	$image = "no-photo.jpg";
-
-						  }
-
-						  $property 		= $this->crud_model->get_property_type_by_id($row['property_type']);
-
-						  $property_sub 	= $this->crud_model->get_property_sub_type_by_id($row['property_sub_type']);
-
- 						  $city1		 	= $this->crud_model->get_city_by_id($row['city']);
-
-						  $locality1	 	= $this->crud_model->get_locality_by_id($row['locality']);
-
-	
-
-						  foreach ($property as $row1){
-
-							$property_name 		= $row1['type'];
-
-						  }
-
-						  foreach ($property_sub as $row2){
-
-							$property_sub_name  = $row2['sub_type'];
-
-						  }
-
-						  foreach ($city1 as $row3){
-
-							$city  		= $row3['city'];
-
-						  }
-
-						  foreach ($locality1 as $row4){
-
-							$locality   = $row4['locality'];
-
-						  }
-
-
-						  if(!empty($row['price'])){
-
-						  $price1 = str_replace(',', '', $row['price']);
-
-						  	
-
-						  if($price1 > 100000)
-
-						  {
-
-						  	$price = ((float)$price1) / 100000;
-
-						  	$price = '₹  '.$price.' Lac';
-
-						  }else {
-
-						  	setlocale(LC_MONETARY,"en_IN");
-
-						  	$price = '₹  '.number_format($price1);
-
-						  }
-						  }else{
-						  	$price = 'Price On Request';
-						  }
-
-						  
-
-                       ?>
-
                                     <div class="property-block">
 
-                                        <a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"
+                                        <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"
                                             class="property-featured-image">
 
-                                            <img src="<%=base_url %>uploads/rent/<?=$image?>" style="height: 170px"
-                                                alt="Spacel4all">
+                                            <img src="<%=base_url %>uploads/rent/<%=rentDetails.image %>"
+                                                style="height: 170px" alt="Spacel4all">
 
                                             <span class="images-count"> <?=$city?> </span>
 
@@ -356,33 +218,33 @@
                                         <div class="property-info" style="line-height: 5px">
 
 
-
-                                            <h4><a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"
-                                                    style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><?=$property_sub_name?></a>
+                                            <h4><a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"
+                                                    style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><%=rentDetails.property_sub_type_name %></a>
                                             </h4>
 
-                                            <hr><span><?=$property_name?></span>
+                                            <hr><span><%=rentDetails.property_name %></span>
                                             <hr>
 
-                                            <span class="location"><?=$locality?>, <?=$city?></span>
+                                            <span class="location"><%=rentDetails.locality_name %>,
+                                                <%=rentDetails.city_name %></span>
                                             <hr>
 
-                                            <?php if($row['property_sub_type'] == '14' || $row['property_type'] == '1'){?>
+                                            <% if(rentDetails.property_sub_type == '14' || rentDetails.property_type == '1'){ %>
 
-                                            <span><?=$row['builtup_area']?> Sq.Ft</span>
+                                            <span><%=rentDetails.builtup_area %> Sq.Ft</span>
                                             <hr>
 
-                                            <?php }else {?>
+                                            <% }else { %>
 
-                                            <span><?=$row['bedrooms']?> BHK</span>
+                                            <span><%=rentDetails.bedrooms %> BHK</span>
                                             <hr>
 
-                                            <?php }?>
+                                            <% } %>
 
-                                            <span><?=$price?></span>
+                                            <span><%=rentDetails.price %></span>
                                             <hr><br />
 
-                                            <a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"> <button
+                                            <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"> <button
                                                     type="button" class="btn btn-danger"> <i
                                                         class="fa fa-angle-double-right"></i>&nbsp; View Details
                                                 </button> </a>
@@ -390,36 +252,12 @@
                                         </div>
 
                                     </div>
-
-                                    <?php 
-
-                        }  
-
-						}                      
-
-                        ?>
-
-
-
-
-
                                 </div>
-
                             </div>
-
-
-
                             <div class="col-md-6">
-
-
-
                                 <div class="tabs">
-
                                     <h3 class="widgettitle">RENT IN SEARCH&nbsp;&nbsp;</h3>
-
                                     <hr>
-
-
 
                                     <div class="">
 
@@ -434,21 +272,9 @@
                                                         <select name="property_type" id="property_type"
                                                             onchange="show_sub_type(this.value)"
                                                             class="form-control margin-0">
-
-                                                            <option value="">Property Type</option>
-
-                                                            <?php
-
-                      									$property = $this->crud_model->get_property_type ();
-
-                      									foreach ( $property as $row ) {
-
-                      									?>
-
-                                                            <option value="<?=$row['property_type_id']?>">
-                                                                <?=$row['type']?></option>
-
-                                                            <?php }?>
+                                                            <script>
+                                                                setUpPropertyTypes(property_type);
+                                                            </script>
 
                                                         </select>
 
@@ -477,27 +303,13 @@
                                                     <div class="col-md-6 col-sm-4">
 
                                                         <select name="city" id="city"
-                                                            onchange="Show_locality(this.value)"
+                                                            onchange="showLocality(this.value,'#Showlocality')"
                                                             class="form-control margin-0">
 
                                                             <option value="">City</option>
-
-                                                            <?php
-
-                       									 $city = $this->crud_model->get_city ();
-
-                       									 foreach ( $city as $row1 ) {
-
-                       									 ?>
-
-                                                            <option value="<?=$row1['city_id']?>"><?=$row1['city']?>
-                                                            </option>
-
-                                                            <?php
-
-														 }
-
-														 ?>
+                                                            <script>
+                                                                setUpCities("#city");
+                                                            </script>
 
                                                         </select>
 
@@ -529,19 +341,9 @@
 
                                                             <option value="">Bed Rooms</option>
 
-                                                            <?php
-
-														for($i = 1; $i <= 5; $i ++) {
-
-														?>
-
-                                                            <option value="<?=$i?>"><?=$i?></option>
-
-                                                            <?php
-
-														}
-
-														?>
+                                                            <% for( var i = 1; i <= 5; i ++) { %>
+                                                            <option value="<%=i %>"><%=i %></option>
+                                                            <% } %>
 
                                                         </select>
 
@@ -549,7 +351,7 @@
 
                                                     <div class="col-md-6 col-sm-4">
 
-                                                        <select name="bedrooms" class="form-control margin-0">
+                                                        <select name="posted_by" class="form-control margin-0">
 
                                                             <option value=""> Posted By </option>
 
@@ -572,40 +374,21 @@
                                                         <select name="min_price" class="form-control margin-0 ">
 
                                                             <option value="">Min Price</option>
+                                                            <% for(var i = 0;i <= 100000; i = i + 5000) { 
+                                                               var value;
+                                                                if( i == 0) {
+                                                                    value = 1000;
+                                                                } else {
+                                                                    value = i;
+                                                                }
+                                                                if(value == 100000) {
+                                                                    value = parseFloat(value)/100000;
+                                                                    value = value + " Lac";
+                                                                }                                                                
+                                                                %>
+                                                            <option value="<%=value%>">Rs <%=value %> </option>
 
-                                                            <?php
-
-															for($min = 0; $min <= 100000; $min += 5000) {
-
-															if ($min == '0') {
-
-																$value = '1000';
-
-															} else {
-
-																$value = $min;
-
-																}
-
-                                                            if ($value >= 100000) {
-
-    															$value = (( float ) $value) / 100000;
-
-																$value =  $value . ' Lac';
-
-															}
-
-															?>
-
-                                                            <option value="<?=$value?>"
-                                                                <?php if(isset($_GET['min_price'])){if($_GET['min_price']==$value){echo 'selected';}}?>>
-                                                                Rs <?=$value?></option>
-
-                                                            <?php
-
-															}
-
-															?>
+                                                            <% } %>
 
                                                         </select>
 
@@ -619,7 +402,20 @@
 
                                                             <option value="">Max Price</option>
 
-                                                            <?php
+                                                            <% for(var i = 10000 ;i <= 200000;i = i + 5000) {
+                                                                var value;
+                                                                if( i >= 100000) {
+                                                                    value = parseFloat(i)/100000;
+                                                                    value = value + " Lac";
+                                                                }else {
+                                                                    value = i;
+                                                                } 
+                                                            %>
+                                                            <option value="<%=value %>">Rs <%=value %></option>
+
+                                                            <% } %>
+
+                                                            <!-- <?php
 
 															for($mx = 10000; $mx <= 200000; $mx += 5000) {
 
@@ -645,7 +441,7 @@
 
 															}
 
-															?>
+															?> -->
 
                                                         </select>
 

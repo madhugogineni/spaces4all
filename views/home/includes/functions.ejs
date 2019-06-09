@@ -69,7 +69,7 @@
             method: "GET",
             url: "<%= api_url %>get_cities",
             success: function (response) {
-                var result = '<option value="">---CITY---</option>';
+                var result = '<option value="">---City---</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
                     if (cityId != "" && cityId != undefined) {
@@ -100,7 +100,7 @@
             }
         });
     }
-    function showLocality(cityId,divId) {
+    function showLocality(cityId, divId) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_localities",
@@ -186,14 +186,18 @@
             }
         });
     }
-    function setUpPropertyTypes(divId) {
+    function setUpPropertyTypes(divId, selectedType) {
         $.ajax({
             type: 'GET',
             url: "<%=api_url %>get_property_types",
             success: function (response) {
-                var result = '<option value="">---SELECT---</option>';
+                var result = '<option value="">---Property Type---</option>';
                 for (var i = 0; i < response.length; i++) {
-                    result += '<option value="' + response[i].property_type_id + '">' + response[i].type + '</option>';
+                    if (selectedType == response[i].property_type_id) {
+                        result += '<option value="' + response[i].property_type_id + '" selected>' + response[i].type + '</option>';
+                    } else {
+                        result += '<option value="' + response[i].property_type_id + '">' + response[i].type + '</option>';
+                    }
                 }
                 $(divId).html(result);
             }
@@ -205,12 +209,41 @@
             url: '<%= api_url %>get_states',
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
-                for(var i =0;i< response.length;i++) {
-                    result += '<option value="'+response[i].state_id+'">'+response[i].state_name+'</option>'
+                for (var i = 0; i < response.length; i++) {
+                    result += '<option value="' + response[i].state_id + '">' + response[i].state_name + '</option>'
                 }
                 $(divId).html(result);
             }
         });
     }
-    
+    function getPropertySubTypes(str, divId) {
+        $.ajax({
+            type: 'GET',
+            url: '<%= api_url %>get_property_sub_types',
+            data: {
+                property_type: str
+            },
+            success: function (response) {
+                var result = '<option value="">---SELECT---</option>';
+                for (var i = 0; i < response.length; i++) {
+                    result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
+                }
+                $("#property_sub_type").find('option').remove().end();
+                $("#property_sub_type").append(result);
+            }
+        });
+    }
+    function setUpSubPropertiesByPropertyType(propertyType,propertySubType) {
+        $.ajax({
+            type:'GET',
+            url: '<%=api_url %>get_property_subtype_using_property_type',
+            data: {
+                property_type: propertyType
+            },
+            success: function(response) {
+                console.log(response);
+            }
+        })
+    }
+
 </script>

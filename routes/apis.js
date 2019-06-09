@@ -58,19 +58,23 @@ router.get("/add_project_call_back", function (req, res) {
 
     });
 });
-router.get("/get_emenities",function(req,res) {
-    crudModel.getAmenities().then(function(response) {
+router.get("/get_emenities", function (req, res) {
+    crudModel.getAmenities().then(function (response) {
         res.send(response);
     })
 });
-router.get("/get_property_sub_types",function(req,res) {
-    crudModel.getPropertySubTypeById(req.query.property_type).then(function(response) {
+router.get("/get_property_sub_types", function (req, res) {
+    crudModel.getPropertySubTypeById(req.query.property_type).then(function (response) {
         res.send(response);
     });
 });
-router.get('/get_states',function(req,res) {
-    crudModel.getStates().then(function(response) {
+router.get('/get_states', function (req, res) {
+    crudModel.getStates().then(function (response) {
         res.send(response);
     });
+});
+router.get('/get_property_subtype_using_property_type', function (req, res) {
+    console.log(req.query);
+    
 });
 module.exports = router;

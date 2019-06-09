@@ -1,0 +1,847 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%=page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%=base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%=base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+
+    <link class="alt" href="<%=base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%=base_url %>javascripts/modernizr.js"></script>
+
+    <script>
+
+
+
+        function Map_form() {
+
+            document.Map_form.submit();
+
+        }
+
+        function List_form() {
+
+            document.List_form.submit();
+
+        }
+
+
+
+        function Grid_form() {
+
+            document.Grid_form.submit();
+
+        }
+
+
+
+        function show_sub_type(str) {
+
+            if (str == '1') {
+
+                $('#bedrooms').attr("disabled", true);
+
+            } else {
+
+                $('#bedrooms').attr("disabled", false);
+
+            }
+
+            if (str.length == 0) {
+
+                document.getElementById("property_sub_type").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            //alert(str);
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+
+
+        function Show_locality(str) {
+
+            //alert(str);
+
+            if (str.length == 0) {
+
+                document.getElementById("Showlocality").innerHTML = "";
+
+                return;
+
+            }
+
+
+
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+                xmlhttp = new XMLHttpRequest();
+
+            }
+
+            else {// code for IE6, IE5
+
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+            }
+
+            xmlhttp.onreadystatechange = function () {
+
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                    //alert(xmlhttp.responseText);
+
+                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
+
+                }
+
+            }
+
+            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
+
+            xmlhttp.send();
+
+        }
+
+
+
+        function Show_Div(Div_id) {
+
+            if (false == $(Div_id).is(':visible')) {
+
+                $(Div_id).show(250);
+
+            }
+
+            else {
+
+                $(Div_id).hide(250);
+
+            }
+
+        }
+
+
+
+        $(document).ready(function () {
+
+            $('#compare').load("<%=base_url %>home/compare_count");
+
+        });
+
+
+
+        function add_Compare(url) {
+
+            $.ajax({
+
+                url: url,
+
+                success: function () {
+
+                    $('#compare').load("<%=base_url %>home/compare_count");
+
+                }
+
+            });
+
+        }
+
+
+
+        function hide_bedrooms(str) {
+
+            var value = document.getElementById("property_type").value;
+
+            if (str == '14') {
+
+                $('#bedrooms').attr("disabled", true);
+
+            } else {
+
+                if (value == '1') {
+
+                    $('#bedrooms').attr("disabled", true);
+
+                } else {
+
+                    $('#bedrooms').attr("disabled", false);
+
+                }
+
+            }
+
+        }
+
+
+
+        function Show_max_price(str) {
+
+            //alert(str);
+
+            $.ajax({
+
+                url: '<?php echo base_url();?>home/max_price1/' + str,
+
+                success: function (response) {
+
+                    //alert(response);
+
+                    jQuery('#max_price').html(response);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header" style="background-image:url(images/page-header1.jpg);">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1>Rent Properties</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+        <div>
+
+            <!-- <?php 
+
+  if (isset($_GET['posted_by'])) {
+
+  	$posted_by = $_GET['posted_by'];
+
+  }else {
+
+	$posted_by = '';
+
+  }
+
+  ?> -->
+            <% var postedBy = "";
+                if(posted_by != "") {
+                postedBy = posted_by;        
+            }%>
+
+            <form action="<%=base_url %>home/rent_map_view" name="Map_form" id="Map_form" method="get">
+
+                <input type="hidden" name="property_type"
+                    value="<?php if(isset($_GET['property_type'])){echo $_GET['property_type'];}?>">
+
+                <input type="hidden" name="property_sub_type"
+                    value="<?php if(isset($_GET['property_sub_type'])){echo $_GET['property_sub_type'];}?>">
+
+                <input type="hidden" name="city" value="<?php if(isset($_GET['city'])){echo $_GET['city'];}?>">
+
+                <input type="hidden" name="locality"
+                    value="<?php if(isset($_GET['locality'])){echo $_GET['locality'];}?>">
+
+                <input type="hidden" name="bedrooms"
+                    value="<?php if(isset($_GET['bedrooms'])){echo $_GET['bedrooms'];}?>">
+
+                <input type="hidden" name="posted_by" value="<?=$posted_by?>">
+
+                <input type="hidden" name="min_price"
+                    value="<?php if(isset($_GET['max_price'])){echo $_GET['max_price'];}?>">
+
+                <input type="hidden" name="max_price"
+                    value="<?php if(isset($_GET['max_price'])){echo $_GET['max_price'];}?>">
+
+            </form>
+
+
+
+            <form action="<%=base_url %>home/rent_list_view" name="List_form" id="List_form" method="get">
+
+                <input type="hidden" name="property_type"
+                    value="<?php if(isset($_GET['property_type'])){echo $_GET['property_type'];}?>">
+
+                <input type="hidden" name="property_sub_type"
+                    value="<?php if(isset($_GET['property_sub_type'])){echo $_GET['property_sub_type'];}?>">
+
+                <input type="hidden" name="city" value="<?php if(isset($_GET['city'])){echo $_GET['city'];}?>">
+
+                <input type="hidden" name="locality"
+                    value="<?php if(isset($_GET['locality'])){echo $_GET['locality'];}?>">
+
+                <input type="hidden" name="bedrooms"
+                    value="<?php if(isset($_GET['bedrooms'])){echo $_GET['bedrooms'];}?>">
+
+                <input type="hidden" name="posted_by" value="<?=$posted_by?>">
+
+                <input type="hidden" name="min_price"
+                    value="<?php if(isset($_GET['max_price'])){echo $_GET['max_price'];}?>">
+
+                <input type="hidden" name="max_price"
+                    value="<?php if(isset($_GET['max_price'])){echo $_GET['max_price'];}?>">
+
+            </form>
+
+        </div>
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div class="block-heading">
+
+                                    <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
+                                                class="fa fa-th-large"></i></span>Property Grid View</h4>
+
+                                    <div class="toggle-view pull-right">
+
+                                        <a href="javascript: Grid_form()" class="active" title="Grid View"><i
+                                                class="fa fa-th-large"></i></a>
+
+                                        <a href="javascript: List_form()" title="List View"><i
+                                                class="fa fa-th-list"></i></a>
+
+                                        <a href="javascript: Map_form()" title="Map View"><i
+                                                class="fa fa-archive"></i></a>
+
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="search-list">
+
+                                    <form action="<%=base_url %>home/rent" name="Grid_form" method="get">
+
+
+
+                                        <div class="row" style="padding-bottom: 10px">
+
+                                            <div class="col-md-3">
+
+                                                <select name="property_type" id="property_type"
+                                                    onchange="show_sub_type(this.value)" class="form-control margin-0">
+
+                                                    <!-- <option value="0">Property Type</option> -->
+
+                                                    <!-- <?php 
+
+                      	$property = $this->crud_model->get_property_type();
+
+                      	foreach ($property as $row){
+
+                          ?> -->
+                                                    <script>
+                                                        setUpPropertyTypes("#property_type", "<%=property_type %>");
+                                                    </script>
+
+                                                    <!-- <option value="<?=$row['property_type_id']?>"
+                                                        <?php if($row['property_type_id'] == $_GET['property_type']){echo 'selected';}?>>
+                                                        <?=$row['type']?></option> -->
+
+                                                    <!-- <?php }?> -->
+
+                                                </select>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-3">
+
+                                                <select name="property_sub_type" id="property_sub_type"
+                                                    onchange="hide_bedrooms(this.value)" class="form-control margin-0">
+
+                                                    <option value="">Property Sub Type</option>
+
+                                                    <!-- <?php 
+
+                        if (isset($_GET['property_type'])) {
+
+                        	if ($_GET['property_type'] != null && $_GET['property_type'] != '') {
+
+								$sub_property = $this->crud_model->get_property_sub_type_by_property($_GET['property_type']);
+
+								foreach ($sub_property as $row5){
+
+								?>
+
+                                                    <option value="<?=$row5['property_sub_type_id']?>"
+                                                        <?php if($row5['property_sub_type_id'] == $_GET['property_sub_type']){echo 'selected';}?>>
+                                                        <?=$row5['sub_type']?></option>
+
+                                                    <?php 
+
+								}
+
+							}
+
+                        }
+
+                        ?> -->
+                                                    <script>
+                                                        setUpSubPropertiesByPropertyType('<%=property_type %>');
+                                                    </script>
+
+                                                </select>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-3">
+
+                                                <select name="city" id="city" onchange="Show_locality(this.value)"
+                                                    class="form-control margin-0">
+
+                                                    <option value="">City</option>
+
+                                                    <?php 
+
+                        $city = $this->crud_model->get_city();
+
+                        foreach ($city as $row1){
+
+                        ?>
+
+                                                    <option value="<?=$row1['city_id']?>"
+                                                        <?php if($row1['city_id'] == $_GET['city']){echo 'selected';}?>>
+                                                        <?=$row1['city']?></option>
+
+                                                    <?php 
+
+                        }
+
+                        ?>
+
+                                                </select>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-2">
+
+                                                <button type="submit" class="btn btn-primary btn-block"><i
+                                                        class="fa fa-search"></i> Search</button>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-1">
+
+                                                <button type="button" onclick="Show_Div(Div_1)"
+                                                    class="btn btn-primary btn-block">Filters</button>
+
+                                            </div>
+
+
+
+
+
+                                        </div>
+
+
+
+                                        <div class="row" id="Div_1" style="padding-bottom: 10px;display: none;">
+
+
+
+                                            <div class="col-md-2">
+
+                                                <select name="locality" id="Showlocality" class="form-control margin-0">
+
+                                                    <option value="">---locality---</option>
+
+                                                    <?php 
+
+                                       if (isset($_GET['city'])) {
+
+                                       	 if ($_GET['city'] != '' || $_GET['city'] != null) {
+
+                                       	 	$local = $this->crud_model->get_locality_by_city($_GET['city']);
+
+                                       	 	foreach ($local as $row6){												
+
+											?>
+
+                                                    <option value="<?=$row6['locality_id']?>"
+                                                        <?php if($_GET['locality'] == $row6['locality_id']){echo "selected";}?>>
+                                                        <?=$row6['locality']?></option>
+
+                                                    <?php 
+
+											}
+
+                                       	 }
+
+                                       }
+
+                                       ?>
+
+                                                </select>
+
+                                            </div>
+
+
+
+
+
+                                            <div class="col-md-2">
+
+                                                <select id="min_price" name="min_price" class="form-control margin-0 "
+                                                    onchange="Show_max_price(this.value)">
+
+                                                    <option value="">Min Price</option>
+
+                                                    <?php 
+
+                      for($min=0;$min<=90000;$min+=5000){    
+
+    					  if ($min == '0') {
+
+						  	$value = '1000';
+
+						  }else {
+
+							$value =  $min;
+
+						  }                  	                    	
+
+                      	?>
+
+                                                    <option value="<?=$value?>"
+                                                        <?php if(isset($_GET['min_price'])){if($_GET['min_price']==$value){echo 'selected';}}?>>
+                                                        Rs <?=$value?></option>
+
+                                                    <?php 
+
+                      }
+
+                      ?>
+
+                                                </select>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-2">
+
+                                                <select name="max_price" id="max_price" class="form-control margin-0 ">
+
+                                                    <option value="">Max Price</option>
+
+                                                    <?php 
+
+                      for($mx=5000;$mx<=100000;$mx+=5000){                      	
+
+                      	if($mx >= 100000)
+
+                      	{
+
+                      		$max = ((float)$mx) / 100000;
+
+                      		$max = 'Rs '.$max.' Lac';
+
+                      	}else {
+
+							$max = 'Rs '.$mx;
+
+						}                      	
+
+                      	?>
+
+                                                    <option value="<?=$mx?>"
+                                                        <?php if(isset($_GET['max_price'])){if($_GET['max_price']==$mx){echo 'selected';}}?>>
+                                                        <?=$max?></option>
+
+                                                    <?php 
+
+                      }
+
+                      ?>
+
+                                                </select>
+
+                                            </div>
+
+
+
+                                            <div class="col-md-2">
+
+                                                <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+
+                                                    <option value="">Bed Rooms</option>
+
+                                                    <?php 
+
+                      for ($i = 1;$i<=5;$i++){
+
+                      ?>
+
+                                                    <option value="<?=$i?>"
+                                                        <?php if($_GET['bedrooms'] != '' && $_GET['bedrooms'] != null){ if($i == $_GET['bedrooms']){echo 'selected';}}?>>
+                                                        <?=$i?></option>
+
+                                                    <?php 
+
+                      }
+
+                      ?>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+
+                                    </form>
+
+                                    <div class="block-heading">
+
+                                        <h4>&nbsp;</h4>
+
+                                        <div class="toggle-view pull-right">
+
+                                        </div>
+
+                                    </div>
+
+
+
+                                </div>
+
+                            </div><br><br><br><br><br><br>
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div id="property_success"></div>
+
+                                    <div class="property-grid">
+
+                                        <!-- <?php if ($rent) {?> -->
+                                        <% if(rent.length) {%>
+
+                                        <ul class="grid-holder col-3 isotope"
+                                            style="position: relative; overflow: hidden; height: 700px;">
+                                            <% for(var i=0;i< rent.length;i++) { 
+                                                var rentDetails = rent[i]; %>
+                                            <li class="grid-item type-rent isotope-item"
+                                                style="position: absolute; left: 0px; top: 0px; transform: translate(533px, 350px);">
+
+                                                <div class="property-block">
+
+                                                    <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"
+                                                        class="property-featured-image">
+
+                                                        <img src="<%=base_url %>uploads/rent/<%=rentDetails.image %>"
+                                                            style="height: 170px" alt="Spacel4all">
+
+                                                        <span class="images-count"> <%=rentDetails.city %> </span>
+
+                                                        <span class="badges" style="color: #000">RENT</span>
+
+                                                    </a>
+
+                                                    <div class="property-info" style="line-height: 5px">
+
+                                                        <!-- <?php 
+
+                      $ip    = $_SERVER['REMOTE_ADDR'];
+
+                      $count = $this->crud_model->get_compare_count_check('rent',$ip,$row['rent_id']);
+
+                      if($count > 0 ){
+
+                      ?>
+
+                                                        <span class="pull-right" title="Already in Compare"> <input
+                                                                type="checkbox"
+                                                                onclick="add_Compare('<%=base_url %>home/add_compare/rent/<%=rentDetails.rent_id %>')"
+                                                                checked="checked"> </span>
+
+                                                        <?php 
+
+                      }else {
+
+                      ?>
+
+                                                        <span class="pull-right" title="Compare"> <input type="checkbox"
+                                                                onclick="add_Compare('<%=base_url %>home/add_compare/rent/<%=rentDetails.rent_id %>')">
+                                                        </span>
+
+                                                        <?php 
+
+					  }
+
+					  ?> -->
+
+                                                        <h4><a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>"
+                                                                style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><%=rentDetails.property_sub_type_name %></a>
+                                                        </h4>
+
+                                                        <hr><span><%=rentDetails.property_type_name %></span>
+                                                        <hr>
+
+                                                        <span class="location"><%=rentDetails.locality_name %>,
+                                                            <%=rentDetails.city_name %></span>
+                                                        <hr>
+
+                                                        <% if(rentDetails.property_sub_type == '14' || rentDetails.property_type == '1') { %>
+
+                                                        <span><%=rentDetails.builtup_area %> Sq.Ft</span>
+                                                        <hr>
+
+                                                        <% }else {%>
+
+                                                        <span><%=rentDetails.bedrooms %> BHK</span>
+                                                        <hr>
+
+                                                        <% } %>
+
+                                                        <span>
+                                                            <% if(rentDetails.price) { %>
+                                                            <span class="WebRupee">Rs.</span> <% } %>
+                                                            <%=rentDetails.price %></span>
+                                                        <hr><br />
+
+                                                        <a
+                                                            href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>">
+                                                            <button type="button" class="btn btn-danger"> <i
+                                                                    class="fa fa-angle-double-right"></i>&nbsp; View
+                                                                Details </button> </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+                                            <% } %>
+
+                                        </ul>
+                                        <% }else { %>
+                                        <br><br>
+                                        <h4 align='center'>There are No Results Available....</h4>
+                                        <% } %>
+                                    </div>
+
+                                    <!-- <?php 
+                            foreach ($links as $link) {
+								echo "<li>".$link."</li>";
+							} 
+					   ?> -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Start Site Footer -->
+            <% include includes/footer.ejs %>
