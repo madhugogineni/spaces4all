@@ -424,6 +424,514 @@ router.get("/rent_in", function (req, res) {
 		res.render("home/rent-in", responseObj);
 	});
 });
+router.get("/rent_out", function (req, res) {
+	var responseObj = { page_title: "Rent In", page_name: "Rent In" };
+	res.render("home/rent-out", responseObj);
+});
+router.post("/add_rent_out", async function (req, res) {
+	console.log(req.body);
+	let validator = new validatorpackage(req.body, {
+		property_name: 'required',
+		property_type: 'required',
+		property_sub_type: 'required',
+		facing: 'required',
+		
+
+	});
+	var validationResult = validator.check();
+	console.log("validation result = " + validatorResult);
+
+	/*
+	
+		$this->load->library('form_validation');
+
+			
+
+		$this->form_validation->set_rules('property_name', 'Property Name', 'required');
+
+		$this->form_validation->set_rules('property_type', 'Property Type', 'required');
+
+		$this->form_validation->set_rules('property_sub_type', 'Property Sub Type', 'required');
+
+		$this->form_validation->set_rules('facing', 'Facing', 'required');
+
+                $this->form_validation->set_rules('state', 'State', 'required');
+
+		$this->form_validation->set_rules('city', 'City', 'required');
+
+		$this->form_validation->set_rules('locality', 'Locality', 'required');
+
+		$this->form_validation->set_rules('price', 'Price', 'required');
+
+		$this->form_validation->set_rules('name', 'Username', 'trim|required|min_length[4]|max_length[12]|xss_clean');
+
+		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+
+		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|exact_length[10]');
+
+		$this->form_validation->set_rules('posted_by', 'Posted By', 'required');
+
+	
+
+		if ($this->form_validation->run() == FALSE)
+
+		{
+
+			$this->session->set_flashdata('error',validation_errors());
+
+	
+
+			$this->session->set_flashdata('message1','Please Fill The Details Below !');
+
+				
+
+			if (form_error('property_name')) {
+
+				$this->session->set_flashdata('property_name',form_error('property_name'));
+
+			}
+
+			if (form_error('property_type')) {
+
+				$this->session->set_flashdata('property_type',form_error('property_type'));
+
+			}
+
+			if (form_error('property_sub_type')) {
+
+				$this->session->set_flashdata('property_sub_type',form_error('property_sub_type'));
+
+			}
+
+			if (form_error('facing')) {
+
+				$this->session->set_flashdata('facing',form_error('facing'));
+
+			}
+
+if (form_error('state')) {
+
+				$this->session->set_flashdata('state',form_error('state'));
+
+			}
+
+			if (form_error('city')) {
+
+				$this->session->set_flashdata('city',form_error('city'));
+
+			}
+
+			if (form_error('locality')) {
+
+				$this->session->set_flashdata('locality',form_error('locality'));
+
+			}
+
+			if (form_error('posted_by')) {
+
+				$this->session->set_flashdata('posted_by',form_error('posted_by'));
+
+			}
+
+			if (form_error('name')) {
+
+				$this->session->set_flashdata('name',form_error('name'));
+
+			}
+
+			if (form_error('email')) {
+
+				$this->session->set_flashdata('email',form_error('email'));
+
+			}
+
+			if (form_error('phone')) {
+
+				$this->session->set_flashdata('phone',form_error('phone'));
+
+			}
+
+			if (form_error('price')) {
+
+				$this->session->set_flashdata('price',form_error('price'));
+
+			}
+
+	
+
+			
+
+			$this->session->set_flashdata('name_value',$this->input->post('name'));
+
+			$this->session->set_flashdata('email_value',$this->input->post('email'));
+
+			$this->session->set_flashdata('phone_value',$this->input->post('phone'));
+
+			$this->session->set_flashdata('property_name_value',$this->input->post('property_name'));
+
+			$this->session->set_flashdata('property_value',$this->input->post('property_type'));
+
+			$this->session->set_flashdata('sub_value',$this->input->post('property_sub_type'));
+
+			$this->session->set_flashdata('facing_value',$this->input->post('facing_value'));
+
+			$this->session->set_flashdata('bed_value',$this->input->post('bedrooms'));
+
+			$this->session->set_flashdata('bath_value',$this->input->post('bathrooms'));
+
+			$this->session->set_flashdata('city_value',$this->input->post('city'));
+
+			$this->session->set_flashdata('local_value',$this->input->post('locality'));
+
+			$this->session->set_flashdata('land_value',$this->input->post('land_mark'));
+
+			$this->session->set_flashdata('state_value',$this->input->post('state'));
+
+			$this->session->set_flashdata('price_value',$this->input->post('price'));
+
+			$this->session->set_flashdata('furnishing_value',$this->input->post('furnishing'));
+
+			$this->session->set_flashdata('unit_value',$this->input->post('unit'));
+
+			$this->session->set_flashdata('floors_value',$this->input->post('floors'));
+
+			$this->session->set_flashdata('security_deposit_value',$this->input->post('security_deposit'));
+
+			$this->session->set_flashdata('parking_value',$this->input->post('parking'));
+
+			$this->session->set_flashdata('area_value',$this->input->post('area'));
+
+			$this->session->set_flashdata('maintenance_value',$this->input->post('maintenance'));
+
+			$this->session->set_flashdata('time_value',$this->input->post('avail_time'));
+
+			$this->session->set_flashdata('posted_value',$this->input->post('posted_by'));
+
+			$this->session->set_flashdata('desc_value',$this->input->post('description'));
+
+			
+
+			
+
+			redirect(base_url().'home/rent_out', 'refresh');
+
+	
+
+		}else{
+
+			$property_name	= $this->input->post('property_name');
+
+			$property_type	= $this->input->post('property_type');
+
+			$sub_type		= $this->input->post('property_sub_type');
+
+			$facing			= $this->input->post('facing');
+
+			$city			= $this->input->post('city');
+
+			$locality		= $this->input->post('locality');
+
+			$land_mark		= $this->input->post('land_mark');
+
+			$state			= $this->input->post('state');
+
+			$maintenance	= $this->input->post('maintenance');
+
+			$bedrooms		= $this->input->post('bedrooms');
+
+			$bathrooms		= $this->input->post('bathrooms');
+
+			$price			= $this->input->post('price');
+
+			$furnishing		= $this->input->post('furnishing');
+
+			$unit			= $this->input->post('unit');
+
+			$floors			= $this->input->post('floors');
+
+			$security_deposit = $this->input->post('security_deposit');
+
+			$parking		= $this->input->post('parking');
+
+			$area			= $this->input->post('area');
+
+			$name	 		= $this->input->post('name');
+
+			$phone	 		= $this->input->post('phone');
+
+			$email	 		= $this->input->post('email');
+
+			$avail_time		= $this->input->post('avail_time');
+
+			$water			= $this->input->post('water');
+
+			$electricity	= $this->input->post('electricity');
+
+			$tenents		= $this->input->post('tenents');
+
+			$posted_by		= $this->input->post('posted_by');
+
+			$description	= $this->input->post('description');			
+
+			$photo			= $_FILES['photos']['name'];
+
+			$amenities1		= $this->input->post('amenities1');
+
+			
+
+			if ($amenities1 != null && $amenities1 != ''){
+
+				$amenities		= implode(',', $amenities1);
+
+			}else {
+
+				$amenities		= '';
+
+			}
+
+
+
+			if($_FILES['photos']['name'] != null && $_FILES['photos']['name'] != ''){
+
+				$photos		= implode(',', $photo);
+
+			}else {
+
+				$photos		= 'no-photo.jpg';
+
+			}
+
+				
+
+	
+
+			$date 			= date('Y-m-d h:i:s');
+
+	
+
+			$city1 			= $this->crud_model->get_city_by_id($city);
+
+			$locality1 		= $this->crud_model->get_locality_by_id($locality);
+
+				
+
+			foreach ($city1 as $row){
+
+				$city_name  = $row['city'];
+
+			}
+
+			foreach ($locality1 as $row1){
+
+				$local_name = $row1['locality'];
+
+			}
+
+			
+
+			// $Address 	 	= urlencode($local_name,$city_name); 
+
+			$Address 	 	= $local_name.','.$city_name;
+
+			$Address = urlencode($Address);
+
+	                $request_url 	= "https://maps.googleapis.com/maps/api/geocode/json?address=".$Address."&sensor=true&key=AIzaSyB5pJ-mKzfSoERevq1rX5zNFWdhfg2kNcA";
+	
+	                $resp_json 	= file_get_contents($request_url) or die("url not loading");
+
+	                $resp = json_decode($resp_json,true);
+
+	                $status = $resp["status"];
+
+	                if ($status=="OK") {
+
+		             $latitude   = $resp['results'][0]['geometry']['location']['lat'];
+
+		             $longitude  = $resp['results'][0]['geometry']['location']['lng'];				
+	                }
+
+			$data = array(
+
+					'property_name'		=> $property_name,
+
+					'property_type'		=> $property_type,
+
+					'property_sub_type'	=> $sub_type,
+
+					'facing'			=> $facing,
+
+					'city'				=> $city,
+
+					'locality'			=> $locality,
+
+					'land_mark'			=> $land_mark,
+
+					'state'				=> $state,
+
+					'maintenance'		=> $maintenance,
+
+					'bedrooms'			=> $bedrooms,
+
+					'bathrooms'			=> $bathrooms,
+
+					'price'				=> $price,
+
+					'furnishing_status'	=> $furnishing,
+
+					'unit_no'			=> $unit,
+
+					'floors'			=> $floors,
+
+					'parking'			=> $parking,
+
+					'builtup_area'		=> $area,
+
+					'security_deposit'	=> $security_deposit,
+
+					'name' 				=> $name,
+
+					'phone'  			=> $phone,
+
+					'email'    			=> $email,
+
+					'available_time'	=> $avail_time,
+
+					'longitude'    		=> $longitude,
+
+					'latitude'    		=> $latitude,
+
+					'water_availability'=> $water,
+
+					'electricity_status'=> $electricity,
+
+					'tenents_preferred' => $tenents,
+
+					'posted_by'    		=> $posted_by,
+
+					'photos'    		=> $photos,
+
+					'description'    	=> $description,
+
+					'amenities'    		=> $amenities,
+
+					'status'			=> '0',
+
+					'datetime'			=> $date
+
+	
+
+			);
+
+	
+
+			$rent_out = $this->db->insert('rent',$data);
+
+			
+
+			if ($rent_out) {
+
+			
+
+				$number_of_files = sizeof($_FILES['photos']['tmp_name']);
+
+				// considering that do_upload() accepts single files, we will have to do a small hack so that we can upload multiple files. For this we will have to keep the data of uploaded files in a variable, and redo the $_FILE.
+
+				$files = $_FILES['photos'];
+
+				$errors = array();
+
+			
+
+				// first make sure that there is no error in uploading the files
+
+				for($i=0;$i<$number_of_files;$i++)
+
+				{
+
+				if($_FILES['photos']['error'][$i] != 0) $errors[$i][] = 'Couldn\'t upload file '.$_FILES['photos']['name'][$i];
+
+				}
+
+				if(sizeof($errors)==0)
+
+				{
+
+				// now, taking into account that there can be more than one file, for each file we will have to do the upload
+
+					// we first load the upload library
+
+					$this->load->library('upload');
+
+					// next we pass the upload path for the images
+
+					$config['upload_path'] = FCPATH . 'uploads/rent/';
+
+					// also, we make sure we allow only certain type of images
+
+					$config['allowed_types'] = 'gif|jpg|jpeg|JPG|JPEG|PNG|png';
+
+					for ($i = 0; $i < $number_of_files; $i++) {
+
+								$_FILES['photos']['name'] = $files['name'][$i];
+
+										$_FILES['photos']['type'] = $files['type'][$i];
+
+										$_FILES['photos']['tmp_name'] = $files['tmp_name'][$i];
+
+										$_FILES['photos']['error'] = $files['error'][$i];
+
+								$_FILES['photos']['size'] = $files['size'][$i];
+
+								//now we initialize the upload library
+
+								$this->upload->initialize($config);
+
+								// we retrieve the number of files that were uploaded
+
+								if ($this->upload->do_upload('photos'))
+
+								{
+
+								$data['uploads'][$i] = $this->upload->data();
+
+								}
+
+								else
+
+						{
+
+
+								}
+
+								}
+
+								}
+
+								else
+
+									{
+
+									 	
+
+									}
+
+			
+
+									}
+
+	
+
+	
+
+			$this->session->set_flashdata('message','Thank you for your trust in space4all. Just wait few hours, we are on the job.');
+
+	
+
+			redirect(base_url().'home/rent_out', 'refresh');
+
+		}
+	*/
+});
 router.get("/rent", function (req, res) {
 	var propertyType = req.query.property_type || "",
 		propertySubType = req.query.property_sub_type || "",
