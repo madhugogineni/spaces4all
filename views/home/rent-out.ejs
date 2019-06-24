@@ -22,9 +22,9 @@
     <link href="<%=base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
 
     <link href="<%=base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
-  
+
     <link href="<%=base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
-  
+
     <link href="<%=base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
 
     <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
@@ -125,32 +125,32 @@
             }
 
         }
-        $("form#rent_out_form").submit(function (e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: "POST",
-                url: "<%=base_url %>home/add_list_property",
-                data: formData,
-                success: function (result) {
-                    console.log(result);
-                    var className = "";
-                    if (result.success) {
-                        className = "alert alert-success fade in";
-                    } else {
-                        className = "alert alert-error fade in";
-                    }
-                    var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
-                    $("#list_property").prepend(displayMsg);
-                },
-                cache: false,
-                contentType: false,
-                processData: false
+        $(document).ready(function () {
+            $("form#rent_out_form").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                console.log("welcome");
+                $.ajax({
+                    type: "POST",
+                    url: "<%=base_url %>home/add_rent_out",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        var className = "";
+                        if (result.success) {
+                            className = "alert alert-success fade in";
+                        } else {
+                            className = "alert alert-error fade in";
+                        }
+                        var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
+                        $("#rent_out_form").prepend(displayMsg);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
             });
         });
-
-
-
     </script>
 
 
@@ -207,14 +207,8 @@
 
                         <div class="col-md-12">
 
-                            <form action="<%=base_url %>home/add_rent_out" method="post" id="rent_out_form"
+                            <form action="<%=base_url %>home/add_rent_out" method="POST" id="rent_out_form"
                                 enctype="multipart/form-data">
-
-                                <div class="" id="">
-
-
-
-                                </div>
                                 <!-- 
                           <?php 
 

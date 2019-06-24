@@ -1373,5 +1373,16 @@ module.exports = {
                 }
             });
         });
+    },
+    insertToRent: function (data) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into rent set ?",data, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({ success: false, message: error });
+                }
+                resolve({ success: true, propertyId: result.insertId })
+            });
+        });
     }
 };

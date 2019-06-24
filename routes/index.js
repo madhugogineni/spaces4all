@@ -425,200 +425,124 @@ router.get("/rent_in", function (req, res) {
 	});
 });
 router.get("/rent_out", function (req, res) {
-	var responseObj = { page_title: "Rent In", page_name: "Rent In" };
+	var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
 	res.render("home/rent-out", responseObj);
 });
-router.post("/add_rent_out", async function (req, res) {
+router.post("/add_rent_out", upload.fields([{ name: 'photos[]', maxCount: 10 }]), async function (req, res) {
 	console.log(req.body);
+	console.log(req.files["photos[]"]);
 	let validator = new validatorpackage(req.body, {
 		property_name: 'required',
 		property_type: 'required',
 		property_sub_type: 'required',
 		facing: 'required',
-		
-
+		state: 'required',
+		city: 'required',
+		locality: 'required',
+		price: 'required',
+		name: 'required|minLength:4|maxLength:12',
+		email: 'required|email',
+		phone: 'required|numeric|minLength:10|maxLength:10',
+		posted_by: 'required'
 	});
-	var validationResult = validator.check();
-	console.log("validation result = " + validatorResult);
-
-	/*
-	
-		$this->load->library('form_validation');
-
+	var validationResult = await validator.check();
+	if (!validationResult) {
+		var errorMsg = "";
+		Object.keys(validator.errors).map(function (key) {
+			errorMsg += validator.errors[key].message + "<br/>";
+		});
+		res.send({ success: false, message: errorMsg });
+	} else {
+		var propertyName = req.body.property_name || "",
+			propertyType = req.body.property_type || "",
+			subType = req.body.property_sub_type || "",
+			facing = req.body.facing || "",
+			city = req.body.city || "",
+			locality = req.body.locality || "",
+			landMark = req.body.land_mark || "",
+			state = req.body.state || "",
+			maintenance = req.body.maintenance || "",
+			bedrooms = req.body.bedrooms || "",
+			bathrooms = req.body.bathrooms || "",
+			price = req.body.price || "",
+			furnishing = req.body.furnishing || "",
+			unit = req.body.unit || "",
+			floors = req.body.floors || "",
+			security_deposit = req.body.security_deposit || "",
+			parking = req.body.parking || "",
+			area = req.body.area || "",
+			name = req.body.name || "",
+			phone = req.body.phone || "",
+			email = req.body.email || "",
+			availTime = req.body.avail_time || "",
+			water = req.body.water || "",
+			electricity = req.body.electricity || "",
+			tenents = req.body.tenents || "",
+			postedBy = req.body.posted_by || "",
+			description = req.body.description || "",
+			photo = req.body.photos || "",
+			amenities1 = req.body.amenities1 || [],
+			files = req.files["photos[]"] || [],
+			amenities = "";
+		for (var i = 0; i < amenities1.length; i++) {
+			amenities += amenities1[i];
+			if (i != (amenities1.length - 1)) {
+				amenities += ",";
+			}
+		}
+		var date = moment().format(dateFormat);
+		var city1 = await crudModel.getCityById(city);
+		var cityName = city1[0].city;
+		var locality1 = await crudModel.getLocalityById(locality);
+		var localityName = locality1[0].locality;
+		var address = localityName + ',' + cityName;
+		var geocoderResponse = await geocoder.geocode(address, function (err, res) {
+			return res;
+		});
+		var latitude = geocoderResponse[0].latitude, longitude = geocoderResponse[0].longitude;
+		var data = {
+			/*'property_name'		=> $property_name,
+			'property_type'		=> $property_type,
+			'property_sub_type'	=> $sub_type,
+			'facing'			=> $facing,
+			'city'				=> $city,
+			'locality'			=> $locality,
+			'land_mark'			=> $land_mark,
+			'state'				=> $state,
+			'maintenance'		=> $maintenance,
+			'bedrooms'			=> $bedrooms,
+			'bathrooms'			=> $bathrooms,
+			'price'				=> $price,
+			'furnishing_status'	=> $furnishing,
+			'unit_no'			=> $unit,
+			'floors'			=> $floors,
+			'parking'			=> $parking,
+			'builtup_area'		=> $area,
+			'security_deposit'	=> $security_deposit,
+			'name' 				=> $name,
+			'phone'  			=> $phone,
+			'email'    			=> $email,
+			'available_time'	=> $avail_time,
+			'longitude'    		=> $longitude,
+			'latitude'    		=> $latitude,
+			'water_availability'=> $water,
 			
-
-		$this->form_validation->set_rules('property_name', 'Property Name', 'required');
-
-		$this->form_validation->set_rules('property_type', 'Property Type', 'required');
-
-		$this->form_validation->set_rules('property_sub_type', 'Property Sub Type', 'required');
-
-		$this->form_validation->set_rules('facing', 'Facing', 'required');
-
-                $this->form_validation->set_rules('state', 'State', 'required');
-
-		$this->form_validation->set_rules('city', 'City', 'required');
-
-		$this->form_validation->set_rules('locality', 'Locality', 'required');
-
-		$this->form_validation->set_rules('price', 'Price', 'required');
-
-		$this->form_validation->set_rules('name', 'Username', 'trim|required|min_length[4]|max_length[12]|xss_clean');
-
-		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
-
-		$this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|exact_length[10]');
-
-		$this->form_validation->set_rules('posted_by', 'Posted By', 'required');
-
-	
-
-		if ($this->form_validation->run() == FALSE)
-
-		{
-
-			$this->session->set_flashdata('error',validation_errors());
-
-	
-
-			$this->session->set_flashdata('message1','Please Fill The Details Below !');
-
-				
-
-			if (form_error('property_name')) {
-
-				$this->session->set_flashdata('property_name',form_error('property_name'));
-
-			}
-
-			if (form_error('property_type')) {
-
-				$this->session->set_flashdata('property_type',form_error('property_type'));
-
-			}
-
-			if (form_error('property_sub_type')) {
-
-				$this->session->set_flashdata('property_sub_type',form_error('property_sub_type'));
-
-			}
-
-			if (form_error('facing')) {
-
-				$this->session->set_flashdata('facing',form_error('facing'));
-
-			}
-
-if (form_error('state')) {
-
-				$this->session->set_flashdata('state',form_error('state'));
-
-			}
-
-			if (form_error('city')) {
-
-				$this->session->set_flashdata('city',form_error('city'));
-
-			}
-
-			if (form_error('locality')) {
-
-				$this->session->set_flashdata('locality',form_error('locality'));
-
-			}
-
-			if (form_error('posted_by')) {
-
-				$this->session->set_flashdata('posted_by',form_error('posted_by'));
-
-			}
-
-			if (form_error('name')) {
-
-				$this->session->set_flashdata('name',form_error('name'));
-
-			}
-
-			if (form_error('email')) {
-
-				$this->session->set_flashdata('email',form_error('email'));
-
-			}
-
-			if (form_error('phone')) {
-
-				$this->session->set_flashdata('phone',form_error('phone'));
-
-			}
-
-			if (form_error('price')) {
-
-				$this->session->set_flashdata('price',form_error('price'));
-
-			}
-
-	
-
+			'electricity_status'=> $electricity,
 			
+			'tenents_preferred' => $tenents,
+			'posted_by'    		=> $posted_by,
+			'photos'    		=> $photos,
+			'description'    	=> $description,
+			'amenities'    		=> $amenities,
+			'status'			=> '0',
+		'datetime'			=> $date*/
+		};
+		var rentResponse = crudModel.insertToRent(data);
+		res.send({ success: true, message: "stored your details. We will contact you soon!" });
+	}
 
-			$this->session->set_flashdata('name_value',$this->input->post('name'));
 
-			$this->session->set_flashdata('email_value',$this->input->post('email'));
-
-			$this->session->set_flashdata('phone_value',$this->input->post('phone'));
-
-			$this->session->set_flashdata('property_name_value',$this->input->post('property_name'));
-
-			$this->session->set_flashdata('property_value',$this->input->post('property_type'));
-
-			$this->session->set_flashdata('sub_value',$this->input->post('property_sub_type'));
-
-			$this->session->set_flashdata('facing_value',$this->input->post('facing_value'));
-
-			$this->session->set_flashdata('bed_value',$this->input->post('bedrooms'));
-
-			$this->session->set_flashdata('bath_value',$this->input->post('bathrooms'));
-
-			$this->session->set_flashdata('city_value',$this->input->post('city'));
-
-			$this->session->set_flashdata('local_value',$this->input->post('locality'));
-
-			$this->session->set_flashdata('land_value',$this->input->post('land_mark'));
-
-			$this->session->set_flashdata('state_value',$this->input->post('state'));
-
-			$this->session->set_flashdata('price_value',$this->input->post('price'));
-
-			$this->session->set_flashdata('furnishing_value',$this->input->post('furnishing'));
-
-			$this->session->set_flashdata('unit_value',$this->input->post('unit'));
-
-			$this->session->set_flashdata('floors_value',$this->input->post('floors'));
-
-			$this->session->set_flashdata('security_deposit_value',$this->input->post('security_deposit'));
-
-			$this->session->set_flashdata('parking_value',$this->input->post('parking'));
-
-			$this->session->set_flashdata('area_value',$this->input->post('area'));
-
-			$this->session->set_flashdata('maintenance_value',$this->input->post('maintenance'));
-
-			$this->session->set_flashdata('time_value',$this->input->post('avail_time'));
-
-			$this->session->set_flashdata('posted_value',$this->input->post('posted_by'));
-
-			$this->session->set_flashdata('desc_value',$this->input->post('description'));
-
-			
-
-			
-
-			redirect(base_url().'home/rent_out', 'refresh');
-
-	
-
-		}else{
-
+	/*else{
 			$property_name	= $this->input->post('property_name');
 
 			$property_type	= $this->input->post('property_type');
