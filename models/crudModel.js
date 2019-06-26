@@ -1387,13 +1387,12 @@ module.exports = {
     },
     updatePhotosInRentField: function (photos, propertyId) {
         return new Promise(function (resolve, reject) {
-            console.log("update rent set photos = '"+photos+"' where rent_id = '"+propertyId+"'");
-            con.query("update rent set photos = '"+photos+"' where rent_id = '"+propertyId+"'", function (error, result) {
+            con.query("update rent set photos = '" + photos + "' where rent_id = '" + propertyId + "'", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false, message: error});
                 } else {
-
+                    resolve({success: true});
                 }
             });
         });

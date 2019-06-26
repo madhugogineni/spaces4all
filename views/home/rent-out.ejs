@@ -129,7 +129,6 @@
             $("form#rent_out_form").submit(function (e) {
                 e.preventDefault();
                 var formData = new FormData(this);
-                console.log("welcome");
                 $.ajax({
                     type: "POST",
                     url: "<%=base_url %>home/add_rent_out",
@@ -139,6 +138,7 @@
                         var className = "";
                         if (result.success) {
                             className = "alert alert-success fade in";
+                            $('#form#rent_out_form').trigger("reset");
                         } else {
                             className = "alert alert-error fade in";
                         }
@@ -161,17 +161,9 @@
 
     <div class="body">
 
-        <!-- Start Site Header -->
-
         <% include includes/header.ejs %>
 
-        <!-- End Site Header -->
-
-        <!-- Site Showcase -->
-
         <div class="site-showcase">
-
-            <!-- Start Page Header -->
 
             <div class="parallax page-header">
 
@@ -191,11 +183,7 @@
 
             </div>
 
-            <!-- End Page Header -->
-
         </div>
-
-        <!-- Start Content -->
 
         <div class="main" role="main">
 
@@ -209,35 +197,6 @@
 
                             <form action="<%=base_url %>home/add_rent_out" method="POST" id="rent_out_form"
                                 enctype="multipart/form-data">
-                                <!-- 
-                          <?php 
-
-                             if ($this->session->flashdata('message')) {
-
-                             ?>
-
-                             <div class="alert alert-success fade in"> <a href="#" data-dismiss="alert" class="close">x</a> <strong><?=$this->session->flashdata('message')?></strong></div>
-
-                             <?php 
-
-                             }
-
-                             ?>
-
-                             <?php 
-
-                             if ($this->session->flashdata('message1')) {
-
-                             ?>
-
-                             <div class="alert alert-error fade in"> <a href="#" data-dismiss="alert" class="close">x</a> <strong><?=$this->session->flashdata('message1')?></strong></div>
-
-                             <?php 
-
-                             }
-
-                             ?> -->
-
                                 <div class="padding-as25 margin-30 lgray-bg">
 
                                     <div class="row">
@@ -249,8 +208,6 @@
                                             <input type="text" name="property_name" id="property_name"
                                                 class="form-control" value="" placeholder="Property Name">
 
-                                            <!-- <?php if ($this->session->flashdata('property_name')) {?><b style="color: red"><?=$this->session->flashdata('property_name')?></b><?php }?> -->
-
                                         </div>
 
                                         <div class="col-md-6 col-sm-4">
@@ -259,26 +216,7 @@
 
                                             <select name="property_type" id="property_type"
                                                 onchange="show_sub_type(this.value)" class="form-control margin-0">
-
-                                                <!-- <option value="">---SELECT---</option>
-
-                                                <?php 
-
-                                              $property = $this->crud_model->get_property_type();
-
-                                              foreach ($property as $row){
-
-                                              ?>
-
-                                                <option value="<?=$row['property_type_id']?>"
-                                                    <?php if ($this->session->flashdata('property_value')){if($this->session->flashdata('property_value') == $row['property_type_id']){echo 'selected';}}?>>
-                                                    <?=$row['type']?></option>
-
-                                                <?php }?> -->
-
                                             </select>
-
-                                            <!-- <?php if ($this->session->flashdata('property_type')) {?><b style="color: red"><?=$this->session->flashdata('property_type')?></b><?php }?> -->
 
                                         </div>
 
@@ -293,39 +231,7 @@
                                             <select name="property_sub_type" id="property_sub_type"
                                                 onchange="hide_bedrooms(this.value)" class="form-control margin-0">
 
-                                                <!-- <?php 
-
-                                      		  if ($this->session->flashdata('sub_value')){
-
-											  $sub = $this->crud_model->get_property_sub_type_by_property($this->session->flashdata('property_value'));
-
-											  foreach ($sub as $row1){
-
-											  ?>
-
-                                                <option value="<?=$row1['property_sub_type_id']?>"
-                                                    <?php if ($this->session->flashdata('sub_value')==$row1['property_sub_type_id']){echo 'selected';}?>>
-                                                    <?=$row1['sub_type']?></option>
-
-                                                <?php 
-
-											  }
-
-											  }else {
-
-											  ?> -->
-
-                                                <!-- <option value="">---SELECT---</option>
-
-                                                <?php 
-
-                                              }
-
-                                              ?> -->
-
                                             </select>
-
-                                            <!-- <?php if ($this->session->flashdata('property_sub_type')) {?><b style="color: red"><?=$this->session->flashdata('property_sub_type')?></b><?php }?> -->
 
                                         </div>
 
