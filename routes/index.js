@@ -4,7 +4,7 @@ var crudModel = require("../models/crudModel");
 var validatorpackage = require('node-input-validator');
 var multer = require('multer');
 var fs = require('fs');
-var upload = multer();//{ storage: storage }
+var upload = multer();
 var moment = require("moment");
 var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../external-config/geocoding-config");
@@ -464,8 +464,6 @@ router.get("/rent_out", function (req, res) {
     res.render("home/rent-out", responseObj);
 });
 router.post("/add_rent_out", upload.fields([{name: 'photos[]', maxCount: 10}]), async function (req, res) {
-    console.log(req.body);
-    console.log(req.files["photos[]"]);
     let validator = new validatorpackage(req.body, {
         property_name: 'required',
         property_type: 'required',
@@ -478,7 +476,9 @@ router.post("/add_rent_out", upload.fields([{name: 'photos[]', maxCount: 10}]), 
         name: 'required|minLength:4|maxLength:24',
         email: 'required|email',
         phone: 'required|numeric|minLength:10|maxLength:10',
-        posted_by: 'required'
+        posted_by: 'required',
+        unit: 'numeric|maxLength:10',
+        floors: 'numeric|maxLength:10'
     });
     var validationResult = await validator.check();
     if (!validationResult) {
@@ -577,12 +577,12 @@ router.post("/add_rent_out", upload.fields([{name: 'photos[]', maxCount: 10}]), 
             if (uploadImagesResult.success) {
                 var uploadImageString = uploadImagesResult.fileNames.toString();
                 var updatePhotosResponse = await crudModel.updatePhotosInRentField(uploadImageString, propertyId);
-                if(updatePhotosResponse.success) {
+                if (updatePhotosResponse.success) {
                     res.send({
                         success: true,
                         message: "Thank you for your trust in space4all. Just wait few hours, we are on the job."
                     });
-                }else {
+                } else {
                     res.send({
                         success: true,
                         message: "Your Property Listing Has Failed ! Please Try Again."
@@ -646,9 +646,370 @@ router.get("/rent", function (req, res) {
     });
 });
 
-router.get("/post_requirement",function(req,res) {
-    res.send("welcome");
+router.get("/post_requirement", function (req, res) {
+    res.render("home/post-requirement", {page_name: "Post Requirement", page_title: "Post Requirement"});
 });
+
+router.post('/add_post_requirement', upload.none(), async function (req, res) {
+    // console.log(req.body);
+    var validatorRules = {
+        property_type: 'required',
+        property_sub_type: 'required',
+        city: 'required',
+        locality: 'required',
+        state: 'required',
+        min_price: 'required|numeric',
+        max_price: 'required|numeric',
+        min_area: 'numeric',
+        max_area: 'numeric',
+        name: 'required|minLength:4',
+        email: 'required|email',
+        phone: 'required|phoneNumber',
+        avail_time: 'required'
+    }
+    if (req.body.property_type == '1' || req.body.property_sub_type == "14") {
+    } else {
+        validatorRules.bedrooms = 'required';
+    }
+    console.log(validatorRules);
+    let validator = new validatorpackage(req.body, validatorRules);
+    var validatorResult = await validator.check();
+    if (!validatorResult) {
+        var errorMessage = getErrorMessage(validator.errors)
+        res.send({success: false, message: errorMessage});
+    } else {
+        var property_type = req.body.property_type || 0;
+        var property_sub_type = req.body.property_sub_type || 0;
+        var bedrooms = req.body.bedrooms || "";
+        var city = req.body.city || "";
+        var locality = req.body.locality || "";
+        var state = req.body.state || "";
+        var min_price  = req.body.min_price;
+        var max_price = req.body.max_price || "";
+/*
+        $min_price		= $this->input->post('min_price');
+
+        $max_price		= $this->input->post('max_price');
+
+        $min_area		= $this->input->post('min_area').' '.$this->input->post('min_area_type');
+
+        $max_area		= $this->input->post('max_area').' '.$this->input->post('max_area_type');
+
+        $name  			= $this->input->post('name');
+
+        $phone	 		= $this->input->post('phone');
+
+        $email	 		= $this->input->post('email');
+
+        $avail_time		= $this->input->post('avail_time');
+
+        $duration 		= $this->input->post('duration');
+
+        $type 			= $this->input->post('type');*/
+        res.send({success: true, message: 'Details successfully added'});
+    }
+    /*
+    //
+    // $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[4]|xss_clean');
+    //
+    // $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+    //
+    // $this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|exact_length[10]');
+
+    /* $this->form_validation->set_rules('avail_time', 'Available Time', 'required');
+
+
+
+    if ($this->form_validation->run() == FALSE)
+
+    {
+
+        $this->session->set_flashdata('error',validation_errors());
+
+
+
+        $this->session->set_flashdata('message1','Please Fill The Details Below !');
+
+
+
+
+        $this->session->set_flashdata('name_value',$this->input->post('name'));
+
+        $this->session->set_flashdata('email_value',$this->input->post('email'));
+
+        $this->session->set_flashdata('phone_value',$this->input->post('phone'));
+
+        $this->session->set_flashdata('property_value',$this->input->post('property_type'));
+
+        $this->session->set_flashdata('sub_value',$this->input->post('property_sub_type'));
+
+        $this->session->set_flashdata('bed_value',$this->input->post('bedrooms'));
+
+        $this->session->set_flashdata('bath_value',$this->input->post('bathrooms'));
+
+        $this->session->set_flashdata('city_value',$this->input->post('city'));
+
+        $this->session->set_flashdata('local_value',$this->input->post('locality'));
+
+        $this->session->set_flashdata('state_value',$this->input->post('state'));
+
+        $this->session->set_flashdata('min_price_value',$this->input->post('min_price'));
+
+        $this->session->set_flashdata('max_price_value',$this->input->post('max_price'));
+
+        $this->session->set_flashdata('min_area_value',$this->input->post('min_area'));
+
+        $this->session->set_flashdata('max_area_value',$this->input->post('max_area'));
+
+        $this->session->set_flashdata('time_value',$this->input->post('avail_time'));
+
+        $this->session->set_flashdata('duration_value',$this->input->post('duration'));
+
+
+
+
+
+        redirect(base_url().'home/post_requirement', 'refresh');
+
+
+
+    }else{
+
+        $property_type	= $this->input->post('property_type');
+
+        $sub_type		= $this->input->post('property_sub_type');
+
+        $bedrooms		= $this->input->post('bedrooms');
+
+        $city			= $this->input->post('city');
+
+        $locality		= $this->input->post('locality');
+
+        $state			= $this->input->post('state');
+
+        $min_price		= $this->input->post('min_price');
+
+        $max_price		= $this->input->post('max_price');
+
+        $min_area		= $this->input->post('min_area').' '.$this->input->post('min_area_type');
+
+        $max_area		= $this->input->post('max_area').' '.$this->input->post('max_area_type');
+
+        $name  			= $this->input->post('name');
+
+        $phone	 		= $this->input->post('phone');
+
+        $email	 		= $this->input->post('email');
+
+        $avail_time		= $this->input->post('avail_time');
+
+        $duration 		= $this->input->post('duration');
+
+        $type 			= $this->input->post('type');
+
+
+
+
+
+        $date 			= date('Y-m-d h:i:s');
+
+
+
+
+
+        $data = array(
+
+            'property_type'		=> $property_type,
+
+            'type'				=> $type,
+
+            'property_sub_type'	=> $sub_type,
+
+            'bedrooms'			=> $bedrooms,
+
+            'city'				=> $city,
+
+            'locality'			=> $locality,
+
+            'state'				=> $state,
+
+            'min_price'			=> $min_price,
+
+            'max_price'			=> $max_price,
+
+            'min_area'			=> $min_area,
+
+            'max_area'			=> $max_area,
+
+            'name' 				=> $name,
+
+            'phone'  			=> $phone,
+
+            'email'    			=> $email,
+
+            'available_time'	=> $avail_time,
+
+            'duration'			=> $duration,
+
+            'datetime'			=> $date
+
+
+
+    );
+
+
+
+        $list_property = $this->db->insert('post_requirement',$data);
+
+
+
+        if ($list_property) {
+
+            $this->load->library('email');
+
+
+
+            $property = $this->crud_model->get_property_type_by_id($property_type);
+
+            $sub_type = $this->crud_model->get_property_sub_type_by_id($sub_type);
+
+            $city	  = $this->crud_model->get_city_by_id($city);
+
+            $local	  = $this->crud_model->get_locality_by_id($locality);
+
+            $states      = $this->crud_model->get_state_by_id($state);
+
+
+
+            foreach ($states as $row5){
+
+                $state_name = $row5['state_name'];
+
+            }
+
+
+
+            foreach ($property as $row1){
+
+                $property_type_name = $row1['type'];
+
+            }
+
+            foreach ($sub_type as $row3){
+
+                $property_sub_type = $row3['sub_type'];
+
+            }
+
+            foreach ($city as $row2){
+
+                $city_name = $row2['city'];
+
+            }
+
+
+
+            foreach ($local as $row4){
+
+                $locality_name = $row4['locality'];
+
+            }
+
+
+
+            if($min_price > 10000000)
+
+            {
+
+                $min = ((float)$min_price) / 10000000;
+
+                $min = $min.' Cr';
+
+            }
+
+            else if($min_price > 100000)
+
+            {
+
+                $min = ((float)$min_price) / 100000;
+
+                $min = $min.' Lac';
+
+            }
+
+
+
+            if($max_price > 10000000)
+
+            {
+
+                $max = ((float)$max_price) / 10000000;
+
+                $max = $max.' Cr';
+
+            }
+
+            else if($max_price > 100000)
+
+            {
+
+                $max = ((float)$max_price) / 100000;
+
+                $max = $max.' Lac';
+
+            }
+
+
+
+            $config['protocol'] = 'sendmail';
+
+            $config['mailpath'] = '/usr/sbin/sendmail';
+
+            $config['mailtype'] = 'html';
+
+            $config['charset'] = 'iso-8859-1';
+
+            $config['wordwrap'] = TRUE;
+
+
+
+            $this->email->initialize($config);
+
+
+
+            $this->email->from($email, "Spaces4all");
+
+            $this->email->to("spaces4all@gmail.com");
+
+
+
+
+
+            $this->email->subject('Spaces4all - Post Requirement Request');
+
+            $this->email->message("Spaces4all - ".$name." has posted requirement. <br><br> <table border='1px'><tr><td width='100px'>Property Type</td><td>".$property_type_name."</td></tr><tr><td>Property Sub Type</td><td>".$property_sub_type."</td></tr><tr><td>Contract Type</td><td>".$type."</td></tr><tr><td>City</td><td>".$city_name."</td></tr><tr><td>Locality</td><td>".$locality_name."</td></tr><tr><td>State</td><td>".$state_name."</td></tr><tr><td>Min Price</td><td>".$min_price."</td></tr><tr><td>Max Price</td><td>".$max_price."</td></tr><tr><td>Min Area</td><td>".$min_area."</td></tr><tr><td>Max Area</td><td>".$max_area."</td></tr><tr><td>Time Period</td><td>".$duration."</td></tr><tr><td>Name</td><td>".$name."</td></tr><tr><td>Email</td><td>".$email."</td></tr><tr><td>Phone</td><td>".$phone."</td></tr><tr><td>Available Time</td><td>".$avail_time."</td></tr></table>");
+
+
+
+            $result = $this->email->send();
+
+
+
+            $this->session->set_flashdata('message','Your Requirement Has Been Successfully Submitted !');
+
+        }else {
+
+            $this->session->set_flashdata('message','Your Requirement Has Not Posted ! Please Try Again. !');
+
+        }
+
+
+
+        redirect(base_url().'home/post_requirement', 'refresh');
+
+    }*/
+});
+
 function writeFile(fileName, fileBuffer, path) {
     return new Promise(function (resolve, reject) {
         fs.appendFile(path + fileName, fileBuffer, function (error) {
@@ -682,6 +1043,16 @@ async function uploadImages(photoFiles, propertyId, path) {
             return {success: false};
         }
     }
+}
+
+function getErrorMessage(errors) {
+    var errorMsg = "";
+    console.log("++++++++++");
+    console.log(errors);
+    Object.keys(errors).map(function (key) {
+        errorMsg += errors[key].message + "<br/>";
+    });
+    return errorMsg;
 }
 
 module.exports = router;

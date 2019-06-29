@@ -228,8 +228,8 @@
                 for (var i = 0; i < response.length; i++) {
                     result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
                 }
-                $("#property_sub_type").find('option').remove().end();
-                $("#property_sub_type").append(result);
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
             }
         });
     }
