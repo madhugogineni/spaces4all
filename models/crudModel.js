@@ -1396,5 +1396,17 @@ module.exports = {
                 }
             });
         });
+    },
+    postRequirement: function (data) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into post_requirement set ?", data, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false, message: error});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        });
     }
 };

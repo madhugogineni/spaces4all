@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var logger = require('morgan');
 var crudModel = require('./models/crudModel');
 var indexRouter = require('./routes/index');
@@ -9,6 +10,8 @@ var adminRouter = require('./routes/admin');
 var apiRouter = require('./routes/apis');
 
 var app = express();
+app.use(session({secret: 'sekhar gogineni'}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
