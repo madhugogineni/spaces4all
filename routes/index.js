@@ -1,27 +1,28 @@
 var express = require('express');
 var router = express.Router();
-var crudModel = require("../models/crudModel");
 var validatorpackage = require('node-input-validator');
 var multer = require('multer');
-var fs = require('fs');
-var upload = multer();
+var nodemailer = require("nodemailer");
 var moment = require("moment");
 var nodeGeocoder = require("node-geocoder");
+var fs = require('fs');
+var crudModel = require("../models/crudModel");
 var geocoderoptions = require("../external-config/geocoding-config");
-var nodemailer = require("nodemailer");
+var emailConfig = require("../external-config/email-config");
+var upload = multer();
 var geocoder = nodeGeocoder(geocoderoptions);
-var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: '************@gmail.com',
-        pass: '*********'
+        user: emailConfig.emailId,
+        pass: emailConfig.password
     }
 });
 
 
 var addContactMessage = "", isError = 0;
 var loanErrorMsg = "", loanError = false;
+var dateFormat = "YYYY-MM-DD HH:mm:ss";
 router.get("/index", function (req, res) {
     res.redirect("/");
 });
@@ -659,7 +660,7 @@ router.get("/post_requirement", function (req, res) {
 });
 
 router.post('/add_post_requirement', upload.none(), async function (req, res) {
-    // console.log(req.body);
+    console.log(req.body);
     var validatorRules = {
         property_type: 'required',
         property_sub_type: 'required',
@@ -679,7 +680,6 @@ router.post('/add_post_requirement', upload.none(), async function (req, res) {
     } else {
         validatorRules.bedrooms = 'required';
     }
-    console.log(validatorRules);
     let validator = new validatorpackage(req.body, validatorRules);
     var validatorResult = await validator.check();
     if (!validatorResult) {
@@ -695,7 +695,7 @@ router.post('/add_post_requirement', upload.none(), async function (req, res) {
         var minPrice = req.body.min_price;
         var maxPrice = req.body.max_price || "";
         var maxArea = (req.body.max_area || "") + " " + (req.body.max_area_type || "");
-        var minArea = (req.body.max_area || "") + " " + (req.body.min_price_type || "");
+        var minArea = (req.body.min_area || "") + " " + (req.body.min_area_type || "");
         var name = req.body.name || "";
         var phone = req.body.phone || "";
         var email = req.body.email || "";
@@ -724,7 +724,36 @@ router.post('/add_post_requirement', upload.none(), async function (req, res) {
         };
         var insertResponse = await crudModel.postRequirement(data);
         if (insertResponse.success) {
-            res.send({success: true, message: 'Your Requirement Has Been Successfully Submitted !'});
+            var dataForEmail = await getPostRequirementEmailDetails(propertyType, propertySubType, city, locality, state, minPrice, maxPrice);
+            var body = "Spaces4all - " + name + " has posted requirement. <br><br>" +
+                " <table border='1px'>" +
+                "<tr><td width='100px'>Property Type</td><td>" + dataForEmail.property_type_name + "</td></tr>" +
+                "<tr><td>Property Sub Type</td><td>" + dataForEmail.property_sub_type_name + "</td></tr>" +
+                "<tr><td>Contract Type</td><td>" + type + "</td></tr>" +
+                "<tr><td>City</td><td>" + dataForEmail.city_name + "</td></tr>" +
+                "<tr><td>Locality</td><td>" + dataForEmail.locality_name + "</td></tr>" +
+                "<tr><td>State</td><td>" + dataForEmail.state_name + "</td></tr>" +
+                "<tr><td>Min Price</td><td>" + dataForEmail.min_price + "</td></tr>" +
+                "<tr><td>Max Price</td><td>" + dataForEmail.max_price + "</td></tr>" +
+                "<tr><td>Min Area</td><td>" + minArea + "</td></tr>" +
+                "<tr><td>Max Area</td><td>" + maxArea + "</td></tr>" +
+                "<tr><td>Time Period</td><td>" + duration + "</td></tr>" +
+                "<tr><td>Name</td><td>" + name + "</td></tr>" +
+                "<tr><td>Email</td><td>" + email + "</td></tr>" +
+                "<tr><td>Phone</td><td>" + phone + "</td></tr>" +
+                "<tr><td>Available Time</td><td>" + availTime + "</td></tr>" +
+                "</table>";
+            transporter.sendMail({
+                to: emailConfig.emailId,
+                subject: "Spaces4all - Post Requirement Request",
+                html: body
+            }, function (error, reply) {
+                if (error) {
+                    res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
+                } else {
+                    res.send({success: true, message: 'Your Requirement Has Been Successfully Submitted !'});
+                }
+            });
         } else {
             res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
         }
@@ -776,6 +805,53 @@ function getErrorMessage(errors) {
 
 function getDate() {
     return moment().format(dateFormat);
+}
+
+async function getPostRequirementEmailDetails(propertyType, propertySubType, city, locality, state, minPrice, maxPrice) {
+    var propertyTypeName = "", propertySubTypeName = "", finalMinPrice = "", finalMaxPrice = "";
+    var propertyTypeResponse = await crudModel.getPropertyTypeById(propertyType);
+    if (propertyTypeResponse.success) {
+        propertyTypeName = propertyTypeResponse.type;
+    }
+    var propertySubTypeResponse = await crudModel.getPropertySubTypeById(propertySubType);
+    if (propertySubTypeResponse.success) {
+        propertySubTypeName = propertySubTypeResponse.sub_type;
+    }
+    var cityResponse = await crudModel.getCityById(city);
+    var cityName = cityResponse[0].city || "";
+    var localityResponse = await crudModel.getLocalityById(locality);
+    var localityName = localityResponse[0].locality;
+    var stateResponse = await crudModel.getStateById(state);
+    console.log(stateResponse);
+    var stateName = stateResponse[0].state_name;
+
+    if (minPrice > 10000000) {
+        finalMinPrice = Math.round((parseFloat(minPrice)) / 10000000, 2)
+        finalMinPrice = finalMinPrice + ' Cr';
+    } else if (minPrice > 100000) {
+        finalMinPrice = Math.round((parseFloat(minPrice)) / 100000, 2);
+        finalMinPrice = finalMinPrice + ' Lac';
+    } else {
+        finalMinPrice = minPrice;
+    }
+    if (maxPrice > 10000000) {
+        finalMaxPrice = Math.round((parseFloat(maxPrice)) / 10000000, 2)
+        finalMaxPrice = finalMaxPrice + ' Cr';
+    } else if (maxPrice > 100000) {
+        finalMaxPrice = Math.round((parseFloat(maxPrice)) / 100000, 2);
+        finalMaxPrice = finalMaxPrice + ' Lac';
+    } else {
+        finalMaxPrice = maxPrice;
+    }
+    return {
+        property_type_name: propertyTypeName,
+        property_sub_type_name: propertySubTypeName,
+        city_name: cityName,
+        locality_name: localityName,
+        state_name: stateName,
+        min_price: finalMinPrice,
+        max_price: finalMaxPrice
+    };
 }
 
 module.exports = router;

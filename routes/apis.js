@@ -64,7 +64,7 @@ router.get("/get_emenities", function (req, res) {
     })
 });
 router.get("/get_property_sub_types", function (req, res) {
-    crudModel.getPropertySubTypeById(req.query.property_type).then(function (response) {
+    crudModel.getPropertySubTypeByProperty(req.query.property_type).then(function (response) {
         res.send(response);
     });
 });

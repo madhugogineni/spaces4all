@@ -26,8 +26,8 @@ module.exports = {
         return new Promise(function (resolve, reject) {
             con.query("select type from property_type where property_type_id=" + id, function (error, result) {
                 if (error)
-                    console.log(error);
-                resolve(result);
+                    console.log({success: false, message: error});
+                resolve({success: true, type: result[0].type});
             });
         });
     },
@@ -42,10 +42,10 @@ module.exports = {
     },
     getPropertySubTypeById: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from property_sub_type where property_type_id=" + id, function (error, result) {
+            con.query("select sub_type from property_sub_type where property_sub_type_id=" + id, function (error, result) {
                 if (error)
-                    console.log(error);
-                resolve(result);
+                    console.log({success: false, message: error});
+                resolve({success: true, sub_type: result[0].sub_type});
             })
         });
     },

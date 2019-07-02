@@ -1,0 +1,566 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_name %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
+
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
+
+
+    <script>
+
+
+        function show_sub_type(str) {
+
+            if (str == '') {
+                $('#bedrooms').attr("disabled", false);
+                $('#bathrooms').attr("disabled", false);
+            }
+            if (str == '1') {
+                $('#bedrooms').attr("disabled", true);
+                $('#bathrooms').attr("disabled", true);
+            }
+            if (str == '4') {
+                $('#bedrooms').attr("disabled", false);
+                $('#bathrooms').attr("disabled", false);
+            }
+            if (str.length == 0) {
+                return;
+            }
+            getPropertySubTypes(str, "#property_sub_type");
+
+        }
+
+        function hide_bedrooms(str) {
+
+            var property_type = $('#property_type').val();
+
+            if (str == '14' || property_type == '1') {
+
+                $('#bedrooms').attr("disabled", true);
+
+                $('#bathrooms').attr("disabled", true);
+
+            } else if (str == '') {
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            } else {
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            }
+
+        }
+
+
+        function Show_max_price(str) {
+            $.ajax({
+                url: '<?php echo base_url();?>home/max_price/' + str,
+                success: function (response) {
+                    jQuery('#max_price').html(response);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            $("form#post_requirement_form").submit(function (e) {
+                // $("#submit_button").attr("disabled", true);
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: "<%= base_url %>home/add_post_requirement",
+                    data: formData,
+                    success: function (result) {
+                        console.log(result);
+                        $("success_message").hide();
+                        $("error_message").hide();
+                        if (result.success) {
+                            $("#success_message strong").text(result.message);
+                            $("#success_message").show();
+                            $('#form#post_requirement_form').trigger("reset");
+                        } else {
+                            $("#submit_button").attr("disabled", false);
+                            $("#error_message strong").text(result.message);
+                            $("#error_message").show();
+                        }
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                })
+            });
+        });
+    </script>
+
+
+</head>
+
+<body class="home">
+
+<div class="body">
+
+    <% include includes/header.ejs %>
+
+    <!-- End Site Header -->
+
+    <!-- Site Showcase -->
+
+    <div class="site-showcase">
+
+        <!-- Start Page Header -->
+
+        <div class="parallax page-header"><!--style="background-image:url(<%= base_url %>images/page-header1.jpg); -->
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <h1>POST YOUR REQUIREMENT</h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- End Page Header -->
+
+    </div>
+
+    <!-- Start Content -->
+
+    <div class="main" role="main">
+
+        <div id="content" class="content full">
+
+            <div class="container">
+
+                <div class="page">
+
+                    <!-- <div class="row">
+
+                        <div class="col-md-4">
+
+                            <div class="padding-as25 margin-30 lgray-bg">
+
+                                <div style="height: 844px"></div>
+
+                        </div>
+
+                    </div> -->
+                    <div class="alert alert-success fade in" id="success_message" style="display:none"><a
+                                href="#" data-dismiss="alert" class="close">x</a><strong></strong></div>
+                    <div class="alert alert-error fade in" id="error_message" style="display:none"><a href="#"
+                                                                                                      data-dismiss="alert"
+                                                                                                      class="close">x</a><strong></strong>
+                    </div>
+
+                    <div class="col-md-12">
+                        <form action="<%= base_url %>home/add_post_requirement" id="post_requirement_form"
+                              method="post">
+
+                            <div class="block-heading" id="details">
+
+                                <h4><span class="heading-icon"><i class="fa fa-user"></i></span>POST YOUR REQUIREMENT
+                                </h4>
+
+                            </div>
+
+                            <div class="padding-as25 margin-30 lgray-bg">
+
+                                <div class="row">
+
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Contract Type:</label>
+
+                                        <select name="type" id="type" class="form-control margin-0">
+
+                                            <option value="BUY">BUY</option>
+
+                                            <option value="RENT">RENT</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Time Period (Want Within):</label>
+
+                                        <select name="duration" id="duration" class="form-control margin-0">
+
+                                            <option value="Immediate">Immediate</option>
+
+                                            <option value="Below 6 Months">With in 6 Months</option>
+
+                                            <option value="Below 1 Year">With in 1 Year</option>
+
+                                            <option value="Above 1 Year">After 1 Year</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+                                <div class="row">
+
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Property Type * :</label>
+
+                                        <select name="property_type" id="property_type"
+                                                onchange="show_sub_type(this.value)" class="form-control margin-0">
+
+                                            <option value="">---SELECT---</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Property Sub Type * :</label>
+
+                                        <select name="property_sub_type" id="property_sub_type"
+                                                onchange="hide_bedrooms(this.value)" class="form-control margin-0">
+
+                                            <option value="">---SELECT---</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>State*:</label>
+
+                                        <select name="state" id="state" class="form-control margin-0"
+                                                required="required">
+
+                                            <option value="">---SELECT---</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>City* :</label>
+
+                                        <select name="city" id="city"
+                                                onchange="showLocality(this.value,'#Showlocality')"
+                                                class="form-control margin-0 ">
+
+                                            <option value="">---SELECT---</option>
+
+                                        </select>
+
+                                    </div>
+
+
+                                </div>
+                                <br>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Locality* :</label>
+
+                                        <select name="locality" id="Showlocality" class="form-control margin-0">
+                                            <option value="">---SELECT---</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Bedrooms*:</label>
+
+                                        <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+
+                                            <option value="">---SELECT---</option>
+                                            <% for(var i = 0;i <= 8;i++) { %>
+                                                <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Min Price* :</label>
+
+                                        <select id="min_price" name="min_price" class="form-control margin-0 "
+                                                onchange="Show_max_price(this.value)">
+
+                                            <option value="">Min Price</option>
+                                            <% for (var i = 500000; i <= 30000000; i += 1000000) {
+                                                var price, value = i;
+                                                if (value >= 10000000) {
+                                                    price = parseFloat(value) / 10000000;
+                                                    price = price + " Crore";
+                                                } else if (value >= 100000) {
+                                                    price = parseFloat(value) / 100000;
+                                                    price = price + " Lac";
+                                                }
+                                            %>
+                                            <option value="<%= value %>"> <%= price %></option>
+
+                                            <% } %>
+                                        </select>
+
+                                    </div>
+
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Max Price* :</label>
+
+                                        <select name="max_price" class="form-control margin-0 " id="max_price">
+
+                                            <option value="">Max Price</option>
+                                            <% for (var i = 1000000; i <= 50000000; i += 1000000) {
+                                                var price, value = i;
+                                                if (value >= 10000000) {
+                                                    price = parseFloat(value) / 10000000;
+                                                    price = price + " Crore";
+                                                } else if (value >= 100000) {
+                                                    price = parseFloat(value) / 100000;
+                                                    price = price + " Lac";
+                                                }
+                                            %>
+                                            <option value="<%= value %>"> <%= price %></option>
+
+                                            <% } %>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+
+                                <div class="row">
+
+                                    <div class="col-md-4 col-sm-4">
+
+                                        <label>Saleable Area(Min):</label>
+
+                                        <input type="text" name="min_area" class="form-control"
+                                               value=""
+                                               placeholder="Min Area">
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-4">
+
+                                        <label>&nbsp;</label>
+
+                                        <select name="min_area_type" id="min_area_type" class="form-control margin-0"
+                                                style="margin-left: -20px">
+
+                                            <option value="Sq.Ft">Sq.Ft</option>
+
+                                            <option value="Sq.Yards">Sq.yds</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-4 col-sm-4">
+
+                                        <label>Saleable Area(Max):</label>
+
+                                        <input type="text" name="max_area" class="form-control"
+                                               value=""
+                                               placeholder="Max Area">
+                                        <!--                                        <?php if ($this->session->flashdata('max_area')) {?><b-->
+                                        <!--                                                style="color: red"><?=$this->-->
+                                        <!--                                            session->flashdata('max_area')?></b><?php }?>-->
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-4" style="margin-left: -20px">
+
+                                        <label>&nbsp;</label>
+
+                                        <select name="max_area_type" id="max_area_type" class="form-control margin-0">
+
+                                            <option value="Sq.Ft">Sq.Ft</option>
+
+                                            <option value="Sq.Yards">Sq.yds</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="block-heading" id="details">
+
+                                <h4><span class="heading-icon"><i class="fa fa-user"></i></span>DETAILS</h4>
+
+                            </div>
+
+                            <div class="padding-as25 margin-30 lgray-bg">
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Name* :</label>
+
+                                        <input type="text" name="name" class="form-control"
+                                               value=""
+                                               placeholder="Name">
+
+                                        <!--                                        <?php if ($this->session->flashdata('name')) {?><b style="color: red"><?=$this->-->
+                                        <!--                                            session->flashdata('name')?></b><?php }?>-->
+
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Mobile No* :</label>
+
+                                        <input type="text" name="phone" class="form-control"
+                                               value=""
+                                               placeholder="Mobile No">
+
+                                        <!--                                        <?php if ($this->session->flashdata('phone')) {?><b-->
+                                        <!--                                                style="color: red"><?=$this->session->flashdata('phone')?></b><?php }?>-->
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Email Id* :</label>
+
+                                        <input type="text" name="email" class="form-control"
+                                               value=""
+                                               placeholder="Email Id">
+
+                                        <!--                                        <?php if ($this->session->flashdata('email')) {?><b-->
+                                        <!--                                                style="color: red"><?=$this->session->flashdata('email')?></b><?php }?>-->
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Convenient Time To Call:</label>
+
+                                        <input type="text" name="avail_time" class="form-control"
+                                               value=""
+                                               placeholder="Available Time">
+
+                                        <!--                                        <?php if ($this->session->flashdata('avail_time')) {?><b-->
+                                        <!--                                                style="color: red"><?=$this->-->
+                                        <!--                                            session->flashdata('avail_time')?></b><?php }?>-->
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+
+                            </div>
+
+
+                            <div class="text-align-center" id="submit-property">
+
+                                <button type="submit" name="submit" id="submit_button" class="btn btn-primary btn-lg"><i
+                                            class="fa fa-check"></i> Submit Now
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Start Site Footer -->
+
+<% include includes/footer.ejs %>
+
+<script>
+    setUpPropertyTypes("#property_type");
+    setUpCities("#city");
+    setUpStates("#state");
+</script>
+
+</body>
+
+</html>
