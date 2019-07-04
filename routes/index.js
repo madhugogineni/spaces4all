@@ -11,8 +11,19 @@ var geocoderoptions = require("../external-config/geocoding-config");
 var emailConfig = require("../external-config/email-config");
 var upload = multer();
 var geocoder = nodeGeocoder(geocoderoptions);
+// var transporter = nodemailer.createTransport({
+//     service: 'gmail',
+//     auth: {
+//         user: emailConfig.emailId,
+//         pass: emailConfig.password
+//     }
+// });
 var transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: emailConfig.host,
+    port: emailConfig.port,
+    secure: true,
+    // secureConnection: true,
+    // secure: false,
     auth: {
         user: emailConfig.emailId,
         pass: emailConfig.password
@@ -758,6 +769,20 @@ router.post('/add_post_requirement', upload.none(), async function (req, res) {
             res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
         }
     }
+});
+router.get("/testmail",function(req,res) {
+    transporter.sendMail({
+        to: emailConfig.emailId,
+        subject: "Spaces4all - Post Requirement Request",
+        html: "welcome"
+    }, function (error, reply) {
+        if (error) {
+            console.log(error);
+            res.send(error);
+        } else {
+            res.send(reply);
+        }
+    });
 });
 
 function writeFile(fileName, fileBuffer, path) {
