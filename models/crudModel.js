@@ -1139,19 +1139,20 @@ module.exports = {
     },
     insertContact: function (name, email, phone, message) {
         var datetime = moment().format(dateFormat);
-        console.log("insert into contact(name,email,phone,message,datetime) values('" + name + "','" + email + "'," + phone + ",'" + message + "','" + datetime + "')");
         return new Promise(function (resolve, reject) {
             con.query("insert into contact(name,email,phone,message,datetime) values('" + name + "','" + email + "'," + phone + ",'" + message + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
+                    resolve({success: false});
                 } else {
-                    con.query("select * from contact where contact_id=" + result.insertId, function (error1, result1) {
-                        if (error1) {
-                            console.log(error1);
-                        } else {
-                            resolve(result1);
-                        }
-                    });
+                    resolve({success: true, insertId: result.insertId});
+                    // con.query("select * from contact where contact_id=" + result.insertId, function (error1, result1) {
+                    //     if (error1) {
+                    //         console.log(error1);
+                    //     } else {
+                    //         resolve(result1);
+                    //     }
+                    // });
                 }
 
             })
@@ -1163,14 +1164,16 @@ module.exports = {
             con.query("insert into news_letter(email,datetime) values('" + email + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
+                    resolve({success: false, message: error});
                 } else {
-                    con.query("select * from news_letter where news_letter_id=" + result.insertId, function (error1, result1) {
-                        if (error1) {
-                            console.log(error1);
-                        } else {
-                            resolve(result1);
-                        }
-                    });
+                    resolve({success: true});
+                    // con.query("select * from news_letter where news_letter_id=" + result.insertId, function (error1, result1) {
+                    //     if (error1) {
+                    //         console.log(error1);
+                    //     } else {
+                    //         resolve({result1});
+                    //     }
+                    // });
                 }
 
             })

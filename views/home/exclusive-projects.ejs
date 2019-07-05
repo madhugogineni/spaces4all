@@ -6,7 +6,7 @@
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <title> Spaces4All - <%=page_title %> </title>
+    <title> Spaces4All - <%= page_title %> </title>
 
     <meta name="description" content="">
 
@@ -15,25 +15,26 @@
     <meta name="author" content="">
 
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
-    <link href="<%=base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
 
-    <link href="<%=base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
 
-    <link href="<%=base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
 
-    <link href="<%=base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
 
-    <link href="<%=base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
 
-    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
 
-    <link class="alt" href="<%=base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
 
     <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
 
-    <script src="<%=base_url %>javascripts/modernizr.js"></script>
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
 
     <script>
 
@@ -50,14 +51,11 @@
             }
 
 
-
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 
                 xmlhttp = new XMLHttpRequest();
 
-            }
-
-            else {// code for IE6, IE5
+            } else {// code for IE6, IE5
 
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
@@ -82,102 +80,54 @@
         }
 
 
-
-
-
         function showAjaxModal(project_id) {
+            var modalBody = '<div id="errorBox3"></div>' +
+                '<div class="row">' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>NAME*</label>' +
+                '<input type="text" id="call_name" name="call_name" class="form-control" placeholder="Name" required="required">' +
+                '</div>' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>PHONE NUMBER*</label>' +
+                '<input type="text" id="call_phone" name="call_phone" class="form-control" placeholder="Phone Number" required="required">' +
+                '</div>' +
+                '<input type="hidden" id="call_project_id" name="call_project_id" value="">' +
+                '</div>';
+            $('#call_back_response').html(modalBody);
             $('#call_project_id').val(project_id);
-            $('#modal_ajax').modal('show', { backdrop: 'true' });
+            $('#modal_ajax').modal('show', {backdrop: 'true'});
         }
 
 
-
-        function send_Callback() {
-
-            var filter = /^[0-9-+]+$/;
-
-            var name = $("#call_name").val();
-
-            var phone = $("#call_phone").val();
-
-            var project_id = $("#call_project_id").val();
-
-            var dataString = 'name=' + name + '&phone=' + phone + '&project_id=' + project_id;
-
-
-
-            if ($("#call_name").val() == "") {
-
-                $("#call_name").focus();
-
-                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
-
-            } else if ($("#call_phone").val() == "") {
-
-                $("#call_phone").focus();
-
-                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-            } else if (phone.length != "10") {
-
-                $("#call_phone").focus();
-
-                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-            } else if (!filter.test(phone)) {
-
-                $("#call_phone").focus();
-
-                $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-            } else {
-                $.ajax({
-                    type: "GET",
-                    url: "<%=base_url %>apis/add_project_call_back",
-                    data: {
-                        name: name,
-                        phone: phone,
-                        project_id: project_id
-                    },
-                    success: function (response) {
-                        jQuery('#call_back_response').html(response);
-
-                    }
-
-                });
-            }
-        }
     </script>
 
 </head>
 
 <body>
 
-    <div class="body">
+<div class="body">
 
-        <!-- Start Site Header -->
+    <!-- Start Site Header -->
 
-        <% include includes/header.ejs %>
+    <% include includes/header.ejs %>
 
-        <!-- End Site Header -->
+    <!-- End Site Header -->
 
-        <!-- Site Showcase -->
+    <!-- Site Showcase -->
 
-        <div class="site-showcase">
+    <div class="site-showcase">
 
-            <!-- Start Page Header -->
+        <!-- Start Page Header -->
 
-            <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
+        <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
 
-                <div class="container">
+            <div class="container">
 
-                    <div class="row">
+                <div class="row">
 
-                        <div class="col-md-12">
+                    <div class="col-md-12">
 
-                            <h1><%=page_title %></h1>
-
-                        </div>
+                        <h1><%= page_title %></h1>
 
                     </div>
 
@@ -185,69 +135,68 @@
 
             </div>
 
-            <!-- End Page Header -->
-
         </div>
 
+        <!-- End Page Header -->
+
+    </div>
 
 
+    <!-- Start Content -->
 
+    <div class="main" role="main">
 
-        <!-- Start Content -->
+        <div id="content" class="content full">
 
-        <div class="main" role="main">
+            <div class="container">
 
-            <div id="content" class="content full">
+                <div class="page">
 
-                <div class="container">
+                    <div class="row">
 
-                    <div class="page">
 
                         <div class="row">
 
+                            <div class="col-md-12">
 
+                                <div class="row">
 
-                            <div class="row">
+                                    <div class="col-md-3" style="float: right;">
 
-                                <div class="col-md-12">
+                                        <form action="<%= base_url %>home/exclusive_projects" method="POST">
 
-                                    <div class="row">
-
-                                        <div class="col-md-3" style="float: right;">
-
-                                            <form action="<%=base_url %>home/exclusive_projects" method="POST">
-
-                                                <select name="city" id="exclusive_projects_city"
+                                            <select name="city" id="exclusive_projects_city"
                                                     class="form-control input-lg" onchange="this.form.submit()">
 
-                                                    <script> setUpCities("#exclusive_projects_city", "<%=city_id %>");</script>
+                                                <script> setUpCities("#exclusive_projects_city", "<%= city_id %>");</script>
 
-                                                </select>
+                                            </select>
 
-                                            </form>
-
-                                        </div>
+                                        </form>
 
                                     </div>
 
-                                    <div class="property-listing">
+                                </div>
 
-                                        <% if ( exclusive_projects.length > 0 ) { %>
+                                <div class="property-listing">
+
+                                    <% if ( exclusive_projects.length > 0 ) { %>
 
                                         <ul>
 
-                                            <% for(var i = 0; i < exclusive_projects.length; i++) { 
-                                            var exclusive_project = exclusive_projects[i]; %>
+                                            <% for(var i = 0; i < exclusive_projects.length; i++) {
+                                                var exclusive_project = exclusive_projects[i]; %>
 
                                             <li class="type-rent col-md-12">
 
                                                 <div class="col-md-5">
 
                                                     <a href="#" class="property-featured-image">
-                                                        <div class="overlay" style="line-height: 151px"></div> <img
-                                                            src="<%=base_url %>uploads/projects/<%= exclusive_project.project_photo %>"
-                                                            alt="" style="height: 300px; width:100%"> <span
-                                                            class="images-count"> <%=exclusive_project.city_name %>
+                                                        <div class="overlay" style="line-height: 151px"></div>
+                                                        <img
+                                                                src="<%= base_url %>uploads/projects/<%= exclusive_project.project_photo %>"
+                                                                alt="" style="height: 300px; width:100%"> <span
+                                                                class="images-count"> <%= exclusive_project.city_name %>
                                                         </span>
                                                     </a>
 
@@ -268,7 +217,7 @@
 
                                                                 </h3>
 
-                                                                <br />
+                                                                <br/>
 
                                                                 <ul class="">
 
@@ -279,12 +228,12 @@
                                                                     <hr>
 
                                                                     <li><span>Project Sub Type :
-                                                                            <%= exclusive_project.project_sub_type_name %></span><br />
+                                                                            <%= exclusive_project.project_sub_type_name %></span><br/>
                                                                     </li>
                                                                     <hr>
 
                                                                     <li><span>Plans : <%= exclusive_project.plans %>
-                                                                            BHK</span><br /></li>
+                                                                            BHK</span><br/></li>
                                                                     <hr>
 
                                                                     <li><span>Price : <span class="WebRupee">Rs.</span>
@@ -299,18 +248,17 @@
                                                                     <li>&nbsp;</li>
 
 
-
                                                                 </ul>
 
 
-
-                                                                <a href="<%=base_url %>home/project_details/<%= exclusive_project.project_id %>"
-                                                                    class="pull-right">
+                                                                <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>"
+                                                                   class="pull-right">
                                                                     <button type="button" class="btn btn-danger">View
-                                                                        Details &raquo;</button>
+                                                                        Details &raquo;
+                                                                    </button>
                                                                 </a>
                                                                 <a href="#"
-                                                                    onclick="showAjaxModal('<%= exclusive_project.project_id %>')">
+                                                                   onclick="showAjaxModal('<%= exclusive_project.project_id %>')">
                                                                     <button type="button" class="btn">
                                                                         <i class="fa fa-phone"></i> Call Back
                                                                     </button>
@@ -330,20 +278,16 @@
 
                                         </ul>
 
-                                        <% }else { %>
+                                    <% }else { %>
                                         <br><br>
                                         <h4 align='center'>There are No Projects Available....</h4>
-                                        <% } %>
-
-                                    </div>
-
-
+                                    <% } %>
 
                                 </div>
 
 
-
                             </div>
+
 
                         </div>
 
@@ -353,84 +297,83 @@
 
             </div>
 
-            <!-- Start Site Footer -->
+        </div>
+
+        <!-- Start Site Footer -->
 
 
+        <div class="modal fade" id="modal_ajax">
 
-            <div class="modal fade" id="modal_ajax">
+            <div class="modal-dialog">
 
-                <div class="modal-dialog">
+                <div class="modal-content">
 
-                    <div class="modal-content">
+                    <form method="post">
 
-                        <form method="post">
+                        <div class="modal-header">
 
-                            <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">&times;
+                            </button>
 
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">Call Back</h4>
 
-                                <h4 class="modal-title">Call Back</h4>
-
-                            </div>
-
-
-
-                            <div class="modal-body">
-
-                                <div id="call_back_response">
-
-                                    <div id="errorBox3"></div>
+                        </div>
 
 
+                        <div class="modal-body">
 
-                                    <div class="row">
+                            <div id="call_back_response">
 
-                                        <div class="col-md-6 col-sm-6">
+                                <div id="errorBox3"></div>
 
-                                            <label>NAME*</label>
 
-                                            <input type="text" id="call_name" name="call_name" class="form-control"
-                                                placeholder="Name" required="required">
+                                <div class="row">
 
-                                        </div>
+                                    <div class="col-md-6 col-sm-6">
 
-                                        <div class="col-md-6 col-sm-6">
+                                        <label>NAME*</label>
 
-                                            <label>PHONE NUMBER*</label>
-
-                                            <input type="text" id="call_phone" name="call_phone" class="form-control"
-                                                placeholder="Phone Number" required="required">
-
-                                        </div>
-
-                                        <input type="hidden" id="call_project_id" name="call_project_id" value="">
+                                        <input type="text" id="call_name" name="call_name" class="form-control"
+                                               placeholder="Name" required="required">
 
                                     </div>
 
+                                    <div class="col-md-6 col-sm-6">
+
+                                        <label>PHONE NUMBER*</label>
+
+                                        <input type="text" id="call_phone" name="call_phone" class="form-control"
+                                               placeholder="Phone Number" required="required">
+
+                                    </div>
+
+                                    <input type="hidden" id="call_project_id" name="call_project_id" value="">
+
                                 </div>
 
-
                             </div>
 
 
+                        </div>
 
-                            <div class="modal-footer">
 
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <div class="modal-footer">
 
-                                <button type="button" onclick="send_Callback();" class="btn btn-primary">Send</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
-                            </div>
+                            <button type="button" onclick="send_Project_Callback();" class="btn btn-primary">Send
+                            </button>
 
-                        </form>
+                        </div>
 
-                    </div>
+                    </form>
 
                 </div>
 
             </div>
 
+        </div>
 
 
-            <% include includes/footer.ejs %>
+<% include includes/footer.ejs %>

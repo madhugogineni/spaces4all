@@ -120,6 +120,61 @@
             }
         });
     }
+    function send_Project_Callback() {
+
+        var filter = /^[0-9-+]+$/;
+
+        var name = $("#call_name").val();
+
+        var phone = $("#call_phone").val();
+
+        var project_id = $("#call_project_id").val();
+
+        var dataString = 'name=' + name + '&phone=' + phone + '&project_id=' + project_id;
+
+
+
+        if ($("#call_name").val() == "") {
+
+            $("#call_name").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+
+        } else if ($("#call_phone").val() == "") {
+
+            $("#call_phone").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else if (phone.length != "10") {
+
+            $("#call_phone").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else if (!filter.test(phone)) {
+
+            $("#call_phone").focus();
+
+            $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+        } else {
+            $.ajax({
+                type: "GET",
+                url: "<%=base_url %>apis/add_project_call_back",
+                data: {
+                    name: name,
+                    phone: phone,
+                    project_id: project_id
+                },
+                success: function (response) {
+                    jQuery('#call_back_response').html(response);
+
+                }
+
+            });
+        }
+    }
     function send_Property_Callback() {
         console.log($("#call_project").val());
         var filter = /^[0-9-+]+$/;

@@ -11,19 +11,8 @@ var geocoderoptions = require("../external-config/geocoding-config");
 var emailConfig = require("../external-config/email-config");
 var upload = multer();
 var geocoder = nodeGeocoder(geocoderoptions);
-// var transporter = nodemailer.createTransport({
-//     service: 'gmail',
-//     auth: {
-//         user: emailConfig.emailId,
-//         pass: emailConfig.password
-//     }
-// });
 var transporter = nodemailer.createTransport({
-    host: emailConfig.host,
-    port: emailConfig.port,
-    secure: true,
-    // secureConnection: true,
-    // secure: false,
+    service: 'gmail',
     auth: {
         user: emailConfig.emailId,
         pass: emailConfig.password
@@ -41,14 +30,25 @@ router.get("/", function (req, res) {
     res.redirect("/");
 });
 // footer news letter api url are defined here
-router.post("/add_news_letter", function (req, res) {
-    crudModel.getNewsLetterAvailable(req.body.email).then(function (response) {
-        if (response == 0) {
-            crudModel.insertNewLetterSubscriber(req.body.email).then(function (response) {
-                // console.log(response);
+router.post("/add_news_letter", async function (req, res) {
+    var errorMsg = "<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Sorry ! Your Subscription Has Failed Please Try Again.</strong></div>";
+    var successMsg = "<div class='alert alert-success fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Your Have Successfully Subscribed With Us.</strong></div>";
+    var response = await crudModel.getNewsLetterAvailable(req.body.email)
+    if (response == 0) {
+        var response1 = await crudModel.insertNewLetterSubscriber(req.body.email);
+        if (response1.success) {
+            transporter.sendMail({
+                to: req.body.email,
+                subject: "Spaces4all - Your Have Successfully Subscribed With Us",
+                html: "Spaces4all - Your Have Successfully Subscribed With Us ! Thank You For Subscription. Please visit on spaces4all.com . For Further Details."
             });
+            res.send(successMsg);
+        } else {
+            res.send(errorMsg);
         }
-    });
+    } else {
+        res.send("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Sorry ! This Email Id Already Subscribed With Us.</strong></div>");
+    }
 });
 // contacts page and related links are defined here
 router.get("/contact", function (req, res) {
@@ -61,7 +61,7 @@ router.get("/contact", function (req, res) {
     addContactMessage = "";
     isError = 0;
 });
-router.post("/add_contact", function (req, res) {
+router.post("/add_contact", async function (req, res) {
     let validator = new validatorpackage(req.body, {
         name: 'required|minLength:3',
         email: 'required|email',
@@ -69,24 +69,49 @@ router.post("/add_contact", function (req, res) {
         message: 'required|minLength:10'
     });
 
-    validator.check().then(function (matched) {
-        if (matched) {
-            addContactMessage = "Thank you for the details. We have the pleasure to contact you soon.";
-            isError = 0;
-            crudModel.insertContact(req.body.name, req.body.email, req.body.phone, req.body.message).then(function (response) {
-                // console.log(response);
+    var validatorResult = await validator.check()
+
+    if (validatorResult) {
+        addContactMessage = "Thank you for the details. We have the pleasure to contact you soon.";
+        isError = 0;
+        var insertResult = await crudModel.insertContact(req.body.name, req.body.email, req.body.phone, req.body.message);
+        if (insertResult.success) {
+            // $this->email->subject('Spaces4all - Contact Details');
+            //
+            // $this->email->message("Spaces4all - Contact form request details. <br><br> <table border='1px'><tr><td width='100px'>Name</td><td>".$name."</td></tr><tr><td>Email</td><td>".$email."</td></tr><tr><td>Phone</td><td>".$phone."</td></tr><tr><td>Message</td><td>".$message."</td></tr></table>");
+            var body = "Spaces4all - Contact form request details. <br><br> " +
+                "<table border='1px'>" +
+                "<tr><td width='100px'>Name</td><td>" + req.body.name + "</td></tr>" +
+                "<tr><td>Email</td><td>" + req.body.email + "</td></tr>" +
+                "<tr><td>Phone</td><td>" + req.body.phone + "</td></tr>" +
+                "<tr><td>Message</td><td>" + req.body.message + "</td></tr>" +
+                "</table>";
+            transporter.sendMail({
+                to: emailConfig.emailId,
+                subject: "Spaces4all - Contact Details",
+                html: body
+            }, function (error, reply) {
+                if (error) {
+                    // res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
+                } else {
+                    res.redirect('contact');
+                    // res.send({success: true, message: 'Your Requirement Has Been Successfully Submitted !'});
+                }
             });
-            res.redirect('contact');
         } else {
-            var errorMsg = "";
-            Object.keys(validator.errors).map(function (key) {
-                errorMsg += validator.errors[key].message + "<br/>";
-            });
-            addContactMessage = errorMsg;
+            addContactMessage = "There is some issue while saving your details. Please try again later";
             isError = 1;
             res.redirect('contact');
         }
-    });
+    } else {
+        var errorMsg = "";
+        Object.keys(validator.errors).map(function (key) {
+            errorMsg += validator.errors[key].message + "<br/>";
+        });
+        addContactMessage = errorMsg;
+        isError = 1;
+        res.redirect('contact');
+    }
 });
 
 //Info Tab links are defined here
@@ -142,6 +167,22 @@ router.post("/add_home_loan", function (req, res) {
     var data = req.body;
     crudModel.insertLoanRequest(data.purpose, data.bank, data.loan_amount, data.annual_income, data.name, data.mobile, data.email, data.dob, data.city).then(function (response) {
         if (response.success) {
+            transporter.sendMail({
+                to: emailConfig.emailId,
+                subject: "Spaces4all - Loan Request Details",
+                html: "Spaces4all - " + data.name + " has requested for loan. <br><br> " +
+                    "<table border='1px'>" +
+                    "<tr><td width='100px'>Purpose</td><td>" + data.purpose + "</td></tr>" +
+                    "<tr><td>Bank</td><td>" + data.bank_name + "</td></tr>" +
+                    "<tr><td>Loan Amount</td><td>" + data.loan_amount + "</td></tr>" +
+                    "<tr><td>Annual Income</td><td>" + data.annual_income + "</td></tr>" +
+                    "<tr><td>Name</td><td>" + data.name + "</td></tr>" +
+                    "<tr><td>Email</td><td>" + data.email + "</td></tr>" +
+                    "<tr><td>Phone</td><td>" + data.mobile + "</td></tr>" +
+                    "<tr><td>DOB</td><td>" + data.dob + "</td></tr>" +
+                    "<tr><td>City</td><td>" + data.city + "</td></tr>" +
+                    "</table>"
+            });
             loanError = false;
             loanErrorMsg = "Thank you for your trust in spaces4all. Please wait for our call for more.";
         } else {
@@ -770,7 +811,7 @@ router.post('/add_post_requirement', upload.none(), async function (req, res) {
         }
     }
 });
-router.get("/testmail",function(req,res) {
+router.get("/testmail", function (req, res) {
     transporter.sendMail({
         to: emailConfig.emailId,
         subject: "Spaces4all - Post Requirement Request",

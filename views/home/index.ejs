@@ -15,28 +15,28 @@
     <meta name="author" content="">
 
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
-    <link href="<%= base_url%>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
 
-    <link href="<%= base_url%>stylesheets/style.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
 
-    <link href="<%= base_url%>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
 
-    <link href="<%= base_url%>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
 
-    <link href="<%= base_url%>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
 
-    <!--[if lte IE 9]><link rel="stylesheet" type="text/css" href="css/ie.css" media="screen" /><![endif]-->
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
 
-    <link class="alt" href="<%= base_url%>stylesheets/color.css" rel="stylesheet" type="text/css">
+    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
 
     <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
 
-    <script src="<%= base_url%>javascripts/modernizr.js"></script>
+    <script src="<%= base_url %>javascripts/modernizr.js"></script>
 
     <script>
-
 
 
         function show_sub_type(str) {
@@ -52,14 +52,11 @@
             }
 
 
-
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 
                 xmlhttp = new XMLHttpRequest();
 
-            }
-
-            else {// code for IE6, IE5
+            } else {// code for IE6, IE5
 
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
@@ -86,9 +83,6 @@
         }
 
 
-
-
-
         function Show_locality(str) {
 
             //alert(str);
@@ -102,14 +96,11 @@
             }
 
 
-
             if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
 
                 xmlhttp = new XMLHttpRequest();
 
-            }
-
-            else {// code for IE6, IE5
+            } else {// code for IE6, IE5
 
                 xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
 
@@ -134,9 +125,7 @@
         }
 
 
-
         function ShowButton(str) {
-
 
 
             if (str == 'BUY') {
@@ -153,47 +142,24 @@
 
         }
 
-
-
-        function showAjaxModal(url) {
-
-            // SHOWING AJAX PRELOADER IMAGE
-
-            jQuery('#modal_ajax .modal-body').html('');
-
-
-
-            // LOADING THE AJAX MODAL
-
-            jQuery('#modal_ajax').modal('show', { backdrop: 'true' });
-
-
-
-            // SHOW AJAX RESPONSE ON REQUEST SUCCESS
-
-            $.ajax({
-
-                url: url,
-
-                success: function (response) {
-
-                    jQuery('#modal_ajax .modal-body').html(response);
-
-                }
-
-            });
-
-        }
-
-
         function showAjaxModal1(propertyId) {
-            console.log($("#call_project").val());
+            var modalBody = '<div id="errorBox3"></div>' +
+                '<div class="row">' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>NAME*</label>' +
+                '<input type="text" id="call_name" name="call_name" class="form-control" placeholder="Name" required="required">' +
+                '</div>' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>PHONE NUMBER*</label>' +
+                '<input type="text" id="call_phone" name="call_phone" class="form-control" placeholder="Phone Number" required="required">' +
+                '</div>' +
+                '<input type="hidden" id="call_project" name="call_project"/>' +
+                '</div>'
+            $("#call_back_response").html(modalBody);
             $("#call_project").val(propertyId);
-            console.log($("#call_project").val());
-            jQuery('#modal_ajax1').modal('show', { backdrop: 'true' });
+            jQuery('#modal_ajax1').modal('show', {backdrop: 'true'});
 
         }
-
 
 
         function send_Callback() {
@@ -207,7 +173,6 @@
             var project_id = $("#call_project").val();
 
             var dataString = 'name=' + name + '&phone=' + phone + '&project_id=' + project_id;
-
 
 
             if ($("#call_name").val() == "") {
@@ -237,14 +202,17 @@
             } else {
 
 
-
                 $.ajax({
 
-                    type: "POST",
+                    type: "GET",
 
                     url: "<%= base_url %>home/add_call_back",
 
-                    data: dataString,
+                    data: {//dataString
+                        name: name,
+                        phone: phone,
+                        project_id: project_id
+                    },
 
                     success: function (response) {
 
@@ -255,70 +223,13 @@
                 });
 
 
-
             }
 
         }
 
-        // function send_Property_Callback() {
-        //     console.log($("#call_project").val());
-        //     var filter = /^[0-9-+]+$/;
-
-        //     var name = $("#call_name1").val();
-
-        //     var phone = $("#call_phone1").val();
-
-        //     var property_id = $("#call_project").val();
-
-        //     var dataString = 'name=' + name + '&phone=' + phone + '&property_id=' + property_id;
-
-
-
-        //     if ($("#call_name1").val() == "") {
-
-        //         $("#call_name1").focus();
-
-        //         $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
-
-        //     } else if ($("#call_phone1").val() == "") {
-
-        //         $("#call_phone1").focus();
-
-        //         $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-        //     } else if (phone.length != "10") {
-
-        //         $("#call_phone1").focus();
-
-        //         $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-        //     } else if (!filter.test(phone)) {
-
-        //         $("#call_phone1").focus();
-
-        //         $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
-
-        //     } else {
-
-        //         $.ajax({
-        //             type: "GET",
-        //             url: "<%= api_url %>add_property_call_back",
-        //             // data: dataString,
-
-        //             success: function (response) {
-        //                 jQuery('#call_back_response1').html(response);
-        //             }
-        //         });
-        //     }
-        // }
-
-
         $(document).ready(function () {
-
             $('#compare').load("<%= base_url %>home/compare_count");
-
         });
-
 
 
         function add_Compare(url) {
@@ -340,183 +251,179 @@
     </script>
 
 
-
-
-
-
-
 </head>
 
 <body class="home">
 
-    <div class="body">
+<div class="body">
 
-        <!-- Start Site Header -->
+    <!-- Start Site Header -->
 
-        <% include includes/header.ejs %>
+    <% include includes/header.ejs %>
 
-        <!-- End Site Header -->
+    <!-- End Site Header -->
 
-        <!-- Site Showcase -->
+    <!-- Site Showcase -->
 
-        <div class="site-showcase" id="success">
+    <div class="site-showcase" id="success">
 
-            <div class="slider-mask overlay-transparent"></div>
+        <div class="slider-mask overlay-transparent"></div>
 
-            <!-- Start Hero Slider -->
+        <!-- Start Hero Slider -->
 
-            <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
-                data-style="fade" data-pause="yes">
+        <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
+             data-style="fade" data-pause="yes">
 
-                <ul class="slides" id="slides">
-                    <script>
-                        setUpHomeSlider();
-                    </script>
-                </ul>
+            <ul class="slides" id="slides">
+                <script>
+                    setUpHomeSlider();
+                </script>
+            </ul>
 
-            </div>
+        </div>
 
-            <!-- End Hero Slider -->
+        <!-- End Hero Slider -->
 
-            <!-- Site Search Module -->
+        <!-- Site Search Module -->
 
-            <div class="site-search-module">
+        <div class="site-search-module">
 
-                <div class="container">
+            <div class="container">
 
-                    <div class="site-search-module-inside">
+                <div class="site-search-module-inside">
 
-                        <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs">
 
-                            <li class="active"><i class="fa fa-caret-down fa-4x"></i> <a data-toggle="tab"
-                                    href="#sampletab2"> Projects</a> </li>
+                        <li class="active"><i class="fa fa-caret-down fa-4x"></i> <a data-toggle="tab"
+                                                                                     href="#sampletab2"> Projects</a>
+                        </li>
 
-                            <li><i class="fa fa-caret-down fa-4x "></i> <a data-toggle="tab" href="#sampletab1">
-                                    Properties </a> </li>
+                        <li><i class="fa fa-caret-down fa-4x "></i> <a data-toggle="tab" href="#sampletab1">
+                                Properties </a></li>
 
-                        </ul>
+                    </ul>
 
 
+                    <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
 
-                        <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
+                        <div id="sampletab1" class="tab-pane">
 
-                            <div id="sampletab1" class="tab-pane">
+                            <br>
 
-                                <br>
+                            <form method="get">
 
-                                <form method="get">
+                                <div class="form-group">
 
-                                    <div class="form-group">
+                                    <div class="row">
 
-                                        <div class="row">
+                                        <div class="col-md-1">
 
-                                            <div class="col-md-1">
+                                        </div>
 
-                                            </div>
+                                        <div class="col-md-2">
 
-                                            <div class="col-md-2">
-
-                                                <select id="search_type" onchange="ShowButton(this.value)"
+                                            <select id="search_type" onchange="ShowButton(this.value)"
                                                     class="form-control input-lg selectpicker">
 
-                                                    <option value="BUY">BUY</option>
+                                                <option value="BUY">BUY</option>
 
-                                                    <option value="RENT">RENT</option>
+                                                <option value="RENT">RENT</option>
 
-                                                </select>
+                                            </select>
 
-                                            </div>
+                                        </div>
 
-                                            <div class="col-md-3">
+                                        <div class="col-md-3">
 
-                                                <select name="property_type" id="index_property_type"
+                                            <select name="property_type" id="index_property_type"
                                                     class="form-control input-lg selectpicker">
 
-                                                    <script>setUpPropertyTypes('#index_property_type');</script>
+                                                <script>setUpPropertyTypes('#index_property_type');</script>
 
-                                                </select>
+                                            </select>
 
-                                            </div>
+                                        </div>
 
-                                            <div class="col-md-3">
+                                        <div class="col-md-3">
 
-                                                <select name="city" id="property_city"
+                                            <select name="city" id="property_city"
                                                     class="form-control input-lg selectpicker">
 
-                                                    <option value="">City</option>
-                                                    <script>setUpCities("#property_city");</script>
+                                                <option value="">City</option>
+                                                <script>setUpCities("#property_city");</script>
 
-                                                </select>
+                                            </select>
 
-                                            </div>
+                                        </div>
 
-                                            <div class="col-md-2" id="action_type"> <button type="submit"
+                                        <div class="col-md-2" id="action_type">
+                                            <button type="submit"
                                                     formaction="<%= base_url %>home/properties"
                                                     class="btn btn-primary btn-block btn-lg"><i
-                                                        class="fa fa-search"></i> Search</button></div>
-
+                                                        class="fa fa-search"></i> Search
+                                            </button>
                                         </div>
 
                                     </div>
 
-                                </form>
+                                </div>
 
-                            </div>
+                            </form>
 
-
-
-
-
-                            <div id="sampletab2" class="tab-pane active">
-
-                                <br>
-
-                                <form action="<%= base_url %>home/projects" method="get">
-
-                                    <div class="form-group">
-
-                                        <div class="row">
-
-                                            <div class="col-md-1">
-                                            </div>
-
-                                            <div class="col-md-2">
-
-                                                <select name="project_type" id="project_type"
-                                                    class="form-control input-md selectpicker">
-
-                                                    <script> setUpProjectTypes(); </script>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-3">
-
-                                                <select name="city" id="project_city"
-                                                    onchange="showLocality(this.value,'#locality')"
-                                                    class="form-control input-md selectpicker">
-                                                    <script> setUpCities("#project_city"); </script>
-
-                                                </select>
-
-                                            </div>
-                                            <div class="col-md-3">
-                                                <select name="locality" id="locality" class="form-control input-md">
-                                                    <option value="">Locality</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2"> <button type="submit"
-                                                    class="btn btn-primary btn-block btn-lg"><i
-                                                        class="fa fa-search"></i> Search</button></div>
-
-                                        </div>
-
-                                    </div>
-
-                                </form>
-                            </div>
                         </div>
 
+
+                        <div id="sampletab2" class="tab-pane active">
+
+                            <br>
+
+                            <form action="<%= base_url %>home/projects" method="get">
+
+                                <div class="form-group">
+
+                                    <div class="row">
+
+                                        <div class="col-md-1">
+                                        </div>
+
+                                        <div class="col-md-2">
+
+                                            <select name="project_type" id="project_type"
+                                                    class="form-control input-md selectpicker">
+
+                                                <script> setUpProjectTypes(); </script>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-md-3">
+
+                                            <select name="city" id="project_city"
+                                                    onchange="showLocality(this.value,'#locality')"
+                                                    class="form-control input-md selectpicker">
+                                                <script> setUpCities("#project_city"); </script>
+
+                                            </select>
+
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select name="locality" id="locality" class="form-control input-md">
+                                                <option value="">Locality</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-block btn-lg"><i
+                                                        class="fa fa-search"></i> Search
+                                            </button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+                        </div>
                     </div>
 
                 </div>
@@ -525,94 +432,211 @@
 
         </div>
 
-        <!-- Start Content -->
+    </div>
 
-        <div class="main" role="main">
+    <!-- Start Content -->
 
-            <div id="content" class="content full">
+    <div class="main" role="main">
 
-                <div id="featured-properties">
+        <div id="content" class="content full">
 
-                    <div class="container">
+            <div id="featured-properties">
 
-                        <div class="row">
+                <div class="container">
 
-                            <div class="col-md-12">
+                    <div class="row">
 
-                                <div id="property_success"></div>
+                        <div class="col-md-12">
 
-                                <div class="block-heading">
+                            <div id="property_success"></div>
 
-                                    <h4><span class="heading-icon"><i class="fa fa-star"></i></span>Latest Properties
-                                    </h4>
+                            <div class="block-heading">
 
-                                </div>
+                                <h4><span class="heading-icon"><i class="fa fa-star"></i></span>Latest Properties
+                                </h4>
 
                             </div>
 
                         </div>
 
-                        <div class="row">
+                    </div>
 
-                            <ul class="owl-carousel owl-alt-controls" data-columns="4" data-autoplay="no"
-                                data-pagination="no" data-arrows="yes" data-single-item="no">
-                                <% 
-                                for(var i=0;i < latest_properties.length;i++) {
-                                    
-                                    var latest_property = latest_properties[i];
-                                    %>
-                                <li class="item property-block">
+                    <div class="row">
 
-                                    <a href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"
-                                        class="property-featured-image">
-                                        <img src="<%= base_url %>uploads/list_property/<%= latest_property.property_photo %>"
-                                            style="height: 170px" alt="Spacel4all">
-                                    </a>
-                                    <div class="property-info" style="line-height: 5px">
-                                        <h4>
-                                            <a
-                                                href="<%= base_url %>home/property_details/<%=latest_property.property_id %>"><%=latest_property.property_sub_type %></a>
-                                        </h4>
-                                        <hr />
-                                        <span><%=latest_property.property_type %></span>
-                                        <hr />
+                        <ul class="owl-carousel owl-alt-controls" data-columns="4" data-autoplay="no"
+                            data-pagination="no" data-arrows="yes" data-single-item="no">
+                            <%
+                            for(var i = 0;i < latest_properties.length;i++) {
 
-                                        <span class="location"><%=latest_property.locality_name %>,
-                                            <%=latest_property.city_name %></span>
+                                var latest_property = latest_properties[i];
+                            %>
+                            <li class="item property-block">
+
+                                <a href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"
+                                   class="property-featured-image">
+                                    <img src="<%= base_url %>uploads/list_property/<%= latest_property.property_photo %>"
+                                         style="height: 170px" alt="Spacel4all">
+                                </a>
+                                <div class="property-info" style="line-height: 5px">
+                                    <h4>
+                                        <a
+                                                href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"><%= latest_property.property_sub_type %></a>
+                                    </h4>
+                                    <hr/>
+                                    <span><%= latest_property.property_type %></span>
+                                    <hr/>
+
+                                    <span class="location"><%= latest_property.locality_name %>,
+                                            <%= latest_property.city_name %></span>
+                                    <hr>
+
+                                    <% if(latest_property.property_sub_type_id == '14' || latest_property.property_sub_type_id == '18'){ %>
+
+                                        <span><%= latest_property.area %> Sq.Yds</span>
                                         <hr>
 
-                                        <% if(latest_property.property_sub_type_id == '14' || latest_property.property_sub_type_id == '18'){ %>
+                                    <% }else if(latest_property.property_type_id == '1' && latest_property.property_sub_type_id != '18') { %>
 
-                                        <span><%=latest_property.area%> Sq.Yds</span>
+                                        <span><%= latest_property.area %> Sq.Ft</span>
                                         <hr>
 
-                                        <% }else if(latest_property.property_type_id == '1' && latest_property.property_sub_type_id != '18') { %>
-
-                                        <span><%=latest_property.area%> Sq.Ft</span>
-                                        <hr>
-
-                                        <% }else { %>
+                                    <% }else { %>
 
                                         <span><%= latest_property.bedrooms %> BHK</span>
                                         <hr>
 
-                                        <% } %>
+                                    <% } %>
 
-                                        <span><% if(latest_property.quotes_price != ""){ %><span
+                                    <span>
+                                        <% if(latest_property.quotes_price != ""){ %><span
                                                 class="WebRupee">Rs.</span>
-                                            <% } %> <%= latest_property.quoted_price %></span>
-                                        <hr>
+                                        <% } %>
+                                        <%= latest_property.quoted_price %></span>
+                                    <hr>
 
-                                        <a
+                                    <a
                                             href="<%= base_url %>home/property_details/<%= latest_property.property_id %>">
-                                            <button type="button" class="btn btn-danger"> <i
-                                                    class="fa fa-angle-double-right"></i>&nbsp; View Details </button>
-                                        </a>&nbsp;&nbsp;&nbsp;
-                                        <a href="#" onclick="showAjaxModal1('<%= latest_property.property_id %>')">
-                                            <button type="button" class="btn"><i class="fa fa-phone"></i>&nbsp;
-                                                &nbsp;Call Back </button> </a>
-                                    </div>
+                                        <button type="button" class="btn btn-danger"><i
+                                                    class="fa fa-angle-double-right"></i>&nbsp; View Details
+                                        </button>
+                                    </a>&nbsp;&nbsp;&nbsp;
+                                    <a href="#" onclick="showAjaxModal1('<%= latest_property.property_id %>')">
+                                        <button type="button" class="btn"><i class="fa fa-phone"></i>&nbsp;
+                                            &nbsp;Call Back
+                                        </button>
+                                    </a>
+                                </div>
 
+                            </li>
+                            <% } %>
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <br/>
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-9">
+
+                        <div class="block-heading">
+
+                            <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
+                                            class="fa fa-leaf"></i></span>Featured Projects</h4>
+                        </div>
+
+                        <div class="property-listing">
+
+                            <ul>
+
+                                <% for(var i = 0;i < 12; i++)  {
+                                    var latest_project = latest_projects[i]; %>
+                                <li class="type-rent col-md-12">
+                                    <div class="col-md-4">
+                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"
+                                           class="property-featured-image">
+                                            <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
+                                                 style="height: 180px; width:100%" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-8">
+                                                <div class="property-info" style="line-height: 5px">
+                                                    <h3><a
+                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"><?=$row5['project_name']?></a>
+                                                    </h3>
+                                                    <hr>
+                                                    <span><%= latest_project.group_name %></span>
+                                                    <hr>
+
+                                                    <span class="location"> <%= latest_project.locality %>,
+                                                            <%= latest_project.city %></span>
+                                                    <hr>
+
+                                                    <span>Sizes ( Range) :
+                                                            <%= latest_project.min_builtup_area %> -
+                                                            <%= latest_project.max_builtup_area %> Sq.Ft
+                                                        </span>
+                                                    <hr>
+
+                                                    <span>Plans : <%= latest_project.plans %></span>
+                                                    <hr>
+
+                                                    <span>
+                                                        <% if(latest_project.min_price != ""){ %><span
+                                                                class="WebRupee">Rs.</span>
+                                                        <%= latest_project.min_price %>
+                                                        Onwards
+                                                        <% }else { %>
+                                                            <%= latest_project.min_price %>
+                                                        <% } %>
+                                                    </span>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <div class="col-md-4 pad-2 brbtm">
+                                                <ul class="">
+                                                    <li>
+                                                        <a href="#success"
+                                                           onclick="add_Compare('<%= base_url %>home/add_compare/project/<%= latest_project.project_id %>')">
+                                                            <button type="button" class="btn btn-default"><i
+                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
+                                                                &nbsp;&nbsp;
+                                                            </button>
+                                                        </a><br/><br/>
+                                                    </li>
+
+                                                    <li>
+                                                        <a
+                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>">
+                                                            <button type="button" class="btn btn-danger"><i
+                                                                        class="fa  fa-angle-double-right"></i> View
+                                                                Details
+                                                            </button>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="property-amenities clearfix">
+                                                <span
+                                                        class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
+
+                                            <span
+                                                    class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
+
+                                            <span class="parking"><strong>&nbsp;Type :
+                                                    </strong><%= latest_project.project_sub_type %></span>
+                                        </div>
+                                    </div>
                                 </li>
                                 <% } %>
                             </ul>
@@ -621,223 +645,120 @@
 
                     </div>
 
-                </div>
+                    <!-- Start Sidebar -->
 
-                <br />
-
-                <div class="container">
-
-                    <div class="row">
-
-                        <div class="col-md-9">
-
-                            <div class="block-heading">
-
-                                <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
-                                            class="fa fa-leaf"></i></span>Featured Projects</h4>
-                            </div>
-
-                            <div class="property-listing">
-
-                                <ul>
-
-                                    <% for(var i=0;i < 12; i++)  {
-                                        var latest_project = latest_projects[i]; %>
-                                    <li class="type-rent col-md-12">
-                                        <div class="col-md-4">
-                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"
-                                                class="property-featured-image">
-                                                <img src="<%= base_url %>uploads/projects/<%=latest_project.project_photo %>"
-                                                    style="height: 180px; width:100%" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <div class="property-info" style="line-height: 5px">
-                                                        <h3><a
-                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id%>/<%= latest_project.project_name%>"><?=$row5['project_name']?></a>
-                                                        </h3>
-                                                        <hr>
-                                                        <span><%=latest_project.group_name %></span>
-                                                        <hr>
-
-                                                        <span class="location"> <%=latest_project.locality %>,
-                                                            <%=latest_project.city %></span>
-                                                        <hr>
-
-                                                        <span>Sizes ( Range) :
-                                                            <%= latest_project.min_builtup_area %> -
-                                                            <%=latest_project.max_builtup_area%> Sq.Ft
-                                                        </span>
-                                                        <hr>
-
-                                                        <span>Plans : <%=latest_project.plans %></span>
-                                                        <hr>
-
-                                                        <span><% if(latest_project.min_price != ""){ %><span
-                                                                class="WebRupee">Rs.</span>
-                                                            <%= latest_project.min_price %>
-                                                            Onwards<% }else { %> <%=latest_project.min_price %>
-                                                            <% } %></span>
-                                                        <hr>
-                                                    </div>
-                                                </div><br />
-                                                <div class="col-md-4 pad-2 brbtm">
-                                                    <ul class="">
-                                                        <li> 
-                                                            <a href="#success"
-                                                                onclick="add_Compare('<%= base_url %>home/add_compare/project/<%=latest_project.project_id %>')">
-                                                                <button type="button" class="btn btn-default"> <i
-                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
-                                                                    &nbsp;&nbsp;</button>
-                                                            </a><br /><br />
-                                                        </li>
-
-                                                        <!-- <li> <a href="#"
-                                                                onclick="showAjaxModal('<%= base_url %>home/popup/call-back/<%= latest_project.project_id%>')">
-                                                                <button type="button" class="btn"><i
-                                                                        class="fa fa-phone"></i>&nbsp; &nbsp;Call Back
-                                                                    &nbsp;&nbsp;&nbsp;</button> </a> <br /><br /> </li> -->
-
-                                                        <li>
-                                                            <a
-                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>">
-                                                                <button type="button" class="btn btn-danger"><i
-                                                                        class="fa  fa-angle-double-right"></i> View
-                                                                    Details</button>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="property-amenities clearfix">
-                                                <span
-                                                    class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
-
-                                                <span
-                                                    class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
-
-                                                <span class="parking"><strong>&nbsp;Type :
-                                                    </strong><%= latest_project.project_sub_type %></span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <% } %>
-                                </ul>
-
-                            </div>
-
-                        </div>
-
-                        <!-- Start Sidebar -->
-
-                        <div class="sidebar right-sidebar col-md-3">
-                            <% include includes/sidebar.ejs %>
-                        </div>
-
+                    <div class="sidebar right-sidebar col-md-3">
+                        <% include includes/sidebar.ejs %>
                     </div>
 
                 </div>
-            </div>
 
+            </div>
         </div>
 
     </div>
 
-    </div>
+</div>
 
-    <!-- Start Site Footer -->
+</div>
 
-
-
-    <!-- (Ajax Modal)-->
-
-    <div class="modal fade" id="modal_ajax">
-
-        <div class="modal-dialog">
-
-            <div class="modal-content">
-
-                <form method="post">
-
-                    <div class="modal-header">
-
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-
-                        <h4 class="modal-title">Call Back</h4>
-
-                    </div>
+<!-- Start Site Footer -->
 
 
+<!-- (Ajax Modal)-->
 
-                    <div class="modal-body">
-
-
-
-                    </div>
-
-
-
-                    <div class="modal-footer">
-
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                        <button type="button" onclick="send_Callback();" class="btn btn-primary">Send</button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="modal fade" id="modal_ajax1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="post">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Call Back</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="call_back_response">
-                            <div id="errorBox3"></div>
-                            <div class="row">
-                                <div class="col-md-6 col-sm-6">
-                                    <label>NAME*</label>
-                                    <input type="text" id="call_name" name="call_name" class="form-control"
-                                        placeholder="Name" required="required">
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <label>PHONE NUMBER*</label>
-                                    <input type="text" id="call_phone" name="call_phone" class="form-control"
-                                        placeholder="Phone Number" required="required">
-                                </div>
-                                <input type="hidden" id="call_project" name="call_project" />
+<div class="modal fade" id="modal_ajax1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Call Back</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="call_back_response">
+                        <div id="errorBox3"></div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-6">
+                                <label>NAME*</label>
+                                <input type="text" id="call_name" name="call_name" class="form-control"
+                                       placeholder="Name" required="required">
                             </div>
+                            <div class="col-md-6 col-sm-6">
+                                <label>PHONE NUMBER*</label>
+                                <input type="text" id="call_phone" name="call_phone" class="form-control"
+                                       placeholder="Phone Number" required="required">
+                            </div>
+                            <input type="hidden" id="call_project" name="call_project"/>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" onclick="send_Property_Callback();" class="btn btn-primary">Send</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="send_Property_Callback();" class="btn btn-primary">Send</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <% include includes/footer.ejs %>
-    </style>
-    <script type="text/javascript">
-        function ticker() {
-            $('#ticker li:first').slideUp(function () {
-                $(this).appendTo($('#ticker')).slideDown();
-            });
-        }
-        setInterval(ticker, 3000);
-    </script>
+<% include includes/footer.ejs %>
+</
+
+style
+
+>
+<
+script type
+
+=
+"text/javascript"
+>
+function
+
+ticker
+(
+)
+{
+$
+(
+'#ticker li:first'
+)
+.
+
+slideUp
+(
+function
+
+(
+)
+{
+$(this
+)
+.
+appendTo
+(
+$
+(
+'#ticker'
+)
+)
+.
+slideDown
+(
+)
+;
+}
+)
+;
+}
+setInterval
+(
+ticker,
+
+3000
+)
+;
+<
+/
+script >
