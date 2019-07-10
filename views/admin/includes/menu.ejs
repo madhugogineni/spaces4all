@@ -1,0 +1,223 @@
+<aside class="main-sidebar">
+
+    <!-- sidebar: style can be found in sidebar.less -->
+
+    <section class="sidebar">
+
+        <!-- search form -->
+
+        <!-- /.search form -->
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+
+        <ul class="sidebar-menu">
+
+            <li class="header">MAIN NAVIGATION</li>
+
+            <li class="treeview <% if(page_name == 'index') { %><%= 'active' %><% } %>">
+
+                <a href="<%= base_url %>admin"><i class="fa fa-home"></i> <span>Dashboard</span></a>
+
+            </li>
+
+            <li class="treeview <?php if($page_name == 'property_type' || $page_name =='property_sub_type'){ echo 'active';}?>">
+
+                <a href="#"><i class="fa fa-home"></i> <span>Manage Properties</span></a>
+
+                <ul class="treeview-menu">
+
+                    <li
+                    <?php if($page_name == 'property_type'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/property_type"><i class="fa fa-home"></i>
+                        <span>Property Type</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'property_sub_type'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/property_sub_type"><i class="fa fa-home"></i> <span>Property Sub Type</span></a></li>
+
+                </ul>
+
+            </li>
+
+            <li
+            <?php if($page_name == 'city'){ echo "class='active'";}?>><a href="<%= base_url %>admin/city"><i
+                        class="fa fa-star"></i> <span>Manage City</span></a></li>
+
+            <li
+            <?php if($page_name == 'locality'){ echo "class='active'";}?>><a href="<%= base_url %>admin/locality"><i
+                        class="fa fa-star"></i> <span>Manage Locality</span></a></li>
+
+            <li
+            <?php if($page_name == 'state'){ echo "class='active'";}?>><a href="<%= base_url %>admin/state"><i
+                        class="fa fa-star"></i> <span>Manage State</span></a></li>
+
+            <li
+            <?php if($page_name == 'list_property'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/list_property"><i class="fa fa-star"></i>
+                <span>List Property</span></a></li>
+
+
+            <li class="treeview <?php if($page_name == 'project_type' || $page_name =='project_sub_type' || $page_name =='projects' || $page_name =='banks' || $page_name =='amenities'){ echo 'active';}?>">
+
+                <a href="#"><i class="fa fa-star"></i> <span>Manage Projects</span></a>
+
+                <ul class="treeview-menu">
+
+                    <li
+                    <?php if($page_name == 'project_type'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/project_type"><i class="fa fa-star"></i>
+                        <span>Project Type</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'project_sub_type'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/project_sub_type"><i class="fa fa-star"></i> <span>Project Sub Type</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'banks'){ echo "class='active'";}?>><a href="<%= base_url %>admin/banks"><i
+                                class="fa fa-home"></i> <span>Manage Banks</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'amenities'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/amenities"><i class="fa fa-star"></i>
+                        <span>Manage Amenities</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'projects'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/projects"><i class="fa fa-star"></i>
+                        <span>Projects</span></a></li>
+
+                </ul>
+
+            </li>
+
+
+            <li
+            <?php if($page_name == 'rent'){ echo "class='active'";}?>><a href="<%= base_url %>admin/rent"><i
+                        class="fa fa-star"></i> <span>Rent</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'post_requirement'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/post_requirement"><i class="fa fa-star"></i>
+                <span>Post Requirement</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'popular_agents'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/popular_agents"><i class="fa fa-star"></i>
+                <span>Useful Contacts</span></a></li>
+
+            <li
+            <?php if($page_name == 'send_mails'){ echo "class='active'";}?>><a href="<%= base_url %>admin/send_mails"><i
+                        class="fa fa-envelope-o"></i> <span>Send Mails</span></a></li>
+
+
+            <li class="treeview <?php if($page_name == 'property_enquiry' || $page_name =='project_enquiry' || $page_name =='rent_enquiry'){ echo 'active';}?>">
+
+                <a href="#"><i class="fa fa-star"></i> <span>Enquiry</span></a>
+
+                <ul class="treeview-menu">
+
+                    <li
+                    <?php if($page_name == 'property_enquiry'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/property_enquiry"><i class="fa fa-star"></i> <span>	Property Enquiry</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'project_enquiry'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/project_enquiry"><i class="fa fa-star"></i>
+                        <span>Project Enquiry</span></a></li>
+
+                    <li
+                    <?php if($page_name == 'rent_enquiry'){ echo "class='active'";}?>><a
+                            href="<%= base_url %>admin/rent_enquiry"><i class="fa fa-star"></i>
+                        <span>Rent Enquiry</span></a></li>
+
+                </ul>
+
+            </li>
+
+
+            <li
+            <?php if($page_name == 'stamp_duty'){ echo "class='active'";}?>><a href="<%= base_url %>admin/stamp_duty"><i
+                        class="fa fa-star"></i> <span>Stamp Duty</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'loans'){ echo "class='active'";}?>><a href="<%= base_url %>admin/loans"><i
+                        class="fa fa-star"></i> <span>Loan Requests</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'services_requests'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/services_requests"><i class="fa fa-star"></i>
+                <span>Services Requests</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'price_trends'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/price_trends"><i class="fa fa-money"></i>
+                <span>Price Trends</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'call_back'){ echo "class='active'";}?>><a href="<%= base_url %>admin/call_back"><i
+                        class="fa fa-phone"></i> <span>Call Back</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'news'){ echo "class='active'";}?>><a href="<%= base_url %>admin/news"><i
+                        class="fa fa-star"></i> <span>News</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'partners'){ echo "class='active'";}?>><a href="<%= base_url %>admin/partners"><i
+                        class="fa fa-star"></i> <span>Partners</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'project_videos'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/project_videos"><i class="fa fa-star"></i> <span>Video</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'home_slide'){ echo "class='active'";}?>><a href="<%= base_url %>admin/home_slide"><i
+                        class="fa fa-star"></i> <span>Home Slide</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'home_ads'){ echo "class='active'";}?>><a href="<%= base_url %>admin/home_ads"><i
+                        class="fa fa-star"></i> <span>Home Ads</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'testimonial'){ echo "class='active'";}?>><a href="<%= base_url %>admin/testimonial"><i
+                        class="fa fa-star"></i> <span>Testimonial</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'news_letter'){ echo "class='active'";}?>><a href="<%= base_url %>admin/news_letter"><i
+                        class="fa fa-star"></i> <span>News Letter</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'schedule_site_visit'){ echo "class='active'";}?>><a
+                    href="<%= base_url %>admin/schedule_site_visit"><i class="fa fa-star"></i> <span>Site Visits</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'feedbacks'){ echo "class='active'";}?>><a href="<%= base_url %>admin/feedbacks"><i
+                        class="fa fa-star"></i> <span>Feedbacks</span></a></li>
+
+
+            <li
+            <?php if($page_name == 'contact'){ echo "class='active'";}?>><a href="<%= base_url %>admin/contact"><i
+                        class="fa fa-star"></i> <span>Contact Us</span></a></li>
+
+
+        </ul>
+
+    </section>
+
+    <!-- /.sidebar -->
+
+</aside>

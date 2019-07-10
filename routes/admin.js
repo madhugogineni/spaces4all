@@ -3,22 +3,25 @@ var router = express.Router();
 var multer = require('multer');
 var adminModel = require('../models/adminModel');
 var upload = multer();
+var areCredentialsWrong = false;
 
 /* GET users listing. */
 router.get('/', function (req, res) {
 
     if (req.session.isAdminLoggedIn) {
-        res.render("admin/index", {});
+        res.render("admin/index", {page_name: 'index', page_title: 'Dashboard'});
     } else {
         res.redirect("login");
     }
 
 });
 router.get("/login", function (req, res) {
+    var data = {page_name: 'Login', page_title: 'Login'};
     if (req.session.isAdminLoggedIn) {
         res.redirect("/admin");
     } else {
-        res.render("admin/login", {page_name: 'Login', page_title: 'Login'});
+        data.wrong_credentials = areCredentialsWrong;
+        res.render("admin/login", data);
     }
 });
 router.post("/validate_login", upload.none(), async function (req, res) {
@@ -28,9 +31,11 @@ router.post("/validate_login", upload.none(), async function (req, res) {
     var userCountResponse = await adminModel.getUserCount({email: email, password: password});
     if (userCountResponse.success) {
         if (userCountResponse.count > 0) {
-            res.session.isAdminLoggedIn = true;
+            req.session.isAdminLoggedIn = true;
+            res.redirect("/admin");
         } else {
-            res.send("invalid credentials");
+            areCredentialsWrong = true;
+            res.redirect("login");
         }
     } else {
         res.send("Welcome");

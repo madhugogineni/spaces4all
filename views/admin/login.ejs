@@ -28,6 +28,21 @@
 
 
 </head>
+<script>
+    $("form#validate-login").sumbit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type: "POST",
+            url: "<%= base_url %>admin/validate_login",
+            data: formData,
+            success: function (result) {
+                console.log("success", result);
+            },
+        });
+
+    })
+</script>
 
 <body class="login-page">
 
@@ -43,7 +58,13 @@
 
         <p class="login-box-msg">Login in to Admin Dashboard</p>
 
-        <form action="<%= base_url %>admin/validate_login" method="post">
+        <form action="<%= base_url %>admin/validate_login" id="validate-login" method="post">
+
+            <% if(wrong_credentials) { %>
+                <div class="alert alert-error fade in"><a href="#" data-dismiss="alert"
+                                                          class="close">x</a><strong><%= "Invalid Credentials" %></strong>
+                </div>
+            <% } %>
 
             <div class="form-group has-feedback">
 
