@@ -826,6 +826,9 @@ router.get("/testmail", function (req, res) {
     });
 });
 
+router.get("/property_details",function(req,res) {
+   res.render("home/property_details1");
+});
 function writeFile(fileName, fileBuffer, path) {
     return new Promise(function (resolve, reject) {
         fs.appendFile(path + fileName, fileBuffer, function (error) {

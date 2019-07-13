@@ -1,0 +1,23 @@
+@import './common';
+
+// property_details
+.property_overview_container {
+  background-color: #2E4053;
+
+  .property_overview {
+
+    .property_image {
+      width: 400px;
+      height: 300px;
+      margin-top: 20px;
+      position: absolute;
+    }
+    .property_overview_details {
+      width: calc(100% - 420px);
+      height: 285px;
+    }
+    .property_specifications {
+
+    }
+  }
+}
