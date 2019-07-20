@@ -1411,5 +1411,12 @@ module.exports = {
                 }
             });
         });
+    },
+    getAmenityNames: function(amenitiesList) {
+        return new Promise(function(resolve,reject) {
+            con.query("SELECT amenity FROM `amenities` WHERE amenity_id IN ("+amenitiesList+")", function(error,result) {
+                console.log(result);
+            })
+        })
     }
 };

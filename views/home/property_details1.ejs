@@ -3,38 +3,18 @@
 <html class="no-js">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title> Spaces4All - <?=$page_title?> </title>
-    <meta name="description" content="">
-    <meta name="keywords" content="">
-    <meta name="author" content="">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-    <link href="<%= base_url %>stylesheets/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="<%= base_url %>stylesheets/style.css" rel="stylesheet" type="text/css">
-    <link href="<%= base_url %>stylesheets/property_details.css" rel="stylesheet" type="text/css">
-    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
-    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
-    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/>
-    <![endif]-->
-    <link class="alt" href="<%= base_url %>stylesheets/color.css" rel="stylesheet" type="text/css">
-    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
-    <script src="<%= base_url %>javascripts/modernizr.js"></script>
-    <style type="text/css">
-    </style>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <% include includes/includes.ejs %>
 </head>
-<body class="home"><!--onload="initialize()" -->
+<body class="home">
 <% include includes/header.ejs %>
 <div class="bgf7f7f7">
 
     <div class="property_overview_container">
 
-        <div class="property_overview container fo">
+        <div class="property_overview container">
 
             <div class="fl">
-                <img src="<%= base_url %>uploads/list_property/1446808370house-2.jpg" class="property_image"/>
+                <img src="<%= base_url %>uploads/list_property/1446808370house-2.jpg" class="display_image"/>
             </div>
 
             <div class="fr property_overview_details">
@@ -57,7 +37,7 @@
                     </div>
                 </div>
                 <br/>
-                <ul class="fo mb20px pt15px property_specifications fl-child w20-li border-li">
+                <ul class="row mb20px pt15px property_specifications fl-child w20-li border-li">
                     <li class="text-align-center"><p class="silverfc">Bedrooms</p>
                         <p class="fw600 xxlarge mt5px wfc">2BHK</p></li>
                     <li class="text-align-center"><p class="silverfc">Bathrooms</p>
@@ -75,10 +55,87 @@
     </div>
 
     <div class="pb15px pt7px"></div>
-    <div class="container">
-        Welcome
+    <div class="container containerlayout disclaimer">
+        <h2 class="fw600">Disclaimer</h2>
+        <p>All the information displayed is as posted by the User and displayed on the website for informational
+            purposes only. RealEstateIndia makes no representations and warranties of any kind, whether expressed
+            or implied, for the Services and in relation to the accuracy or quality of any information transmitted or
+            obtained at RealEstateIndia.com. You are hereby strongly advised to verify all information including
+            visiting the relevant RERA website before taking any decision based on the contents displayed on
+            the website.
+        </p>
     </div>
-
+    <div class="container">
+        <div class="col-md-8 col-8 nopadding  property_details">
+            <div class="row  containerlayout">
+                <div>
+                    <h2 class="fw600">About Property</h2>
+                </div>
+                <div class="mb10px property_details_description">
+                    There Is No Description Available.
+                </div>
+                <ul class="mt20px property_details_list">
+                    <li> 
+                        <div class="dib list_label">Property Type</div>
+                        <div class="dib list_content"></div>
+                    </li>
+                    <li>
+                        <div class="dib list_label">Property Sub Type </div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Location</div>
+                        <div class="dib list_content"> verifyvjbs</div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> City</div>
+                        <div class="dib list_content"> wbjqkgjf</div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Price</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Age of Construction</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Furnishing Status</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> No. of Floors</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Facing</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                    <li>
+                        <div class="dib list_label"> Posted By</div>
+                        <div class="dib list_content"> </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row containerlayout pb20pxi">
+                <div>
+                    <h2 class="fw600">Amenities</h2>
+                </div>
+                <div>
+                    <ul class="mt5px property_details_amenities">
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                        <li class="p10px"> Welcome </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <% include includes/footer.ejs %>
 </body>
