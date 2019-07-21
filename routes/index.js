@@ -1061,11 +1061,22 @@ router.get("/property_details/:property_id", async function (req, res) {
     var propertyId = req.params.property_id || undefined;
     if (propertyId) {
         var propertyDetails = await crudModel.getPropertyDetailsById(req.params.property_id);
-        res.render("home/property_details1", {
-            page_name: "Property Details",
-            page_title: "Property Details",
-            property_details: propertyDetails
-        });
+        if(propertyDetails.success) {
+            var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
+            if(amenitiesList.success) {
+                propertyDetails.data.amenities_list = amenitiesList.data;
+                res.render("home/property_details1", {
+                    page_name: "Property Details",
+                    page_title: "Property Details",
+                    property_details: propertyDetails.data
+                });    
+    
+            }else {
+                console.log("error");
+            }
+        }else {
+            console.log("error");
+        }
     }
 });
 
