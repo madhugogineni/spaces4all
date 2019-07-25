@@ -7,136 +7,218 @@
 </head>
 <body class="home">
 <% include includes/header.ejs %>
-<div class="bgf7f7f7">
+<% if(has_details) { %>
+    <div class="bgf7f7f7">
+        <div class="property_overview_container">
 
-    <div class="property_overview_container">
+            <div class="property_overview container">
 
-        <div class="property_overview container">
-
-            <div class="fl">
-                <img src="<%= base_url %>uploads/list_property/1446808370house-2.jpg" class="display_image"/>
-            </div>
-
-            <div class="fr property_overview_details">
-                <div class="row mt20px mb20px pb20px">
-                    <div class="col-md-12 lh17em mb2px">
-                        <h1 class="xxxlarge sc pt20px wfc">Property Name</h1>
-                    </div>
-                    <div class="col-md-12 wfc">Location and details</div>
+                <div class="fl">
+                    <img src="<%= base_url %>uploads/list_property/1446808370house-2.jpg" class="display_image"/>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="fl dib wfc">
-                            <b class="webrupee" style="font-size: 28px"> Rs.</b>
-                            <span class="fw600" style="font-size: 28px">Price</span>
+
+                <div class="fr property_overview_details">
+                    <div class="row mt20px mb20px pb20px">
+                        <div class="col-md-12 lh17em mb2px">
+                            <h1 class="xxxlarge sc pt20px wfc"><%= property_details.bedrooms %>
+                                BHK <%= property_details.property_sub_type_name %>
+                                in <%= property_details.locality_name %></h1>
                         </div>
-                        <div class="fr wfc">
-                            <a class="btn btn-primary btn-md mr5px w120">Contact Builder</a>
-                            <a class="btn btn-white btn-md w120">Compare</a>
+                        <div class="col-md-12 wfc"><%= property_details.locality_name %>
+                            , <%= property_details.city_name %></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="fl dib wfc">
+                                <b class="webrupee" style="font-size: 28px"> Rs.</b>
+                                <span class="fw600" style="font-size: 28px"><%= property_details.quoted_price %></span>
+                            </div>
+                            <div class="fr wfc">
+                                <a class="btn btn-primary btn-md mr5px w120">Contact <%= property_details.posted_by %></a>
+                                <a class="btn btn-white btn-md w120">Compare</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <br/>
-                <ul class="row mb20px pt15px property_specifications fl-child w20-li border-li">
-                    <li class="text-align-center"><p class="silverfc">Bedrooms</p>
-                        <p class="fw600 xxlarge mt5px wfc">2BHK</p></li>
-                    <li class="text-align-center"><p class="silverfc">Bathrooms</p>
-                        <p class="fw600 xxlarge mt5px wfc">4</p></li>
-                    <li class="text-align-center"><p class="silverfc">BuiltUp Area.</p>
-                        <p class="fw600 xxlarge mt5px wfc">292</p></li>
-                    <li class="text-align-center"><p class="silverfc">Ownership</p>
-                        <p class="fw600 xxlarge mt5px wfc">Builder</p></li>
-                    <li class="text-align-center"><p class="silverfc">Sale Type</p>
-                        <p class="fw600 xxlarge mt5px wfc">New</p></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="pb15px pt7px"></div>
-    <div class="container containerlayout disclaimer">
-        <h2 class="fw600">Disclaimer</h2>
-        <p>All the information displayed is as posted by the User and displayed on the website for informational
-            purposes only. RealEstateIndia makes no representations and warranties of any kind, whether expressed
-            or implied, for the Services and in relation to the accuracy or quality of any information transmitted or
-            obtained at RealEstateIndia.com. You are hereby strongly advised to verify all information including
-            visiting the relevant RERA website before taking any decision based on the contents displayed on
-            the website.
-        </p>
-    </div>
-    <div class="container">
-        <div class="col-md-8 col-8 nopadding  property_details">
-            <div class="row  containerlayout">
-                <div>
-                    <h2 class="fw600">About Property</h2>
-                </div>
-                <div class="mb10px property_details_description">
-                    There Is No Description Available.
-                </div>
-                <ul class="mt20px property_details_list">
-                    <li> 
-                        <div class="dib list_label">Property Type</div>
-                        <div class="dib list_content"></div>
-                    </li>
-                    <li>
-                        <div class="dib list_label">Property Sub Type </div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Location</div>
-                        <div class="dib list_content"> verifyvjbs</div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> City</div>
-                        <div class="dib list_content"> wbjqkgjf</div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Price</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Age of Construction</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Furnishing Status</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> No. of Floors</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Facing</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                    <li>
-                        <div class="dib list_label"> Posted By</div>
-                        <div class="dib list_content"> </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="row containerlayout pb20pxi">
-                <div>
-                    <h2 class="fw600">Amenities</h2>
-                </div>
-                <div>
-                    <ul class="mt5px property_details_amenities">
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"> Welcome </li>
-                        <li class="p10px"><i class="fas fa-swimming-pool" style="font-size: 30px;"></i><span style="display: block;"> Welcome </span></li>
+                    <br/>
+                    <ul class="row mb20px pt15px property_specifications fl-child w20-li border-li">
+                        <li class="text-align-center"><p class="silverfc">Bedrooms</p>
+                            <p class="fw600 xxlarge mt5px wfc"><%= property_details.bedrooms %> BHK</p></li>
+                        <li class="text-align-center"><p class="silverfc">Bathrooms</p>
+                            <p class="fw600 xxlarge mt5px wfc"><%= property_details.bathrooms %></p></li>
+                        <li class="text-align-center"><p class="silverfc">BuiltUp Area.</p>
+                            <p class="fw600 xxlarge mt5px wfc"><%= property_details.saleable_area %></p></li>
+                        <li class="text-align-center"><p class="silverfc">Ownership</p>
+                            <p class="fw600 xxlarge mt5px wfc"><%= property_details.posted_by %></p></li>
+                        <li class="text-align-center"><p class="silverfc">Sale Type</p>
+                            <p class="fw600 xxlarge mt5px wfc">New</p></li>
                     </ul>
                 </div>
+
+            </div>
+        </div>
+
+        <div class="pb15px pt7px"></div>
+        <div class="container containerlayout disclaimer">
+            <h2 class="fw600">Disclaimer</h2>
+            <p>All the information displayed is as posted by the User and displayed on the website for informational
+                purposes only. RealEstateIndia makes no representations and warranties of any kind, whether expressed
+                or implied, for the Services and in relation to the accuracy or quality of any information transmitted
+                or
+                obtained at RealEstateIndia.com. You are hereby strongly advised to verify all information including
+                visiting the relevant RERA website before taking any decision based on the contents displayed on
+                the website.
+            </p>
+        </div>
+        <div class="container">
+            <div class="col-md-8 col-8 nopadding  property_details">
+                <div class="row  containerlayout">
+                    <div>
+                        <h2 class="fw600">About Property</h2>
+                    </div>
+                    <div class="mb10px property_details_description">
+                        There Is No Description Available.
+                    </div>
+                    <ul class="mt20px property_details_list">
+                        <li>
+                            <div class="dib list_label">Property Type</div>
+                            <div class="dib list_content"><%= property_details.property_type_name %></div>
+                        </li>
+                        <li>
+                            <div class="dib list_label">Property Sub Type</div>
+                            <div class="dib list_content"><%= property_details.property_sub_type_name %></div>
+                        </li>
+                        <li>
+                            <div class="dib list_label"> Location</div>
+                            <div class="dib list_content"> <%= property_details.locality_name %></div>
+                        </li>
+                        <li>
+                            <div class="dib list_label"> City</div>
+                            <div class="dib list_content"> <%= property_details.city_name %></div>
+                        </li>
+                        <% if(property_details.property_sub_type == "14" || property_details.property_sub_type == "18") { %>
+
+                            <li>
+                                <div class="dib list_label"> Facing</div>
+                                <div class="dib list_content"><%= property_details.facing %></div>
+                            </li>
+                            <% if(property_details.floors) { %>
+                                <li>
+                                    <div class="dib list_label"> Floors allowed for construction</div>
+                                    <div class="dib list_content"><%= property_details.floors %></div>
+                                </li>
+                            <% } %>
+
+                            <% if(property_details.open_slides) { %>
+                                <li>
+                                    <div class="dib list_label">No Of Open Sides</div>
+                                    <div class="dib list_content"><%= property_details.open_slides %></div>
+                                </li>
+
+                            <% } %>
+                            <li>
+                                <div class="dib list_label"> Any Construction Done</div>
+                                <div class="dib list_content">
+                                    <% if(property_details.construction_done) { %>
+                                        <%= property_details.construction_done %>
+                                    <% } else { %>
+                                        <%= "NO" %>
+                                    <% } %>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dib list_label"> Boundary Wall Made</div>
+                                <div class="dib list_content">
+                                    <% if(property_details.boundary_wall) { %>
+                                        <%= property_details.boundary_wall %>
+                                    <% } else { %>
+                                        <%= "NO" %>
+                                    <% } %>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dib list_label">Is In a Gated Colony</div>
+                                <div class="dib list_content">
+                                    <% if(property_details.gated_colony) { %>
+                                        <%= property_details.gated_colony %>
+                                    <% } else { %>
+                                        <%= "NO" %>
+                                    <% } %>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dib list_label"> Dimentions(Ft)</div>
+                                <div class="dib list_content">
+                                    East :
+                                    <% if(property_details.east) { %>
+                                        <%= property_details.east %>
+                                    <% } else { %>
+                                        <%= "NA" %>
+                                    <% } %>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    West :
+                                    <% if(property_details.west) { %>
+                                        <%= property_details.west %>
+                                    <% } else { %>
+                                        <%= "NA" %>
+                                    <% } %>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    North :
+                                    <% if(property_details.north) { %>
+                                        <%= property_details.north %>
+                                    <% } else { %>
+                                        <%= "NA" %>
+                                    <% } %>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    South :
+                                    <% if(property_details.south) { %>
+                                        <%= property_details.south %>
+                                    <% } else { %>
+                                        <%= "NA" %>
+                                    <% } %>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="dib list_label"> Width Of Road(Ft)</div>
+                                <div class="dib list_content">
+                                    <% if(property_details.width) { %>
+                                        <%= property_details.width %>
+                                    <% } else { %>
+                                        <%= "NA" %>
+                                    <% } %>
+                                </div>
+                            </li>
+
+                        <% } else { %>
+
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="row containerlayout pb20pxi">
+                    <div>
+                        <h2 class="fw600">Amenities</h2>
+                    </div>
+                    <div>
+                        <ul class="mt5px property_details_amenities">
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"> Welcome</li>
+                            <li class="p10px"><i class="fas fa-swimming-pool" style="font-size: 30px;"></i><span
+                                        style="display: block;"> Welcome </span></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+<% } else { %>
+    <div class="container">
+        <h3 style="text-align: center;">Property Not Found</h3>
+    </div>
+<% } %>
 <% include includes/footer.ejs %>
 </body>
 </html>

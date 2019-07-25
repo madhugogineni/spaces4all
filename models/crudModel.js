@@ -1416,17 +1416,24 @@ module.exports = {
     getPropertyDetailsById: function (propertyId) {
         return new Promise(function (resolve, reject) {
             con.query("SELECT list_property.*, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
-                "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides, " +
+                "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides," +
                 "residential_plot_details.width, residential_plot_details.construction_done, residential_plot_details.boundary_wall, " +
-                "residential_plot_details.gated_colony, property_photos.photo FROM list_property inner join city on list_property.city = city.city_id " +
+                "residential_plot_details.gated_colony, property_photos.photo , property_type.type as property_type_name, "+
+                "property_sub_type.sub_type as property_sub_type_name  FROM list_property inner join city on list_property.city = city.city_id " +
                 "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
                 "list_property.list_property_id = residential_plot_details.list_property_id left join property_photos on " +
-                "list_property.list_property_id = property_photos.property_id WHERE list_property.list_property_id = " + propertyId, function (error, result) {
+                "list_property.list_property_id = property_photos.property_id  inner join property_type on "+
+                "list_property.property_type = property_type.property_type_id inner join property_sub_type on "+
+                "list_property.property_sub_type = property_sub_type.property_sub_type_id WHERE list_property.list_property_id = " + propertyId, function (error, result) {
                     if (error) {
                         resolve({ success: false, message: error });
                     }
                     else {
-                        resolve({ success: true, data: result[0] });
+                        if(result.length > 0) {
+                            resolve({ success: true, data: result[0] });
+                        }else {
+                            resolve({success: false, message: "No Data"});
+                        }
                     }
                 });
         });
@@ -1434,14 +1441,19 @@ module.exports = {
 
     getAmenityNames: function (amenitiesList) {
         return new Promise(function (resolve, reject) {
-            con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({ success: false, message: error });
-                } else {
-                    resolve({ success: true, data: result });
-                }
-            })
+            if(amenitiesList) {
+                con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false, message: error });
+                    } else {
+                        resolve({ success: true, data: result });
+                    }
+                })
+            }else {
+                resolve({success: true, data: []});
+            }
+
         })
     }
 };

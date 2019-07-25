@@ -197,10 +197,10 @@
   border-bottom: 1px solid #ccc;
 }
 .property_details .property_details_list li .list_label {
-  width: 27%;
+  width: 30%;
 }
 .property_details .property_details_list li .list_content {
-  width: 70%;
+  width: 67%;
   color: black;
 }
 .property_details .property_details_list li:last-child {

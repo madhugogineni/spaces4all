@@ -1063,11 +1063,14 @@ router.get("/property_details/:property_id", async function (req, res) {
         var propertyDetails = await crudModel.getPropertyDetailsById(req.params.property_id);
         if(propertyDetails.success) {
             var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
+            propertyDetails.data.quoted_price = getPrice(propertyDetails.data.quoted_price);
             if(amenitiesList.success) {
                 propertyDetails.data.amenities_list = amenitiesList.data;
+                console.log(propertyDetails.data);
                 res.render("home/property_details1", {
                     page_name: "Property Details",
                     page_title: "Property Details",
+                    has_details: true,
                     property_details: propertyDetails.data
                 });    
     
@@ -1075,6 +1078,14 @@ router.get("/property_details/:property_id", async function (req, res) {
                 console.log("error");
             }
         }else {
+            if(propertyDetails.message == "No Data") {
+                res.render("home/property_details1", {
+                    page_name: "Property Details",
+                    page_title: "Property Details",
+                    has_details: false,
+                    property_details: propertyDetails.data
+                });
+            }
             console.log("error");
         }
     }
@@ -1189,6 +1200,20 @@ async function getPostRequirementEmailDetails(
         min_price: finalMinPrice,
         max_price: finalMaxPrice
     };
+}
+
+function getPrice(price) {
+    var responsePrice;
+    if (price > 10000000) {
+        responsePrice = Math.round(parseFloat(price) / 10000000, 2);
+        responsePrice = responsePrice + " Cr";
+    } else if (price > 100000) {
+        responsePrice = Math.round(parseFloat(price) / 100000, 2);
+        responsePrice = responsePrice + " Lac";
+    } else {
+        responsePrice = price;
+    }
+    return responsePrice;
 }
 
 module.exports = router;
