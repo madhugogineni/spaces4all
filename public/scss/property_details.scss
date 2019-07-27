@@ -5,6 +5,9 @@
   background-color: $darkBlue;
 
   .property_overview {
+    .display_image {
+      background-color: $white;
+    }
     .property_overview_details {
       width: calc(100% - 420px);
       height: 285px;
@@ -17,6 +20,8 @@
 .disclaimer {
   p {
     color: $gray;
+    text-align: justify;
+    text-justify: inter-word;
   }
 }
 .property_details {
@@ -52,4 +57,7 @@
     }
   }
 
+}
+.enquiryform {
+  margin-left: 20px;
 }

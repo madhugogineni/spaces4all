@@ -1,11 +1,12 @@
 <script>
     function calculateStampDuty() {
-        var propertyValue = $('input[name=stampduty_property_value]').val(), stampdutyId = $('select[name=stamp_duty_id]').val();
+        var propertyValue = $('input[name=stampduty_property_value]').val(),
+            stampdutyId = $('select[name=stamp_duty_id]').val();
         console.log(stampdutyId);
         if (propertyValue != "" && stampdutyId != "") {
             $.ajax({
                 type: "GET",
-                url: "<%= api_url%>calculate_stamp_duty",
+                url: "<%= api_url %>calculate_stamp_duty",
                 data: {
                     id: stampdutyId,
                     propertyValue: propertyValue
@@ -17,6 +18,7 @@
             });
         }
     }
+
     function calculateEmi(amount, interest, tenure) {
         var intr = interest / 1200;
         var principle = amount;
@@ -30,6 +32,7 @@
         response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class="">Rs. ' + total_interest + ' /-</span></b></div></div></div>';
         $('#emi_value').html(response);
     }
+
     function loadEligibilityCheck(loanAmount, netIncome, tenure, interest) {
         // console.log(loanAmount, netIncome, tenure, interest);
         var intr = interest / 1200;
@@ -48,10 +51,11 @@
         response += '<a href = "<%= base_url %>home/apply_home_loan" class="btn btn-primary btn-lg" > Apply For a Loan</a>';
         $('#loan_eligibility_response').html(response);
     }
+
     function setUpHomeSlider() {
         $.ajax({
             method: "GET",
-            url: "<%=api_url %>get_home_slider",
+            url: "<%= api_url %>get_home_slider",
             success: function (response) {
                 var result = '';
                 for (var i = 0; i < response.length; i++) {
@@ -64,6 +68,7 @@
 
         });
     }
+
     function setUpCities(divId, cityId) {
         $.ajax({
             method: "GET",
@@ -86,6 +91,7 @@
             }
         });
     }
+
     function setUpProjectTypes() {
         $.ajax({
             method: "GET",
@@ -100,6 +106,7 @@
             }
         });
     }
+
     function showLocality(cityId, divId) {
         $.ajax({
             method: "GET",
@@ -120,6 +127,7 @@
             }
         });
     }
+
     function send_Project_Callback() {
 
         var filter = /^[0-9-+]+$/;
@@ -131,7 +139,6 @@
         var project_id = $("#call_project_id").val();
 
         var dataString = 'name=' + name + '&phone=' + phone + '&project_id=' + project_id;
-
 
 
         if ($("#call_name").val() == "") {
@@ -161,7 +168,7 @@
         } else {
             $.ajax({
                 type: "GET",
-                url: "<%=base_url %>apis/add_project_call_back",
+                url: "<%= base_url %>apis/add_project_call_back",
                 data: {
                     name: name,
                     phone: phone,
@@ -175,6 +182,7 @@
             });
         }
     }
+
     function send_Property_Callback() {
         console.log($("#call_project").val());
         var filter = /^[0-9-+]+$/;
@@ -228,10 +236,11 @@
             });
         }
     }
+
     function setUpEminities(divId) {
         $.ajax({
             type: 'GET',
-            url: "<%=api_url %>get_emenities",
+            url: "<%= api_url %>get_emenities",
             success: function (response) {
                 var result = "";
                 for (var i = 0; i < response.length; i++) {
@@ -241,10 +250,11 @@
             }
         });
     }
+
     function setUpPropertyTypes(divId, selectedType) {
         $.ajax({
             type: 'GET',
-            url: "<%=api_url %>get_property_types",
+            url: "<%= api_url %>get_property_types",
             success: function (response) {
                 var result = '<option value="">---Property Type---</option>';
                 for (var i = 0; i < response.length; i++) {
@@ -258,6 +268,7 @@
             }
         });
     }
+
     function setUpStates(divId) {
         $.ajax({
             method: 'GET',
@@ -271,6 +282,7 @@
             }
         });
     }
+
     function getPropertySubTypes(str, divId) {
         $.ajax({
             type: 'GET',
@@ -288,17 +300,51 @@
             }
         });
     }
-    function setUpSubPropertiesByPropertyType(propertyType,propertySubType) {
+
+    function setUpSubPropertiesByPropertyType(propertyType, propertySubType) {
         $.ajax({
-            type:'GET',
-            url: '<%=api_url %>get_property_subtype_using_property_type',
+            type: 'GET',
+            url: '<%= api_url %>get_property_subtype_using_property_type',
             data: {
                 property_type: propertyType
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
             }
         })
     }
+
+
+    function send_enquiry() {
+
+        var name2 = $("#name2").val();
+
+        var phone2 = $("#phone2").val();
+
+        var email2 = $("#email2").val();
+
+        var comments2 = $("#comments2").val();
+
+        var dataString = 'name=' + name2 + '&phone=' + phone2 + '&comments=' + comments2 + '&email=' + email2;
+
+
+        $.ajax({
+
+            type: "POST",
+
+            url: "<?=base_url()?>home/property_enquiry/<?php echo $list_property_id;?>",
+
+            data: dataString,
+
+            success: function (response) {
+
+                jQuery('#enquiry_response').html(response);
+
+            }
+
+        });
+
+    }
+
 
 </script>

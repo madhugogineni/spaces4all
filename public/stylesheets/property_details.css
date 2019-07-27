@@ -102,6 +102,10 @@
   margin-right: 15px;
 }
 
+.ml5px {
+  margin-left: 5px;
+}
+
 .fo:before {
   content: "";
   display: table;
@@ -176,12 +180,17 @@
 .property_overview_container {
   background-color: #2E4053;
 }
+.property_overview_container .property_overview .display_image {
+  background-color: white;
+}
 .property_overview_container .property_overview .property_overview_details {
   width: calc(100% - 420px);
   height: 285px;
 }
 .disclaimer p {
   color: #666;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .property_details .property_details_description {
@@ -214,6 +223,10 @@
   width: 24.5%;
   display: inline-block;
   text-align: center;
+}
+
+.enquiryform {
+  margin-left: 20px;
 }
 
 /*# sourceMappingURL=property_details.css.map */

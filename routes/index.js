@@ -18,6 +18,7 @@ var transporter = nodemailer.createTransport({
         pass: emailConfig.password
     }
 });
+var urls = require("../external-config/url-config");
 
 var addContactMessage = "",
     isError = 0;
@@ -107,10 +108,10 @@ router.post("/add_contact", async function (req, res) {
                 "</td></tr>" +
                 "</table>";
             transporter.sendMail({
-                to: emailConfig.emailId,
-                subject: "Spaces4all - Contact Details",
-                html: body
-            },
+                    to: emailConfig.emailId,
+                    subject: "Spaces4all - Contact Details",
+                    html: body
+                },
                 function (error, reply) {
                     if (error) {
                         // res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
@@ -151,7 +152,7 @@ router.get("/glossarys", function (req, res) {
     });
 });
 router.get("/faqs", function (req, res) {
-    res.render("home/faqs", { page_name: "faqs", page_title: "faqs" });
+    res.render("home/faqs", {page_name: "faqs", page_title: "faqs"});
 });
 router.get("/area_conversion_calculator", function (req, res) {
     res.render("home/area_conversion_calculator", {
@@ -398,7 +399,7 @@ router.get("/list_property", function (req, res) {
 router.post(
     "/add_list_property",
     upload.fields([
-        { name: "photos[]", maxCount: 10 },
+        {name: "photos[]", maxCount: 10},
         {
             name: "photos1[]",
             maxCount: 10
@@ -450,7 +451,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({ success: false, message: errorMsg });
+                res.send({success: false, message: errorMsg});
             } else {
                 var date = getDate();
                 var city1 = await crudModel.getCityById(city);
@@ -550,7 +551,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({ success: false, message: errorMsg });
+                res.send({success: false, message: errorMsg});
             } else {
                 var name = req.body.name || "";
                 var email = req.body.email || "";
@@ -655,7 +656,7 @@ router.post(
 );
 router.get("/rent_in", function (req, res) {
     crudModel.getRentInDetails().then(function (rentDetails) {
-        var responseObj = { page_title: "Rent In", page_name: "Rent In" };
+        var responseObj = {page_title: "Rent In", page_name: "Rent In"};
         if (rentDetails.success && rentDetails.data != undefined) {
             var finalPrice = "";
             var rentPrice = rentDetails.data.price;
@@ -681,12 +682,12 @@ router.get("/rent_in", function (req, res) {
     });
 });
 router.get("/rent_out", function (req, res) {
-    var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
+    var responseObj = {page_title: "Rent Out", page_name: "Rent Out"};
     res.render("home/rent-out", responseObj);
 });
 router.post(
     "/add_rent_out",
-    upload.fields([{ name: "photos[]", maxCount: 10 }]),
+    upload.fields([{name: "photos[]", maxCount: 10}]),
     async function (req, res) {
         let validator = new validatorpackage(req.body, {
             property_name: "required",
@@ -710,7 +711,7 @@ router.post(
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });
-            res.send({ success: false, message: errorMsg });
+            res.send({success: false, message: errorMsg});
         } else {
             var propertyName = req.body.property_name || "",
                 propertyType = req.body.property_type || "",
@@ -920,14 +921,15 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
         phone: "required|phoneNumber",
         avail_time: "required"
     };
-    if (req.body.property_type == "1" || req.body.property_sub_type == "14") { } else {
+    if (req.body.property_type == "1" || req.body.property_sub_type == "14") {
+    } else {
         validatorRules.bedrooms = "required";
     }
     let validator = new validatorpackage(req.body, validatorRules);
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMessage = getErrorMessage(validator.errors);
-        res.send({ success: false, message: errorMessage });
+        res.send({success: false, message: errorMessage});
     } else {
         var propertyType = req.body.property_type || 0;
         var propertySubType = req.body.property_sub_type || 0;
@@ -1030,10 +1032,10 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
                 "</td></tr>" +
                 "</table>";
             transporter.sendMail({
-                to: emailConfig.emailId,
-                subject: "Spaces4all - Post Requirement Request",
-                html: body
-            },
+                    to: emailConfig.emailId,
+                    subject: "Spaces4all - Post Requirement Request",
+                    html: body
+                },
                 function (error, reply) {
                     if (error) {
                         res.send({
@@ -1059,26 +1061,43 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
 
 router.get("/property_details/:property_id", async function (req, res) {
     var propertyId = req.params.property_id || undefined;
+    var paramsToCheck;
     if (propertyId) {
         var propertyDetails = await crudModel.getPropertyDetailsById(req.params.property_id);
-        if(propertyDetails.success) {
+        if (propertyDetails.success) {
             var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
             propertyDetails.data.quoted_price = getPrice(propertyDetails.data.quoted_price);
-            if(amenitiesList.success) {
+            var data = propertyDetails.data;
+            console.log(propertyDetails.data);
+            var path = urls.base_url+"uploads/list_property/"+propertyDetails.data.photo;
+            if (!fs.existsSync(path)) {
+                propertyDetails.data.photo="1no-photo.jpg";
+            }
+            if (data.property_sub_type == "14" || data.property_sub_type == "14") {
+                paramsToCheck = ['floors', 'open_slides', 'construction_done', 'boundary_wall', 'gated_colony', 'east', 'west', 'north', 'south', 'width'];
+            } else {
+                paramsToCheck = [];
+            }
+            for (var i = 0; i < paramsToCheck.length; i++) {
+                var param = paramsToCheck[i];
+                if(!data[param]) {
+                    propertyDetails.data[param] = 'NA';
+                }
+            }
+            if (amenitiesList.success) {
                 propertyDetails.data.amenities_list = amenitiesList.data;
-                console.log(propertyDetails.data);
                 res.render("home/property_details1", {
                     page_name: "Property Details",
                     page_title: "Property Details",
                     has_details: true,
                     property_details: propertyDetails.data
-                });    
-    
-            }else {
+                });
+
+            } else {
                 console.log("error");
             }
-        }else {
-            if(propertyDetails.message == "No Data") {
+        } else {
+            if (propertyDetails.message == "No Data") {
                 res.render("home/property_details1", {
                     page_name: "Property Details",
                     page_title: "Property Details",
@@ -1096,9 +1115,9 @@ function writeFile(fileName, fileBuffer, path) {
         fs.appendFile(path + fileName, fileBuffer, function (error) {
             if (error) {
                 console.log("file not saved");
-                resolve({ success: false });
+                resolve({success: false});
             } else {
-                resolve({ success: true });
+                resolve({success: true});
             }
         });
     });
@@ -1109,7 +1128,7 @@ async function uploadImages(photoFiles, propertyId, path) {
         var imagesToUpload = [];
         var fileNames = [];
         for (var i = 0; i < photoFiles.length; i++) {
-            var fileName = propertyId + "|" + photoFiles[i].originalname;
+            var fileName = photoFiles[i].originalname;//propertyId + "|" +
             var uploadResponse = await writeFile(
                 fileName,
                 photoFiles[i].buffer,
@@ -1123,9 +1142,9 @@ async function uploadImages(photoFiles, propertyId, path) {
         }
         var response = await crudModel.addPropertyPhotos(imagesToUpload);
         if (response.success) {
-            return { success: true, fileNames: fileNames };
+            return {success: true, fileNames: fileNames};
         } else {
-            return { success: false };
+            return {success: false};
         }
     }
 }
@@ -1204,14 +1223,19 @@ async function getPostRequirementEmailDetails(
 
 function getPrice(price) {
     var responsePrice;
-    if (price > 10000000) {
-        responsePrice = Math.round(parseFloat(price) / 10000000, 2);
-        responsePrice = responsePrice + " Cr";
-    } else if (price > 100000) {
-        responsePrice = Math.round(parseFloat(price) / 100000, 2);
-        responsePrice = responsePrice + " Lac";
-    } else {
-        responsePrice = price;
+    if(price) {
+        if (price > 10000000) {
+            responsePrice = Math.round(parseFloat(price) / 10000000, 2);
+            responsePrice = responsePrice + " Cr";
+        } else if (price > 100000) {
+            responsePrice = Math.round(parseFloat(price) / 100000, 2);
+            responsePrice = responsePrice + " Lac";
+        } else {
+            responsePrice = price;
+        }
+        responsePrice = "Rs. "+responsePrice;
+    }else  {
+        responsePrice = "Price on request"
     }
     return responsePrice;
 }
