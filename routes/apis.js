@@ -103,4 +103,7 @@ router.get('/get_states', function (req, res) {
 router.get('/get_property_subtype_using_property_type', function (req, res) {
     console.log(req.query);
 });
+router.get("/property_enquiry/:property_id",function(req,res) {
+    console.log(req.params.property_id);
+});
 module.exports = router;

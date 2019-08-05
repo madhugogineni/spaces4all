@@ -315,8 +315,8 @@
     }
 
 
-    function send_enquiry() {
-
+    function send_enquiry(property_id) {
+        
         var name2 = $("#name2").val();
 
         var phone2 = $("#phone2").val();
@@ -326,25 +326,25 @@
         var comments2 = $("#comments2").val();
 
         var dataString = 'name=' + name2 + '&phone=' + phone2 + '&comments=' + comments2 + '&email=' + email2;
+        // $.ajax({
 
+        //     type: "POST",
 
-        $.ajax({
+        //     url: "<?=base_url()?>home/property_enquiry/<?php echo $list_property_id;?>",
 
-            type: "POST",
+        //     data: dataString,
 
-            url: "<?=base_url()?>home/property_enquiry/<?php echo $list_property_id;?>",
+        //     success: function (response) {
 
-            data: dataString,
+        //         jQuery('#enquiry_response').html(response);
 
-            success: function (response) {
+        //     }
 
-                jQuery('#enquiry_response').html(response);
-
-            }
-
-        });
+        // });
 
     }
+
+    
 
 
 </script>

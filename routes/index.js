@@ -1090,7 +1090,8 @@ router.get("/property_details/:property_id", async function (req, res) {
                     page_name: "Property Details",
                     page_title: "Property Details",
                     has_details: true,
-                    property_details: propertyDetails.data
+                    property_details: propertyDetails.data,
+                    property_id: propertyId
                 });
 
             } else {
@@ -1102,7 +1103,6 @@ router.get("/property_details/:property_id", async function (req, res) {
                     page_name: "Property Details",
                     page_title: "Property Details",
                     has_details: false,
-                    property_details: propertyDetails.data
                 });
             }
             console.log("error");

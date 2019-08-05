@@ -5,6 +5,7 @@
 <head>
     <% include includes/includes.ejs %>
 </head>
+
 <body class="home">
 <% include includes/header.ejs %>
 <% if(has_details) { %>
@@ -240,7 +241,7 @@
 
                                 <textarea cols="6" rows="3" id="comments2" name="comments" class="form-control input-lg" placeholder="Comments" required="required"></textarea>
 
-                                <button type="button" onclick="send_enquiry();" class="btn btn-primary">Submit Now !</button>
+                                <button type="button" onclick="send_enquiry(<%= property_id %>);" class="btn btn-primary">Submit Now !</button>
 
                             </div>
 
