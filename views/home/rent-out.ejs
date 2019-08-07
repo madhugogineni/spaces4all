@@ -230,7 +230,7 @@
 
                                             <select name="property_sub_type" id="property_sub_type"
                                                 onchange="hide_bedrooms(this.value)" class="form-control margin-0">
-
+                                                <option value="">---SELECT---</option>
                                             </select>
 
                                         </div>
@@ -244,8 +244,6 @@
 
                                         </div>
 
-
-
                                     </div>
 
                                     <div class="row">
@@ -255,30 +253,8 @@
                                             <label>State*:</label>
 
                                             <select name="state" id="state" class="form-control margin-0">
-
-
-                                                <!-- <option value="">---SELECT---</option> -->
-
-                                                <!-- <?php 
-
-                                              $state = $this->crud_model->get_states();
-
-                                              foreach ($state as $row5){
-
-                                              ?>
-
-                                                <option value="<?=$row5['state_id']?>">
-                                                    <?=$row5['state_name']?></option>
-
-                                                <?php 
-
-                                              }
-
-                                              ?> -->
-
+                                                <option value="">---SELECT---</option>
                                             </select>
-                                            <!-- <?php if ($this->session->flashdata('state')) {?><b style="color: red"><?=$this->session->flashdata('state')?></b><?php }?> -->
-
                                         </div>
 
                                         <div class="col-md-6 col-sm-4">
@@ -291,27 +267,7 @@
 
                                                 <option value="">---SELECT---</option>
 
-                                                <!-- <?php 
-
-                                              $city = $this->crud_model->get_city();
-
-                                              foreach ($city as $row1){
-
-                                              ?>
-
-                                                <option value="<?=$row1['city_id']?>"
-                                                    <?php if ($this->session->flashdata('city_value')){if($this->session->flashdata('city_value') == $row1['city_id']){echo 'selected';}}?>>
-                                                    <?=$row1['city']?></option>
-
-                                                <?php 
-
-                                              }
-
-                                              ?> -->
-
                                             </select>
-
-                                            <!-- <?php if ($this->session->flashdata('city')) {?><b style="color: red"><?=$this->session->flashdata('city')?></b><?php }?> -->
 
                                         </div>
 
@@ -326,40 +282,8 @@
                                             <label>Locality*:</label>
 
                                             <select name="locality" id="Showlocality" class="form-control margin-0">
-
-                                                <!-- <?php 
-
-                                      		  if ($this->session->flashdata('local_value')){
-
-											  $local = $this->crud_model->get_locality_by_city($this->session->flashdata('city_value'));
-
-											  foreach ($local as $row4){
-
-											  ?>
-
-                                                <option value="<?=$row4['locality_id']?>"
-                                                    <?php if ($this->session->flashdata('local_value')==$row4['locality_id']){echo 'selected';}?>>
-                                                    <?=$row4['locality']?></option>
-
-                                                <?php 
-
-											  }
-
-											  }else {
-
-											  ?>
-
                                                 <option value="">---SELECT---</option>
-
-                                                <?php 
-
-                                              }
-
-                                              ?> -->
-
                                             </select>
-
-                                            <!-- <?php if ($this->session->flashdata('locality')) {?><b style="color: red"><?=$this->session->flashdata('locality')?></b><?php }?> -->
 
                                         </div>
 
@@ -371,11 +295,6 @@
                                                 placeholder="Land Mark">
 
                                         </div>
-
-
-
-
-
                                     </div>
 
                                     <div class="row">

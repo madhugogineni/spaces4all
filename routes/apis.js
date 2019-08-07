@@ -1,15 +1,10 @@
 var express = require("express");
 var router = express.Router();
 var crudModel = require("../models/crudModel");
-var nodemailer = require("nodemailer");
-var emailConfig = require("../external-config/email-config");
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: emailConfig.emailId,
-        pass: emailConfig.password
-    }
-});
+var validatorpackage = require("node-input-validator");
+var moment = require("moment");
+var mailservice = require("../services/email");
+var dateFormat = "YYYY-MM-DD HH:mm:ss";
 
 router.get("/calculate_stamp_duty", function (req, res) {
     var id = req.query.id;
@@ -103,7 +98,44 @@ router.get('/get_states', function (req, res) {
 router.get('/get_property_subtype_using_property_type', function (req, res) {
     console.log(req.query);
 });
-router.get("/property_enquiry/:property_id",function(req,res) {
-    console.log(req.params.property_id);
+router.get("/property_enquiry/:property_id", async function (req, res) {
+    let validator = new validatorpackage(req.query, {
+        name: "required|minLength:3",
+        email: "required|email",
+        phone: "required|numeric|maxLength:12|minLength:10",
+        comments: "required|minLength:10"
+    });
+    var validationResult = await validator.check();
+    if (validationResult) {
+        var data = {
+            phone: req.query.phone,
+            email: req.query.email,
+            name: req.query.name,
+            comments: req.query.comments,
+            property_id: req.params.property_id,
+            datetime: moment().format(dateFormat)
+        }
+        var insertResponse = await crudModel.insertPropertyEnquiry(data);
+        if (insertResponse.success) {
+            var subject = "Spaces4all - Property Enquiry";
+            var html = "Spaces4all - " + req.query.name + " has enquired regarding property : " + req.url + " <br><br> " +
+                "<table border='1px'>" +
+                "<tr><td width='100px'>Name</td><td>" + req.query.name + "</td></tr>" +
+                "<tr><td>Email</td><td>" + req.query.email + "</td></tr>" +
+                "<tr><td>Phone</td><td>" + req.query.phone + "</td></tr>" +
+                "<tr><td>Comments</td><td>" + req.query.comments + "</td></tr>" +
+                "</table>";
+            mailservice.sendMail(subject, html);
+            res.send({success: true,message: "Thank you for the details. We have the pleasure to contact you soon.!"})
+        } else {
+            res.send({ success: false, message: "Something went wrong! Please Try again Later" });
+        }
+    } else {
+        var errorMsg = "";
+        Object.keys(validator.errors).map(function (key) {
+            errorMsg += validator.errors[key].message + "<br/>";
+        });
+        res.send({ success: false, message: errorMsg });
+    }
 });
 module.exports = router;

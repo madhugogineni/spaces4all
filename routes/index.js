@@ -2,22 +2,14 @@ var express = require("express");
 var router = express.Router();
 var validatorpackage = require("node-input-validator");
 var multer = require("multer");
-var nodemailer = require("nodemailer");
 var moment = require("moment");
 var nodeGeocoder = require("node-geocoder");
 var fs = require("fs");
 var crudModel = require("../models/crudModel");
 var geocoderoptions = require("../external-config/geocoding-config");
-var emailConfig = require("../external-config/email-config");
 var upload = multer();
 var geocoder = nodeGeocoder(geocoderoptions);
-var transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-        user: emailConfig.emailId,
-        pass: emailConfig.password
-    }
-});
+var mailservice = require("../services/email");
 var urls = require("../external-config/url-config");
 
 var addContactMessage = "",
@@ -41,11 +33,9 @@ router.post("/add_news_letter", async function (req, res) {
     if (response == 0) {
         var response1 = await crudModel.insertNewLetterSubscriber(req.body.email);
         if (response1.success) {
-            transporter.sendMail({
-                to: req.body.email,
-                subject: "Spaces4all - Your Have Successfully Subscribed With Us",
-                html: "Spaces4all - Your Have Successfully Subscribed With Us ! Thank You For Subscription. Please visit on spaces4all.com . For Further Details."
-            });
+            var subject = "Spaces4all - Your Have Successfully Subscribed With Us";
+            var html = "Spaces4all - Your Have Successfully Subscribed With Us ! Thank You For Subscription. Please visit on spaces4all.com . For Further Details.";
+            mailservice.sendMail(subject, html)
             res.send(successMsg);
         } else {
             res.send(errorMsg);
@@ -107,20 +97,8 @@ router.post("/add_contact", async function (req, res) {
                 req.body.message +
                 "</td></tr>" +
                 "</table>";
-            transporter.sendMail({
-                    to: emailConfig.emailId,
-                    subject: "Spaces4all - Contact Details",
-                    html: body
-                },
-                function (error, reply) {
-                    if (error) {
-                        // res.send({success: false, message: "Your Requirement Has Not Posted ! Please Try Again. !"});
-                    } else {
-                        res.redirect("contact");
-                        // res.send({success: true, message: 'Your Requirement Has Been Successfully Submitted !'});
-                    }
-                }
-            );
+            var subject = "Spaces4all - Contact Details";
+            mailservice.sendMail(subject, body);
         } else {
             addContactMessage =
                 "There is some issue while saving your details. Please try again later";
@@ -152,7 +130,7 @@ router.get("/glossarys", function (req, res) {
     });
 });
 router.get("/faqs", function (req, res) {
-    res.render("home/faqs", {page_name: "faqs", page_title: "faqs"});
+    res.render("home/faqs", { page_name: "faqs", page_title: "faqs" });
 });
 router.get("/area_conversion_calculator", function (req, res) {
     res.render("home/area_conversion_calculator", {
@@ -212,42 +190,40 @@ router.post("/add_home_loan", function (req, res) {
         )
         .then(function (response) {
             if (response.success) {
-                transporter.sendMail({
-                    to: emailConfig.emailId,
-                    subject: "Spaces4all - Loan Request Details",
-                    html: "Spaces4all - " +
-                        data.name +
-                        " has requested for loan. <br><br> " +
-                        "<table border='1px'>" +
-                        "<tr><td width='100px'>Purpose</td><td>" +
-                        data.purpose +
-                        "</td></tr>" +
-                        "<tr><td>Bank</td><td>" +
-                        data.bank_name +
-                        "</td></tr>" +
-                        "<tr><td>Loan Amount</td><td>" +
-                        data.loan_amount +
-                        "</td></tr>" +
-                        "<tr><td>Annual Income</td><td>" +
-                        data.annual_income +
-                        "</td></tr>" +
-                        "<tr><td>Name</td><td>" +
-                        data.name +
-                        "</td></tr>" +
-                        "<tr><td>Email</td><td>" +
-                        data.email +
-                        "</td></tr>" +
-                        "<tr><td>Phone</td><td>" +
-                        data.mobile +
-                        "</td></tr>" +
-                        "<tr><td>DOB</td><td>" +
-                        data.dob +
-                        "</td></tr>" +
-                        "<tr><td>City</td><td>" +
-                        data.city +
-                        "</td></tr>" +
-                        "</table>"
-                });
+                var html = "Spaces4all - " +
+                    data.name +
+                    " has requested for loan. <br><br> " +
+                    "<table border='1px'>" +
+                    "<tr><td width='100px'>Purpose</td><td>" +
+                    data.purpose +
+                    "</td></tr>" +
+                    "<tr><td>Bank</td><td>" +
+                    data.bank_name +
+                    "</td></tr>" +
+                    "<tr><td>Loan Amount</td><td>" +
+                    data.loan_amount +
+                    "</td></tr>" +
+                    "<tr><td>Annual Income</td><td>" +
+                    data.annual_income +
+                    "</td></tr>" +
+                    "<tr><td>Name</td><td>" +
+                    data.name +
+                    "</td></tr>" +
+                    "<tr><td>Email</td><td>" +
+                    data.email +
+                    "</td></tr>" +
+                    "<tr><td>Phone</td><td>" +
+                    data.mobile +
+                    "</td></tr>" +
+                    "<tr><td>DOB</td><td>" +
+                    data.dob +
+                    "</td></tr>" +
+                    "<tr><td>City</td><td>" +
+                    data.city +
+                    "</td></tr>" +
+                    "</table>";
+                var subject = "Spaces4all - Loan Request Details";
+                mailservice.sendMail(subject, html);
                 loanError = false;
                 loanErrorMsg =
                     "Thank you for your trust in spaces4all. Please wait for our call for more.";
@@ -399,7 +375,7 @@ router.get("/list_property", function (req, res) {
 router.post(
     "/add_list_property",
     upload.fields([
-        {name: "photos[]", maxCount: 10},
+        { name: "photos[]", maxCount: 10 },
         {
             name: "photos1[]",
             maxCount: 10
@@ -451,7 +427,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({success: false, message: errorMsg});
+                res.send({ success: false, message: errorMsg });
             } else {
                 var date = getDate();
                 var city1 = await crudModel.getCityById(city);
@@ -551,7 +527,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({success: false, message: errorMsg});
+                res.send({ success: false, message: errorMsg });
             } else {
                 var name = req.body.name || "";
                 var email = req.body.email || "";
@@ -656,7 +632,7 @@ router.post(
 );
 router.get("/rent_in", function (req, res) {
     crudModel.getRentInDetails().then(function (rentDetails) {
-        var responseObj = {page_title: "Rent In", page_name: "Rent In"};
+        var responseObj = { page_title: "Rent In", page_name: "Rent In" };
         if (rentDetails.success && rentDetails.data != undefined) {
             var finalPrice = "";
             var rentPrice = rentDetails.data.price;
@@ -682,12 +658,12 @@ router.get("/rent_in", function (req, res) {
     });
 });
 router.get("/rent_out", function (req, res) {
-    var responseObj = {page_title: "Rent Out", page_name: "Rent Out"};
+    var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
     res.render("home/rent-out", responseObj);
 });
 router.post(
     "/add_rent_out",
-    upload.fields([{name: "photos[]", maxCount: 10}]),
+    upload.fields([{ name: "photos[]", maxCount: 10 }]),
     async function (req, res) {
         let validator = new validatorpackage(req.body, {
             property_name: "required",
@@ -711,7 +687,7 @@ router.post(
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });
-            res.send({success: false, message: errorMsg});
+            res.send({ success: false, message: errorMsg });
         } else {
             var propertyName = req.body.property_name || "",
                 propertyType = req.body.property_type || "",
@@ -929,7 +905,7 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMessage = getErrorMessage(validator.errors);
-        res.send({success: false, message: errorMessage});
+        res.send({ success: false, message: errorMessage });
     } else {
         var propertyType = req.body.property_type || 0;
         var propertySubType = req.body.property_sub_type || 0;
@@ -1031,25 +1007,12 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
                 availTime +
                 "</td></tr>" +
                 "</table>";
-            transporter.sendMail({
-                    to: emailConfig.emailId,
-                    subject: "Spaces4all - Post Requirement Request",
-                    html: body
-                },
-                function (error, reply) {
-                    if (error) {
-                        res.send({
-                            success: false,
-                            message: "Your Requirement Has Not Posted ! Please Try Again. !"
-                        });
-                    } else {
-                        res.send({
-                            success: true,
-                            message: "Your Requirement Has Been Successfully Submitted !"
-                        });
-                    }
-                }
-            );
+            var subject = "Spaces4all - Post Requirement Request";
+            mailservice.sendMail(subject, body);
+            res.send({
+                success: false,
+                message: "Your Requirement Has Not Posted ! Please Try Again. !"
+            });
         } else {
             res.send({
                 success: false,
@@ -1069,9 +1032,9 @@ router.get("/property_details/:property_id", async function (req, res) {
             propertyDetails.data.quoted_price = getPrice(propertyDetails.data.quoted_price);
             var data = propertyDetails.data;
             console.log(propertyDetails.data);
-            var path = urls.base_url+"uploads/list_property/"+propertyDetails.data.photo;
+            var path = urls.base_url + "uploads/list_property/" + propertyDetails.data.photo;
             if (!fs.existsSync(path)) {
-                propertyDetails.data.photo="1no-photo.jpg";
+                propertyDetails.data.photo = "1no-photo.jpg";
             }
             if (data.property_sub_type == "14" || data.property_sub_type == "14") {
                 paramsToCheck = ['floors', 'open_slides', 'construction_done', 'boundary_wall', 'gated_colony', 'east', 'west', 'north', 'south', 'width'];
@@ -1080,7 +1043,7 @@ router.get("/property_details/:property_id", async function (req, res) {
             }
             for (var i = 0; i < paramsToCheck.length; i++) {
                 var param = paramsToCheck[i];
-                if(!data[param]) {
+                if (!data[param]) {
                     propertyDetails.data[param] = 'NA';
                 }
             }
@@ -1115,9 +1078,9 @@ function writeFile(fileName, fileBuffer, path) {
         fs.appendFile(path + fileName, fileBuffer, function (error) {
             if (error) {
                 console.log("file not saved");
-                resolve({success: false});
+                resolve({ success: false });
             } else {
-                resolve({success: true});
+                resolve({ success: true });
             }
         });
     });
@@ -1142,9 +1105,9 @@ async function uploadImages(photoFiles, propertyId, path) {
         }
         var response = await crudModel.addPropertyPhotos(imagesToUpload);
         if (response.success) {
-            return {success: true, fileNames: fileNames};
+            return { success: true, fileNames: fileNames };
         } else {
-            return {success: false};
+            return { success: false };
         }
     }
 }
@@ -1223,7 +1186,7 @@ async function getPostRequirementEmailDetails(
 
 function getPrice(price) {
     var responsePrice;
-    if(price) {
+    if (price) {
         if (price > 10000000) {
             responsePrice = Math.round(parseFloat(price) / 10000000, 2);
             responsePrice = responsePrice + " Cr";
@@ -1233,8 +1196,8 @@ function getPrice(price) {
         } else {
             responsePrice = price;
         }
-        responsePrice = "Rs. "+responsePrice;
-    }else  {
+        responsePrice = "Rs. " + responsePrice;
+    } else {
         responsePrice = "Price on request"
     }
     return responsePrice;
