@@ -26,8 +26,8 @@ module.exports = {
         return new Promise(function (resolve, reject) {
             con.query("select type from property_type where property_type_id=" + id, function (error, result) {
                 if (error)
-                    console.log({ success: false, message: error });
-                resolve({ success: true, type: result[0].type });
+                    console.log({success: false, message: error});
+                resolve({success: true, type: result[0].type});
             });
         });
     },
@@ -44,8 +44,8 @@ module.exports = {
         return new Promise(function (resolve, reject) {
             con.query("select sub_type from property_sub_type where property_sub_type_id=" + id, function (error, result) {
                 if (error)
-                    console.log({ success: false, message: error });
-                resolve({ success: true, sub_type: result[0].sub_type });
+                    console.log({success: false, message: error});
+                resolve({success: true, sub_type: result[0].sub_type});
             })
         });
     },
@@ -270,11 +270,11 @@ module.exports = {
                 " inner join property_type on list_property.property_type = property_type.property_type_id " +
                 " inner join property_sub_type on list_property.property_sub_type = property_sub_type.property_sub_type_id " +
                 " left join property_photos on list_property.list_property_id = property_photos.property_id", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    resolve(result);
-                });
+                if (error) {
+                    console.log(error);
+                }
+                resolve(result);
+            });
         });
     },
     getLatestPropertyPhotos: function (propertyIdList) {
@@ -450,11 +450,11 @@ module.exports = {
                 " list_property.property_sub_type = property_sub_type.property_sub_type_id inner join property_type on list_property.property_type = property_type.property_type_id left join residential_plot_details on list_property.list_property_id =  residential_plot_details.list_property_id left join property_photos" +
                 " on list_property.list_property_id = property_photos.property_id where list_property.list_property_id !=0 and hot_property='1' and list_property.city=" + city +
                 " ORDER BY datetime DESC;", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    resolve(result);
-                });
+                if (error) {
+                    console.log(error);
+                }
+                resolve(result);
+            });
         });
     },
     getSimilarProperties: function (listPropertyId, propertyType, city) {
@@ -551,12 +551,12 @@ module.exports = {
                 " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
                 " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
                 " left join project_photos on projects.project_id = project_photos.project_id order by featured_project_id ASC", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    // console.log(result);
-                    resolve(result);
-                });
+                if (error) {
+                    console.log(error);
+                }
+                // console.log(result);
+                resolve(result);
+            });
         });
     },
     getProjectDetailsById: function (projectId) {
@@ -681,11 +681,11 @@ module.exports = {
                 " inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id left join project_photos on" +
                 " projects.project_id = project_photos.project_id where projects.project_id !=0 and projects.project_status=1 and projects.exclusive='1' and" +
                 " projects.city=" + city + " ORDER BY datetime DESC;", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    resolve(result);
-                });
+                if (error) {
+                    console.log(error);
+                }
+                resolve(result);
+            });
         });
     },
     getProjectsSearchCount: function (projectType, projectSubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, searchType) {
@@ -1143,9 +1143,9 @@ module.exports = {
             con.query("insert into contact(name,email,phone,message,datetime) values('" + name + "','" + email + "'," + phone + ",'" + message + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 } else {
-                    resolve({ success: true, insertId: result.insertId });
+                    resolve({success: true, insertId: result.insertId});
                     // con.query("select * from contact where contact_id=" + result.insertId, function (error1, result1) {
                     //     if (error1) {
                     //         console.log(error1);
@@ -1164,9 +1164,9 @@ module.exports = {
             con.query("insert into news_letter(email,datetime) values('" + email + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false, message: error });
+                    resolve({success: false, message: error});
                 } else {
-                    resolve({ success: true });
+                    resolve({success: true});
                     // con.query("select * from news_letter where news_letter_id=" + result.insertId, function (error1, result1) {
                     //     if (error1) {
                     //         console.log(error1);
@@ -1185,14 +1185,14 @@ module.exports = {
             con.query("insert into loan_requests(purpose,bank,loan_amount,annual_income,name,mobile,email,dob,city,datetime) values('" + purpose + "'," + bank + ",'" + loanAmount + "','" + annualIncome + "','" + name + "','" + mobile + "','" + email + "','" + dob + "','" + city + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 } else {
                     con.query("select * from loan_requests where loan_id=" + result.insertId, function (error1, result1) {
                         if (error1) {
                             console.log(error1);
-                            resolve({ success: false });
+                            resolve({success: false});
                         }
-                        resolve({ success: true, data: result1 });
+                        resolve({success: true, data: result1});
                     });
                 }
             });
@@ -1204,9 +1204,9 @@ module.exports = {
             con.query("insert into property_call_back(property_id,name,phone,datetime) values(" + propertyId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 }
-                resolve({ success: true, result: result });
+                resolve({success: true, result: result});
             });
         });
     },
@@ -1216,9 +1216,9 @@ module.exports = {
             con.query("insert into call_back(project_id,name,phone,datetime) values(" + projectId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 }
-                resolve({ success: true, result: result });
+                resolve({success: true, result: result});
             });
         });
     },
@@ -1231,12 +1231,12 @@ module.exports = {
                 propertyType + "','" + subType + "','" + facing + "','" + city + "','" + locality + "','" + state + "','" + quotedPrice + "','" +
                 plotArea + "','" + floors + "','" + description + "','" + amenities + "','" + postedBy + "','" + latitude + "','" + longitude + "','" +
                 posession + "','" + status + "','" + datetime + "')", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                        resolve({ success: false });
-                    }
-                    resolve({ success: true, propertyId: result.insertId });
-                })
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true, propertyId: result.insertId});
+            })
         });
     },
 
@@ -1257,10 +1257,10 @@ module.exports = {
                 }, function (error, result) {
                     if (error) {
                         console.log(error);
-                        resolve({ success: false });
+                        resolve({success: false});
                     } else {
                         console.log(result);
-                        resolve({ success: true });
+                        resolve({success: true});
                     }
                 })
         });
@@ -1271,9 +1271,9 @@ module.exports = {
             con.query("insert into property_photos(property_id,photo,datetime) values ?", [files], function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 } else {
-                    resolve({ success: true });
+                    resolve({success: true});
                 }
             });
         });
@@ -1312,9 +1312,9 @@ module.exports = {
             }, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 }
-                resolve({ success: true, propertyId: result.insertId });
+                resolve({success: true, propertyId: result.insertId});
             });
         });
     },
@@ -1324,12 +1324,12 @@ module.exports = {
                 "rent.property_name,rent.rent_id as rent_id,rent.price as price,rent.bedrooms as bedrooms,rent.photos as image,rent.builtup_area as builtup_area from rent_add inner join rent on rent_add.rent_id = rent.rent_id inner join " +
                 "property_type on rent.property_type = property_type.property_type_id inner join property_sub_type on rent.property_sub_type = property_sub_type.property_sub_type_id inner join city on rent.city = city.city_id inner join " +
                 "locality on rent.locality = locality.locality_id", function (error, result) {
-                    if (error) {
-                        resolve({ success: false });
-                    } else {
-                        resolve({ success: true, data: result[0] });
-                    }
-                });
+                if (error) {
+                    resolve({success: false});
+                } else {
+                    resolve({success: true, data: result[0]});
+                }
+            });
         });
     },
     getRentDetails: function (propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice) {
@@ -1370,9 +1370,9 @@ module.exports = {
             con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false });
+                    resolve({success: false});
                 } else {
-                    resolve({ success: true, data: result })
+                    resolve({success: true, data: result})
                 }
             });
         });
@@ -1382,9 +1382,9 @@ module.exports = {
             con.query("insert into rent set ?", data, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false, message: error });
+                    resolve({success: false, message: error});
                 }
-                resolve({ success: true, propertyId: result.insertId })
+                resolve({success: true, propertyId: result.insertId})
             });
         });
     },
@@ -1393,9 +1393,9 @@ module.exports = {
             con.query("update rent set photos = '" + photos + "' where rent_id = '" + propertyId + "'", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false, message: error });
+                    resolve({success: false, message: error});
                 } else {
-                    resolve({ success: true });
+                    resolve({success: true});
                 }
             });
         });
@@ -1405,9 +1405,9 @@ module.exports = {
             con.query("insert into post_requirement set ?", data, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false, message: error });
+                    resolve({success: false, message: error});
                 } else {
-                    resolve({ success: true });
+                    resolve({success: true});
                 }
             });
         });
@@ -1425,17 +1425,17 @@ module.exports = {
                 "list_property.list_property_id = property_photos.property_id  inner join property_type on " +
                 "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
                 "list_property.property_sub_type = property_sub_type.property_sub_type_id WHERE list_property.list_property_id = " + propertyId, function (error, result) {
-                    if (error) {
-                        resolve({ success: false, message: error });
+                if (error) {
+                    resolve({success: false, message: error});
+                } else {
+                    console.log(result)
+                    if (result.length > 0) {
+                        resolve({success: true, data: result[0]});
+                    } else {
+                        resolve({success: false, message: "No Data"});
                     }
-                    else {
-                        if (result.length > 0) {
-                            resolve({ success: true, data: result[0] });
-                        } else {
-                            resolve({ success: false, message: "No Data" });
-                        }
-                    }
-                });
+                }
+            });
         });
     },
 
@@ -1445,27 +1445,29 @@ module.exports = {
                 con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {
                     if (error) {
                         console.log(error);
-                        resolve({ success: false, message: error });
+                        resolve({success: false, message: error});
                     } else {
-                        resolve({ success: true, data: result });
+                        resolve({success: true, data: result});
                     }
                 })
             } else {
-                resolve({ success: true, data: [] });
+                resolve({success: true, data: []});
             }
 
         })
-    },
+    }
+    ,
     insertPropertyEnquiry: function (data) {
         return new Promise(function (resolve, reject) {
             con.query("insert into property_enquiry set ?", data, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({ success: false, message: error });
+                    resolve({success: false, message: error});
                 } else {
-                    resolve({ success: true, data: result });
+                    resolve({success: true, data: result});
                 }
             });
         })
     }
-};
+}
+;

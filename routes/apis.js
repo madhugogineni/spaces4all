@@ -138,4 +138,5 @@ router.get("/property_enquiry/:property_id", async function (req, res) {
         res.send({ success: false, message: errorMsg });
     }
 });
+
 module.exports = router;

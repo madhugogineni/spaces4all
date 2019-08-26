@@ -333,4 +333,39 @@
             }
         });
     }
+
+    function add_Compare(type,property_id,element) {
+        $.ajax({
+        url: "<%= base_url %>home/add_compare/"+type+"/"+property_id,
+        success: function (response) {
+            if(response.success) {
+                updateComparisonCounts(type,element);
+            }
+        }
+        });
+    }
+    function updateComparisonCounts(type,element) {
+        $.ajax({
+            type: "GET",
+            url: "<%=base_url%>home/compare_count/"+type,
+            success: function(response) {
+                if(response.success) {
+                    console.log('#'+type+"_compare_count");
+                    $('#'+type+"_compare_count").html(response.count);
+                    var offset = $(element).offset();
+                    var topOffset = offset.top;//- $(window).scrollTop();
+                    $("#comparison-hover").css({
+                        position: "absolute",
+                        top: (topOffset + 35)+ "px",
+                        left: (offset.left) + "px",
+                    });
+                    $("#comparison-hover").show();
+ 
+                }
+            }
+        })
+    }
+    function hideComparisonPopup() {
+        $("#comparison-hover").hide();
+    }
 </script>

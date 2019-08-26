@@ -130,7 +130,7 @@ router.get("/glossarys", function (req, res) {
     });
 });
 router.get("/faqs", function (req, res) {
-    res.render("home/faqs", { page_name: "faqs", page_title: "faqs" });
+    res.render("home/faqs", {page_name: "faqs", page_title: "faqs"});
 });
 router.get("/area_conversion_calculator", function (req, res) {
     res.render("home/area_conversion_calculator", {
@@ -375,7 +375,7 @@ router.get("/list_property", function (req, res) {
 router.post(
     "/add_list_property",
     upload.fields([
-        { name: "photos[]", maxCount: 10 },
+        {name: "photos[]", maxCount: 10},
         {
             name: "photos1[]",
             maxCount: 10
@@ -427,7 +427,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({ success: false, message: errorMsg });
+                res.send({success: false, message: errorMsg});
             } else {
                 var date = getDate();
                 var city1 = await crudModel.getCityById(city);
@@ -527,7 +527,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({ success: false, message: errorMsg });
+                res.send({success: false, message: errorMsg});
             } else {
                 var name = req.body.name || "";
                 var email = req.body.email || "";
@@ -632,7 +632,7 @@ router.post(
 );
 router.get("/rent_in", function (req, res) {
     crudModel.getRentInDetails().then(function (rentDetails) {
-        var responseObj = { page_title: "Rent In", page_name: "Rent In" };
+        var responseObj = {page_title: "Rent In", page_name: "Rent In"};
         if (rentDetails.success && rentDetails.data != undefined) {
             var finalPrice = "";
             var rentPrice = rentDetails.data.price;
@@ -658,12 +658,12 @@ router.get("/rent_in", function (req, res) {
     });
 });
 router.get("/rent_out", function (req, res) {
-    var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
+    var responseObj = {page_title: "Rent Out", page_name: "Rent Out"};
     res.render("home/rent-out", responseObj);
 });
 router.post(
     "/add_rent_out",
-    upload.fields([{ name: "photos[]", maxCount: 10 }]),
+    upload.fields([{name: "photos[]", maxCount: 10}]),
     async function (req, res) {
         let validator = new validatorpackage(req.body, {
             property_name: "required",
@@ -687,7 +687,7 @@ router.post(
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });
-            res.send({ success: false, message: errorMsg });
+            res.send({success: false, message: errorMsg});
         } else {
             var propertyName = req.body.property_name || "",
                 propertyType = req.body.property_type || "",
@@ -905,7 +905,7 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMessage = getErrorMessage(validator.errors);
-        res.send({ success: false, message: errorMessage });
+        res.send({success: false, message: errorMessage});
     } else {
         var propertyType = req.body.property_type || 0;
         var propertySubType = req.body.property_sub_type || 0;
@@ -1031,7 +1031,6 @@ router.get("/property_details/:property_id", async function (req, res) {
             var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
             propertyDetails.data.quoted_price = getPrice(propertyDetails.data.quoted_price);
             var data = propertyDetails.data;
-            console.log(propertyDetails.data);
             var path = urls.base_url + "uploads/list_property/" + propertyDetails.data.photo;
             if (!fs.existsSync(path)) {
                 propertyDetails.data.photo = "1no-photo.jpg";
@@ -1073,14 +1072,48 @@ router.get("/property_details/:property_id", async function (req, res) {
     }
 });
 
+// compare functions start here
+router.get("/add_compare/:type/:project_id", function (req, res) {
+    var projectId = req.params.project_id;
+    var type = req.params.type;
+    req.session.compare[type] = pushOrPopIdFromCompare(projectId, req.session.compare[type]);
+    res.send({success: true});
+});
+router.get("/compare_count/:type", function (req, res) {
+    var type = req.params.type;
+    res.send({success: true, count: req.session.compare[type].length || 0});
+});
+router.get("/compare/:type", async function (req, res) {
+    var type = req.params.type;
+    var solutions = [];
+    var ids = req.session.compare[type];
+    if (type == "property") {
+        for (var i = 0; i < ids.length; i++) {
+            var propertyId = ids[i];
+            var response = await crudModel.getPropertyDetailsById(propertyId);
+            if(response.success) {
+                solutions.push(response.data)
+            }
+        }
+        console.log(solutions);
+    } else if (type == "project") {
+
+    } else if (type == "rent") {
+
+    } else {
+        res.send("incorrect url")
+    }
+    res.send("welcome");
+});
+
 function writeFile(fileName, fileBuffer, path) {
     return new Promise(function (resolve, reject) {
         fs.appendFile(path + fileName, fileBuffer, function (error) {
             if (error) {
                 console.log("file not saved");
-                resolve({ success: false });
+                resolve({success: false});
             } else {
-                resolve({ success: true });
+                resolve({success: true});
             }
         });
     });
@@ -1105,9 +1138,9 @@ async function uploadImages(photoFiles, propertyId, path) {
         }
         var response = await crudModel.addPropertyPhotos(imagesToUpload);
         if (response.success) {
-            return { success: true, fileNames: fileNames };
+            return {success: true, fileNames: fileNames};
         } else {
-            return { success: false };
+            return {success: false};
         }
     }
 }
@@ -1201,6 +1234,15 @@ function getPrice(price) {
         responsePrice = "Price on request"
     }
     return responsePrice;
+}
+
+function pushOrPopIdFromCompare(id, compareArray) {
+    if (compareArray.includes(id)) {
+        compareArray.splice(compareArray.indexOf(id), 1);
+    } else {
+        compareArray.push(id);
+    }
+    return compareArray
 }
 
 module.exports = router;

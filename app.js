@@ -23,7 +23,16 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(function(req,res,next) {
+  if(!req.session.compare) {
+    req.session.compare = {
+      project: [],
+      property: [],
+      rent: []
+    }
+  }
+  next();
+});
 
 app.get("/", function (req, res) {
   crudModel.getLatestPropertyDetails().then(function (latestPropertyDetails) {

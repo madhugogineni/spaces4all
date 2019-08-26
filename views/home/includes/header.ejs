@@ -1,230 +1,184 @@
 <% include functions.ejs %>
 <style type="text/css">
-  .fb a {
+    .fb a {
 
-    color: #3B5998;
+        color: #3B5998;
 
-  }
+    }
 
-  .tw a {
+    .tw a {
 
-    color: #00aced;
+        color: #00aced;
 
-  }
+    }
 
-  .ig a {
+    .ig a {
 
-    color: #3f729b;
+        color: #3f729b;
 
-  }
+    }
 
-  .yt a {
+    .yt a {
 
-    color: #cd201f;
+        color: #cd201f;
 
-  }
+    }
 </style>
 
-<link rel="stylesheet" href="<%= base_url%>rupeefont/rupee.css" type='text/css' />
+<link rel="stylesheet" href="<%= base_url %>rupeefont/rupee.css" type='text/css'/>
 
 <script type="text/javascript">
 
-  $(document).ready(function () {
+    $(document).ready(function () {
 
-    // $('#project_compare').load("<%= base_url%>home/compare_count/project");
-
-  });
-
-  $(document).ready(function () {
-
-    // $('#property_compare').load("<%= base_url%>home/compare_count/property");
-
-  });
-
-  $(document).ready(function () {
-
-    // $('#rent_compare').load("<%= base_url%>home/compare_count/rent");
-
-  });
-
-
-
-  function add_Compare(url) {
-
-    //alert(url);
-
-    $.ajax({
-
-      url: url,
-
-      success: function (data) {
-
-        $('#project_compare').load("<%= base_url%>home/compare_count/project");
-
-        $('#property_compare').load("<%= base_url%>home/compare_count/property");
-
-        $('#rent_compare').load("<%= base_url%>home/compare_count/rent");
-
-        $('#property_success').html(data);
-
-      }
+        // $('#project_compare').load("<%= base_url %>home/compare_count/project");
 
     });
 
-  }
+    $(document).ready(function () {
 
+        // $('#property_compare').load("<%= base_url %>home/compare_count/property");
 
+    });
 
+    $(document).ready(function () {
 
+        // $('#rent_compare').load("<%= base_url %>home/compare_count/rent");
 
-  function Submit_Enquiry() {
+    });
 
-    var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
+    function Submit_Enquiry() {
 
-    var filter = /^[0-9-+]+$/;
+        var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
 
-    var name = $("#name").val();
+        var filter = /^[0-9-+]+$/;
 
-    var email = $("#email").val();
+        var name = $("#name").val();
 
-    var phone = $("#phone").val();
+        var email = $("#email").val();
 
-    var city = $("#city").val();
+        var phone = $("#phone").val();
 
+        var city = $("#city").val();
 
 
-    if ($("#name").val() == "") {
+        if ($("#name").val() == "") {
 
-      $("#name").focus();
+            $("#name").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
 
-      return false;
+            return false;
 
-    } else if ($("#email").val() == "") {
+        } else if ($("#email").val() == "") {
 
-      $("#email").focus();
+            $("#email").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
 
-      return false;
+            return false;
 
-    } else if (!emailRegex.test(email)) {
+        } else if (!emailRegex.test(email)) {
 
-      $("#email").focus();
+            $("#email").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
 
-      return false;
+            return false;
 
-    } else if ($("#phone").val() == "") {
+        } else if ($("#phone").val() == "") {
 
-      $("#phone").focus();
+            $("#phone").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
-      return false;
+            return false;
 
-    } else if (phone.length != "10") {
+        } else if (phone.length != "10") {
 
-      $("#phone").focus();
+            $("#phone").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
-      return false;
+            return false;
 
-    } else if (!filter.test(phone)) {
+        } else if (!filter.test(phone)) {
 
-      $("#phone").focus();
+            $("#phone").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
-      return false;
+            return false;
 
-    } else if ($("#city").val() == "") {
+        } else if ($("#city").val() == "") {
 
-      $("#city").focus();
+            $("#city").focus();
 
-      $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter City</strong></div>");
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter City</strong></div>");
 
-      return false;
+            return false;
 
-    } else {
+        } else {
 
-      return true;
-
-    }
-
-
-
-
-
-  }
-
-
-
-
-
-  function news_letter() {
-
-    var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
-
-    var email = $("#news_email").val();
-
-
-
-    if (email == "") {
-
-      $("#news_email").focus();
-
-      $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
-
-      $("#news_email").val('');
-
-    } else if (!emailRegex.test(email)) {
-
-      $("#news_email").focus();
-
-      $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
-
-      $("#news_email").val('');
-
-    } else {
-
-
-
-      var dataString = 'email=' + email;
-
-
-
-      $.ajax({
-
-        type: "POST",
-
-        url: "<%= base_url%>home/add_news_letter",
-
-        data: dataString,
-
-        success: function (response) {
-
-          jQuery('#news_letter_response').html(response);
-
-          $("#news_email").val('');
+            return true;
 
         }
 
-      });
-
-
 
     }
 
-  }
+
+    function news_letter() {
+
+        var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
+
+        var email = $("#news_email").val();
 
 
+        if (email == "") {
+
+            $("#news_email").focus();
+
+            $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+
+            $("#news_email").val('');
+
+        } else if (!emailRegex.test(email)) {
+
+            $("#news_email").focus();
+
+            $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+
+            $("#news_email").val('');
+
+        } else {
 
 
+            var dataString = 'email=' + email;
 
+
+            $.ajax({
+
+                type: "POST",
+
+                url: "<%= base_url %>home/add_news_letter",
+
+                data: dataString,
+
+                success: function (response) {
+
+                    jQuery('#news_letter_response').html(response);
+
+                    $("#news_email").val('');
+
+                }
+
+            });
+
+
+        }
+
+    }
 </script>
 
 <!-- Start Site Header -->
@@ -232,241 +186,208 @@
 <header class="site-header">
 
 
+    <div class="top-header">
 
-  <div class="top-header">
+        <div class="container">
 
-    <div class="container">
+            <div class="row">
 
-      <div class="row">
+                <div class="col-md-8 col-sm-6">
+                </div>
 
-        <div class="col-md-8 col-sm-6">
+                <div class="col-md-4 col-sm-6">
+
+                    <ul class="horiz-nav  pull-right">
+
+                        <li class="dropdown"><a data-toggle="dropdown" style='font-size: 15px;font-weight: bolder;'>Compare
+                                <b
+                                        class="caret"></b></a>
+
+                            <ul class="dropdown-menu">
+
+                                <li id="property_compare"></li>
+
+                                <li id="project_compare"></li>
+
+                                <li id="rent_compare"></li>
+
+                            </ul>
+
+                        </li>
+
+                    </ul>
+
+                </div>
 
 
+            </div>
 
         </div>
 
-        <div class="col-md-4 col-sm-6">
+    </div>
+    <div class="comparison-hover" id="comparison-hover">
+        <span>&nbsp;&nbsp;&nbsp;Comparing</span>
+        <span class="mdi mdi-close" style="float:right;margin-right:5px;" onclick="hideComparisonPopup()"></span>
+        <hr/>
+        <ul class="list-group nomargin">
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/property">Property [<span id="property_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/project">Projects [<span id="project_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/rent">Rent [<span id="rent_compare_count">0</span>]</a></li>
+        </ul>
+    </div>
 
-          <ul class="horiz-nav  pull-right">
 
-            <li class="dropdown"><a data-toggle="dropdown" style='font-size: 15px;font-weight: bolder;'>Compare <b
-                  class="caret"></b></a>
+    <div class="middle-header">
 
-              <ul class="dropdown-menu">
+        <div class="container">
 
-                <li id="property_compare"></li>
+            <div class="row">
 
-                <li id="project_compare"></li>
+                <div class="col-md-4 col-sm-8 col-xs-8">
 
-                <li id="rent_compare"></li>
+                    <h1 class="logo"><a href="<%= base_url %>"><img src="<%= base_url %>img/logo.jpg" alt="Logo"></a>
+                    </h1>
 
-              </ul>
+                </div>
 
-            </li>
+                <div class="col-md-8 col-sm-4 col-xs-4">
 
-          </ul>
+                </div>
+
+
+                <a href="#" class="visible-sm visible-xs menu-toggle blk"><i class="fa fa-bars"></i></a>
+
+            </div>
 
         </div>
-
-
-
-      </div>
 
     </div>
 
-  </div>
-
-
-
-  <div class="middle-header">
-
-    <div class="container">
-
-      <div class="row">
-
-        <div class="col-md-4 col-sm-8 col-xs-8">
-
-          <h1 class="logo"> <a href="<%= base_url%>"><img src="<%= base_url%>img/logo.jpg" alt="Logo"></a>
-          </h1>
-
-        </div>
-
-        <div class="col-md-8 col-sm-4 col-xs-4">
-
-
-
-          <!-- <div class="contact-info-blocks hidden-sm hidden-xs">
-
-            <div> <br />
-
-              <ul class="horiz-nav pull-right sociallinks">
-
-                <li class="fb"><a href="https://www.facebook.com/spaces.forall" target="_blank" title="Facebook"><i
-                      class="fa fa-facebook-square"></i> </a></li>
-
-                <li class="tw"><a href="https://twitter.com/spaces4all" target="_blank" title="Twitter"><i
-                      class="fa fa-twitter-square"></i> </a></li>
-
-                <li class="ig"><a href="#https://www.instagram.com/spaces4all/" target="_blank" title="Instagram"><i
-                      class="fa fa-instagram"></i> </a></li>
-
-                <li class="yt"><a href="#" target="_blank" title="YOutube"><i class="fa fa-youtube-square"></i> </a>
-                </li>
-
-              </ul>
-
-
-
-            </div> -->
-
-          </div>
-
-
-
-          <a href="#" class="visible-sm visible-xs menu-toggle blk"><i class="fa fa-bars"></i></a>
-
-        </div>
-
-      </div>
-
     </div>
 
-  </div>
-
-  <% var exCity = header_city_limit;
+    <% var exCity = header_city_limit;
     exl_city = exCity[0].city_id %>
 
-  <div class="main-menu-wrapper">
+    <div class="main-menu-wrapper">
 
-    <div class="container">
+        <div class="container">
 
-      <div class="row">
+            <div class="row">
 
-        <div class="col-md-12">
+                <div class="col-md-12">
 
-          <nav class="navigation">
+                    <nav class="navigation">
 
-            <ul class="sf-menu">
+                        <ul class="sf-menu">
 
-              <li class=""><a href="<%= base_url%>">Home</a> </li>
+                            <li class=""><a href="<%= base_url %>">Home</a></li>
 
-              <li class=""><a href="#">Buy</a>
+                            <li class=""><a href="#">Buy</a>
 
-                <ul class="dropdown">
+                                <ul class="dropdown">
 
-                  <!-- <li><a href="<%= base_url%>home/search">Search a property</a></li> -->
+                                    <!-- <li><a href="<%= base_url %>home/search">Search a property</a></li> -->
 
-                  <!-- <li><a href="<%= base_url%>home/post_requirement">Post your Requirement</a></li> -->
+                                    <!-- <li><a href="<%= base_url %>home/post_requirement">Post your Requirement</a></li> -->
 
-                  <li><a href="<%= base_url%>home/hot_properties/<%=exl_city %>">Hot properties</a></li>
+                                    <li><a href="<%= base_url %>home/hot_properties/<%= exl_city %>">Hot properties</a>
+                                    </li>
 
-                  <li><a href="<%= base_url%>home/exclusive_projects/<%=exl_city %>">Exclusive Projects</a></li>
+                                    <li><a href="<%= base_url %>home/exclusive_projects/<%= exl_city %>">Exclusive
+                                            Projects</a></li>
 
-                </ul>
+                                </ul>
 
-              </li>
+                            </li>
 
-              <li class=""><a href="javascript:;"> Sell</a>
+                            <li class=""><a href="javascript:;"> Sell</a>
 
-                <ul class="dropdown">
+                                <ul class="dropdown">
 
-                  <li><a href="<%= base_url%>home/list_property">List your property</a></li>
+                                    <li><a href="<%= base_url %>home/list_property">List your property</a></li>
 
-                </ul>
+                                </ul>
 
-              </li>
+                            </li>
 
-              <li class="">
+                            <li class="">
 
-                <a href="javascript:;">Rent</a>
+                                <a href="javascript:;">Rent</a>
 
-                <ul class="dropdown">
+                                <ul class="dropdown">
 
-                  <li><a href="<%= base_url%>home/rent_in">Rent In</a></li>
+                                    <li><a href="<%= base_url %>home/rent_in">Rent In</a></li>
 
-                  <li><a href="<%= base_url%>home/rent_out">Rent Out</a></li>
+                                    <li><a href="<%= base_url %>home/rent_out">Rent Out</a></li>
 
-                </ul>
+                                </ul>
 
-              </li>
+                            </li>
 
-              <!-- <li class=""><a href="javascript:;">Services</a>
+                            <li class=""><a href="javascript:;">Mortgage</a>
 
-                <ul class="dropdown">
+                                <ul class="dropdown">
 
-                  <li><a href="<%= base_url%>home/property_management">Property Management</a></li>
+                                    <li><a href="<%= base_url %>home/emi_calculator">EMI Calculator</a></li>
 
-                  <li><a href="<%= base_url%>home/required_encumbrance">Request Encumbrance</a></li>
+                                    <li><a href="<%= base_url %>home/loan_eligibility_check">Loan Eligibility Check</a>
+                                    </li>
 
-                  <li><a href="<%= base_url%>home/required_pahani_kata">Request Pahani-kata</a></li>
+                                    <li><a href="<%= base_url %>home/apply_home_loan">Apply home Loan</a></li>
 
-                  <li><a href="<%= base_url%>home/req_rectification_deed">Request Rectification Deed</a></li>
+                                    <li><a href="<%= base_url %>home/req_docs_forloan">Required Documents for Loan</a>
+                                    </li>
 
-                  <li><a href="<%= base_url%>home/req_certified_copy">Request Certified Copy</a></li>
+                                </ul>
 
-                </ul>
+                            </li>
 
-              </li> -->
+                            <li class=""><a href="#">Info</a>
 
-              <li class=""><a href="javascript:;">Mortgage</a>
+                                <ul class="dropdown">
 
-                <ul class="dropdown">
+                                    <li><a href="<%= base_url %>home/information">Information</a></li>
 
-                  <li><a href="<%= base_url%>home/emi_calculator">EMI Calculator</a></li>
+                                    <!-- <li><a href="<%= base_url %>home/popular_agents">Useful Contacts</a></li> -->
 
-                  <li><a href="<%= base_url%>home/loan_eligibility_check">Loan Eligibility Check</a></li>
+                                    <li><a href="<%= base_url %>home/glossarys">Glossary</a></li>
 
-                  <li><a href="<%= base_url%>home/apply_home_loan">Apply home Loan</a></li>
+                                    <li><a href="<%= base_url %>home/faqs">Faqs</a></li>
 
-                  <li><a href="<%= base_url%>home/req_docs_forloan">Required Documents for Loan</a></li>
+                                    <!-- <li><a href="<%= base_url %>home/price_trends">Price Trends / Rates</a></li> -->
 
-                </ul>
+                                    <li><a href="<%= base_url %>home/area_conversion_calculator">Area Conversation
+                                            Table</a></li>
 
-              </li>
+                                    <li><a href="<%= base_url %>home/stamp_duty_calculator">Stamp Duty Calculator</a>
+                                    </li>
 
-              <li class=""><a href="#">Info</a>
+                                </ul>
 
-                <ul class="dropdown">
+                            </li>
 
-                  <li><a href="<%= base_url%>home/information">Information</a></li>
+                            <li class=""><a href="<%= base_url %>home/contact" style="border-right: none;"> Contact</a>
+                            </li>
 
-                  <!-- <li><a href="<%= base_url%>home/popular_agents">Useful Contacts</a></li> -->
+                        </ul>
 
-                  <li><a href="<%= base_url%>home/glossarys">Glossary</a></li>
+                        <ul class="nan">
 
-                  <li><a href="<%= base_url%>home/faqs">Faqs</a></li>
+                            <li><a href="<%= base_url %>home/post_requirement" class="btn btn-sm btn-primary"> Post your
+                                    Requirement
+                                </a></li>
 
-                  <!-- <li><a href="<%= base_url%>home/price_trends">Price Trends / Rates</a></li> -->
+                        </ul>
 
-                  <li><a href="<%= base_url%>home/area_conversion_calculator">Area Conversation Table</a></li>
-
-                  <li><a href="<%= base_url%>home/stamp_duty_calculator">Stamp Duty Calculator</a></li>
-
-                </ul>
-
-              </li>
-
-              <li class=""><a href="<%= base_url%>home/contact" style="border-right: none;"> Contact</a></li>
-
-            </ul>
-
-            <ul class="nan">
-
-              <li> <a href="<%= base_url%>home/post_requirement" class="btn btn-sm btn-primary"> Post your Requirement
-                </a> </li>
-
-            </ul>
-
-          </nav>
+                    </nav>
 
 
+                </div>
+
+            </div>
 
         </div>
 
-      </div>
-
     </div>
-
-  </div>
 
 </header>
