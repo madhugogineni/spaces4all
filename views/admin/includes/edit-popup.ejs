@@ -1,0 +1,88 @@
+<script type="text/javascript">
+
+    function showAjaxModal(url) {
+        // SHOWING AJAX PRELOADER IMAGE
+        jQuery('#modal_ajax .modal-body').html('');
+        // LOADING THE AJAX MODAL
+        jQuery('#modal_ajax').modal('show', {backdrop: 'true'});
+        // SHOW AJAX RESPONSE ON REQUEST SUCCESS
+        $.ajax({
+            url: url,
+            success: function (response) {
+                jQuery('#modal_ajax .modal-body').html(response);
+            }
+        });
+    }
+
+    function showAjaxModal1(url) {
+        $.ajax({
+            url: url,
+            success: function (response) {
+                if (response.success) {
+                    $('#modal_ajax1 .modal-body').html(prepareDetailsResponse(response.data));
+                }else {
+                    $('#modal_ajax1 .modal-body').html("No Details Available");
+                }
+                $('#modal_ajax1').modal('show', {backdrop: 'true'});
+            }
+        });
+    }
+
+    function prepareDetailsResponse(property) {
+        var status = "Inactive"
+        if (property.status) {
+            status = "Active"
+        }
+        var datetime = new Date(property.datetime)
+        var response = '<table class="table table-bordered">';
+        response += '<tbody>';
+        response += '<tr><td>Name</td><td>' + property.name + '</td></tr>'
+        response += '<tr><td>Email</td><td>' + property.email + '</td></tr>'
+        response += '<tr><td>Phone</td><td>' + property.phone + '</td></tr>'
+        response += '<tr><td>Property Name</td><td>' + property.property_name + '</td></tr>'
+        response += '<tr><td>Property Type</td><td>' + property.property_type_name + '</td></tr>'
+        response += '<tr><td>Property Sub Type</td><td>' + property.property_sub_type_name + '</td></tr>'
+        response += '<tr><td>Facing</td><td>' + property.facing + '</td></tr>';
+        if (property.property_type == '1' || property.property_sub_type == '14') {
+            response += '<tr><td>Bedrooms</td><td>' + property.bedrooms + '</td></tr>'
+            response += '<tr><td>Bathrooms</td><td>' + property.bathrooms + '</td></tr>'
+        }
+
+        response += '<tr><td>City</td><td>' + property.city_name + '</td></tr>'
+        response += '<tr><td>Locality</td><td>' + property.locality_name + '</td></tr>'
+        response += '<tr><td>Status</td><td>' + status + '</td></tr>'
+        response += '<tr><td>Floors</td><td>' + property.floors + '</td></tr>'
+        response += '<tr><td>Floor No</td><td>' + property.floor_no + '</td></tr>'
+        response += '<tr><td>Car Parking</td><td>' + property.car_parking + '</td></tr>'
+        response += '<tr><td>Saleable Area</td><td>' + property.saleable_area + '</td></tr>'
+        response += '<tr><td>Price</td><td>' + property.quoted_price + '</td></tr>'
+        response += '<tr><td>Construction Age</td><td>' + property.construction_age + '</td></tr>'
+        response += '<tr><td>Open Slides</td><td>' + (property.open_slides || '') + '</td></tr>'
+        response += '<tr><td>Width</td><td>' + (property.width || '') + '</td></tr>'
+        response += '<tr><td>Construction Done</td><td>' + (property.construction_done || '') + '</td></tr>'
+        response += '<tr><td>Boundary Wall</td><td>' + (property.boundary_wall ? 'Yes' : 'No') + '</td></tr>'
+        response += '<tr><td>Gated Community</td><td>' + (property.gated_colony ? 'Yes' : 'No') + '</td></tr>'
+        response += '<tr><td>Dimensions</td><td>' + 'East : ' + property.east + ', West : ' + property.west + ', North : ' + property.north + ', South : ' + property.south + '</td></tr>'
+        if(property.possesion_date) {
+            var possessionDate = new Date(property.possesion_date)
+            response += '<tr><td>Email</td><td>'+possessionDate.getDate()+' '+(possessionDate.getMonth()+1)+' '+possessionDate.getFullYear()+'</td></tr>'
+        }
+        response += '<tr><td>Furnishing Status</td><td>'+property.furnishing_status+'</td></tr>'
+        response += '<tr><td>Posted By</td><td>'+property.posted_by+'</td></tr>'
+        response += '<tr><td>Amenities</td><td>'+getAmenities(property.amenities_list)+'</td></tr>'
+        response += '<tr><td>Property Added On:</td><td>'+datetime.getDate()+' '+(datetime.getMonth()+1)+' '+datetime.getFullYear()+'</td></tr>'
+        response += '<tr><td>Description</td><td>'+property.description+'</td></tr>'
+        response += '</tbody></table>'
+        return response
+    }
+    function getAmenities(amenitiesList) {
+        var amenities = ''
+        amenitiesList.forEach(function(amenity, index) {
+            if(index != 0) {
+                amenities += ','
+            }
+            amenities += amenity.amenity
+        })
+        return amenities
+    }
+</script>

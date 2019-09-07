@@ -58,7 +58,7 @@
 
         <p class="login-box-msg">Login in to Admin Dashboard</p>
 
-        <form action="<%= base_url %>admin/validate_login" id="validate-login" method="post">
+        <form action="<%= base_url %>admin/login" id="validate-login" method="post">
 
             <% if(wrong_credentials) { %>
                 <div class="alert alert-error fade in"><a href="#" data-dismiss="alert"
@@ -105,7 +105,7 @@
 
         <br>
 
-        <a href="<?php echo base_url();?>admin/forgotpassword">I forgot my password ?</a><br>
+        <a href="<%= base_url %>admin/forgotpassword">I forgot my password ?</a><br>
 
 
     </div><!-- /.login-box-body -->

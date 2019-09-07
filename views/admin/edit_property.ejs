@@ -1,0 +1,866 @@
+<% include includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+<% include includes/menu.ejs %>
+
+<script>
+
+    function show_sub_type(str) {
+
+        if (str == '') {
+
+            $('#bedrooms').attr("disabled", false);
+
+            $('#bathrooms').attr("disabled", false);
+
+            $('#construction_age').attr("disabled", false);
+
+            $('#floor_no').attr("disabled", false);
+
+            $('#floors').attr("disabled", false);
+
+            $('#car_parking').attr("disabled", false);
+
+            $('#furnishing').attr("disabled", false);
+
+        }
+
+        if (str == '1') {
+
+            $('#bedrooms').attr("disabled", true);
+
+            $('#bathrooms').attr("disabled", true);
+
+
+            $('#construction_age').attr("disabled", false);
+
+            $('#floor_no').attr("disabled", false);
+
+            $('#floors').attr("disabled", false);
+
+            $('#car_parking').attr("disabled", false);
+
+            $('#furnishing').attr("disabled", false);
+
+
+        }
+
+        if (str == '4') {
+
+            $('#bedrooms').attr("disabled", false);
+
+            $('#bathrooms').attr("disabled", false);
+
+        }
+
+        if (str.length == 0) {
+
+            document.getElementById("property_sub_type").innerHTML = "";
+
+            return;
+
+        }
+
+
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+            xmlhttp = new XMLHttpRequest();
+
+        } else {// code for IE6, IE5
+
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+        }
+
+        xmlhttp.onreadystatechange = function () {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
+
+            }
+
+        }
+
+//alert(str);
+
+        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
+
+        xmlhttp.send();
+
+    }
+
+
+    function hide_bedrooms(str) {
+
+        var value = document.getElementById("property_type").value;
+
+        //alert(str);
+
+        if (str == '14' || str == '18') {
+
+            //alert(str);
+
+            $('.normalfields').hide();
+
+            $('.residentialfields').show();
+
+            //$('#normalfields').attr("disabled", true);
+
+            //$('#residentialfields').attr("disabled", false);
+
+            //$('#bathrooms').attr("disabled", true);
+
+            /* $('#construction_age').attr("disabled", true);
+
+            $('#floor_no').attr("disabled", true);
+
+            $('#floors').attr("disabled", true);
+
+            $('#car_parking').attr("disabled", true);
+
+            $('#furnishing').attr("disabled", true); */
+
+        } else if (str == '') {
+
+            $('.normalfields').show();
+
+            $('.residentialfields').hide();
+
+            if (value == '1') {
+
+                $('#bedrooms').attr("disabled", true);
+
+                $('#bathrooms').attr("disabled", true);
+
+
+            } else {
+
+                $('#bed_fields').show;
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            }
+
+            $('#construction_age').attr("disabled", false);
+
+            $('#floor_no').attr("disabled", false);
+
+            $('#floors').attr("disabled", false);
+
+            $('#car_parking').attr("disabled", false);
+
+            $('#furnishing').attr("disabled", false);
+
+        } else {
+
+            $('.normalfields').show();
+
+            $('.residentialfields').hide();
+
+            if (value == '1') {
+
+                $('#bedrooms').attr("disabled", true);
+
+                $('#bathrooms').attr("disabled", true);
+
+            } else {
+
+                $('#bed_fields').show;
+
+                $('#bedrooms').attr("disabled", false);
+
+                $('#bathrooms').attr("disabled", false);
+
+            }
+
+            $('#construction_age').attr("disabled", false);
+
+            $('#floor_no').attr("disabled", false);
+
+            $('#floors').attr("disabled", false);
+
+            $('#car_parking').attr("disabled", false);
+
+            $('#furnishing').attr("disabled", false);
+
+        }
+
+    }
+
+
+    function Show_locality(str) {
+
+        //alert(str);
+
+        if (str.length == 0) {
+
+            document.getElementById("Showlocality").innerHTML = "";
+
+            return;
+
+        }
+
+
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+
+            xmlhttp = new XMLHttpRequest();
+
+        } else {// code for IE6, IE5
+
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+
+        }
+
+        xmlhttp.onreadystatechange = function () {
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                //alert(xmlhttp.responseText);
+
+                document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
+
+            }
+
+        }
+
+        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
+
+        xmlhttp.send();
+
+    }
+
+    $(document).ready(function () {
+
+        $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1001; display: none;"></div>');
+
+        $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%=base_url %>assets/images/loading.gif'/></div>");
+
+        $("form#list_property").submit(function (e) {
+            console.log('welcome123')
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "<%=base_url %>admin/update_property_details/<%=property.list_property_id%>",
+                data: formData,
+                success: function (result) {
+                    console.log('test---')
+                    console.log(result);
+                    var className = "";
+                    if (result.success) {
+                        className = "alert alert-success fade in";
+                    } else {
+                        className = "alert alert-error fade in";
+                    }
+                    var displayMsg = '<div class="'+className+'"> <a href="#" data-dismiss="alert" class="close">x</a><strong>'+result.message+'</strong></div>';
+                    $("#list_property").prepend(displayMsg);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    });
+
+
+</script>
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <?=$page_title?>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2"></div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+
+                        <!--                        <?php-->
+
+                        <!--                             if ($this->session->flashdata('error')) {-->
+
+                        <!--                        ?>-->
+
+                        <!--                        <div class="alert alert-error fade in"><a href="#" data-dismiss="alert" class="close">x</a>-->
+                        <!--                            <strong><?=$this->session->flashdata('error')?></strong></div>-->
+
+                        <!--                        <?php-->
+
+                        <!--                             }-->
+
+                        <!--                             ?>-->
+
+                        <form action="<%= base_url %>admin/update_property_details/<%=property.list_property_id %>" method="post"
+                              enctype="multipart/form-data" id="list_property">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="col-md-6">
+
+                                        <div class="col-md-10">
+
+                                            <div class="form-group">
+
+                                                <label>NAME*</label>
+
+                                                <input type="text" name="name" class="form-control"
+                                                       value="" placeholder="Name" required="required">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>EMAIL ID*</label>
+
+                                                <input type="text" name="email" class="form-control"
+                                                       value="" placeholder="Email Id" required="required"/>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>MOBILE*</label>
+
+                                                <input type="text" name="phone" class="form-control"
+                                                       value="" placeholder="Mobile"
+                                                       required="required">
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="property_name">Property Type</label>
+                                                <select name="property_type" id="property_type"
+                                                        onchange="show_sub_type(this.value)"
+                                                        class="form-control margin-0" required="required">
+                                                    <option value="">---SELECT---</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Property Sub Type</label> <select
+
+                                                        name="property_sub_type" id="property_sub_type"
+
+                                                        class="form-control margin-0"
+                                                        onchange="hide_bedrooms(this.value)" required="required">
+
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>FACING*:</label>
+
+                                                <input type="text" name="facing" id="facing" class="form-control"
+                                                       value="" placeholder="Facing">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Bedrooms:</label>
+
+                                                <select name="bedrooms" id="bedrooms"
+                                                        class="form-control margin-0">
+                                                    <option value="">---SELECT---</option>
+                                                    <% for (var i = 0; i <= 8 ; i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Bathrooms</label> <select
+                                                        name="bathrooms" id="bathrooms"
+                                                        class="form-control margin-0">
+                                                    <option value="">---SELECT---</option>
+                                                    <% for (var i = 0; i <= 8 ; i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+                                                </select>
+
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">City</label>
+                                                <select name="city" id="city"
+                                                        onchange="showLocality(this.value,'#locality')"
+                                                        class="form-control margin-0 " required="required">
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Locality</label>
+                                                <select name="locality" id="locality" class="form-control margin-0"
+                                                        required="required">
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">State</label> <select
+
+                                                        name="state" id="state"
+
+                                                        class="form-control margin-0">
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Quoted Price</label>
+                                                <input type="text" class="form-control" id="" name="quoted_price"
+                                                       placeholder="Enter Quoted Price" value="">
+
+                                            </div>
+
+
+                                            <div class="residentialfields"
+                                            <% if(property.property_sub_type == '14' || property.property_sub_type == '18') { %>
+                                                <%= 'style=display:block;' %>
+                                            <% }else { %>
+                                                <%= 'style=display:none;' %>
+                                                    <% } %>
+                                            >
+
+
+                                                <div class="form-group">
+
+                                                    <label>PLOT AREA(SQYDS):</label>
+
+                                                    <input type="text" name="plot_area" id="plot_area"
+                                                           class="form-control" value=""
+                                                           placeholder="Plot Area(Sq.yds)">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>FLOORS ALLOWED FOR CONSTRUCTION:</label>
+
+                                                    <select name="floors1" id="floors1" class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 20;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>NO OF OPEN SIDES:</label>
+
+                                                    <select name="open_slides" id="open_slides"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 10;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>WIDTH OF ROAD(FT):</label>
+
+                                                    <input type="text" name="width" id="width" class="form-control"
+                                                           value=""
+                                                           placeholder="Width Of Road Facing The Plot">
+
+                                                </div>
+
+                                                <?php }?>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="col-md-10"><br>
+
+
+                                            <div class="residentialfields"
+                                            <% if(property.property_sub_type == '14' || property.property_sub_type == '18') { %>
+                                                <%= 'style=display:block;' %>
+                                            <% }else { %>
+                                                <%= 'style=display:none;' %>
+                                                    <% } %>
+                                            >
+                                                <div class="form-group">
+
+                                                    <label>ANY CONSTRUCTION DONE:</label>
+
+                                                    <select name="construction_done" id="construction_done"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>BOUNDARY WALL MADE:</label>
+
+                                                    <select name="boundary_wall" id="boundary_wall"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>IS IN A GATED COLONY:</label>
+
+                                                    <select name="gated_colony" id="gated_colony"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <label>DIMENTIONS(IN FEETS):</label> <br>
+
+
+                                                <div class="form-group">
+
+                                                    <label>EAST:</label>
+
+                                                    <input type="text" name="east" id="east"
+                                                           value="" class="form-control">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>WEST:</label>
+
+                                                    <input type="text" name="west" id="west"
+                                                           value="" class="form-control">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>NORTH:</label>
+
+                                                    <input type="text" name="north" id="north"
+                                                           value="" class="form-control">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>SOUTH:</label>
+
+                                                    <input type="text" name="south" id="south"
+                                                           value="" class="form-control">
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="normalfields"
+                                            <% if(property.property_sub_type == '14' || property.property_sub_type == '18') { %>
+                                                <%= 'style=display:none;' %>
+                                                    <% } %>
+                                            >
+
+                                                <div class="form-group">
+
+                                                    <label for="exampleInputEmail1">Saleable Area</label> <input
+
+                                                            type="text" class="form-control" id="" name="saleable_area"
+
+                                                            placeholder="Enter Saleable Area"
+                                                            value="<?=$row5['saleable_area']?>">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label for="exampleInputEmail1">Construction Age</label>
+                                                    <input type="text" class="form-control" id=""
+                                                           name="construction_age"
+                                                           placeholder="Enter Construction Age" value="">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label for="exampleInputEmail1">Floor No</label> <input
+
+                                                            type="text" class="form-control" id="" name="floor_no"
+
+                                                            placeholder="Enter Floor No" value="">
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label for="exampleInputEmail1">Floors</label> <input
+
+                                                            type="text" class="form-control" id="" name="floors"
+
+                                                            placeholder="Enter Floors" value="">
+
+                                                </div>
+
+
+                                                <div class="form-group">
+
+                                                    <label>FURNISHING STATUS:</label>
+
+                                                    <select name="furnishing" id="furnishing"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <option value="Unfurnished">Unfurnished</option>
+
+                                                        <option value="Semifurnished">Semifurnished</option>
+
+                                                        <option value="Fullyfurnished">Fullyfurnished</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="form-group">
+
+                                                    <label>CAR PARKING:</label>
+
+                                                    <select name="car_parking" id="car_parking"
+                                                            class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 10;i++) { %>
+                                                            <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="description">Description</label>
+
+                                                <textarea rows="" cols="" class="form-control"
+                                                          value="<%= property.description %>"
+                                                          name="description"></textarea>
+
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Posted By</label> <select
+
+                                                        name="posted_by" id="posted_by"
+
+                                                        class="form-control margin-0" required="required">
+
+                                                    <option value="Builder">Builder</option>
+
+                                                    <option value="Owner">Owner</option>
+
+                                                    <option value="Agent">Agent</option>
+
+                                                </select>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="row" style="padding-left: 30px">
+
+                                <div class="col-md-12">
+
+                                    <label>Amenities :</label>
+
+                                    <div class="checkbox" id="amenity_options">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <br><br><br>
+
+                            <div align="center">
+
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                            </div>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</div>
+<script>
+    setUpPropertyTypes("#property_type", "<%= property.property_type %>");
+    getPropertySubTypes("<%= property.property_type %>", "#property_sub_type", "<%= property.property_sub_type %>");
+    setUpAmenities('#amenity_options')
+    setUpCities('#city', "<%= property.city %>")
+    setUpStates('#state', "<%= property.state %>")
+    showLocality('<%= property.city %>', '#locality', '<%= property.locality %>')
+
+    function setUpValue(nameSelector, value) {
+        $("[name=" + nameSelector + "]").val(value)
+    }
+
+    function selectOption(nameSelector, value) {
+        var value1 = value
+        if(!value1) {
+            value1 = " invalid"
+        }
+        $('[name=' + nameSelector + '] option[value=' + value1 + ']').attr('selected', 'selected')
+    }
+
+    $(document).ready(function () {
+        setUpValue("name", "<%= property.name %>")
+        setUpValue("email", "<%= property.email %>")
+        setUpValue("width", "<%= property.width %>")
+        setUpValue("phone", "<%= property.phone %>")
+        setUpValue("width", "<%= property.width %>")
+        setUpValue("description", "<%# property.description %>")
+        setUpValue("facing", "<%= property.facing %>")
+        setUpValue("quoted_price", "<%= property.quoted_price %>")
+        selectOption("posted_by", "<%= property.posted_by %>")
+
+
+        <% if(property.property_sub_type == '14' || property.property_sub_type == '18') { %>
+
+
+        setUpValue("plot_area", "<%= property.saleable_area %>")
+        selectOption("open_slides", "<%= property.open_slides %>")
+        selectOption("floors1", "<%= property.floors %>")
+        setUpValue("east", "<%= property.east %>")
+        setUpValue("west", "<%= property.west %>")
+        setUpValue("north", "<%= property.north %>")
+        setUpValue("south", "<%= property.south %>")
+
+        <% } else { %>
+
+        setUpValue("saleable_area", "<%= property.saleable_area %>")
+        setUpValue("construction_age", "<%= property.construction_age %>")
+        setUpValue("floors", "<%= property.floors %>")
+        setUpValue("floor_no", "<%= property.floor_no %>")
+        selectOption("furnishing", "<%= property.furnishing_status %>")
+        selectOption("car_parking", "<%= property.car_parking %>")
+
+        <% } %>
+        <% if(property.property_sub_type == '14' || property.property_sub_type == '18' || property.property_type == '1') { %>
+        $('[name=bedrooms').attr('disabled', 'disabled')
+        $('[name=bathrooms').attr('disabled', 'disabled')
+
+        <% }else { %>
+
+        selectOption("bedrooms", "<%= property.bedrooms %>")
+        selectOption("bathrooms", "<%= property.bathrooms %>")
+        <% } %>
+    })
+</script>
+
+<!-- /.content-wrapper -->
+
+
+<% include includes/footer.ejs %>

@@ -51,21 +51,24 @@
             <li
             <% if (page_name == 'city') { %><%= "class='active'" %>
                     <% } %>
-            ><a href="<%= base_url %>admin/city"><i class="fa fa-star"></i>
+            >
+                <a href="<%= base_url %>admin/city"><i class="fa fa-star"></i>
                     <span>Manage City</span>
                 </a>
             </li>
             <li
             <% if ( page_name == 'locality') { %><%= "class='active'" %>
                     <% } %>
-            ><a href="<%= base_url %>admin/locality"><i class="fa fa-star"></i>
+            >
+                <a href="<%= base_url %>admin/locality"><i class="fa fa-star"></i>
                     <span>Manage Locality</span>
                 </a>
             </li>
             <li
             <% if (page_name == 'state') { %><%= "class='active'" %>
                     <% } %>
-            ><a href="<%= base_url %>admin/state"><i class="fa fa-star"></i>
+            >
+                <a href="<%= base_url %>admin/state"><i class="fa fa-star"></i>
                     <span>Manage State</span>
                 </a>
             </li>
@@ -73,7 +76,8 @@
             <li
             <% if (page_name == 'list_property') { %><%= "class='active'" %>
                     <% } %>
-            ><a href="<%= base_url %>admin/list_property"><i class="fa fa-star"></i>
+            >
+                <a href="<%= base_url %>admin/list_property"><i class="fa fa-star"></i>
                     <span>List Property</span>
                 </a>
             </li>
@@ -364,13 +368,13 @@
 
 
             <li
-            <% if (page_name == 'contact') {
-            %>
-                <%= "class='active'" %>
-                    <%
-                    } %>
-            ><a href="<%= base_url %>admin/contact"><i
-                            class="fa fa-star"></i> <span>Contact Us</span></a></li>
+            <% if (page_name == 'contact') { %> <%= "class='active'" %>
+                    <% } %>
+            >
+                <a href="<%= base_url %>admin/contact">
+                    <i class="fa fa-star"></i> <span>Contact Us</span>
+                </a>
+            </li>
 
 
         </ul>

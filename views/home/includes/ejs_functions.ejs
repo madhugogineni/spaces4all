@@ -1,0 +1,16 @@
+<%
+getRowDetails = function (data, attribute, baseUrl) {
+    var htmlContent = "";
+    for (var i = 0; i < data.length; i++) {
+        if (attribute == 'photo') {
+            htmlContent += '<td><div class="show-image">' +
+                    '<img alt="property" src=' + base_url + 'uploads/list_property/' + data[i][attribute] + ' style="height: 200px;width: 300px">' +
+                    '<a href=' + base_url + 'home/delete_compare/property/' + data[i]["list_property_id"] + ' onclick="return confirm(\'Are You Sure Want to Remove From Compare List ?\')">' +
+                    '<img alt="" class="delete" src=' + base_url + 'images/delete.png' + '></a></div></td>'
+        } else {
+            htmlContent += "<td>" + (data[i][attribute] || 'Data not available') + "</td>"
+        }
+    }
+    return htmlContent
+}
+%>

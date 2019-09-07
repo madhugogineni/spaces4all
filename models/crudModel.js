@@ -691,37 +691,37 @@ module.exports = {
     getProjectsSearchCount: function (projectType, projectSubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, searchType) {
         var query = "SELECT * FROM projects where project_id !=0 and project_status=1";
 
-        if (projectType != "") {
+        if (projectType != "" && projectType != null && projectType != undefined) {
             if (projectType != 0) {
                 query += " AND project_type='" + projectType + "'";
             }
         }
-        if (projectSubType != "") {
+        if (projectSubType != "" && projectSubType != null && projectSubType != undefined) {
             query += " AND project_sub_type='" + projectSubType + "'";
         }
-        if (city != "") {
+        if (city != "" && projectSubType != null && projectSubType != undefined) {
             query += " AND city='" + city + "'";
         }
-        if (locality != "") {
+        if (locality != "" && projectSubType != null && projectSubType != undefined) {
             query += " AND locality='" + locality + "'";
         }
-        if (bedrooms != "") {
+        if (bedrooms != "" && projectSubType != null && projectSubType != undefined) {
             query += " AND FIND_IN_SET('" + bedrooms + "',plans) > 0";
         }
-        if (postedBy != "") {
+        if (postedBy != "" && postedBy != null && postedBy != undefined) {
             query += " AND posted_by='" + postedBy + "'";
         }
-        if (minPrice != "") {
+        if (minPrice != "" && minPrice != null && minPrice != undefined) {
             query += " AND min_price >='" + minPrice + "'";
         }
-        if (maxPrice != "") {
+        if (maxPrice != "" && maxPrice != null && maxPrice != undefined) {
             query += " AND max_price <='" + maxPrice + "'";
         }
-        if (searchType != "") {
+        if (searchType != "" && searchType != null && searchType != undefined) {
             query += " AND want_to ='" + searchType + "'";
         }
         query += " ORDER BY datetime DESC ";
-        console.log(query);
+        // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
                 if (error)
@@ -1222,15 +1222,21 @@ module.exports = {
             });
         });
     },
-    addResidentialPlotToListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, posession, status) {
+    addResidentialPlotToListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, posession, status, propertyId) {
         var datetime = moment().format(dateFormat);
-        return new Promise(function (resolve, reject) {
-            con.query("insert into list_property(name,email,phone,property_name,property_type,property_sub_type," +
+        var query = ""
+        if(!propertyId) {
+            query = "insert into list_property(name,email,phone,property_name,property_type,property_sub_type," +
                 "facing,city,locality,state,quoted_price,saleable_area,floors,description,amenities,posted_by,lat,lan," +
                 "possession,status,datetime) values('" + name + "','" + email + "','" + phone + "','" + propertyName + "','" +
                 propertyType + "','" + subType + "','" + facing + "','" + city + "','" + locality + "','" + state + "','" + quotedPrice + "','" +
                 plotArea + "','" + floors + "','" + description + "','" + amenities + "','" + postedBy + "','" + latitude + "','" + longitude + "','" +
-                posession + "','" + status + "','" + datetime + "')", function (error, result) {
+                posession + "','" + status + "','" + datetime + "')";
+        }else {
+            query = ""
+        }
+        return new Promise(function (resolve, reject) {
+            con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -1238,6 +1244,7 @@ module.exports = {
                 resolve({success: true, propertyId: result.insertId});
             })
         });
+
     },
 
     addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony) {
@@ -1415,11 +1422,12 @@ module.exports = {
 
     getPropertyDetailsById: function (propertyId) {
         return new Promise(function (resolve, reject) {
-            con.query("SELECT list_property.*, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
+            con.query("SELECT list_property.*,state.state_name as state_name, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
                 "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides," +
                 "residential_plot_details.width, residential_plot_details.construction_done, residential_plot_details.boundary_wall, " +
                 "residential_plot_details.gated_colony, property_photos.photo , property_type.type as property_type_name, " +
-                "property_sub_type.sub_type as property_sub_type_name  FROM list_property inner join city on list_property.city = city.city_id " +
+                "property_sub_type.sub_type as property_sub_type_name  FROM list_property left join state as state on list_property.state = state.state_id " +
+                " inner join city on list_property.city = city.city_id " +
                 "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
                 "list_property.list_property_id = residential_plot_details.list_property_id left join property_photos on " +
                 "list_property.list_property_id = property_photos.property_id  inner join property_type on " +
@@ -1428,9 +1436,33 @@ module.exports = {
                 if (error) {
                     resolve({success: false, message: error});
                 } else {
-                    console.log(result)
                     if (result.length > 0) {
                         resolve({success: true, data: result[0]});
+                    } else {
+                        resolve({success: false, message: "No Data"});
+                    }
+                }
+            });
+        });
+    },
+    getPropertyDetails: function (propertyId) {
+        return new Promise(function (resolve, reject) {
+            con.query("SELECT list_property.*,state.state_name as state_name, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
+                "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides," +
+                "residential_plot_details.width, residential_plot_details.construction_done, residential_plot_details.boundary_wall, " +
+                "residential_plot_details.gated_colony, property_photos.photo , property_type.type as property_type_name, " +
+                "property_sub_type.sub_type as property_sub_type_name  FROM list_property left join state as state on list_property.state = state.state_id " +
+                " inner join city on list_property.city = city.city_id " +
+                "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
+                "list_property.list_property_id = residential_plot_details.list_property_id left join property_photos on " +
+                "list_property.list_property_id = property_photos.property_id  inner join property_type on " +
+                "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
+                "list_property.property_sub_type = property_sub_type.property_sub_type_id", function (error, result) {
+                if (error) {
+                    resolve({success: false, message: error});
+                } else {
+                    if (result.length > 0) {
+                        resolve({success: true, data: result});
                     } else {
                         resolve({success: false, message: "No Data"});
                     }
@@ -1455,8 +1487,19 @@ module.exports = {
             }
 
         })
-    }
-    ,
+    },
+    updateColumnInListProperty: function (column, value, propertyId) {
+        return new Promise(function (resolve, reject) {
+            console.log("update list_property set " + column + " = " + value + " where list_property_id = " + propertyId)
+            con.query('update list_property set ' + column + ' = ' + value + ' where list_property_id = ' + propertyId, function (error, result) {
+                if (error) {
+                    resolve({success: false});
+                } else {
+                    resolve({success: true})
+                }
+            });
+        })
+    },
     insertPropertyEnquiry: function (data) {
         return new Promise(function (resolve, reject) {
             con.query("insert into property_enquiry set ?", data, function (error, result) {
@@ -1468,6 +1511,17 @@ module.exports = {
                 }
             });
         })
+    },
+    deleteProperty(propertyId) {
+        return new Promise(function (resolve, reject) {
+            console.log('delete from list_property where list_property_id=' + propertyId)
+            con.query('delete from list_property where list_property_id=' + propertyId, function (error, result) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    resolve({success: true, message: error});
+                }
+            })
+        });
     }
-}
-;
+};
