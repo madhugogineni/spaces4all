@@ -129,7 +129,7 @@ router.get('/edit_property/:property_id?', async function (req, res) {
     var invalid = false
     if (propertyId) {
         var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
-        // console.log(propertyResponse)
+        console.log(propertyResponse)
         if (propertyResponse.success) {
             res.render('admin/edit_property', {
                 page_name: 'edit_property',
@@ -148,12 +148,11 @@ router.get('/edit_property/:property_id?', async function (req, res) {
 });
 router.post('/update_property_details/:property_id?', upload.none(),
     async function (req, res) {
+        console.log(req.body)
         var propertyId = req.params.property_id;
         if (propertyId) {
-            console.log(propertyId)
-            console.log(req.body)
-            console.log('---')
             if (req.body.property_sub_type == 14 || req.body.property_sub_type == 18) {
+                console.log(req.body)
                 var name = req.body.name || "",
                     email = req.body.email || "",
                     phone = req.body.phone || "",
@@ -161,23 +160,23 @@ router.post('/update_property_details/:property_id?', upload.none(),
                     propertyType = req.body.property_type || "",
                     subType = req.body.property_sub_type || "",
                     facing = req.body.facing1 || "",
-                    city = req.body.city1 || "",
-                    locality = req.body.locality1 || "",
-                    state = req.body.state1 || 1,
+                    city = req.body.city || "",
+                    locality = req.body.locality || "",
+                    state = req.body.state || 1,
                     quotedPrice = req.body.quoted_price1 || "",
                     plotArea = req.body.plot_area || "",
                     east = req.body.east || "",
                     west = req.body.west || "",
                     north = req.body.north || "",
                     south = req.body.south || "",
-                    floors = req.body.floors1 || "",
+                    floors = req.body.floors || "",
                     openSlides = req.body.open_slides || "",
                     width = req.body.width || "",
                     constructionDone = req.body.construction_done || "",
                     boundaryWall = req.body.boundary_wall || "",
                     gatedColony = req.body.gated_colony || "",
-                    description = req.body.description1 || "",
-                    amenities = req.body.amenities1 || "",
+                    description = req.body.description || "",
+                    amenities = req.body.amenities || "",
                     postedBy = req.body.posted_by || "Owner";
                 let validator = new validatorpackage(req.body, {
                     plot_area: "numeric",
@@ -238,7 +237,7 @@ router.post('/update_property_details/:property_id?', upload.none(),
                     );
                     if (queryResult.success) {
                         var propertyId = queryResult.propertyId;
-                        await crudModel.addResidentialPlotDetails(
+                        var detailsResponse = await crudModel.addResidentialPlotDetails(
                             queryResult.propertyId, {
                                 north: north,
                                 south: south,
@@ -249,15 +248,10 @@ router.post('/update_property_details/:property_id?', upload.none(),
                             width,
                             constructionDone,
                             boundaryWall,
-                            gatedColony
+                            gatedColony,
+                            true
                         );
-                        var photoFiles = req.files["photos1[]"] || [];
-                        var uploadImagesResult = await uploadImages(
-                            photoFiles,
-                            propertyId,
-                            "public/uploads/list_property/"
-                        );
-                        if (uploadImagesResult.success) {
+                        if (detailsResponse.success) {
                             res.send({
                                 success: true,
                                 message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
@@ -369,10 +363,10 @@ router.post('/update_property_details/:property_id?', upload.none(),
                         latitude,
                         longitude,
                         "",
-                        0
+                        0,
+                        propertyId
                     );
                     if (queryResult.success) {
-                        console.log('welcome----')
                         res.send({
                             success: true,
                             message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
@@ -389,4 +383,30 @@ router.post('/update_property_details/:property_id?', upload.none(),
 
         }
     });
+router.get('property_photos/:property_id?', async function (req, res) {
+    var propertyId = req.params.property_id
+    if (propertyId) {
+        res.send('welcome')
+    } else {
+        res.redirect('/admin/')
+    }
+});
+
+
+//Project Routes Start Here
+
+router.get('/projects', async function (req, res) {
+    var data = {
+        page_name: 'project',
+        page_title: 'Projects'
+    }
+    var projectsResponse = await crudModel.getProjects()
+    if(projectsResponse.success) {
+        data.projects = projectsResponse.data
+    }else {
+        data.projects = null
+    }
+    res.render('admin/projects',data)
+});
+
 module.exports = router;

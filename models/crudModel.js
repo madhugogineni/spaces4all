@@ -607,9 +607,12 @@ module.exports = {
     getProjects: function () {
         return new Promise(function (resolve, reject) {
             con.query("select * from projects order by datetime DESC", function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false})
+                }else {
+                    resolve({success: true, data: result});
+                }
             });
         });
     },
@@ -1225,48 +1228,69 @@ module.exports = {
     addResidentialPlotToListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, city, locality, state, quotedPrice, plotArea, floors, description, amenities, postedBy, latitude, longitude, posession, status, propertyId) {
         var datetime = moment().format(dateFormat);
         var query = ""
-        if(!propertyId) {
-            query = "insert into list_property(name,email,phone,property_name,property_type,property_sub_type," +
-                "facing,city,locality,state,quoted_price,saleable_area,floors,description,amenities,posted_by,lat,lan," +
-                "possession,status,datetime) values('" + name + "','" + email + "','" + phone + "','" + propertyName + "','" +
-                propertyType + "','" + subType + "','" + facing + "','" + city + "','" + locality + "','" + state + "','" + quotedPrice + "','" +
-                plotArea + "','" + floors + "','" + description + "','" + amenities + "','" + postedBy + "','" + latitude + "','" + longitude + "','" +
-                posession + "','" + status + "','" + datetime + "')";
-        }else {
-            query = ""
+        if (!propertyId) {
+            query = "insert into list_property set ?";
+        } else {
+            query = "update list_property set ? where list_property_id = '" + propertyId + "'";
         }
         return new Promise(function (resolve, reject) {
-            con.query(query, function (error, result) {
+            con.query(query, {
+                name: name,
+                email: email,
+                phone: phone,
+                property_name: propertyName,
+                property_type: propertyType,
+                property_sub_type: subType,
+                facing: facing,
+                city: city,
+                locality: locality,
+                state: state,
+                quoted_price: quotedPrice,
+                saleable_area: plotArea,
+                floors: floors,
+                description: description,
+                amenities: amenities,
+                posted_by: postedBy,
+                lat: latitude,
+                lan: longitude,
+                possession: "",
+                status: 0,
+            }, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
                 }
-                resolve({success: true, propertyId: result.insertId});
+                resolve({success: true, propertyId: propertyId ? propertyId : result.insertId});
             })
         });
 
     },
 
-    addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony) {
+    addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony,forUpdate) {
         return new Promise(function (resolve, reject) {
-            con.query("insert into residential_plot_details set ?",
-                {
-                    list_property_id: propertyId,
-                    east: direction.east,
-                    west: direction.west,
-                    north: direction.north,
-                    south: direction.south,
-                    open_slides: openSlides,
-                    width: width,
-                    construction_done: constructionDone,
-                    boundary_wall: boundaryWall,
-                    gated_colony: gatedColony
-                }, function (error, result) {
+            var query = ''
+            var dataObject = {
+                east: direction.east,
+                west: direction.west,
+                north: direction.north,
+                south: direction.south,
+                open_slides: openSlides,
+                width: width,
+                construction_done: constructionDone,
+                boundary_wall: boundaryWall,
+                gated_colony: gatedColony
+            }
+            if(forUpdate) {
+                query = "update residential_plot_details set ? where list_property_id='"+propertyId+"'"
+            }else {
+                dataObject.list_property_id = propertyId,
+                query= "insert into residential_plot_details set ?"
+            }
+            con.query(query,dataObject, function (error, result) {
                     if (error) {
                         console.log(error);
                         resolve({success: false});
                     } else {
-                        console.log(result);
                         resolve({success: true});
                     }
                 })
@@ -1285,10 +1309,16 @@ module.exports = {
             });
         });
     },
-    addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status) {
+    addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status,propertyId) {
         var datetime = moment().format(dateFormat);
+        var query = ""
+        if (!propertyId) {
+            query = "insert into list_property set ?";
+        } else {
+            query = "update list_property set ? where list_property_id = '" + propertyId + "'";
+        }
         return new Promise(function (resolve, reject) {
-            con.query("insert into list_property set ?", {
+            con.query(query, {
                 name: name,
                 email: email,
                 phone: phone,
@@ -1321,7 +1351,7 @@ module.exports = {
                     console.log(error);
                     resolve({success: false});
                 }
-                resolve({success: true, propertyId: result.insertId});
+                resolve({success: true, propertyId: propertyId ? propertyId : result.insertId});
             });
         });
     },

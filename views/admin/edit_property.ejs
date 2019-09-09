@@ -814,6 +814,15 @@
         }
         $('[name=' + nameSelector + '] option[value=' + value1 + ']').attr('selected', 'selected')
     }
+    function selectAmenities(amenities) {
+        var amenitiesList = amenities.split(',')
+        console.log($('[name="amenities1[]"]'))
+        $('[name="amenities1[]"]').each(function() {
+            if(amenitiesList.includes($(this).val())) {
+                $(this).prop('checked',true)
+            }
+        })
+    }
 
     $(document).ready(function () {
         setUpValue("name", "<%= property.name %>")
@@ -856,6 +865,7 @@
 
         selectOption("bedrooms", "<%= property.bedrooms %>")
         selectOption("bathrooms", "<%= property.bathrooms %>")
+        selectAmenities("<%=property.amenities%>")
         <% } %>
     })
 </script>
