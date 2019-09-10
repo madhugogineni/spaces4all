@@ -606,11 +606,15 @@ module.exports = {
     },
     getProjects: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select * from projects order by datetime DESC", function (error, result) {
+            con.query("SELECT projects.*,project_type.type as project_type_name, " +
+                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name FROM `projects` " +
+                "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
+                "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
+                "inner join city on projects.city = city.city_id order by datetime DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false})
-                }else {
+                } else {
                     resolve({success: true, data: result});
                 }
             });
@@ -1266,7 +1270,7 @@ module.exports = {
 
     },
 
-    addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony,forUpdate) {
+    addResidentialPlotDetails: function (propertyId, direction, openSlides, width, constructionDone, boundaryWall, gatedColony, forUpdate) {
         return new Promise(function (resolve, reject) {
             var query = ''
             var dataObject = {
@@ -1280,20 +1284,20 @@ module.exports = {
                 boundary_wall: boundaryWall,
                 gated_colony: gatedColony
             }
-            if(forUpdate) {
-                query = "update residential_plot_details set ? where list_property_id='"+propertyId+"'"
-            }else {
+            if (forUpdate) {
+                query = "update residential_plot_details set ? where list_property_id='" + propertyId + "'"
+            } else {
                 dataObject.list_property_id = propertyId,
-                query= "insert into residential_plot_details set ?"
+                    query = "insert into residential_plot_details set ?"
             }
-            con.query(query,dataObject, function (error, result) {
-                    if (error) {
-                        console.log(error);
-                        resolve({success: false});
-                    } else {
-                        resolve({success: true});
-                    }
-                })
+            con.query(query, dataObject, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            })
         });
     },
     addPropertyPhotos: function (files) {
@@ -1309,7 +1313,7 @@ module.exports = {
             });
         });
     },
-    addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status,propertyId) {
+    addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status, propertyId) {
         var datetime = moment().format(dateFormat);
         var query = ""
         if (!propertyId) {

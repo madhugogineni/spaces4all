@@ -104,7 +104,7 @@ router.get('/property_details/:property_id', async function (req, res) {
     if (propertyId != '' && propertyId != null && propertyId != undefined) {
         var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
         if (propertyResponse.success) {
-            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price);
+            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price,false);
             var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
             if (amenitiesList.success) {
                 propertyResponse.data.amenities_list = amenitiesList.data;
@@ -403,9 +403,15 @@ router.get('/projects', async function (req, res) {
     var projectsResponse = await crudModel.getProjects()
     if(projectsResponse.success) {
         data.projects = projectsResponse.data
+        data.projects.forEach((project,index) => {
+            var formattedPrice = utils.getPrice({min_price: project.min_price, max_price: project.max_price},true)
+            data.projects[index].min_price_formatted = formattedPrice.min_price
+            data.projects[index].max_price_formatted = formattedPrice.max_price
+        });
     }else {
-        data.projects = null
+        data.projects = []
     }
+
     res.render('admin/projects',data)
 });
 

@@ -1030,7 +1030,7 @@ router.get("/property_details/:property_id", async function (req, res) {
         var propertyDetails = await crudModel.getPropertyDetailsById(req.params.property_id);
         if (propertyDetails.success) {
             var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
-            propertyDetails.data.quoted_price = utils.getPrice(propertyDetails.data.quoted_price);
+            propertyDetails.data.quoted_price = utils.getPrice(propertyDetails.data.quoted_price,false);
             var data = propertyDetails.data;
             var path = urls.base_url + "uploads/list_property/" + propertyDetails.data.photo;
             if (!fs.existsSync(path)) {
@@ -1084,7 +1084,7 @@ router.get("/compare/:type", async function (req, res) {
             var response = await crudModel.getPropertyDetailsById(propertyId);
             if (response.success) {
                 var amenitiesList = await crudModel.getAmenityNames(response.data.amenities);
-                response.data.quoted_price = utils.getPrice(response.data.quoted_price);
+                response.data.quoted_price = utils.getPrice(response.data.quoted_price,false);
                 var path = urls.base_url + "uploads/list_property/" + response.data.photo;
                 if (!fs.existsSync(path)) {
                     response.data.photo = "1no-photo.jpg";
