@@ -380,7 +380,7 @@ router.post('/update_property_details/:property_id?', upload.none(),
                 }
             }
         } else {
-
+            res.redirect('/admin')
         }
     });
 router.get('property_photos/:property_id?', async function (req, res) {
@@ -413,6 +413,63 @@ router.get('/projects', async function (req, res) {
     }
 
     res.render('admin/projects',data)
+});
+
+router.get('/exclusive_project/:value/:project_id',function(req,res) {
+    var value = req.params.value, projectId = req.params.project_id
+    if(value == 'undefined' || value == null) {
+        value = 0;
+    }
+    if(projectId) {
+        crudModel.updateColumnInProjects('exclusive',value,projectId)
+    }
+    res.redirect('/admin/projects');
+});
+router.get('/project_status/:value/:project_id',function(req,res) {
+    var value = req.params.value, projectId = req.params.project_id
+    if(value == 'undefined' || value == null) {
+        value = 0;
+    }
+    if(projectId) {
+        crudModel.updateColumnInProjects('project_status',value,projectId)
+    }
+    res.redirect('/admin/projects');
+});
+router.get('/featured_projects/:value/:project_id',function(req,res) {
+    var value = req.params.value, projectId = req.params.project_id
+    if(value == 'undefined' || value == null) {
+        value = 0;
+    }
+    if(projectId) {
+        crudModel.updateColumnInProjects('featured_projects',value,projectId)
+    }
+    res.redirect('/admin/projects');
+});
+
+router.get('/delete_project/:project_id', async function (req, res) {
+    var projectId = req.params.project_id;
+    if (projectId) {
+        await crudModel.deleteProject(projectId)
+    }
+    res.redirect('/admin/projects')
+});
+router.get('/project_details/:project_id?',async function(req,res) {
+    var projectId = req.params.project_id;
+    if (projectId != '' && projectId != null && projectId != undefined) {
+        var projectResponse = await crudModel.getProjectById(projectId)
+        if (projectResponse.success) {
+            // propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price,false);
+            // var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
+            // if (amenitiesList.success) {
+            //     propertyResponse.data.amenities_list = amenitiesList.data;
+            // }
+            // console.log(propertyResponse)
+            // res.send(propertyResponse)
+        } else {
+            console.log('welcome---')
+            res.send({success: false});
+        }
+    }
 });
 
 module.exports = router;

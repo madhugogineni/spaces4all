@@ -526,7 +526,11 @@ module.exports = {
     },
     getProjectById: function (projectId) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from projects where project_id=" + projectId, function (error, result) {
+            con.query("SELECT projects.*,project_type.type as project_type_name," +
+                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name FROM `projects` " +
+                "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
+                "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
+                "inner join city on projects.city = city.city_id where project_id=" + projectId, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
@@ -1557,5 +1561,29 @@ module.exports = {
                 }
             })
         });
-    }
+    },
+    updateColumnInProjects: function (column, value, projectId) {
+        return new Promise(function (resolve, reject) {
+            console.log("update projects set " + column + " = " + value + " where project_id = " + projectId)
+            con.query('update projects set ' + column + ' = ' + value + ' where project_id = ' + projectId, function (error, result) {
+                if (error) {
+                    resolve({success: false});
+                } else {
+                    resolve({success: true})
+                }
+            });
+        })
+    },
+    deleteProject(projectId) {
+        return new Promise(function (resolve, reject) {
+            console.log('delete from projects where project_id=' + projectId)
+            con.query('delete from projects where project_id=' + projectId, function (error, result) {
+                if (error) {
+                    console.log(error)
+                } else {
+                    resolve({success: true, message: error});
+                }
+            })
+        });
+    },
 };

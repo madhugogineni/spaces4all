@@ -1,15 +1,19 @@
 <script type="text/javascript">
 
-    function showAjaxModal(url) {
-        // SHOWING AJAX PRELOADER IMAGE
-        jQuery('#modal_ajax .modal-body').html('');
-        // LOADING THE AJAX MODAL
-        jQuery('#modal_ajax').modal('show', {backdrop: 'true'});
-        // SHOW AJAX RESPONSE ON REQUEST SUCCESS
+    function showAjaxModal(url, type) {
         $.ajax({
             url: url,
             success: function (response) {
-                jQuery('#modal_ajax .modal-body').html(response);
+                if (response.success) {
+                    if (type == 'project') {
+                        $('#modal_ajax .modal-body').html(processProjectDetails());
+                    } else if (type == 'property') {
+                        $('#modal_ajax .modal-body').html(processPropertyPossessionDetails());
+                    }
+                } else {
+                    $('#modal_ajax1 .modal-body').html("No Details Available");
+                }
+                $('#modal_ajax').modal('show', {backdrop: 'true'});
             }
         });
     }
@@ -20,7 +24,7 @@
             success: function (response) {
                 if (response.success) {
                     $('#modal_ajax1 .modal-body').html(prepareDetailsResponse(response.data));
-                }else {
+                } else {
                     $('#modal_ajax1 .modal-body').html("No Details Available");
                 }
                 $('#modal_ajax1').modal('show', {backdrop: 'true'});
@@ -63,26 +67,35 @@
         response += '<tr><td>Boundary Wall</td><td>' + (property.boundary_wall ? 'Yes' : 'No') + '</td></tr>'
         response += '<tr><td>Gated Community</td><td>' + (property.gated_colony ? 'Yes' : 'No') + '</td></tr>'
         response += '<tr><td>Dimensions</td><td>' + 'East : ' + property.east + ', West : ' + property.west + ', North : ' + property.north + ', South : ' + property.south + '</td></tr>'
-        if(property.possesion_date) {
+        if (property.possesion_date) {
             var possessionDate = new Date(property.possesion_date)
-            response += '<tr><td>Email</td><td>'+possessionDate.getDate()+' '+(possessionDate.getMonth()+1)+' '+possessionDate.getFullYear()+'</td></tr>'
+            response += '<tr><td>Email</td><td>' + possessionDate.getDate() + ' ' + (possessionDate.getMonth() + 1) + ' ' + possessionDate.getFullYear() + '</td></tr>'
         }
-        response += '<tr><td>Furnishing Status</td><td>'+property.furnishing_status+'</td></tr>'
-        response += '<tr><td>Posted By</td><td>'+property.posted_by+'</td></tr>'
-        response += '<tr><td>Amenities</td><td>'+getAmenities(property.amenities_list)+'</td></tr>'
-        response += '<tr><td>Property Added On:</td><td>'+datetime.getDate()+' '+(datetime.getMonth()+1)+' '+datetime.getFullYear()+'</td></tr>'
-        response += '<tr><td>Description</td><td>'+property.description+'</td></tr>'
+        response += '<tr><td>Furnishing Status</td><td>' + property.furnishing_status + '</td></tr>'
+        response += '<tr><td>Posted By</td><td>' + property.posted_by + '</td></tr>'
+        response += '<tr><td>Amenities</td><td>' + getAmenities(property.amenities_list) + '</td></tr>'
+        response += '<tr><td>Property Added On:</td><td>' + datetime.getDate() + ' ' + (datetime.getMonth() + 1) + ' ' + datetime.getFullYear() + '</td></tr>'
+        response += '<tr><td>Description</td><td>' + property.description + '</td></tr>'
         response += '</tbody></table>'
         return response
     }
+
     function getAmenities(amenitiesList) {
         var amenities = ''
-        amenitiesList.forEach(function(amenity, index) {
-            if(index != 0) {
+        amenitiesList.forEach(function (amenity, index) {
+            if (index != 0) {
                 amenities += ','
             }
             amenities += amenity.amenity
         })
         return amenities
+    }
+
+    function processProjectDetails() {
+        return "<h1>Project</h1>"
+    }
+
+    function processPropertyPossessionDetails() {
+        return "<h1>Property Details</h1>"
     }
 </script>
