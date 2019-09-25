@@ -798,31 +798,9 @@
 <script>
     setUpPropertyTypes("#property_type", "<%= property.property_type %>");
     getPropertySubTypes("<%= property.property_type %>", "#property_sub_type", "<%= property.property_sub_type %>");
-    setUpAmenities('#amenity_options')
     setUpCities('#city', "<%= property.city %>")
     setUpStates('#state', "<%= property.state %>")
     showLocality('<%= property.city %>', '#locality', '<%= property.locality %>')
-
-    function setUpValue(nameSelector, value) {
-        $("[name=" + nameSelector + "]").val(value)
-    }
-
-    function selectOption(nameSelector, value) {
-        var value1 = value
-        if(!value1) {
-            value1 = " invalid"
-        }
-        $('[name=' + nameSelector + '] option[value=' + value1 + ']').attr('selected', 'selected')
-    }
-    function selectAmenities(amenities) {
-        var amenitiesList = amenities.split(',')
-        console.log($('[name="amenities1[]"]'))
-        $('[name="amenities1[]"]').each(function() {
-            if(amenitiesList.includes($(this).val())) {
-                $(this).prop('checked',true)
-            }
-        })
-    }
 
     $(document).ready(function () {
         setUpValue("name", "<%= property.name %>")
@@ -865,7 +843,10 @@
 
         selectOption("bedrooms", "<%= property.bedrooms %>")
         selectOption("bathrooms", "<%= property.bathrooms %>")
-        selectAmenities("<%=property.amenities%>")
+        setUpAmenities('#amenity_options')
+        setTimeout(function() {
+            selectAmenities("<%=property.amenities%>")
+        },500)
         <% } %>
     })
 </script>

@@ -114,6 +114,18 @@ module.exports = {
             });
         });
     },
+    getBanksById: function (banksList) {
+        return new Promise(function (resolve, reject) {
+            con.query("select * from banks where bank_id in (" + banksList + ")", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                } else {
+                    resolve({success: true, data: result});
+                }
+            });
+        })
+    },
     getBankById: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from banks where bank_id=" + id, function (error, result) {
@@ -527,13 +539,15 @@ module.exports = {
     getProjectById: function (projectId) {
         return new Promise(function (resolve, reject) {
             con.query("SELECT projects.*,project_type.type as project_type_name," +
-                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name FROM `projects` " +
+                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name,locality.locality as locality_name FROM `projects` " +
                 "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
                 "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
-                "inner join city on projects.city = city.city_id where project_id=" + projectId, function (error, result) {
-                if (error)
+                "inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id where project_id=" + projectId, function (error, result) {
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false})
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },
@@ -626,10 +640,12 @@ module.exports = {
     },
     getProjectConfigurations: function (projectId) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from project_configurations where project_id='" + projectId + " order by project_id ASC", function (error, result) {
-                if (error)
+            con.query("select * from project_configurations where project_id='" + projectId + "' order by project_id ASC", function (error, result) {
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false})
+                }
+                resolve({success: true, data: result});
             });
         });
     },
@@ -1510,6 +1526,8 @@ module.exports = {
     },
 
     getAmenityNames: function (amenitiesList) {
+        console.log(amenitiesList);
+        console.log("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")");
         return new Promise(function (resolve, reject) {
             if (amenitiesList) {
                 con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {
@@ -1574,7 +1592,7 @@ module.exports = {
             });
         })
     },
-    deleteProject(projectId) {
+    deleteProject: function (projectId) {
         return new Promise(function (resolve, reject) {
             console.log('delete from projects where project_id=' + projectId)
             con.query('delete from projects where project_id=' + projectId, function (error, result) {
@@ -1586,4 +1604,33 @@ module.exports = {
             })
         });
     },
+    deleteProjectConfiguration: function (configurationId) {
+        return new Promise(function (resolve, reject) {
+            con.query('delete from project_configurations where configuration_id = ' + configurationId, function (error, result) {
+                if (error) {
+                    console.log(error)
+                    resolve({success: false});
+                }
+                resolve({success: true})
+            });
+        });
+    },
+    updateProjectConfigurations: function (data, configurationId) {
+        var query = "";
+        if (configurationId) {
+            query = 'update project_configurations set ? where configuration_id = ' + configurationId
+        } else {
+            query = 'insert into project_configurations set ? '
+        }
+        return new Promise(function (resolve, reject) {
+            con.query(query, data, function (error, result) {
+                if (error) {
+                    console.log(error)
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        })
+    }
 };

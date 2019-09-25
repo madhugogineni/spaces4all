@@ -104,7 +104,7 @@ router.get('/property_details/:property_id', async function (req, res) {
     if (propertyId != '' && propertyId != null && propertyId != undefined) {
         var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
         if (propertyResponse.success) {
-            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price,false);
+            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price, false);
             var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
             if (amenitiesList.success) {
                 propertyResponse.data.amenities_list = amenitiesList.data;
@@ -401,47 +401,47 @@ router.get('/projects', async function (req, res) {
         page_title: 'Projects'
     }
     var projectsResponse = await crudModel.getProjects()
-    if(projectsResponse.success) {
+    if (projectsResponse.success) {
         data.projects = projectsResponse.data
-        data.projects.forEach((project,index) => {
-            var formattedPrice = utils.getPrice({min_price: project.min_price, max_price: project.max_price},true)
+        data.projects.forEach((project, index) => {
+            var formattedPrice = utils.getPrice({min_price: project.min_price, max_price: project.max_price}, true)
             data.projects[index].min_price_formatted = formattedPrice.min_price
             data.projects[index].max_price_formatted = formattedPrice.max_price
         });
-    }else {
+    } else {
         data.projects = []
     }
 
-    res.render('admin/projects',data)
+    res.render('admin/projects', data)
 });
 
-router.get('/exclusive_project/:value/:project_id',function(req,res) {
+router.get('/exclusive_project/:value/:project_id', function (req, res) {
     var value = req.params.value, projectId = req.params.project_id
-    if(value == 'undefined' || value == null) {
+    if (value == 'undefined' || value == null) {
         value = 0;
     }
-    if(projectId) {
-        crudModel.updateColumnInProjects('exclusive',value,projectId)
+    if (projectId) {
+        crudModel.updateColumnInProjects('exclusive', value, projectId)
     }
     res.redirect('/admin/projects');
 });
-router.get('/project_status/:value/:project_id',function(req,res) {
+router.get('/project_status/:value/:project_id', function (req, res) {
     var value = req.params.value, projectId = req.params.project_id
-    if(value == 'undefined' || value == null) {
+    if (value == 'undefined' || value == null) {
         value = 0;
     }
-    if(projectId) {
-        crudModel.updateColumnInProjects('project_status',value,projectId)
+    if (projectId) {
+        crudModel.updateColumnInProjects('project_status', value, projectId)
     }
     res.redirect('/admin/projects');
 });
-router.get('/featured_projects/:value/:project_id',function(req,res) {
+router.get('/featured_projects/:value/:project_id', function (req, res) {
     var value = req.params.value, projectId = req.params.project_id
-    if(value == 'undefined' || value == null) {
+    if (value == 'undefined' || value == null) {
         value = 0;
     }
-    if(projectId) {
-        crudModel.updateColumnInProjects('featured_projects',value,projectId)
+    if (projectId) {
+        crudModel.updateColumnInProjects('featured_projects', value, projectId)
     }
     res.redirect('/admin/projects');
 });
@@ -453,23 +453,95 @@ router.get('/delete_project/:project_id', async function (req, res) {
     }
     res.redirect('/admin/projects')
 });
-router.get('/project_details/:project_id?',async function(req,res) {
+router.get('/project_details/:project_id?', async function (req, res) {
     var projectId = req.params.project_id;
     if (projectId != '' && projectId != null && projectId != undefined) {
-        var projectResponse = await crudModel.getProjectById(projectId)
+        var projectResponse = await crudModel.getProjectById(projectId);
         if (projectResponse.success) {
-            // propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price,false);
-            // var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
-            // if (amenitiesList.success) {
-            //     propertyResponse.data.amenities_list = amenitiesList.data;
-            // }
-            // console.log(propertyResponse)
-            // res.send(propertyResponse)
+            projectResponse.data.quoted_price = utils.getPrice(projectResponse.data.quoted_price, false);
+            var amenitiesList = await crudModel.getAmenityNames(projectResponse.data.amenities);
+            if (amenitiesList.success) {
+                projectResponse.data.amenities_list = amenitiesList.data;
+            }else {
+                projectResponse.data.amenities_list = [];
+            }
+            var banksList = await crudModel.getBanksById(projectResponse.data.approved_banks);
+            if(banksList.success) {
+                projectResponse.data.banks_list = banksList.data;
+            }else {
+                projectResponse.data.banks_list = []
+            }
+            res.send(projectResponse)
         } else {
-            console.log('welcome---')
             res.send({success: false});
         }
+    } else {
+        res.send({success: false});
     }
+});
+router.get('/project_configurations/:project_id', async function (req, res) {
+    var projectId = req.params.project_id;
+    var data = {
+        page_name: 'project_configurations',
+        page_title: 'Project Configurations',
+        project_id: projectId
+    };
+    var configurationsResponse = await crudModel.getProjectConfigurations(projectId);
+    configurationsResponse.success ? data.configurations = configurationsResponse.data : data.configurations = []
+
+    res.render('admin/project_configuration', data)
+})
+
+router.get('/delete_project_configurations/:project_id/:configuration_id', async function (req, res) {
+    var projectId = req.params.project_id, configurationId = req.params.configuration_id;
+    await crudModel.deleteProjectConfiguration(configurationId);
+    res.redirect('/admin/project_configurations/' + projectId);
+})
+router.post('/edit_project_configurations/:project_id', upload.none(), async function (req, res) {
+    var projectId = req.params.project_id
+    if (projectId) {
+        var plan = req.body.plan || "",
+            size = req.body.size || "",
+            price = req.body.price || "",
+            configurationId = req.body.configuration_id;
+        if (configurationId) {
+            await crudModel.updateProjectConfigurations({
+                plan: plan,
+                size: size,
+                price: price
+            }, configurationId)
+        }
+    }
+    res.redirect('/admin/project_configurations/' + projectId);
+})
+router.post('/add_project_configurations/:project_id', upload.none(), async function (req, res) {
+    var projectId = req.params.project_id;
+    if (projectId) {
+        var plan = req.body.plan || "",
+            size = req.body.size || "",
+            price = req.body.price || "";
+        await crudModel.updateProjectConfigurations({
+            plan: plan,
+            size: size,
+            price: price,
+            project_id: projectId
+        })
+    }
+    res.redirect('/admin/project_configurations/' + projectId)
+})
+router.post('/edit_property_possession', upload.none(), async function (req, res) {
+    var possessionYear = req.body.possession || '', propertyId = req.body.list_property_id
+    if (propertyId) {
+        await crudModel.updateColumnInListProperty('possession', possessionYear, propertyId)
+    }
+    res.redirect('/admin/list_property')
+});
+router.get('/edit_project/:project_id',async function(req,res) {
+   var projectId = req.params.project_id;
+   if(projectId) {
+       res.send('welcome')
+   }
+
 });
 
 module.exports = router;

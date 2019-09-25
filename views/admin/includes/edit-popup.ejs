@@ -1,35 +1,47 @@
 <script type="text/javascript">
 
     function showAjaxModal(url, type) {
-        $.ajax({
-            url: url,
-            success: function (response) {
-                if (response.success) {
-                    if (type == 'project') {
-                        $('#modal_ajax .modal-body').html(processProjectDetails());
-                    } else if (type == 'property') {
-                        $('#modal_ajax .modal-body').html(processPropertyPossessionDetails());
+
+        if (['project_configurations', 'property_possession'].includes(type)) {
+
+        } else {
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        if (type == 'project') {
+                            $('#modal_ajax .modal-body').html(processProjectDetails(response));
+                        } else if (type == 'property') {
+                            $('#modal_ajax .modal-body').html(processPropertyPossessionDetails());
+                        }
+                    } else {
+                        $('#modal_ajax .modal-body').html("No Details Available");
                     }
-                } else {
-                    $('#modal_ajax1 .modal-body').html("No Details Available");
                 }
-                $('#modal_ajax').modal('show', {backdrop: 'true'});
-            }
-        });
+            });
+        }
+
+        $('#modal_ajax').modal('show', {backdrop: 'true'});
+
     }
 
-    function showAjaxModal1(url) {
-        $.ajax({
-            url: url,
-            success: function (response) {
-                if (response.success) {
-                    $('#modal_ajax1 .modal-body').html(prepareDetailsResponse(response.data));
-                } else {
-                    $('#modal_ajax1 .modal-body').html("No Details Available");
+    function showAjaxModal1(url, type) {
+        if (['property_possession'].includes(type)) {
+
+        } else if (type == 'property') {
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        $('#modal_ajax1 .modal-body').html(prepareDetailsResponse(response.data));
+                    } else {
+                        $('#modal_ajax1 .modal-body').html("No Details Available");
+                    }
+
                 }
-                $('#modal_ajax1').modal('show', {backdrop: 'true'});
-            }
-        });
+            });
+        }
+        $('#modal_ajax1').modal('show', {backdrop: 'true'});
     }
 
     function prepareDetailsResponse(property) {
@@ -81,21 +93,76 @@
     }
 
     function getAmenities(amenitiesList) {
-        var amenities = ''
-        amenitiesList.forEach(function (amenity, index) {
+        return getStringFromList(amenitiesList,'amenity')
+    }
+    function getBanks(banksList) {
+        return getStringFromList(banksList,'bank_name')
+    }
+    function getStringFromList(list,parameter) {
+        var returnString = ''
+        list.forEach(function (listRow, index) {
             if (index != 0) {
-                amenities += ','
+                returnString += ','
             }
-            amenities += amenity.amenity
+            returnString += listRow[parameter]
         })
-        return amenities
+        return returnString
+    }
+    function getDate(date) {
+        if(date) {
+            var dateVariable = new Date(date);
+            return dateVariable.getDate() + '/' + (dateVariable.getMonth() + 1) + '/' + dateVariable.getFullYear()
+        }else {
+            return 'Date not available'
+        }
     }
 
-    function processProjectDetails() {
-        return "<h1>Project</h1>"
+    function processProjectDetails(response) {
+        var projectDetails = response.data;
+        var amenitiesList = getAmenities(projectDetails.amenities_list);
+        var banksList = getBanks(projectDetails.banks_list);
+        var response = ""
+        if (projectDetails) {
+            response = '<table class="table table-bordered">';
+            response += '<tbody>';
+            response += '<tr><td>Name</td><td>' + projectDetails.name + '</td></tr>'
+            response += '<tr><td>Email</td><td>' + projectDetails.email + '</td></tr>'
+            response += '<tr><td>Phone</td><td>' + projectDetails.mobile + '</td></tr>'
+            response += '<tr><td>Project Name</td><td>' + projectDetails.project_name + '</td></tr>'
+            response += '<tr><td>Project Type</td><td>' + projectDetails.project_type_name + '</td></tr>'
+            response += '<tr><td>Project SubType</td><td>' + projectDetails.project_sub_type_name + '</td></tr>'
+            response += '<tr><td>Group Name</td><td>' + projectDetails.group_name + '</td></tr>'
+            response += '<tr><td>Posted By</td><td>' + projectDetails.posted_by + '</td></tr>'
+            response += '<tr><td>City</td><td>' + projectDetails.city_name + '</td></tr>'
+            response += '<tr><td>Locality</td><td>' + projectDetails.locality_name + '</td></tr>'
+            response += '<tr><td>Status</td><td>' + projectDetails.status + '</td></tr>'
+            response += '<tr><td>Launch Date</td><td>' + getDate(projectDetails.launch_date) + '</td></tr>'
+            response += '<tr><td>Possession Date</td><td>' + getDate(projectDetails.possession_date) + '</td></tr>'
+            response += '<tr><td>No of Buildings</td><td>' + projectDetails.no_of_buildings + '</td></tr>'
+            response += '<tr><td>No of Floors</td><td>' + projectDetails.no_of_floors + '</td></tr>'
+            response += '<tr><td>Total Area</td><td>' + projectDetails.total_area + '</td></tr>'
+            response += '<tr><td>Total Units</td><td>' + projectDetails.total_units + '</td></tr>'
+            response += '<tr><td>Plans</td><td>' + projectDetails.plans + ' BHK</td></tr>'
+            response += '<tr><td>Min Builtup Area</td><td>' + projectDetails.min_builtup_area + '</td></tr>'
+            response += '<tr><td>Max Builtup Area</td><td>' + projectDetails.max_builtup_area + '</td></tr>'
+            response += '<tr><td>Price</td><td>' + 'Range' + '</td></tr>'
+            response += '<tr><td>Maintenance</td><td>' + (projectDetails.maintenance_charge || 'No Data Available') + '</td></tr>'
+            response += '<tr><td>Floor Rise</td><td>' + (projectDetails.floor_rise || 'No Data Available') + '</td></tr>'
+            response += '<tr><td>Commencement</td><td>' + projectDetails.commencement + '</td></tr>'
+            response += '<tr><td>Approved Banks</td><td>' + banksList + '</td></tr>'
+            response += '<tr><td>Amenities</td><td>' + amenitiesList + '</td></tr>'
+            response += '<tr><td>Project Added</td><td>' + getDate(projectDetails.datetime) + '</td></tr>'
+            response += '<tr><td>Description</td><td>' + projectDetails.description + '</td></tr>'
+            response += '</tbody></table>';
+
+        } else {
+            response = "No Details Available"
+        }
+        return response
     }
 
     function processPropertyPossessionDetails() {
         return "<h1>Property Details</h1>"
     }
+
 </script>
