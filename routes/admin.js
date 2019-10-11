@@ -3,7 +3,9 @@ var router = express.Router();
 var multer = require('multer');
 var adminModel = require('../models/adminModel');
 var crudModel = require('../models/crudModel')
-var utils = require('../services/utils')
+var utils = require('../services/utils');
+var ejs = require('ejs');
+var fs = require('fs');
 
 var validatorpackage = require("node-input-validator");
 
@@ -13,7 +15,9 @@ var geocoderoptions = require("../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
 var upload = multer();
 var areCredentialsWrong = false;
-
+var isAddErrorPresent = false;
+var shouldBeConsidered = false;
+var rent = require('./rent');
 
 router.use(function (req, res, next) {
     if (req.session.isAdminLoggedIn) {
@@ -30,6 +34,7 @@ router.use(function (req, res, next) {
         }
     }
 });
+router.use('/rent', rent);
 /* GET users listing. */
 router.get('/', async function (req, res) {
 
@@ -398,7 +403,11 @@ router.get('property_photos/:property_id?', async function (req, res) {
 router.get('/projects', async function (req, res) {
     var data = {
         page_name: 'project',
-        page_title: 'Projects'
+        page_title: 'Projects',
+        shouldBeConsidered: shouldBeConsidered
+    };
+    if (shouldBeConsidered) {
+        data.isError = isAddErrorPresent;
     }
     var projectsResponse = await crudModel.getProjects()
     if (projectsResponse.success) {
@@ -412,7 +421,10 @@ router.get('/projects', async function (req, res) {
         data.projects = []
     }
 
-    res.render('admin/projects', data)
+    res.render('admin/projects', data);
+
+    isAddErrorPresent = false;
+    shouldBeConsidered = false;
 });
 
 router.get('/exclusive_project/:value/:project_id', function (req, res) {
@@ -462,13 +474,13 @@ router.get('/project_details/:project_id?', async function (req, res) {
             var amenitiesList = await crudModel.getAmenityNames(projectResponse.data.amenities);
             if (amenitiesList.success) {
                 projectResponse.data.amenities_list = amenitiesList.data;
-            }else {
+            } else {
                 projectResponse.data.amenities_list = [];
             }
             var banksList = await crudModel.getBanksById(projectResponse.data.approved_banks);
-            if(banksList.success) {
+            if (banksList.success) {
                 projectResponse.data.banks_list = banksList.data;
-            }else {
+            } else {
                 projectResponse.data.banks_list = []
             }
             res.send(projectResponse)
@@ -536,12 +548,174 @@ router.post('/edit_property_possession', upload.none(), async function (req, res
     }
     res.redirect('/admin/list_property')
 });
-router.get('/edit_project/:project_id',async function(req,res) {
-   var projectId = req.params.project_id;
-   if(projectId) {
-       res.send('welcome')
-   }
+router.get('/project/edit/:project_id', async function (req, res) {
+    var projectId = req.params.project_id;
+
+    if (projectId) {
+        var data = {
+            'page_name': 'Edit project',
+            'page_title': 'Edit project',
+            'project_id': projectId
+        };
+        var projectResponse = await crudModel.getProjectById(projectId);
+        if (projectResponse.success && projectResponse.data) {
+            projectResponse.data.quoted_price = utils.getPrice(projectResponse.data.quoted_price, false);
+            data.project_details = projectResponse.data
+        } else {
+            data.project_details = undefined;
+        }
+        console.log(data.project_details);
+        res.render('admin/edit_project', data);
+    } else {
+        res.redirect('/admin/')
+    }
 
 });
+router.post('/project/update/:project_id', upload.none(), async function (req, res) {
+    var projectId = req.params.project_id;
+    if (projectId) {
+        var addResponse = await addProject(req, projectId);
+        if(addResponse.success) {
+            res.send({
+                success: true,
+                message: "Your Project Updating Successful !"
+            });
+
+        }else {
+            res.send({
+                success: false,
+                message: "Your Project Updating Has Failed ! Please Try Again."
+            });
+        }
+    } else {
+        res.send({
+            success: false,
+            message: "Your Project Updating Has Failed ! Please Try Again."
+        });
+    }
+});
+router.get('/add_project', function (req, res) {
+    res.render('admin/add_project', {page_name: 'add_projects', page_title: 'Add Projects'});
+});
+router.post('/add_project', upload.none(), async function (req, res) {
+    var addProjectResponse = await addProject(req);
+    shouldBeConsidered = true;
+    if (addProjectResponse.success) {
+        isAddErrorPresent = false;
+    } else {
+        isAddErrorPresent = true;
+    }
+    res.redirect('/admin/projects');
+});
+router.get('/send_mail', function (req, res) {
+    var fileName = req.query.fileName;
+    if (!fileName) {
+        res.status(400).send({success: false, message: 'file name is invalid'});
+    } else {
+        res.end({success: true, data: getTemplateForMail(fileName, req.query)});
+    }
+});
+
+async function addProject(req, projectId) {
+    var projectName = req.body.project_name || "",
+        projectType = req.body.project_type || 0,
+        projectSubType = req.body.project_sub_type || 0,
+        postedBy = req.body.posted_by || "Owner",
+        groupName = req.body.group_name || "",
+        city = req.body.city || 0,
+        locality = req.body.locality || 0,
+        status = req.body.status || "Not Available",
+        launchDate = req.body.launch_date,
+        possessionDate = req.body.possesion_date,
+        buildings = req.body.buildings,
+        floors = req.body.floors,
+        totalArea = req.body.total_area,
+        totalUnits = req.body.total_units,
+        plans = req.body.plans,
+        minBuiltup = req.body.min_builtup,
+        maxBuiltup = req.body.max_builtup,
+        minPrice = req.body.min_price,
+        landMark = req.body.land_mark,
+        maxPrice = req.body.max_price,
+        maintenance = req.body.maintenance,
+        floorRise = req.body.floor_rise,
+        commencement = req.body.commencement || "No",
+        name = req.body.person_name,
+        mobile = req.body.mobile,
+        officePhone = req.body.office_phone,
+        email = req.body.email,
+        specifications = req.body.specifications,
+        description = req.body.description,
+        banks = req.body.banks,
+        amenities = req.body.amenities1,
+        banksString = "",
+        amenitiesString = "",
+        plansString = "";
+    if (banks) {
+        banksString = banks.toString();
+    }
+    if (amenities) {
+        amenitiesString = amenities.toString();
+    }
+    if (plans) {
+        plansString = plans.toString();
+    }
+    var city1 = await crudModel.getCityById(city);
+    var cityName = city1[0].city;
+    var locality1 = await crudModel.getLocalityById(locality);
+    var localityName = locality1[0].locality;
+    var address = localityName + "," + cityName;
+    var geocoderResponse = await geocoder.geocode(address, function (
+        err,
+        res
+    ) {
+        return res;
+    });
+    var latitude = geocoderResponse[0].latitude,
+        longitude = geocoderResponse[0].longitude;
+    var addProjectResponse = await crudModel.addProject({
+        'project_name': projectName,
+        'project_type': projectType,
+        'project_sub_type': projectSubType,
+        'posted_by': postedBy,
+        'group_name': groupName,
+        'city': city,
+        'locality': locality,
+        'status': status,
+        'launch_date': launchDate,
+        'possesion_date': possessionDate,
+        'no_of_buildings': buildings,
+        'no_of_floors': floors,
+        'total_area': totalArea,
+        'total_units': totalUnits,
+        'plans': plansString,
+        'land_mark': landMark,
+        'min_builtup_area': minBuiltup,
+        'max_builtup_area': maxBuiltup,
+        'min_price': minPrice,
+        'max_price': maxPrice,
+        'maintenance_charge': maintenance,
+        'floor_rise': floorRise,
+        'commencement': commencement,
+        'name': name,
+        'mobile': mobile,
+        'office_phone': officePhone,
+        'email': email,
+        'description': description,
+        'specifications': specifications,
+        'approved_banks': banksString,
+        'amenities': amenitiesString,
+        'longitude': longitude,
+        'latitude': latitude
+    }, projectId);
+    return addProjectResponse;
+}
+
+
+function getTemplateForMail(fileName, parameters) {
+    var result = ejs.compile(fs.readFileSync(__dirname + '/../views/mailers/' + fileName, 'utf8'));
+    var html = result(parameters);
+    return html;
+}
 
 module.exports = router;

@@ -1,0 +1,489 @@
+<% include ../includes/header.ejs %>
+
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include ../includes/menu.ejs %>
+
+
+<script>
+    $(document).ready(function() {
+        console.log('welcome1212');
+        $("form#rent_form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "<%= base_url %>admin/rent/update/<%= rent_id %>",
+                data: formData,
+                success: function (result) {
+                    var className = "";
+                    if (result.success) {
+                        className = "alert alert-success fade in";
+                    } else {
+                        className = "alert alert-error fade in";
+                    }
+                    var displayMsg = '<div class="'+className+'"> <a href="#" data-dismiss="alert" class="close">x</a><strong>'+result.message+'</strong></div>';
+                    $("#rent_form").prepend(displayMsg);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    })
+
+</script>
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2"></div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <form action="<%= base_url %>admin/rent/update/<%= rent_id %>" method="post"
+                              enctype="multipart/form-data" id="rent_form">
+
+                            <div class="row">
+
+                                <div class="col-md-12">
+
+                                    <div class="col-md-6">
+
+                                        <div class="col-md-10">
+
+                                            <div class="form-group">
+
+                                                <label>Name*</label>
+
+                                                <input type="text" name="name" class="form-control"
+                                                       value="<%= rent_details.name %>" placeholder="Name"
+                                                       required="required" />
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Email Id*</label>
+
+                                                <input type="text" name="email" class="form-control"
+                                                       value="<%= rent_details.email %>" placeholder="Email Id"
+                                                       required="required">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Mobile*</label>
+
+                                                <input type="text" name="phone" class="form-control"
+                                                       value="<%= rent_details.phone %>" placeholder="Mobile"
+                                                       required="required">
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Available Time*</label>
+
+                                                <input type="text" name="avail_time" class="form-control"
+                                                       value="<%= rent_details.available_time %>"
+                                                       placeholder="Available Time" required="required">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Property Name*</label>
+
+                                                <input type="text" name="property_name" class="form-control"
+                                                       value="<%= rent_details.property_name %>"
+                                                       placeholder="Property Name" required="required">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="property_name">Property Type</label> <select
+
+                                                        name="property_type" id="property_type"
+
+                                                        onchange="getPropertySubTypes(this.value,'#property_sub_type')"
+
+                                                        class="form-control margin-0" required="required">
+
+                                                    <option value="">---SELECT---</option>
+
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Property Sub Type*</label> <select
+
+                                                        name="property_sub_type" id="property_sub_type"
+
+                                                        class="form-control margin-0" required="required">
+
+                                                </select>
+
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Bedrooms:</label>
+
+                                                <select name="bedrooms" id="bedrooms" class="form-control margin-0">
+
+                                                    <option value="">---SELECT---</option>
+
+                                                    <% for (var i = 1;i <= 8;i++){ %>
+
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Bathrooms</label> <select
+                                                        name="bathrooms" id="bathrooms" class="form-control margin-0 ">
+
+                                                    <option value="">---SELECT---</option>
+
+                                                    <% for (var i = 1;i <= 8;i++){ %>
+
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">City</label> <select
+
+                                                        name="city" id="city"
+                                                        onchange="showLocality(this.value,'#locality')"
+
+                                                        class="form-control margin-0 " required="required">
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Locality</label>
+                                                <select name="locality" id="locality"
+                                                        class="form-control margin-0" required="required">
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Land Mark</label>
+                                                <input type="text" class="form-control" id="" name="land_mark"
+                                                       placeholder="Enter Land Mark"
+                                                       value="<%= rent_details.land_mark %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">State</label>
+                                                <select name="state" id="state" class="form-control margin-0">
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Builtup Area</label>
+                                                <input type="text" class="form-control" id="" name="area"
+                                                       placeholder="Enter Builtup Area"
+                                                       value="<%= rent_details.builtup_area %>">
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-md-6">
+
+                                        <div class="col-md-10"><br>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Price</label>
+                                                <input type="text" class="form-control" id="" name="price"
+                                                       placeholder="Enter Price" value="<%= rent_details.price %>">
+
+                                            </div>
+
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Maintenance</label>
+                                                <input type="text" class="form-control" id="" name="maintenance"
+                                                       placeholder="Enter Maintenance" required="required"
+                                                       value="<%= rent_details.maintenance %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Unit No</label>
+                                                <input type="text" class="form-control" id="" name="unit"
+                                                       placeholder="Enter Unit No" value="<%= rent_details.unit_no %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">No Of Floors</label>
+                                                <input type="text" class="form-control" id="" name="floors"
+                                                       placeholder="Enter No Of Floors"
+                                                       value="<%= rent_details.floors %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>FURNISHING STATUS:</label>
+
+                                                <select name="furnishing" id="furnishing"
+                                                        class="form-control margin-0 ">
+
+                                                    <option value="">---SELECT---</option>
+                                                    <option value="Unfurnished">Unfurnished</option>
+                                                    <option value="Semifurnished">Semifurnished</option>
+                                                    <option value="Fullyfurnished">Fullyfurnished</option>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Security Deposit</label>
+                                                <input type="text" class="form-control" id="" name="security_deposit"
+                                                       placeholder="Enter Security Deposit"
+                                                       value="<%= rent_details.security_deposit %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Facing*:</label>
+
+                                                <select class="form-control margin-0 " id="facing" name="facing"
+                                                        required="required">
+
+                                                    <option value="">---SELECT---</option>
+                                                    <option value="East">East</option>
+                                                    <option value="West">West</option>
+                                                    <option value="North">North</option>
+                                                    <option value="South">South</option>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label>Parking:</label>
+
+                                                <select name="parking" id="parking" class="form-control margin-0 ">
+
+                                                    <option value="">---SELECT---</option>
+
+                                                    <% for(var i = 0;i <= 5;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                    <% } %>
+
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Water Availability</label>
+                                                <input type="text" class="form-control" id="" name="water"
+                                                       placeholder="Enter Water Availability"
+                                                       value="<%= rent_details.water_availability %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Status Of Electricity</label>
+                                                <input type="text" class="form-control" id="" name="electricity"
+                                                       placeholder="Enter Status Of Electricity"
+                                                       value="<%= rent_details.electricity_status %>">
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Tenents Preferred</label>
+
+                                                <select class="form-control margin-0" name="tenents">
+                                                    <option value="">Select</option>
+                                                    <option value="Family">Family</option>
+                                                    <option value="Bachelor">Bachelor</option>
+                                                    <option value="Both">Both</option>
+                                                </select>
+
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Posted By</label>
+                                                <select name="posted_by" id="posted_by" class="form-control margin-0"
+                                                        required="required">
+                                                    <option value="Builder">Builder</option>
+                                                    <option value="Owner">Owner</option>
+                                                    <option value="Agent">Agent</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="form-group">
+
+                                                <label for="description">Description</label>
+
+                                                <textarea rows="" cols="" class="form-control"
+                                                          name="description"><%= rent_details.description %></textarea>
+
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <div class="row" style="padding-left: 30px">
+
+                                <div class="col-md-12">
+
+                                    <label>Amenities :</label>
+
+                                    <div class="checkbox" id="amenity_options">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <br><br><br>
+
+                            <div align="center">
+
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+<script>
+    <% if (rent_details) { %>
+    setUpPropertyTypes("#property_type", "<%= rent_details.property_type %>");
+    getPropertySubTypes("<%= rent_details.property_type %>", "#property_sub_type", "<%= rent_details.property_sub_type %>");
+    setUpCities('#city', "<%= rent_details.city %>")
+    setUpStates('#state', "<%= rent_details.state %>")
+    showLocality('<%= rent_details.city %>', '#locality', '<%= rent_details.locality %>')
+    setUpAmenities('#amenity_options');
+    selectOption("posted_by", "<%= rent_details.posted_by %>");
+    selectOption("tenents", "<%= rent_details.tenents_preferred %>");
+    selectOption("bedrooms", "<%= rent_details.bedrooms %>");
+    selectOption("bathrooms", "<%= rent_details.bathrooms%>");
+    selectOption("facing", "<%= rent_details.facing%>");
+    selectOption("parking", "<%= rent_details.parking%>");
+    selectOption("furnishing", "<%= rent_details.furnishing_status%>");
+    setTimeout(function () {
+        selectAmenities("<%= rent_details.amenities %>");
+    }, 500)
+    <% } %>
+</script>
+
+
+<% include ../includes/footer.ejs %>

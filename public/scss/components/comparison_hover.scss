@@ -1,0 +1,14 @@
+.comparison-hover {
+    background-color: $white;
+    width: 150px;
+    z-index: 100000;
+    display: none;
+    padding: 5px;
+    border: 1px solid $silver;
+    li {
+        border: 0px solid $transparent;
+        a {
+            color: $black;
+        }
+    }
+}

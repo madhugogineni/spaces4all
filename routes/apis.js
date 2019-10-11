@@ -80,13 +80,24 @@ router.get("/add_project_call_back", function (req, res) {
 
     });
 });
-router.get("/get_emenities", function (req, res) {
+router.get("/get_amenities", function (req, res) {
     crudModel.getAmenities().then(function (response) {
         res.send(response);
     })
 });
+router.get("/get_banks", function (req, res) {
+    crudModel.getBanks().then(function (response) {
+        res.send(response);
+    })
+})
 router.get("/get_property_sub_types", function (req, res) {
     crudModel.getPropertySubTypeByProperty(req.query.property_type).then(function (response) {
+        res.send(response);
+    });
+});
+
+router.get("/get_project_sub_types", function (req, res) {
+    crudModel.getProjectSubTypeByProject(req.query.project_type).then(function (response) {
         res.send(response);
     });
 });
@@ -126,16 +137,16 @@ router.get("/property_enquiry/:property_id", async function (req, res) {
                 "<tr><td>Comments</td><td>" + req.query.comments + "</td></tr>" +
                 "</table>";
             mailservice.sendMail(subject, html);
-            res.send({success: true,message: "Thank you for the details. We have the pleasure to contact you soon.!"})
+            res.send({success: true, message: "Thank you for the details. We have the pleasure to contact you soon.!"})
         } else {
-            res.send({ success: false, message: "Something went wrong! Please Try again Later" });
+            res.send({success: false, message: "Something went wrong! Please Try again Later"});
         }
     } else {
         var errorMsg = "";
         Object.keys(validator.errors).map(function (key) {
             errorMsg += validator.errors[key].message + "<br/>";
         });
-        res.send({ success: false, message: errorMsg });
+        res.send({success: false, message: errorMsg});
     }
 });
 

@@ -55,6 +55,21 @@
                     </div>
 
                     <div class="box-body">
+                        <div class="col-12">
+
+                            <div class="col-md-4"></div>
+
+                            <div class="col-md-3">
+                                <% if(shouldBeConsidered) { %>
+                                    <% if(isError) { %>
+                                        <%- '<h4>Error while adding Project. Please try again</h4>' %>
+                                    <% } else { %>
+                                        <%- '<h4>Project Successfully added.</h4>' %>
+                                    <% } %>
+                                <% } %>
+                            </div>
+
+                        </div>
 
                         <table id="example1" class="table table-bordered table-striped">
 
@@ -124,14 +139,15 @@
 
                                 <td>
 
-                                    <a href="<%= base_url %>admin/edit_project/<%= project.project_id %>"><i
+                                    <a href="<%= base_url %>admin/project/edit/<%= project.project_id %>"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;
 
                                     <a href="<%= base_url %>admin/delete_project/<%= project.project_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
                                     <br/>
-                                    <a href="#" onclick="showAjaxModal('<%= base_url %>admin/project_details/<%= project.project_id %>','project')">Details</a>
+                                    <a href="#"
+                                       onclick="showAjaxModal('<%= base_url %>admin/project_details/<%= project.project_id %>','project')">Details</a>
                                     <br/>
                                     <a href="<%= base_url %>admin/project_photos/<%= project.project_id %>">Images</a>
                                     <br/>

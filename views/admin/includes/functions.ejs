@@ -92,7 +92,7 @@
         });
     }
 
-    function setUpProjectTypes() {
+    function setUpProjectTypes(projectType) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_project_types",
@@ -100,14 +100,19 @@
                 var result = '<option value="">Type</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
-                    result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                    if (projectType && projectType == row.project_type_id) {
+                        result += '<option value="' + row.project_type_id + '" selected>' + row.type + '</option>';
+                    } else {
+                        result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                    }
                 }
+                $("#project_type").find('option').remove().end();
                 $("#project_type").append(result);
             }
         });
     }
 
-    function showLocality(cityId, divId) {
+    function showLocality(cityId, divId, localityId) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_localities",
@@ -116,10 +121,14 @@
             },
             success: function (response) {
                 var result = '';
-                result += '<option value="">Locality</option>';
+                result += '<option value="">--- Locality ---</option>';
                 for (var i = 0; i < response.length; i++) {
                     var row = response[i];
-                    result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+                    if (localityId && row.locality_id == localityId) {
+                        result += '<option value="' + row.locality_id + '" selected>' + row.locality + '</option>'
+                    } else {
+                        result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+                    }
                 }
 
                 $(divId).find('option').remove().end();
@@ -251,6 +260,20 @@
         });
     }
 
+    function setUpBanks(divId) {
+        $.ajax({
+            type: 'GET',
+            url: "<%= api_url %>get_banks",
+            success: function (response) {
+                var result = "";
+                for (var i = 0; i < response.length; i++) {
+                    result += "<div class='col-md-3'><label><input type='checkbox' name='banks[]' value=" + response[i].bank_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + response[i].bank_name + "</div>";
+                }
+                $(divId).html(result);
+            }
+        });
+    }
+
     function setUpPropertyTypes(divId, selectedType) {
         $.ajax({
             type: 'GET',
@@ -269,21 +292,25 @@
         });
     }
 
-    function setUpStates(divId) {
+    function setUpStates(divId, stateId) {
         $.ajax({
             method: 'GET',
             url: '<%= api_url %>get_states',
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
                 for (var i = 0; i < response.length; i++) {
-                    result += '<option value="' + response[i].state_id + '">' + response[i].state_name + '</option>'
+                    if (response[i].state_id == stateId) {
+                        result += '<option value="' + response[i].state_id + '" selected>' + response[i].state_name + '</option>'
+                    } else {
+                        result += '<option value="' + response[i].state_id + '">' + response[i].state_name + '</option>'
+                    }
                 }
                 $(divId).html(result);
             }
         });
     }
 
-    function getPropertySubTypes(str, divId) {
+    function getPropertySubTypes(str, divId, selectedType) {
         $.ajax({
             type: 'GET',
             url: '<%= api_url %>get_property_sub_types',
@@ -293,10 +320,40 @@
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
                 for (var i = 0; i < response.length; i++) {
-                    result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
+
+                    if (selectedType && selectedType == response[i].property_sub_type_id) {
+                        result += '<option value="' + response[i].property_sub_type_id + '" selected>' + response[i].sub_type + '</option>';
+                    } else {
+                        result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
+                    }
                 }
                 $(divId).find('option').remove().end();
                 $(divId).append(result);
+            }
+        });
+    }
+
+    function getProjectSubTypes(str, divId, selectedType) {
+        console.log(str, divId, selectedType)
+        $.ajax({
+            type: 'GET',
+            url: '<%= api_url %>get_project_sub_types',
+            data: {
+                project_type: str
+            },
+            success: function (response) {
+                var result = '<option value="">---SELECT---</option>';
+                for (var i = 0; i < response.length; i++) {
+
+                    if (selectedType && selectedType == response[i].project_sub_type_id) {
+                        result += '<option value="' + response[i].project_sub_type_id + '" selected>' + response[i].sub_type + '</option>';
+                    } else {
+                        result += '<option value="' + response[i].project_sub_type_id + '">' + response[i].sub_type + '</option>';
+                    }
+                }
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
+
             }
         });
     }
@@ -321,51 +378,86 @@
         var comments = $("#comments2").val();
         $.ajax({
             type: "GET",
-            url: "<%=api_url%>property_enquiry/"+propertyId,
+            url: "<%= api_url %>property_enquiry/" + propertyId,
             data: {
                 name: name,
                 phone: phone,
                 email: email,
                 comments: comments
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
             }
         });
     }
 
-    function add_Compare(type,property_id,element) {
+    function add_Compare(type, property_id, element) {
         $.ajax({
-        url: "<%= base_url %>home/add_compare/"+type+"/"+property_id,
-        success: function (response) {
-            if(response.success) {
-                updateComparisonCounts(type,element);
+            url: "<%= base_url %>home/add_compare/" + type + "/" + property_id,
+            success: function (response) {
+                if (response.success) {
+                    updateComparisonCounts(type, element);
+                }
             }
-        }
         });
     }
-    function updateComparisonCounts(type,element) {
+
+    function updateComparisonCounts(type, element) {
         $.ajax({
             type: "GET",
-            url: "<%=base_url%>home/compare_count/"+type,
-            success: function(response) {
-                if(response.success) {
-                    console.log('#'+type+"_compare_count");
-                    $('#'+type+"_compare_count").html(response.count);
+            url: "<%= base_url %>home/compare_count/" + type,
+            success: function (response) {
+                if (response.success) {
+                    console.log('#' + type + "_compare_count");
+                    $('#' + type + "_compare_count").html(response.count);
                     var offset = $(element).offset();
                     var topOffset = offset.top;//- $(window).scrollTop();
                     $("#comparison-hover").css({
                         position: "absolute",
-                        top: (topOffset + 35)+ "px",
+                        top: (topOffset + 35) + "px",
                         left: (offset.left) + "px",
                     });
                     $("#comparison-hover").show();
- 
+
                 }
             }
         })
     }
+
     function hideComparisonPopup() {
         $("#comparison-hover").hide();
+    }
+
+    function setUpValue(nameSelector, value) {
+        $("[name=" + nameSelector + "]").val(value)
+    }
+
+    function selectOption(nameSelector, value) {
+        var value1 = value
+        if (!value1) {
+            value1 = " invalid"
+        }
+        var values = value1.split(',');
+        values.forEach(function (eachValue) {
+            $('[name="' + nameSelector + '"] option[value="' + eachValue + '"]').attr('selected', 'selected')
+        })
+    }
+
+    function selectAmenities(amenities) {
+        var amenitiesList = amenities.split(',')
+        $("[name='amenities1[]']").each(function () {
+            if (amenitiesList.includes($(this).val())) {
+                $(this).prop('checked', true)
+            }
+        })
+    }
+
+    function selectBanks(banks) {
+        var banksList = banks.split(',')
+        $("[name='banks[]']").each(function () {
+            if (banksList.includes($(this).val())) {
+                $(this).prop('checked', true)
+            }
+        })
     }
 </script>

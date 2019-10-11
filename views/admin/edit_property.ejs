@@ -52,42 +52,7 @@
             $('#bathrooms').attr("disabled", false);
 
         }
-
-        if (str.length == 0) {
-
-            document.getElementById("property_sub_type").innerHTML = "";
-
-            return;
-
-        }
-
-
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-            xmlhttp = new XMLHttpRequest();
-
-        } else {// code for IE6, IE5
-
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-        }
-
-        xmlhttp.onreadystatechange = function () {
-
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
-
-            }
-
-        }
-
-//alert(str);
-
-        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
-
-        xmlhttp.send();
-
+        getPropertySubTypes(str, "#property_sub_type");
     }
 
 
@@ -189,49 +154,6 @@
         }
 
     }
-
-
-    function Show_locality(str) {
-
-        //alert(str);
-
-        if (str.length == 0) {
-
-            document.getElementById("Showlocality").innerHTML = "";
-
-            return;
-
-        }
-
-
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-            xmlhttp = new XMLHttpRequest();
-
-        } else {// code for IE6, IE5
-
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-        }
-
-        xmlhttp.onreadystatechange = function () {
-
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                //alert(xmlhttp.responseText);
-
-                document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-            }
-
-        }
-
-        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-        xmlhttp.send();
-
-    }
-
     $(document).ready(function () {
 
         $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1001; display: none;"></div>');
@@ -239,7 +161,6 @@
         $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%=base_url %>assets/images/loading.gif'/></div>");
 
         $("form#list_property").submit(function (e) {
-            console.log('welcome123')
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
@@ -247,8 +168,6 @@
                 url: "<%=base_url %>admin/update_property_details/<%=property.list_property_id%>",
                 data: formData,
                 success: function (result) {
-                    console.log('test---')
-                    console.log(result);
                     var className = "";
                     if (result.success) {
                         className = "alert alert-success fade in";
