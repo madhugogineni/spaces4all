@@ -237,9 +237,9 @@ module.exports = {
             });
         });
     },
-    updateRent: function (data) {
+    updateRent: function (data,rentId) {
         return new Promise(function (resolve, reject) {
-            con.query("update rent set ? where rent_id='" + data.rent_id + "'", data, function (error, result) {
+            con.query("update rent set ? where rent_id='" + rentId + "'", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});

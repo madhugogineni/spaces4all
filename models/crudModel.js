@@ -2,6 +2,9 @@ var con = require("../database");
 var moment = require("moment");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var rentModule = require('./rentModel');
+var cityModule = require('./cityModel');
+var localityModule = require('./localityModel');
+var stateModule = require('./stateModel');
 module.exports = {
 
     getAdminByEmail: function (emailId) {
@@ -148,80 +151,6 @@ module.exports = {
     getAmenitiesById: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from amenities where amenity_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getCity: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from city order by city ASC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getCityLimit: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from city order by city_id ASC limit 1", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getCityById: function (id) {
-        console.log(id);
-        return new Promise(function (resolve, reject) {
-            con.query("select * from city where city_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getLocality: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from locality order by locality ASC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getLocalityById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from locality where locality_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getLocalityByCity: function (cityId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from locality where city_id=" + cityId + " order by locality ASC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-
-    getStates: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from state", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getStateById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from state where state_id=" + id, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
@@ -1461,6 +1390,22 @@ for (var key in rentModule) {
         module.exports[key] = rentModule[key];
     }
 }
+for (var key in cityModule) {
+    if (cityModule.hasOwnProperty(key)) {
+        module.exports[key] = cityModule[key];
+    }
+}
+for (var key in localityModule) {
+    if (localityModule.hasOwnProperty(key)) {
+        module.exports[key] = localityModule[key];
+    }
+}
+for (var key in stateModule) {
+    if (stateModule.hasOwnProperty(key)) {
+        module.exports[key] = stateModule[key];
+    }
+}
+
 
 function returnSingleRowData() {
 

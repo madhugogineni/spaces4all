@@ -17,7 +17,12 @@ var upload = multer();
 var areCredentialsWrong = false;
 var isAddErrorPresent = false;
 var shouldBeConsidered = false;
-var rent = require('./rent');
+
+var rentRouter = require('./admin/rent');
+var cityRouter = require('./admin/city');
+var localityRouter = require('./admin/locality');
+var stateRouter = require('./admin/state');
+
 
 router.use(function (req, res, next) {
     if (req.session.isAdminLoggedIn) {
@@ -34,7 +39,10 @@ router.use(function (req, res, next) {
         }
     }
 });
-router.use('/rent', rent);
+router.use('/rent', rentRouter);
+router.use('/city', cityRouter);
+router.use('/locality', localityRouter);
+router.use('/state', stateRouter);
 /* GET users listing. */
 router.get('/', async function (req, res) {
 
@@ -205,7 +213,10 @@ router.post('/update_property_details/:property_id?', upload.none(),
                 } else {
                     var date = utils.getDate();
                     var city1 = await crudModel.getCityById(city);
-                    var cityName = city1[0].city;
+                    var cityName = ""
+                    if (city1.success) {
+                        cityName = city1.data.city;
+                    }
                     var locality1 = await crudModel.getLocalityById(locality);
                     var localityName = locality1[0].locality;
                     var address = localityName + "," + cityName;
@@ -330,7 +341,10 @@ router.post('/update_property_details/:property_id?', upload.none(),
                     }
                     var date = utils.getDate();
                     var city1 = await crudModel.getCityById(city);
-                    var cityName = city1[0].city;
+                    var cityName = ""
+                    if (city1.success) {
+                        cityName = city1.data.city;
+                    }
                     var locality1 = await crudModel.getLocalityById(locality);
                     var localityName = locality1[0].locality;
                     var address = localityName + "," + cityName;
@@ -575,13 +589,13 @@ router.post('/project/update/:project_id', upload.none(), async function (req, r
     var projectId = req.params.project_id;
     if (projectId) {
         var addResponse = await addProject(req, projectId);
-        if(addResponse.success) {
+        if (addResponse.success) {
             res.send({
                 success: true,
                 message: "Your Project Updating Successful !"
             });
 
-        }else {
+        } else {
             res.send({
                 success: false,
                 message: "Your Project Updating Has Failed ! Please Try Again."
@@ -661,7 +675,10 @@ async function addProject(req, projectId) {
         plansString = plans.toString();
     }
     var city1 = await crudModel.getCityById(city);
-    var cityName = city1[0].city;
+    var cityName = ""
+    if (city1.success) {
+        cityName = city1.data.city;
+    }
     var locality1 = await crudModel.getLocalityById(locality);
     var localityName = locality1[0].locality;
     var address = localityName + "," + cityName;

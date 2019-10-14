@@ -128,7 +128,7 @@
 
                                                 <label>Available Time*</label>
 
-                                                <input type="text" name="avail_time" class="form-control"
+                                                <input type="text" name="available_time" class="form-control"
                                                        value="<%= rent_details.available_time %>"
                                                        placeholder="Available Time" required="required">
 
@@ -247,7 +247,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Builtup Area</label>
-                                                <input type="text" class="form-control" id="" name="area"
+                                                <input type="text" class="form-control" id="" name="builtup_area"
                                                        placeholder="Enter Builtup Area"
                                                        value="<%= rent_details.builtup_area %>">
 
@@ -283,7 +283,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Unit No</label>
-                                                <input type="text" class="form-control" id="" name="unit"
+                                                <input type="text" class="form-control" id="" name="unit_no"
                                                        placeholder="Enter Unit No" value="<%= rent_details.unit_no %>">
 
                                             </div>
@@ -301,7 +301,7 @@
 
                                                 <label>FURNISHING STATUS:</label>
 
-                                                <select name="furnishing" id="furnishing"
+                                                <select name="furnishing_status" id="furnishing_status"
                                                         class="form-control margin-0 ">
 
                                                     <option value="">---SELECT---</option>
@@ -358,7 +358,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Water Availability</label>
-                                                <input type="text" class="form-control" id="" name="water"
+                                                <input type="text" class="form-control" id="" name="water_availability"
                                                        placeholder="Enter Water Availability"
                                                        value="<%= rent_details.water_availability %>">
 
@@ -367,7 +367,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Status Of Electricity</label>
-                                                <input type="text" class="form-control" id="" name="electricity"
+                                                <input type="text" class="form-control" id="electricity_status" name="electricity_status"
                                                        placeholder="Enter Status Of Electricity"
                                                        value="<%= rent_details.electricity_status %>">
 
@@ -377,7 +377,7 @@
 
                                                 <label for="exampleInputEmail1">Tenents Preferred</label>
 
-                                                <select class="form-control margin-0" name="tenents">
+                                                <select class="form-control margin-0" name="tenents_preferred">
                                                     <option value="">Select</option>
                                                     <option value="Family">Family</option>
                                                     <option value="Bachelor">Bachelor</option>
@@ -473,12 +473,12 @@
     showLocality('<%= rent_details.city %>', '#locality', '<%= rent_details.locality %>')
     setUpAmenities('#amenity_options');
     selectOption("posted_by", "<%= rent_details.posted_by %>");
-    selectOption("tenents", "<%= rent_details.tenents_preferred %>");
+    selectOption("tenents_preferred", "<%= rent_details.tenents_preferred %>");
     selectOption("bedrooms", "<%= rent_details.bedrooms %>");
     selectOption("bathrooms", "<%= rent_details.bathrooms%>");
     selectOption("facing", "<%= rent_details.facing%>");
     selectOption("parking", "<%= rent_details.parking%>");
-    selectOption("furnishing", "<%= rent_details.furnishing_status%>");
+    selectOption("furnishing_status", "<%= rent_details.furnishing_status%>");
     setTimeout(function () {
         selectAmenities("<%= rent_details.amenities %>");
     }, 500)

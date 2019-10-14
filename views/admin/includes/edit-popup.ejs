@@ -2,18 +2,20 @@
 
     function showAjaxModal(url, type) {
 
-        if (['project_configurations', 'property_possession'].includes(type)) {
+        if (['project_configurations', 'property_possession','city','locality'].includes(type)) {
 
         } else {
             $.ajax({
                 url: url,
                 success: function (response) {
                     if (response.success) {
+                        var body = "";
                         if (type == 'project') {
-                            $('#modal_ajax .modal-body').html(processProjectDetails(response));
+                            body = processProjectDetails(response);
                         } else if (type == 'property') {
-                            $('#modal_ajax .modal-body').html(processPropertyPossessionDetails());
+                            body = processPropertyPossessionDetails();
                         }
+                        $('#modal_ajax .modal-body').html(body);
                     } else {
                         $('#modal_ajax .modal-body').html("No Details Available");
                     }

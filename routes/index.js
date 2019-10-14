@@ -432,7 +432,10 @@ router.post(
             } else {
                 var date = utils.getDate();
                 var city1 = await crudModel.getCityById(city);
-                var cityName = city1[0].city;
+                var cityName = ""
+                if(city1.success)  {
+                 cityName = city1.data.city;
+                }
                 var locality1 = await crudModel.getLocalityById(locality);
                 var localityName = locality1[0].locality;
                 var address = localityName + "," + cityName;
@@ -561,7 +564,10 @@ router.post(
                 }
                 var date = utils.getDate();
                 var city1 = await crudModel.getCityById(city);
-                var cityName = city1[0].city;
+                var cityName = ""
+                if(city1.success)  {
+                    cityName = city1.data.city;
+                }
                 var locality1 = await crudModel.getLocalityById(locality);
                 var localityName = locality1[0].locality;
                 var address = localityName + "," + cityName;
@@ -729,7 +735,10 @@ router.post(
             }
             var date = utils.getDate();
             var city1 = await crudModel.getCityById(city);
-            var cityName = city1[0].city;
+            var cityName = ""
+            if(city1.success)  {
+                cityName = city1.data.city;
+            }
             var locality1 = await crudModel.getLocalityById(locality);
             var localityName = locality1[0].locality;
             var address = localityName + "," + cityName;
@@ -1219,8 +1228,11 @@ async function getPostRequirementEmailDetails(
     if (propertySubTypeResponse.success) {
         propertySubTypeName = propertySubTypeResponse.sub_type;
     }
-    var cityResponse = await crudModel.getCityById(city);
-    var cityName = cityResponse[0].city || "";
+    var city1 = await crudModel.getCityById(city);
+    var cityName = ""
+    if(city1.success)  {
+        cityName = city1.data.city;
+    }
     var localityResponse = await crudModel.getLocalityById(locality);
     var localityName = localityResponse[0].locality;
     var stateResponse = await crudModel.getStateById(state);

@@ -75,19 +75,23 @@
             url: "<%= api_url %>get_cities",
             success: function (response) {
                 var result = '<option value="">---City---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    if (cityId != "" && cityId != undefined) {
-                        if (cityId == row.city_id) {
-                            result += '<option value="' + row.city_id + '" selected >' + row.city + '</option>';
+                if (response.success) {
+                    var cities = response.data;
+                    for (var i = 0; i < cities.length; i++) {
+                        var row = cities[i];
+                        if (cityId != "" && cityId != undefined) {
+                            if (cityId == row.city_id) {
+                                result += '<option value="' + row.city_id + '" selected >' + row.city + '</option>';
+                            } else {
+                                result += '<option value="' + row.city_id + '">' + row.city + '</option>';
+                            }
                         } else {
                             result += '<option value="' + row.city_id + '">' + row.city + '</option>';
                         }
-                    } else {
-                        result += '<option value="' + row.city_id + '">' + row.city + '</option>';
                     }
                 }
-                $(divId).html(result);
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
             }
         });
     }
@@ -298,11 +302,14 @@
             url: '<%= api_url %>get_states',
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    if (response[i].state_id == stateId) {
-                        result += '<option value="' + response[i].state_id + '" selected>' + response[i].state_name + '</option>'
-                    } else {
-                        result += '<option value="' + response[i].state_id + '">' + response[i].state_name + '</option>'
+                if (response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].state_id == stateId) {
+                            result += '<option value="' + data[i].state_id + '" selected>' + data[i].state_name + '</option>'
+                        } else {
+                            result += '<option value="' + data[i].state_id + '">' + data[i].state_name + '</option>'
+                        }
                     }
                 }
                 $(divId).html(result);

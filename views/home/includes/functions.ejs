@@ -75,19 +75,23 @@
             url: "<%= api_url %>get_cities",
             success: function (response) {
                 var result = '<option value="">---City---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    if (cityId != "" && cityId != undefined) {
-                        if (cityId == row.city_id) {
-                            result += '<option value="' + row.city_id + '" selected >' + row.city + '</option>';
+                if (response.success) {
+                    var cities = response.data;
+                    for (var i = 0; i < cities.length; i++) {
+                        var row = cities[i];
+                        if (cityId != "" && cityId != undefined) {
+                            if (cityId == row.city_id) {
+                                result += '<option value="' + row.city_id + '" selected >' + row.city + '</option>';
+                            } else {
+                                result += '<option value="' + row.city_id + '">' + row.city + '</option>';
+                            }
                         } else {
                             result += '<option value="' + row.city_id + '">' + row.city + '</option>';
                         }
-                    } else {
-                        result += '<option value="' + row.city_id + '">' + row.city + '</option>';
                     }
                 }
-                $(divId).html(result);
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
             }
         });
     }
@@ -275,8 +279,11 @@
             url: '<%= api_url %>get_states',
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    result += '<option value="' + response[i].state_id + '">' + response[i].state_name + '</option>'
+                if (response.success) {
+                    var data = response.data
+                    for (var i = 0; i < data.length; i++) {
+                        result += '<option value="' + data[i].state_id + '">' + data[i].state_name + '</option>'
+                    }
                 }
                 $(divId).html(result);
             }
@@ -321,50 +328,52 @@
         var comments = $("#comments2").val();
         $.ajax({
             type: "GET",
-            url: "<%=api_url%>property_enquiry/"+propertyId,
+            url: "<%= api_url %>property_enquiry/" + propertyId,
             data: {
                 name: name,
                 phone: phone,
                 email: email,
                 comments: comments
             },
-            success: function(response) {
+            success: function (response) {
                 console.log(response);
             }
         });
     }
 
-    function add_Compare(type,property_id,element) {
+    function add_Compare(type, property_id, element) {
         $.ajax({
-        url: "<%= base_url %>home/add_compare/"+type+"/"+property_id,
-        success: function (response) {
-            if(response.success) {
-                updateComparisonCounts(type,element);
+            url: "<%= base_url %>home/add_compare/" + type + "/" + property_id,
+            success: function (response) {
+                if (response.success) {
+                    updateComparisonCounts(type, element);
+                }
             }
-        }
         });
     }
-    function updateComparisonCounts(type,element) {
+
+    function updateComparisonCounts(type, element) {
         $.ajax({
             type: "GET",
-            url: "<%=base_url%>home/compare_count/"+type,
-            success: function(response) {
-                if(response.success) {
-                    console.log('#'+type+"_compare_count");
-                    $('#'+type+"_compare_count").html(response.count);
+            url: "<%= base_url %>home/compare_count/" + type,
+            success: function (response) {
+                if (response.success) {
+                    console.log('#' + type + "_compare_count");
+                    $('#' + type + "_compare_count").html(response.count);
                     var offset = $(element).offset();
                     var topOffset = offset.top;//- $(window).scrollTop();
                     $("#comparison-hover").css({
                         position: "absolute",
-                        top: (topOffset + 35)+ "px",
+                        top: (topOffset + 35) + "px",
                         left: (offset.left) + "px",
                     });
                     $("#comparison-hover").show();
- 
+
                 }
             }
         })
     }
+
     function hideComparisonPopup() {
         $("#comparison-hover").hide();
     }
