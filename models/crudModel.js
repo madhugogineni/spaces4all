@@ -5,152 +5,25 @@ var rentModule = require('./rentModel');
 var cityModule = require('./cityModel');
 var localityModule = require('./localityModel');
 var stateModule = require('./stateModel');
+var bankModule = require('./bankModel');
+var amenitiesModule = require('./amenitiesModel');
+var projectTypeModule = require('./projectTypeModel');
+var projectSubTypeModule = require('./projectSubTypeModel');
+var propertyTypeModule = require('./propertyTypeModel');
+var propertySubTypeModule = require('./propertySubTypeModel');
+var contactsModule = require('./contactsModel');
+var feedbackModule = require('./feedbackModel');
+var scheduleSiteVisit = require('./scheduleSiteVisit');
+var newsLetterModule = require('./newsLetterModel');
+var testimonialModule = require('./testimonialModel');
+var partnerModule = require('./partnersModel');
+var newsModule = require('./newsModel');
+
 module.exports = {
 
     getAdminByEmail: function (emailId) {
         return new Promise(function (resolve, reject) {
             con.query("select * from admin where email='" + emailId + "'", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPropertyType: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from property_type order by property_type_id DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-
-    getPropertyTypeById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select type from property_type where property_type_id=" + id, function (error, result) {
-                if (error)
-                    console.log({success: false, message: error});
-                resolve({success: true, type: result[0].type});
-            });
-        });
-    },
-    getPropertySubType: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from property_sub_type", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPropertySubTypeById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select sub_type from property_sub_type where property_sub_type_id=" + id, function (error, result) {
-                if (error)
-                    console.log({success: false, message: error});
-                resolve({success: true, sub_type: result[0].sub_type});
-            })
-        });
-    },
-    getPropertySubTypeByProperty(propertyId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from property_sub_type where property_type_id=" + propertyId, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getProjectType: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from project_type", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getProjectTypeById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from project_type where project_type_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            })
-        });
-    },
-    getProjectSubType: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from project_sub_type", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-
-    getProjectSubTypeById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from project_sub_type where project_sub_type_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-
-    getProjectSubTypeByProject: function (projectId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from project_sub_type where project_type_id=" + projectId, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getBanks: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from banks", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getBanksById: function (banksList) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from banks where bank_id in (" + banksList + ")", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false});
-                } else {
-                    resolve({success: true, data: result});
-                }
-            });
-        })
-    },
-    getBankById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from banks where bank_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getAmenities: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from amenities", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getAmenitiesById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from amenities where amenity_id=" + id, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
@@ -796,33 +669,7 @@ module.exports = {
             });
         });
     },
-    getNews: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from news order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getNewsById: function (newsId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from news where news_id='" + newsId, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getNewsLimit: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from news order by datetime DESC limit 10", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
+
     getHomeSlide: function () {
         return new Promise(function (resolve, reject) {
             con.query("select * from home_slide limit 5", function (error, result) {
@@ -878,105 +725,7 @@ module.exports = {
             });
         });
     },
-    getTestimonial: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from testimonial order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getTestimonialLimit: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from testimonial order by datetime DESC limit 1", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getTestimonialById: function (testimonialId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from testimonial where testimonial_id='" + testimonialId + "'", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getScheduleSiteVisit: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from schedule_site_visit order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPartners: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from partners order by partner_id DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPartnerById: function (partnerId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from partners where partner_id='" + partnerId + "'", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getContact: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from contact order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getNewsLetter() {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from news_letter order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getNewsLetterAvailable: function (email) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from news_letter where email='" + email + "'", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result.length);
-            });
-        });
-    },
-    getFeedback: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from feedback order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getFeedbackById: function (feedbackId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from feedback where feedback_id='" + feedbackId + "'", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
+
     insertContact: function (name, email, phone, message) {
         var datetime = moment().format(dateFormat);
         return new Promise(function (resolve, reject) {
@@ -1256,25 +1005,6 @@ module.exports = {
         });
     },
 
-    getAmenityNames: function (amenitiesList) {
-        console.log(amenitiesList);
-        console.log("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")");
-        return new Promise(function (resolve, reject) {
-            if (amenitiesList) {
-                con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {
-                    if (error) {
-                        console.log(error);
-                        resolve({success: false, message: error});
-                    } else {
-                        resolve({success: true, data: result});
-                    }
-                })
-            } else {
-                resolve({success: true, data: []});
-            }
-
-        })
-    },
     updateColumnInListProperty: function (column, value, propertyId) {
         return new Promise(function (resolve, reject) {
             console.log("update list_property set " + column + " = " + value + " where list_property_id = " + propertyId)
@@ -1405,8 +1135,68 @@ for (var key in stateModule) {
         module.exports[key] = stateModule[key];
     }
 }
-
-
-function returnSingleRowData() {
-
+for (var key in bankModule) {
+    if (bankModule.hasOwnProperty(key)) {
+        module.exports[key] = bankModule[key];
+    }
+}
+for (var key in amenitiesModule) {
+    if (amenitiesModule.hasOwnProperty(key)) {
+        module.exports[key] = amenitiesModule[key];
+    }
+}
+for (var key in projectTypeModule) {
+    if (projectTypeModule.hasOwnProperty(key)) {
+        module.exports[key] = projectTypeModule[key];
+    }
+}
+for (var key in projectSubTypeModule) {
+    if (projectSubTypeModule.hasOwnProperty(key)) {
+        module.exports[key] = projectSubTypeModule[key];
+    }
+}
+for (var key in propertyTypeModule) {
+    if (propertyTypeModule.hasOwnProperty(key)) {
+        module.exports[key] = propertyTypeModule[key];
+    }
+}
+for (var key in propertySubTypeModule) {
+    if (propertySubTypeModule.hasOwnProperty(key)) {
+        module.exports[key] = propertySubTypeModule[key];
+    }
+}
+for (var key in contactsModule) {
+    if (contactsModule.hasOwnProperty(key)) {
+        module.exports[key] = contactsModule[key];
+    }
+}
+for (var key in feedbackModule) {
+    if (feedbackModule.hasOwnProperty(key)) {
+        module.exports[key] = feedbackModule[key];
+    }
+}
+for (var key in scheduleSiteVisit) {
+    if (scheduleSiteVisit.hasOwnProperty(key)) {
+        module.exports[key] = scheduleSiteVisit[key];
+    }
+}
+for (var key in newsLetterModule) {
+    if (newsLetterModule.hasOwnProperty(key)) {
+        module.exports[key] = newsLetterModule[key];
+    }
+}
+for (var key in testimonialModule) {
+    if (testimonialModule.hasOwnProperty(key)) {
+        module.exports[key] = testimonialModule[key];
+    }
+}
+for (var key in partnerModule) {
+    if (partnerModule.hasOwnProperty(key)) {
+        module.exports[key] = partnerModule[key];
+    }
+}
+for (var key in newsModule) {
+    if (newsModule.hasOwnProperty(key)) {
+        module.exports[key] = newsModule[key];
+    }
 }

@@ -2,9 +2,20 @@ var con = require("../database");
 var moment = require("moment");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
-    getStates: function () {
+    getBanks: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state", function (error, result) {
+            con.query("select * from banks", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
+            });
+        });
+    },
+    getBanksById: function (banksList) {
+        return new Promise(function (resolve, reject) {
+            con.query("select * from banks where bank_id in (" + banksList + ")", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -12,20 +23,20 @@ module.exports = {
                     resolve({success: true, data: result});
                 }
             });
-        });
+        })
     },
-    getStateById: function (id) {
+    getBankById: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state where state_id=" + id, function (error, result) {
+            con.query("select * from banks where bank_id=" + id, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
             });
         });
     },
-    addState: function (data) {
+    addBank: function (data) {
         return new Promise(function (resolve, reject) {
-            con.query("insert into state set ?", data, function (error, result) {
+            con.query("insert into banks set ? ", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -34,9 +45,20 @@ module.exports = {
             })
         });
     },
-    updateState: function (data, stateId) {
+    deleteBank: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("update state set ? where state_id='" + stateId + "'", data, function (error, result) {
+            con.query("delete from banks where bank_id='" + id + "'", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true});
+            });
+        });
+    },
+    updateBank: function (data, id) {
+        return new Promise(function (resolve, reject) {
+            con.query("update banks set ? where bank_id='" + id + "'", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -45,15 +67,4 @@ module.exports = {
             })
         });
     },
-    deleteState: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("delete from state where state_id='" + id + "'", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false});
-                }
-                resolve({success: true});
-            })
-        });
-    }
-}
+};

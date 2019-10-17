@@ -1,17 +1,19 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
-<script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
-    }
-</script>
+<% include ../includes/menu.ejs %>
+
 
 <!-- Content Wrapper. Contains page content -->
+<script>
+    function updateValues(propertySubType, propertySubTypeId, propertyTypeId) {
+        setUpValue('sub_type1', propertySubType);
+        setUpValue('property_sub_type_id', propertySubTypeId);
+        selectOption('property_type_id1', propertyTypeId);
+        showAjaxModal('<%= base_url %>admin/property_sub_type/edit/' + propertySubTypeId, 'property_sub_type');
+    }
+</script>
 
 <div class="content-wrapper">
 
@@ -56,7 +58,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add Property Sub Type
                             </button>
 
                         </div>
@@ -75,7 +77,9 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>Property Type</th>
+
+                                <th>Property Sub Type</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +88,24 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < property_sub_types.length;i++) {
+                                var property_sub_type = property_sub_types[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= property_sub_type.property_type %></td>
+
+                                <td><%= property_sub_type.sub_type %></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= property_sub_type.sub_type %>','<%= property_sub_type.property_sub_type_id %>','<%= property_sub_type.property_type_id %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/property_sub_type/delete/<%= property_sub_type.property_sub_type_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,13 +156,13 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/property_sub_type/update" method="post">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Property Sub Type</h4>
 
                 </div>
 
@@ -166,16 +172,35 @@
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
-                                   value="" required="required">
+                            <label for="project_type">Project Type</label>
+
+                            <select name="property_type_id1" id="property_type_id1" class="form-control"
+                                    required="required">
+                                <script>
+                                    setUpProjectTypes('#property_type_id1');
+                                </script>
+                            </select>
 
                         </div>
 
                     </div>
 
-                    <input type="hidden" name="state_id" value="">
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="property_sub_type">Project Sub Type</label>
+                            <input class="form-control" id="sub_type1" name="sub_type1"
+                                   placeholder="Enter Project Sub Type" type="text" value="" required="required">
+
+                        </div>
+
+                    </div>
+
+
+                    <input type="hidden" name="property_sub_type_id" value="">
+
                 </div>
 
 
@@ -209,21 +234,43 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add Property Sub Type</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/property_sub_type/add" method="post">
 
                 <div class="modal-body">
+
 
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="property_type">Property Type</label>
+
+                            <select name="property_type_id" id="property_type_id" class="form-control"
+                                    required="required">
+
+                                <option value="">Select Property Type</option>
+                                <script>
+                                    setUpPropertyTypes('#property_type_id');
+                                </script>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="property_sub_type">Property Sub Type</label>
+                            <input class="form-control" id="sub_type" name="sub_type"
+                                   placeholder="Enter Property Sub Type" type="text" required="required">
 
                         </div>
 
@@ -252,4 +299,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

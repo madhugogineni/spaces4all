@@ -1,0 +1,240 @@
+<% include includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include includes/menu.ejs %>
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+                <div class="box">
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <table id="example1" class="table table-bordered table-striped">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>S.No</th>
+
+                                <th>Email</th>
+
+                                <th>Subscribed On</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <% for(var i = 0;i < news_letters.length;i++) {
+                                var news_letter = news_letters[i]; %>
+
+                            <tr>
+
+                                <td><%= i %></td>
+
+                                <td><%= news_letter.email %></td>
+
+                                <td><%= getDate(news_letter.datetime) %></td>
+
+                                <td>
+
+                                    <a href="<%= base_url %>admin/news_letter/delete/<%= news_letter.news_letter_id %>"
+                                       onclick="return confirm('Are You Sure Want to Delete ?')"><i
+                                                class="fa fa-trash-o"></i></a>
+
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+
+<div id="myModal" class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">Add New Testimonial</h4>
+
+            </div>
+
+            <form action="<%= base_url %>admin/add_testimonial" method="post">
+
+                <div class="modal-body">
+
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="city">Name</label> <input
+
+                                    class="form-control" id="name" name="name"
+
+                                    placeholder="Enter Name" type="text" required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="city">Company</label> <input
+
+                                    class="form-control" id="company" name="company"
+
+                                    placeholder="Enter Company" type="text" required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="testimonial">Testimonial</label>
+                            <textarea cols="" rows="" class="form-control" id="testimonial" name="testimonial"
+                                      placeholder="Enter Testimonial" type="text" required="required"></textarea>
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="modal_ajax">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form action="<%= base_url %>admin/edit_testimonial" method="post">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <h4 class="modal-title">Edit Testimonial</h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<% include includes/footer.ejs %>

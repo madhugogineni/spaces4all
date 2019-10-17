@@ -102,9 +102,13 @@
             url: "<%= api_url %>get_project_types",
             success: function (response) {
                 var result = '<option value="">Type</option>';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                if(response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var row = data[i];
+                        result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                    }
+
                 }
                 $("#project_type").append(result);
             }
@@ -247,8 +251,11 @@
             url: "<%= api_url %>get_amenities",
             success: function (response) {
                 var result = "";
-                for (var i = 0; i < response.length; i++) {
-                    result += "<div class='col-md-3'><label><input type='checkbox' name='amenities1[]' value=" + response[i].amenity_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + response[i].amenity + "</div>";
+                if (response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        result += "<div class='col-md-3'><label><input type='checkbox' name='amenities1[]' value=" + data[i].amenity_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].amenity + "</div>";
+                    }
                 }
                 $(divId).html(result);
             }
@@ -261,13 +268,17 @@
             url: "<%= api_url %>get_property_types",
             success: function (response) {
                 var result = '<option value="">---Property Type---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    if (selectedType == response[i].property_type_id) {
-                        result += '<option value="' + response[i].property_type_id + '" selected>' + response[i].type + '</option>';
-                    } else {
-                        result += '<option value="' + response[i].property_type_id + '">' + response[i].type + '</option>';
+                if(response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        if (selectedType == data[i].property_type_id) {
+                            result += '<option value="' + data[i].property_type_id + '" selected>' + data[i].type + '</option>';
+                        } else {
+                            result += '<option value="' + data[i].property_type_id + '">' + data[i].type + '</option>';
+                        }
                     }
                 }
+
                 $(divId).html(result);
             }
         });
@@ -299,8 +310,11 @@
             },
             success: function (response) {
                 var result = '<option value="">---SELECT---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
+                if(response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        result += '<option value="' + data[i].property_sub_type_id + '">' + data[i].sub_type + '</option>';
+                    }
                 }
                 $(divId).find('option').remove().end();
                 $(divId).append(result);

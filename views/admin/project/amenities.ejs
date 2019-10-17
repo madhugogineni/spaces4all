@@ -1,17 +1,19 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
-<script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
-    }
-</script>
+<% include ../includes/menu.ejs %>
+
 
 <!-- Content Wrapper. Contains page content -->
+<script>
+    function updateValues(amenityId, amenity, amenityIcon) {
+        setUpValue('amenity_icon1', amenityIcon);
+        setUpValue('amenity1', amenity);
+        setUpValue('amenity_id', amenityId);
+        showAjaxModal('<%= base_url %>admin/amenity/edit/' + amenityId, 'amenity');
+    }
+</script>
 
 <div class="content-wrapper">
 
@@ -56,7 +58,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add New Amenity
                             </button>
 
                         </div>
@@ -75,7 +77,9 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>Amenity</th>
+
+                                <th>Amenity Icon</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +88,23 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < amenities.length;i++){
+                                var amenity = amenities[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= amenity.amenity %></td>
+                                <td><%= amenity.amenity_icon %></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= amenity.amenity_id %>','<%= amenity.amenity %>','<%= amenity.amenity_icon %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/amenity/delete/<%= amenity.amenity_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,32 +155,36 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/amenity/update" method="post">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Amenity</h4>
 
                 </div>
 
 
                 <div class="modal-body">
+
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
-                                   value="" required="required">
+                            <label for="property_type">Amenity</label>
+                            <input class="form-control" id="amenity1" name="amenity1"
+                                   placeholder="Enter Amenity" type="text" required="required">
+                            <br/>
+                            <label for="property_type">Amenity Icon</label>
+                            <input class="form-control" id="amenity_icon1" name="amenity_icon1"
+                                   placeholder="Enter Amenity Icon" type="text" required="required">
 
+                            <input type="hidden" name="amenity_id" value="">
                         </div>
 
                     </div>
 
-                    <input type="hidden" name="state_id" value="">
                 </div>
 
 
@@ -209,21 +218,27 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add Amenity</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/amenity/add" method="post">
 
                 <div class="modal-body">
+
 
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="property_type">Amenity</label>
+                            <input class="form-control" id="amenity" name="amenity"
+                                   placeholder="Enter Amenity" type="text" required="required">
+                            <br/>
+                            <label for="property_type">Amenity Icon</label>
+                            <input class="form-control" id="amenity_icon" name="amenity_icon"
+                                   placeholder="Enter Amenity Icon" type="text" required="required">
+
 
                         </div>
 
@@ -252,4 +267,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

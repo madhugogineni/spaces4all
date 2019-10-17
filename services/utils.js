@@ -1,5 +1,7 @@
 var moment = require('moment');
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
+var fs = require('fs');
+var crudModel = require('../models/crudModel');
 module.exports = {
     getPrice: function (price, isProject) {
         var responsePrice;
@@ -33,5 +35,54 @@ module.exports = {
     },
     getDate: function () {
         return moment().format(dateFormat);
+    },
+    uploadImages: async function (photoFiles, propertyId, path) {
+        if (photoFiles.length) {
+            var imagesToUpload = [];
+            var fileNames = [];
+            for (var i = 0; i < photoFiles.length; i++) {
+                var fileName = photoFiles[i].originalname;//propertyId + "|" +
+                var uploadResponse = await this.writeFile(
+                    fileName,
+                    photoFiles[i].buffer,
+                    path
+                );
+                if (uploadResponse.success) {
+                    fileNames.push(fileName);
+                    var photoFile = [propertyId, fileName, this.getDate()];
+                    imagesToUpload.push(photoFile);
+                }
+            }
+            var response = await crudModel.addPropertyPhotos(imagesToUpload);
+            if (response.success) {
+                return {success: true, fileNames: fileNames};
+            } else {
+                return {success: false};
+            }
+        }
+    },
+    writeFile: function (fileName, fileBuffer, path) {
+        return new Promise(function (resolve, reject) {
+            fs.appendFile(path + fileName, fileBuffer, function (error) {
+                if (error) {
+                    console.log("file not saved");
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        });
+    },
+    deleteFile: function (fileName, filePath) {
+        return new Promise(function (resolve, reject) {
+            fs.unlinkSync(filePath + fileName, function (error) {
+                if (error) {
+                    console.log("file deletion not successful");
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        });
     }
 }

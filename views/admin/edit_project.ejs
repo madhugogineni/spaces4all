@@ -933,7 +933,7 @@
         $(".text2").wysihtml5();
 
     });
-    setUpProjectTypes("<%= project_details.project_type %>");
+    setUpProjectTypes('#project_type',"<%= project_details.project_type %>");
     getProjectSubTypes("<%= project_details.project_type %>", "#project_sub_type", "<%= project_details.project_sub_type %>");
     selectOption("posted_by", "<%= project_details.posted_by %>");
     setUpCities("#city", "<%= project_details.city %>");

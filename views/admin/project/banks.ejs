@@ -1,16 +1,16 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
+<% include ../includes/menu.ejs %>
+
 <script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
+    function updateValues(bankId, bankName,) {
+        setUpValue('bank_name1', bankName);
+        setUpValue('bank_id', bankId);
+        showAjaxModal('<%= base_url %>admin/banks/edit/' + bankId, 'banks');
     }
 </script>
-
 <!-- Content Wrapper. Contains page content -->
 
 <div class="content-wrapper">
@@ -56,7 +56,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add Bank
                             </button>
 
                         </div>
@@ -75,7 +75,7 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>Bank Name</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +84,22 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < banks.length;i++) {
+                                var bank = banks[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= bank.bank_name %></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= bank.bank_id %>','<%= bank.bank_name %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/banks/delete/<%= bank.bank_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,32 +150,24 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/banks/update" method="post">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Bank Details</h4>
 
                 </div>
 
 
                 <div class="modal-body">
-                    <div class="box-body">
 
-                        <div class="form-group">
+                    <label for="project_type">Bank Name</label>
+                    <input class="form-control" id="" name="bank_name1" placeholder="Enter Bank Name" type="text"
+                           value="">
+                    <input type="hidden" name="bank_id" value="">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
-                                   value="" required="required">
-
-                        </div>
-
-                    </div>
-
-                    <input type="hidden" name="state_id" value="">
                 </div>
 
 
@@ -209,21 +201,22 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add Bank</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/banks/add" method="post">
 
                 <div class="modal-body">
+
 
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="property_type">Bank Name</label>
+                            <input class="form-control" id="bank_name" name="bank_name"
+                                   placeholder="Enter Bank Name" type="text" required="required">
 
                         </div>
 
@@ -252,4 +245,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

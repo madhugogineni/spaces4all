@@ -15,7 +15,7 @@ router.get('/', async function (req, res) {
         data.localities = localityResponse.data;
     }
     res.render('admin/locality', data);
-})
+});
 router.post('/add', upload.none(), async function (req, res) {
     var city = req.body.city;
     var locality = req.body.locality;
@@ -35,8 +35,6 @@ router.post('/update', upload.none(), async function (req, res) {
         data.city_id = data.city1;
         delete data.city1;
         delete data.locality_id;
-        console.log(data);
-        console.log(req.body);
         await crudModel.updateLocality(data, req.body.locality_id);
     }
     res.redirect('/admin/locality');

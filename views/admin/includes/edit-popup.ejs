@@ -1,8 +1,10 @@
 <script type="text/javascript">
 
     function showAjaxModal(url, type) {
+        var selectionArray = ['project_configurations', 'property_possession', 'city', 'locality', 'state', 'banks',
+            'project_type', 'project_sub_type', 'property_type', 'property_sub_type', 'testimonial','partner'];
 
-        if (['project_configurations', 'property_possession','city','locality'].includes(type)) {
+        if (selectionArray.includes(type)) {
 
         } else {
             $.ajax({
@@ -30,12 +32,18 @@
     function showAjaxModal1(url, type) {
         if (['property_possession'].includes(type)) {
 
-        } else if (type == 'property') {
+        } else {
             $.ajax({
                 url: url,
                 success: function (response) {
                     if (response.success) {
-                        $('#modal_ajax1 .modal-body').html(prepareDetailsResponse(response.data));
+                        var body = "";
+                        if (type == 'property') {
+                            body = prepareDetailsResponse(response.data);
+                        } else if (type == 'feedback') {
+                            body = prepareFeedbackDetails(response.data);
+                        }
+                        $('#modal_ajax1 .modal-body').html(body);
                     } else {
                         $('#modal_ajax1 .modal-body').html("No Details Available");
                     }
@@ -95,12 +103,14 @@
     }
 
     function getAmenities(amenitiesList) {
-        return getStringFromList(amenitiesList,'amenity')
+        return getStringFromList(amenitiesList, 'amenity')
     }
+
     function getBanks(banksList) {
-        return getStringFromList(banksList,'bank_name')
+        return getStringFromList(banksList, 'bank_name')
     }
-    function getStringFromList(list,parameter) {
+
+    function getStringFromList(list, parameter) {
         var returnString = ''
         list.forEach(function (listRow, index) {
             if (index != 0) {
@@ -110,11 +120,12 @@
         })
         return returnString
     }
+
     function getDate(date) {
-        if(date) {
+        if (date) {
             var dateVariable = new Date(date);
             return dateVariable.getDate() + '/' + (dateVariable.getMonth() + 1) + '/' + dateVariable.getFullYear()
-        }else {
+        } else {
             return 'Date not available'
         }
     }
@@ -161,6 +172,28 @@
             response = "No Details Available"
         }
         return response
+    }
+
+    function prepareFeedbackDetails(data) {
+        var response = "";
+        if (data) {
+            response += '<table class="table table-bordered"><tbody>' +
+                '<tr><td>User Type</td><td>' + data.user_type + '</td></tr>' +
+                '<tr><td>Name</td><td>' + data.name + '</td></tr>' +
+                '<tr><td>Email</td><td>' + data.email + '</td></tr>' +
+                '<tr><td>Phone</td><td>' + data.phone + '</td></tr>' +
+                '<tr><td>City</td><td>' + data.city + '</td></tr>' +
+                '<tr><td>Topic</td><td>' + data.topic + '</td></tr>' +
+                '<tr><td>Recommendation</td><td>' + data.recommendation + '</td></tr>  ' +
+                '<tr><td>Satisfaction</td><td>' + data.satisifaction + '</td></tr>' +
+                '<tr><td>Description</td><td>' + data.description + '</td></tr>' +
+                '<tr><td>Recieved On</td><td>' + getDate(data.datetime) + '</td></tr>' +
+                '</tbody>' +
+                '</table>';
+        } else {
+            response = "Data not available right now!";
+        }
+        return response;
     }
 
     function processPropertyPossessionDetails() {

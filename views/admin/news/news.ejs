@@ -1,0 +1,131 @@
+<% include ../includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include ../includes/menu.ejs %>
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2">
+
+                            <a href="<%= base_url %>admin/news/add" class="btn btn-block btn-default">Add News</a>
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <table id="example1" class="table table-bordered table-striped">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>S.No</th>
+
+                                <th>News Title</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <% for(var i = 0;i < news.length;i++) {
+                                var newsRow = news[i]; %>
+
+                            <tr>
+
+                                <td><%= i %></td>
+                                <td><%= newsRow.title %></td>
+                                <td>
+                                    <a href="<%= base_url %>admin/news/edit/<%= newsRow.news_id %>"><i
+                                                class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+                                    <a href="<%= base_url %>admin/news/delete/<%= newsRow.news_id %>"
+                                       onclick="return confirm('Are You Sure Want to Delete ?')"><i
+                                                class="fa fa-trash-o"></i></a>
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+
+
+<% include ../includes/footer.ejs %>

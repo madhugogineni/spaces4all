@@ -1,17 +1,20 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
-<script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
-    }
-</script>
+<% include ../includes/menu.ejs %>
+
 
 <!-- Content Wrapper. Contains page content -->
+
+<script>
+    function updateValues(projectSubType, projectSubTypeId, projectTypeId) {
+        setUpValue('sub_type1', projectSubType);
+        setUpValue('project_sub_type_id', projectSubTypeId);
+        selectOption('project_type_id1', projectTypeId);
+        showAjaxModal('<%= base_url %>admin/project_sub_type/edit/' + projectSubTypeId, 'project_sub_type');
+    }
+</script>
 
 <div class="content-wrapper">
 
@@ -56,7 +59,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add Sub Type
                             </button>
 
                         </div>
@@ -75,7 +78,9 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>Project Type</th>
+
+                                <th>Project Sub Type</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +89,24 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < project_sub_types.length;i++) {
+                                var project_sub_type = project_sub_types[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= project_sub_type.project_type %></td>
+
+                                <td><%= project_sub_type.sub_type %></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= project_sub_type.sub_type %>','<%= project_sub_type.project_sub_type_id %>','<%= project_sub_type.project_type_id %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/project_sub_type/delete/<%= project_sub_type.project_sub_type_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,13 +157,13 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/project_sub_type/update" method="post">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Project Sub Type</h4>
 
                 </div>
 
@@ -166,16 +173,34 @@
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
-                                   value="" required="required">
+                            <label for="project_type">Project Type</label>
+
+                            <select name="project_type_id1" id="project_type_id1" class="form-control" required="required">
+                                <script>
+                                    setUpProjectTypes('#project_type_id1');
+                                </script>
+                            </select>
 
                         </div>
 
                     </div>
 
-                    <input type="hidden" name="state_id" value="">
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="property_sub_type">Project Sub Type</label>
+                            <input class="form-control" id="sub_type1" name="sub_type1"
+                                   placeholder="Enter Project Sub Type" type="text" value="" required="required">
+
+                        </div>
+
+                    </div>
+
+
+                    <input type="hidden" name="project_sub_type_id" value="">
+
                 </div>
 
 
@@ -209,11 +234,11 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add Project Sub Type</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/project_sub_type/add" method="post">
 
                 <div class="modal-body">
 
@@ -221,9 +246,29 @@
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="project_type">Project Type</label>
+
+                            <select id="project_type_id" name="project_type_id" class="form-control" required="required">
+
+                                <option value="">Select Project Type</option>
+                                <script>
+                                    setUpProjectTypes('#project_type_id');
+                                </script>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="project_sub_type">Project Sub Type</label>
+                            <input class="form-control" id="sub_type" name="sub_type"
+                                   placeholder="Enter Project Sub Type" type="text" required="required">
 
                         </div>
 
@@ -252,4 +297,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

@@ -1,16 +1,15 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
+<% include ../includes/menu.ejs %>
 <script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
+    function updateValues(propertyType, propertyTypeId) {
+        setUpValue('type1', propertyType);
+        setUpValue('property_type_id', propertyTypeId);
+        showAjaxModal('<%= base_url %>admin/property_type/edit/' + propertyTypeId, 'property_type');
     }
 </script>
-
 <!-- Content Wrapper. Contains page content -->
 
 <div class="content-wrapper">
@@ -56,7 +55,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add Property Type
                             </button>
 
                         </div>
@@ -75,7 +74,7 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>Property Type</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +83,22 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < property_types.length;i++) {
+                                var property_type = property_types[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= property_type.type %></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= property_type.type %>','<%= property_type.property_type_id %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/property_type/delete/<%= property_type.property_type_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,32 +149,24 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/property_type/update" method="post">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Proprty Type</h4>
 
                 </div>
 
 
                 <div class="modal-body">
-                    <div class="box-body">
 
-                        <div class="form-group">
+                    <label for="property_type">Property Type</label>
+                    <input class="form-control" id="type1" name="type1" placeholder="Enter Project Type"
+                           type="text" value="">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
-                                   value="" required="required">
-
-                        </div>
-
-                    </div>
-
-                    <input type="hidden" name="state_id" value="">
+                    <input type="hidden" name="property_type_id" value="">
                 </div>
 
 
@@ -209,21 +200,22 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add Property Type</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/property_type/add" method="post">
 
                 <div class="modal-body">
+
 
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="property_type">Property Type</label>
+                            <input class="form-control" id="type" name="type"
+                                   placeholder="Enter Property Type" type="text" required="required">
 
                         </div>
 
@@ -252,4 +244,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

@@ -162,18 +162,22 @@ router.get("/loan_eligibility_check", function (req, res) {
         page_title: "Loan Eligibility Check"
     });
 });
-router.get("/apply_home_loan", function (req, res) {
-    crudModel.getBanks().then(function (response) {
-        res.render("home/apply_home_loan", {
-            page_name: "Apply Home Loan",
-            page_title: "Apply Home Loan",
-            banks: response,
-            loanErrorMsg: loanErrorMsg,
-            loanError: loanError
-        });
-        loanError = false;
-        loanErrorMsg = "";
-    });
+router.get("/apply_home_loan",async function (req, res) {
+    var data = {
+        page_name: "Apply Home Loan",
+        page_title: "Apply Home Loan",
+        banks: [],
+        loanErrorMsg: loanErrorMsg,
+        loanError: loanError
+    };
+    var banksResponse = await crudModel.getBanks();
+    if(banksResponse.success) {
+        data.banks = banksResponse.data;
+    }
+    res.render("home/apply_home_loan",data);
+    loanError = false;
+    loanErrorMsg = "";
+
 });
 router.post("/add_home_loan", function (req, res) {
     var data = req.body;
@@ -485,7 +489,7 @@ router.post(
                         gatedColony
                     );
                     var photoFiles = req.files["photos1[]"] || [];
-                    var uploadImagesResult = await uploadImages(
+                    var uploadImagesResult = await utils.uploadImages(
                         photoFiles,
                         propertyId,
                         "public/uploads/list_property/"
@@ -610,7 +614,7 @@ router.post(
                 if (queryResult.success) {
                     var propertyId = queryResult.propertyId;
                     var photoFiles = req.files["photos[]"] || [];
-                    var uploadImagesResult = await uploadImages(
+                    var uploadImagesResult = await utils.uploadImages(
                         photoFiles,
                         propertyId,
                         "public/uploads/list_property/"
@@ -788,7 +792,7 @@ router.post(
             var rentResponse = await crudModel.insertToRent(data);
             if (rentResponse.success) {
                 var propertyId = rentResponse.propertyId;
-                var uploadImagesResult = await uploadImages(
+                var uploadImagesResult = await utils.uploadImages(
                     photoFiles,
                     propertyId,
                     "public/uploads/rent/"
@@ -1154,44 +1158,31 @@ router.get("/compare_count/:type", function (req, res) {
     res.send({success: true, count: req.session.compare[type].length || 0});
 });
 
-function writeFile(fileName, fileBuffer, path) {
-    return new Promise(function (resolve, reject) {
-        fs.appendFile(path + fileName, fileBuffer, function (error) {
-            if (error) {
-                console.log("file not saved");
-                resolve({success: false});
-            } else {
-                resolve({success: true});
-            }
-        });
-    });
-}
-
-async function uploadImages(photoFiles, propertyId, path) {
-    if (photoFiles.length) {
-        var imagesToUpload = [];
-        var fileNames = [];
-        for (var i = 0; i < photoFiles.length; i++) {
-            var fileName = photoFiles[i].originalname;//propertyId + "|" +
-            var uploadResponse = await writeFile(
-                fileName,
-                photoFiles[i].buffer,
-                path
-            );
-            if (uploadResponse.success) {
-                fileNames.push(fileName);
-                var photoFile = [propertyId, fileName, utils.getDate()];
-                imagesToUpload.push(photoFile);
-            }
-        }
-        var response = await crudModel.addPropertyPhotos(imagesToUpload);
-        if (response.success) {
-            return {success: true, fileNames: fileNames};
-        } else {
-            return {success: false};
-        }
-    }
-}
+// async function uploadImages(photoFiles, propertyId, path) {
+//     if (photoFiles.length) {
+//         var imagesToUpload = [];
+//         var fileNames = [];
+//         for (var i = 0; i < photoFiles.length; i++) {
+//             var fileName = photoFiles[i].originalname;//propertyId + "|" +
+//             var uploadResponse = await writeFile(
+//                 fileName,
+//                 photoFiles[i].buffer,
+//                 path
+//             );
+//             if (uploadResponse.success) {
+//                 fileNames.push(fileName);
+//                 var photoFile = [propertyId, fileName, utils.getDate()];
+//                 imagesToUpload.push(photoFile);
+//             }
+//         }
+//         var response = await crudModel.addPropertyPhotos(imagesToUpload);
+//         if (response.success) {
+//             return {success: true, fileNames: fileNames};
+//         } else {
+//             return {success: false};
+//         }
+//     }
+// }
 
 function getErrorMessage(errors) {
     var errorMsg = "";

@@ -2,30 +2,29 @@ var con = require("../database");
 var moment = require("moment");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
-    getStates: function () {
+    getPartners: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state", function (error, result) {
+            con.query("select * from partners order by partner_id DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
-                } else {
-                    resolve({success: true, data: result});
                 }
+                resolve({success: true, data: result});
             });
         });
     },
-    getStateById: function (id) {
+    getPartnerById: function (partnerId) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state where state_id=" + id, function (error, result) {
+            con.query("select * from partners where partner_id='" + partnerId + "'", function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
             });
         });
     },
-    addState: function (data) {
+    addPartner: function (data) {
         return new Promise(function (resolve, reject) {
-            con.query("insert into state set ?", data, function (error, result) {
+            con.query("insert into partners set ?", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -34,9 +33,20 @@ module.exports = {
             })
         });
     },
-    updateState: function (data, stateId) {
+    deletePartner: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("update state set ? where state_id='" + stateId + "'", data, function (error, result) {
+            con.query("delete from partners where partner_id='" + id + "'", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true})
+            });
+        });
+    },
+    updatePartner: function (data, id) {
+        return new Promise(function (resolve, reject) {
+            con.query("update partners set ? where partner_id='" + id + "'", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -45,15 +55,4 @@ module.exports = {
             })
         });
     },
-    deleteState: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("delete from state where state_id='" + id + "'", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false});
-                }
-                resolve({success: true});
-            })
-        });
-    }
 }

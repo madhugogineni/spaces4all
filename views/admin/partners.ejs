@@ -3,14 +3,16 @@
 <!-- Left side column. contains the logo and sidebar -->
 
 <% include includes/menu.ejs %>
+
 <script>
-    function updateValues(stateName, stateId) {
-        setUpValue('state_name', stateName);
-        setUpValue('state_id', stateId);
-        showAjaxModal('<%= base_url %>admin/state/edit/' + stateId, 'state');
+    function updateValues(url, image, id) {
+        setUpValue('url1', url);
+        setUpValue('partner_id', id);
+        setUpValue('old_image',image);
+        $("#display_image").attr("src", "<%= base_url %>uploads/partners/" + image).load();
+        showAjaxModal('<%= base_url %>admin/popup/partners/edit/' + id, 'partner');
     }
 </script>
-
 <!-- Content Wrapper. Contains page content -->
 
 <div class="content-wrapper">
@@ -56,7 +58,7 @@
 
                             <button type="button" class="btn btn-block btn-default"
 
-                                    data-toggle="modal" data-target="#myModal">Add State
+                                    data-toggle="modal" data-target="#myModal">Add Partner
                             </button>
 
                         </div>
@@ -75,7 +77,9 @@
 
                                 <th>S.No</th>
 
-                                <th>State Name</th>
+                                <th>URL</th>
+
+                                <th>Image</th>
 
                                 <th>Actions</th>
 
@@ -84,22 +88,25 @@
                             </thead>
 
                             <tbody>
-                            <% for (var i = 0; i < states.length; i++) {
-                                var state = states[i]; %>
+                            <% for(var i = 0;i < partners.length;i++) {
+                                var partner = partners[i]; %>
 
                             <tr>
 
                                 <td><%= i %></td>
 
-                                <td><%= state.state_name %></td>
+                                <td><%= partner.url %></td>
+
+                                <td><img alt="" src="<%= base_url %>uploads/partners/<%= partner.image %>"
+                                         style="height: 75px;width: 75px"></td>
 
                                 <td>
 
                                     <a href="#"
-                                       onclick="updateValues('<%= state.state_name %>','<%= state.state_id %>')"><i
+                                       onclick="updateValues('<%= partner.url %>','<%= partner.image %>','<%= partner.partner_id %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/state/delete/<%= state.state_id %>"
+                                    <a href="<%= base_url %>admin/partners/delete/<%= partner.partner_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
 
@@ -150,13 +157,13 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/state/update" method="post">
+            <form action="<%= base_url %>admin/partners/update" method="post" enctype="multipart/form-data">
 
                 <div class="modal-header">
 
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 
-                    <h4 class="modal-title">Edit state</h4>
+                    <h4 class="modal-title">Edit Partners</h4>
 
                 </div>
 
@@ -166,16 +173,31 @@
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state_name" name="state_name" placeholder="Enter State"
-                                   type="text"
+                            <label for="city">URL</label>
+                            <input class="form-control" id="url1" name="url1" placeholder="Enter URL" type="text"
                                    value="" required="required">
 
                         </div>
 
                     </div>
 
-                    <input type="hidden" name="state_id" value="">
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <img src="" id="display_image" name="display_image" alt="Spaces4all"
+                                 style="height: 150px;width: 250px">
+
+                            <input class="btn btn-primary" id="image1" name="image1" type="file" accept="image/*">
+
+                        </div>
+
+                    </div>
+
+
+                    <input type="hidden" name="partner_id" value="">
+                    <input type="hidden" name="old_image" id="old_image" value="">
+
                 </div>
 
 
@@ -209,21 +231,34 @@
 
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-                <h4 class="modal-title">Add State</h4>
+                <h4 class="modal-title">Add New Partner</h4>
 
             </div>
 
-            <form action="<%= base_url %>admin/state/add" method="post">
+            <form action="<%= base_url %>admin/partners/add" method="post" enctype="multipart/form-data">
 
                 <div class="modal-body">
+
 
                     <div class="box-body">
 
                         <div class="form-group">
 
-                            <label for="state">State</label>
-                            <input class="form-control" id="state" name="state" placeholder="Enter State Name"
-                                   type="text" required="required">
+                            <label for="city">URL</label>
+                            <input class="form-control" id="url" name="url" placeholder="Enter URL" type="text"
+                                   required="required">
+
+                        </div>
+
+                    </div>
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="city">Upload Image</label>
+                            <input class="btn btn-primary" id="image" name="image" type="file" accept="image/*"
+                                   required="required">
 
                         </div>
 

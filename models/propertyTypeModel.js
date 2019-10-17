@@ -2,30 +2,30 @@ var con = require("../database");
 var moment = require("moment");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
-    getStates: function () {
+    getPropertyType: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state", function (error, result) {
+            con.query("select * from property_type order by property_type_id DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
-                } else {
-                    resolve({success: true, data: result});
                 }
+                resolve({success: true, data: result});
             });
         });
     },
-    getStateById: function (id) {
+
+    getPropertyTypeById: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from state where state_id=" + id, function (error, result) {
+            con.query("select type from property_type where property_type_id=" + id, function (error, result) {
                 if (error)
-                    console.log(error);
-                resolve(result);
+                    console.log({success: false, message: error});
+                resolve({success: true, type: result[0].type});
             });
         });
     },
-    addState: function (data) {
+    addPropertyType: function (data) {
         return new Promise(function (resolve, reject) {
-            con.query("insert into state set ?", data, function (error, result) {
+            con.query("insert into property_type set ? ", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -34,9 +34,20 @@ module.exports = {
             })
         });
     },
-    updateState: function (data, stateId) {
+    deletePropertyType: function (id) {
         return new Promise(function (resolve, reject) {
-            con.query("update state set ? where state_id='" + stateId + "'", data, function (error, result) {
+            con.query("delete from property_type where property_type_id='" + id + "'", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true});
+            });
+        });
+    },
+    updatePropertyType: function (data, id) {
+        return new Promise(function (resolve, reject) {
+            con.query("update property_type set ? where property_type_id='" + id + "'", data, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -45,15 +56,4 @@ module.exports = {
             })
         });
     },
-    deleteState: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("delete from state where state_id='" + id + "'", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false});
-                }
-                resolve({success: true});
-            })
-        });
-    }
 }

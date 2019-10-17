@@ -22,6 +22,19 @@ var rentRouter = require('./admin/rent');
 var cityRouter = require('./admin/city');
 var localityRouter = require('./admin/locality');
 var stateRouter = require('./admin/state');
+var bankRouter = require('./admin/banks');
+var amenityRouter = require('./admin/amenities');
+var projectTypeRouter = require('./admin/project_type');
+var projectSubTypeRouter = require('./admin/project_sub_type');
+var propertyTypeRouter = require('./admin/property_type');
+var propertySubTypeRouter = require('./admin/property_sub_type');
+var contactRouter = require('./admin/contact');
+var feedbackRouter = require('./admin/feedback');
+var scheduleSiteVisitRouter = require('./admin/schedule_site_visit');
+var newsLetterRouter = require('./admin/news_letter');
+var testimonialRouter = require('./admin/testimonial');
+var partnerRouter = require('./admin/partners');
+var newsRouter  = require('./admin/news');
 
 
 router.use(function (req, res, next) {
@@ -43,6 +56,20 @@ router.use('/rent', rentRouter);
 router.use('/city', cityRouter);
 router.use('/locality', localityRouter);
 router.use('/state', stateRouter);
+router.use('/banks', bankRouter);
+router.use('/amenity', amenityRouter);
+router.use('/project_type', projectTypeRouter);
+router.use('/project_sub_type', projectSubTypeRouter);
+router.use('/property_type', propertyTypeRouter);
+router.use('/property_sub_type', propertySubTypeRouter);
+router.use('/contact', contactRouter);
+router.use('/feedback', feedbackRouter);
+router.use('/schedule_site_visit', scheduleSiteVisitRouter);
+router.use('/news_letter', newsLetterRouter);
+router.use('/testimonial', testimonialRouter);
+router.use('/partners', partnerRouter);
+router.use('/news',newsRouter);
+
 /* GET users listing. */
 router.get('/', async function (req, res) {
 
