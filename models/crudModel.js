@@ -1,6 +1,7 @@
 var con = require("../database");
 var moment = require("moment");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
+/* Admin Side Models */
 var rentModule = require('./rentModel');
 var cityModule = require('./cityModel');
 var localityModule = require('./localityModel');
@@ -18,6 +19,11 @@ var newsLetterModule = require('./newsLetterModel');
 var testimonialModule = require('./testimonialModel');
 var partnerModule = require('./partnersModel');
 var newsModule = require('./newsModel');
+var callbackModule = require('./callbackModel');
+var popularAgentsModule = require('./popularAgentsModel');
+var priceTrendsModule = require('./priceTrendsModel');
+var serviceRequestsModule = require('./serviceRequestsModel');
+var loanRequestsModule = require('./loanRequestsModel');
 
 module.exports = {
 
@@ -528,69 +534,6 @@ module.exports = {
     getStampDutyById: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from stamp_duty where stamp_duty_id=" + id, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getLoanRequests: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from loan_requests order by datetime ASC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getServicesRequests: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from services_requests order by datetime ASC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPopularAgents: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from popular_agents order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPopularAgentById: function (agentId) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from popular_agents where agent_id=" + agentId, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getCallBack: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from call_back order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPriceTrends: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from price_trends order by datetime DESC", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
-    getPriceTrendById: function (id) {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from price_trends where price_trend_id=" + id, function (error, result) {
                 if (error)
                     console.log(error);
                 resolve(result);
@@ -1198,5 +1141,30 @@ for (var key in partnerModule) {
 for (var key in newsModule) {
     if (newsModule.hasOwnProperty(key)) {
         module.exports[key] = newsModule[key];
+    }
+}
+for (var key in callbackModule) {
+    if (callbackModule.hasOwnProperty(key)) {
+        module.exports[key] = callbackModule[key];
+    }
+}
+for (var key in popularAgentsModule) {
+    if (popularAgentsModule.hasOwnProperty(key)) {
+        module.exports[key] = popularAgentsModule[key];
+    }
+}
+for (var key in priceTrendsModule) {
+    if (priceTrendsModule.hasOwnProperty(key)) {
+        module.exports[key] = priceTrendsModule[key];
+    }
+}
+for (var key in serviceRequestsModule) {
+    if (serviceRequestsModule.hasOwnProperty(key)) {
+        module.exports[key] = serviceRequestsModule[key];
+    }
+}
+for (var key in loanRequestsModule) {
+    if (loanRequestsModule.hasOwnProperty(key)) {
+        module.exports[key] = loanRequestsModule[key];
     }
 }

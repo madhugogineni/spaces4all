@@ -37,5 +37,5 @@ router.get('/delete/:id', async function (req, res) {
         await crudModel.deleteState(id);
     }
     res.redirect('/admin/state');
-})
+});
 module.exports = router;

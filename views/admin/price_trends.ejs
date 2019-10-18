@@ -1,0 +1,370 @@
+<% include includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include includes/menu.ejs %>
+
+
+<script>
+    function updateValues(id, type, cityId, localityId, minPrice, maxPrice) {
+        selectOption('city1', cityId);
+        showLocality(cityId, '#locality1', localityId);
+        selectOption('locality1', localityId);
+        selectOption('type1', type);
+        setUpValue('min_price1', minPrice);
+        setUpValue('max_price1', maxPrice);
+        setUpValue('price_trend_id', id);
+        showAjaxModal('<%= base_url %>admin/popup/price_trends/edit/' + id, 'price_trends');
+    }
+
+</script>
+
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2">
+
+                            <button type="button" class="btn btn-block btn-default"
+
+                                    data-toggle="modal" data-target="#myModal">Add Price Trend
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <table id="example1" class="table table-bordered table-striped">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>S.No</th>
+
+                                <th>Type</th>
+
+                                <th>City</th>
+
+                                <th>Locality</th>
+
+                                <th>Min Price</th>
+
+                                <th>Max Price</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <% for(var i = 0;i < price_trends.length;i++) {
+                                var price_trend = price_trends[i]; %>
+
+                            <tr>
+
+                                <td><%= i %></td>
+
+                                <td><%= price_trend.type %></td>
+
+                                <td><%= price_trend.city_name %></td>
+
+                                <td><%= price_trend.locality_name %></td>
+
+                                <td><%= price_trend.min_price %></td>
+
+                                <td><%= price_trend.max_price %></td>
+
+                                <td>
+
+                                    <a href="#"
+                                       onclick="updateValues('<%= price_trend.price_trend_id %>','<%= price_trend.type %>','<%= price_trend.city %>','<%= price_trend.locality %>','<%= price_trend.min_price %>','<%= price_trend.max_price %>')"><i
+                                                class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+
+                                    <a href="<%= base_url %>admin/price_trends/delete/<%= price_trend.price_trend_id %>"
+                                       onclick="return confirm('Are You Sure Want to Delete ?')"><i
+                                                class="fa fa-trash-o"></i></a>
+
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+
+
+<!-- (Ajax Modal)-->
+
+<div class="modal fade" id="modal_ajax">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form action="<%= base_url %>admin/price_trends/update" method="post">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <h4 class="modal-title">Edit Price Trend</h4>
+
+                </div>
+
+
+                <div class="modal-body">
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="exampleInputEmail1">Select Type</label>
+                            <select name="type1" id="type1" class="form-control margin-0">
+                                <option value="Flats">Flats</option>
+                                <option value="Plots">Plots</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="city">City</label>
+
+                            <select name="city1" id="city1" onchange="showLocality(this.value,'#locality1')"
+                                    class="form-control" required="required">
+                                <script>
+                                    setUpCities('#city1');
+                                </script>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="locality">Locality</label>
+
+                            <select name="locality1" id="locality1" class="form-control" required="required">
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="min_price">Min Price</label>
+
+                            <input type="text" name="min_price1" value="" class="form-control" required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="max_price">Max Price</label>
+
+                            <input type="text" name="max_price1" value="" class="form-control" required="required">
+
+                        </div>
+
+                    </div>
+
+                    <input type="hidden" name="price_trend_id" value="">
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">Add Price Trend</h4>
+
+            </div>
+
+            <form action="<%= base_url %>admin/price_trends/add" method="post">
+
+                <div class="modal-body">
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="exampleInputEmail1">Select Type</label>
+                            <select name="type" id="type" class="form-control margin-0">
+                                <option value="Flats">Flats</option>
+                                <option value="Plots">Plots</option>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="city">City</label>
+
+                            <select name="city" id="city" onchange="showLocality(this.value,'#locality')"
+                                    class="form-control" required="required">
+
+                                <option value="">Select City</option>
+                                <script>
+                                    setUpCities('#city');
+                                </script>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="exampleInputEmail1">Locality</label>
+                            <select name="locality" id="locality" class="form-control margin-0" required="required">
+
+                                <option value="">---SELECT---</option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="min_price">Min Price</label>
+
+                            <input type="text" name="min_price" class="form-control" required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="max_price">Max Price</label>
+
+                            <input type="text" name="max_price" class="form-control" required="required">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- /.box-body -->
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<% include includes/footer.ejs %>

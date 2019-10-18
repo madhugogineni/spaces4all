@@ -34,7 +34,12 @@ var scheduleSiteVisitRouter = require('./admin/schedule_site_visit');
 var newsLetterRouter = require('./admin/news_letter');
 var testimonialRouter = require('./admin/testimonial');
 var partnerRouter = require('./admin/partners');
-var newsRouter  = require('./admin/news');
+var newsRouter = require('./admin/news');
+var callbackRouter = require('./admin/callback');
+var popularAgentsRouter = require('./admin/popular_agents');
+var priceTrendsRouter = require('./admin/price_trends');
+var servicesRequestsRouter = require('./admin/service_requests');
+var loansRequestsRouter = require('./admin/loan_requests');
 
 
 router.use(function (req, res, next) {
@@ -68,8 +73,12 @@ router.use('/schedule_site_visit', scheduleSiteVisitRouter);
 router.use('/news_letter', newsLetterRouter);
 router.use('/testimonial', testimonialRouter);
 router.use('/partners', partnerRouter);
-router.use('/news',newsRouter);
-
+router.use('/news', newsRouter);
+router.use('/call_back', callbackRouter);
+router.use('/popular_agents', popularAgentsRouter);
+router.use('/price_trends', priceTrendsRouter);
+router.use('/services_requests', servicesRequestsRouter);
+router.use('/loans',loansRequestsRouter);
 /* GET users listing. */
 router.get('/', async function (req, res) {
 

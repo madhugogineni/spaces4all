@@ -55,9 +55,8 @@ router.post('/update', upload.single('image1'), async function (req, res) {
         var updateResponse = await crudModel.updatePartner(data, id);
         if (updateResponse.success) {
             try {
-                utils.deleteFile(oldFile, 'public/uploads/partners/');
                 utils.writeFile(file.originalname, file.buffer, 'public/uploads/partners/');
-
+                utils.deleteFile(oldFile, 'public/uploads/partners/');
             } catch (e) {
                 console.log(e);
             } finally {
