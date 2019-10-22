@@ -1,0 +1,279 @@
+<% include includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include includes/menu.ejs %>
+
+
+<!-- Content Wrapper. Contains page content -->
+<script>
+    function updateValues(id, state, percentage) {
+        setUpValue('state1', state);
+        setUpValue('percentage1', percentage);
+        setUpValue('stamp_duty_id', id);
+        showAjaxModal('<%= base_url %>admin/popup/stamp_duty/edit/' + id, 'stamp_duty');
+    }
+</script>
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2">
+
+                            <button type="button" class="btn btn-block btn-default"
+
+                                    data-toggle="modal" data-target="#myModal">Add New
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <table id="example1" class="table table-bordered table-striped">
+
+                            <thead>
+
+                            <tr>
+
+                                <th>S.No</th>
+
+                                <th>State</th>
+
+                                <th>Stamp Duty(%)</th>
+
+                                <th>Actions</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            <% for(var i = 0;i < stamp_duties.length;i++) {
+                                var stamp_duty = stamp_duties[i]; %>
+
+                            <tr>
+
+                                <td><%= i %></td>
+
+                                <td><%= stamp_duty.state %></td>
+
+                                <td><%= stamp_duty.percentage %></td>
+
+                                <td>
+
+                                    <a href="#"
+                                       onclick="updateValues('<%= stamp_duty.stamp_duty_id %>','<%= stamp_duty.state %>','<%= stamp_duty.percentage %>')"><i
+                                                class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+
+                                    <a href="<%= base_url %>admin/stamp_duty/delete/<%= stamp_duty.stamp_duty_id %>"
+                                       onclick="return confirm('Are You Sure Want to Delete ?')"><i
+                                                class="fa fa-trash-o"></i></a>
+
+                                </td>
+
+                            </tr>
+
+                            <% } %>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+
+
+<!-- (Ajax Modal)-->
+
+<div class="modal fade" id="modal_ajax">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <form action="<%= base_url %>admin/stamp_duty/update" method="post">
+
+                <div class="modal-header">
+
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                    <h4 class="modal-title">Edit Stamp Duty</h4>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="state">State</label>
+                            <input class="form-control" id="state1" name="state1" placeholder="Enter State" type="text"
+                                   required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="percentage">Stamp Duty(%)</label>
+                            <input class="form-control" id="percentage1" name="percentage1"
+                                   placeholder="Enter Stamp Duty(%)" type="number" required="required">
+
+                        </div>
+
+                    </div>
+                    <input type="hidden" name="stamp_duty_id" id="stamp_duty_id"/>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">Add Stamp Duty</h4>
+
+            </div>
+
+            <form action="<%= base_url %>admin/stamp_duty/add" method="post">
+
+                <div class="modal-body">
+
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="state">State</label>
+                            <input class="form-control" id="state" name="state" placeholder="Enter State" type="text"
+                                   required="required">
+
+                        </div>
+
+                        <div class="form-group">
+
+                            <label for="percentage">Stamp Duty(%)</label>
+                            <input class="form-control" id="percentage" name="percentage"
+                                   placeholder="Enter Stamp Duty(%)" type="number" required="required">
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<% include includes/footer.ejs %>

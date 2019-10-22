@@ -65,15 +65,7 @@ module.exports = {
             });
         })
     },
-    getRentEnquiry: function () {
-        return new Promise(function (resolve, reject) {
-            con.query("select * from rent_enquiry", function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result);
-            });
-        });
-    },
+
     getRent: function (propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice) {
 
         var query = "SELECT * FROM rent where rent_id !=0";

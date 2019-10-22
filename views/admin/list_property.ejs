@@ -135,10 +135,10 @@
                                 <td>
                                     <% if(property.status == '1') { %>
 
-                                        <a href="<%= base_url %>admin/status_list_property/0/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/status/0/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to Inactive ?')"><b>Active</b></a>
                                     <% } else { %>
-                                        <a href="<%= base_url %>admin/status_list_property/1/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/status/1/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to Active ?')"><b
                                                     style="color: red">In-active</b></a>
                                     <% } %>
@@ -147,11 +147,11 @@
                                 <td>
                                     <% if(property.hot_property == '1') { %>
 
-                                        <a href="<%= base_url %>admin/hot_property/0/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/hot/0/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
                                                     style="color: red">Yes</b></a>
                                     <% } else { %>
-                                        <a href="<%= base_url %>admin/hot_property/1/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/hot/1/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>No</b></a>
 
                                     <% } %>
@@ -162,28 +162,28 @@
                                     <a href="#"
                                        onclick="showPossession('<%= property.list_property_id %>')"><b>Possession</b></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/edit_property/<%= property.list_property_id %>"
+                                    <a href="<%= base_url %>admin/list_property/edit/<%= property.list_property_id %>"
                                        title="Edit"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/delete_list_property/<%= property.list_property_id %>"
+                                    <a href="<%= base_url %>admin/list_property/delete/<%= property.list_property_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"
                                        title="Delete"><i class="fa fa-trash-o"></i></a>
                                     <br/>
                                     <a href="#"
-                                       onclick="showAjaxModal1('<%= base_url %>admin/property_details/<%= property.list_property_id %>','property')"><b>View
+                                       onclick="showAjaxModal1('<%= base_url %>admin/list_property/<%= property.list_property_id %>','property')"><b>View
                                             Details</b></a>
                                     <br/>
-                                    <a href="<%= base_url %>admin/property_photos/<%= property.list_property_id %>"><b>Edit
+                                    <a href="<%= base_url %>admin/list_property/photos/<%= property.list_property_id %>"><b>Edit
                                             Images</b>
                                     </a>
                                     <br/>
                                     <% if(property.latest_property == '1') { %>
 
-                                        <a href="<%= base_url %>admin/latest_property/0/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/latest/0/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
                                                     style="color: red">Remove Latest Property</b></a>
                                     <% } else { %>
-                                        <a href="<%= base_url %>admin/latest_property/1/<%= property.list_property_id %>"
+                                        <a href="<%= base_url %>admin/list_property/latest/1/<%= property.list_property_id %>"
                                            onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>Make
                                                 Latest Property</b></a>
 
@@ -308,64 +308,6 @@
 
 <!--</div>-->
 
-
-<div id="myModal" class="modal fade" role="dialog">
-
-    <div class="modal-dialog">
-
-
-        <!-- Modal content-->
-
-        <div class="modal-content">
-
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                <h4 class="modal-title">Add City</h4>
-
-            </div>
-
-            <form action="<%= base_url %>admin/add_city" method="post">
-
-                <div class="modal-body">
-
-
-                    <div class="box-body">
-
-                        <div class="form-group">
-
-                            <label for="city">City</label> <input
-
-                                    class="form-control" id="city" name="city"
-
-                                    placeholder="Enter City" type="text" required="required">
-
-                        </div>
-
-                    </div>
-
-                    <!-- /.box-body -->
-
-
-                </div>
-
-                <div class="modal-footer">
-
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
-                    <button type="submit" class="btn btn-primary">Add</button>
-
-                </div>
-
-            </form>
-
-        </div>
-
-
-    </div>
-
-</div>
 
 
 <% include includes/footer.ejs %>

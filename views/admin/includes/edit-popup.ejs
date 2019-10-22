@@ -3,7 +3,7 @@
     function showAjaxModal(url, type) {
         var selectionArray = ['project_configurations', 'property_possession', 'city', 'locality', 'state', 'banks',
             'project_type', 'project_sub_type', 'property_type', 'property_sub_type', 'testimonial', 'partner',
-            'popular_agents','price_trends'];
+            'popular_agents', 'price_trends'];
 
         if (selectionArray.includes(type)) {
 
@@ -43,6 +43,8 @@
                             body = prepareDetailsResponse(response.data);
                         } else if (type == 'feedback') {
                             body = prepareFeedbackDetails(response.data);
+                        } else if (type == 'post_requirement') {
+                            body = preparePostRequirementDetails(response.data);
                         }
                         $('#modal_ajax1 .modal-body').html(body);
                     } else {
@@ -199,6 +201,33 @@
 
     function processPropertyPossessionDetails() {
         return "<h1>Property Details</h1>"
+    }
+
+    function preparePostRequirementDetails(data) {
+        var response = "";
+        if (data) {
+            response += '<table class="table table-bordered"><tbody>' +
+                '<tr><td>Name</td><td>' + data.name + '</td></tr>' +
+                '<tr><td>Email</td><td>' + data.email + '</td></tr>' +
+                '<tr><td>Phone</td><td>' + data.phone + '</td></tr>' +
+                '<tr><td>Type</td><td>' + data.type + '</td></tr>' +
+                '<tr><td>Property Type</td><td>' + data.property_type_name + '</td></tr>' +
+                '<tr><td>Property Sub Type</td><td>' + data.property_sub_type_name + '</td></tr>' +
+                '<tr><td>City</td><td>' + data.city_name + '</td></tr>' +
+                '<tr><td>Locality</td><td>' + data.locality_name + '</td></tr>' +
+                '<tr><td>Min Price</td><td>' + data.min_price + '</td></tr>  ' +
+                '<tr><td>Max Price</td><td>' + data.max_price + '</td></tr>' +
+                '<tr><td>Min Area</td><td>' + data.min_area + '</td></tr>' +
+                '<tr><td>Max Area</td><td>' + data.max_area + '</td></tr>' +
+                '<tr><td>Available Time</td><td>' + data.available_time + '</td></tr>' +
+                '<tr><td>Duration</td><td>' + data.duration + '</td></tr>' +
+                '<tr><td>Requirement Posted On</td><td>' + getDate(data.datetime) + '</td></tr>' +
+                '</tbody>' +
+                '</table>';
+        } else {
+            response = "Data not available right now!";
+        }
+        return response;
     }
 
 </script>

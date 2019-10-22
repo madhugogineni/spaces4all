@@ -1,0 +1,216 @@
+<% if(projects.length > 1) { %>
+    <html lan='en'>
+    <head>
+        <title>Spaces4all</title>
+    </head>
+    <body style='margin: 0 auto; width: 800px; font-family: monospace;'>
+    <div>
+        <p style="text-align: right; line-height: 30px;">
+            View this in new window <a href="#" style="color: #26759e">Click here</a>
+        </p>
+        <div style="width: 100%;">
+            <a href="<%= base_url %>"><img alt="Space4all" src="<%= base_url %>assets/img/logo.jpg"></a>
+        </div>
+        <div>
+            <% for(var i = 0;i < projects.length;i++) {
+                var project = projects[i]; %>
+            <table style='background-image: url(<%= base_url %>assets/bg.jpg);background-size: cover; padding: 5px; border: 2px solid #8DC9E8; margin-bottom: 2px'>
+                <tr style='width:100%;'>
+                    <td style='width:50%'><img src="<%= base_url %>uploads/projects/<%= project.project_photo %>"
+                                               style="height: 180px; width:100%" alt=""></td>
+                    <td style='width:50%; text-align: center;'>
+                        <h1 style='color: #DC143C'><a
+                                    href="<%= base_url %>home/project_details/<%= project.project_id %>/<%= project.project_name %>"><%= project.project_name %> </a>
+                        </h1>
+                        <h3><%= project.locality_name + " , " + project.city_name %></h3>
+                        <input type='button' value='<%= project.plans %> BHK Luxury Homes' style='background-color:
+                    #26759e; background-image: -webkit-gradient(linear, left top, left bottom, from(#26759e),
+                    to(#133d5b)); border-radius: 5px; border:1px solid #1c5675; padding: 6px;background-image:
+                    -webkit-linear-gradient(top, #26759e, #133d5b);
+                    background-image: -moz-linear-gradient(top, #26759e, #133d5b);
+                    background-image: -ms-linear-gradient(top, #26759e, #133d5b);
+                    background-image: -o-linear-gradient(top, #26759e, #133d5b);
+                    background-image: linear-gradient(to bottom, #26759e,
+                    #133d5b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#26759e,
+                    endColorstr=#133d5b); color: #fff;'>
+                        <h4>Price range: Rs. <%= project.min_price_formatted %>
+                            - <%= project.max_price_formatted %></h4>
+                        <h4><b>Area range:</b> <%= project.min_builtup_area %>-<%= project.max_builtup_area %> sq.ft
+                        </h4>
+                        <div align='right'>
+                            <a href='<%= base_url %>home/project_details/<%= project.project_id %>/<%= project.project_name %>'
+                               style='background-color: #26759e; background-image:
+                        -webkit-gradient(linear, left top, left bottom, from(#26759e), to(#133d5b)); border-radius:
+                        5px;text-decoration: none; border:1px solid #1c5675; padding: 6px;background-image:
+                        -webkit-linear-gradient(top, #26759e, #133d5b);
+                        background-image: -moz-linear-gradient(top, #26759e, #133d5b);
+                        background-image: -ms-linear-gradient(top, #26759e, #133d5b);
+                        background-image: -o-linear-gradient(top, #26759e, #133d5b);
+                        background-image: linear-gradient(to bottom, #26759e,
+                        #133d5b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#26759e,
+                        endColorstr=#133d5b); color: #eee;'>View More &raquo;</a></div>
+                    </td>
+                </tr>
+            </table>
+            <% } %>
+
+            <div style="background-color: rgba(165, 218, 238, 0.23); padding: 5px;">
+                <div>
+                    <p><b>Disclaimer: </b>Spaces4all is only an intermediary offering its platform to
+                        facilitate the transactions between Seller and Customer/Buyer/User
+                        and is not and cannot be a party to or control in any manner any
+                        transactions between the Seller and the Customer/Buyer/User. If
+                        there is any dispute between seller and Customer/Buyer/User , it is
+                        agreed upon by the Customer/Buyer/User that Company has no
+                        obligation whatsoever to be involved in any such dispute/s.
+                    </p>
+                </div>
+                <div style="height: 1px; background-color: #777"></div>
+                <div>
+                    <p style="text-align: center;">
+                        spaces4all.com, #502, Divya residency, plot no 82 & 83, c-block, madhura nagar , Hyderabad
+                        -500038
+                    </p>
+                    <p style="text-align: center;">
+                        Copyrights &copy; 2015 by <b>spaces4all.com</b> - All Rights Reserved
+                    </p>
+                    <p style="text-align: center;">
+                        To Unsubscribe <a href="" style="color: #26759e">Click here</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>
+<% } else {
+for(var i = 0;i < projects.length;i++) {
+    var project = projects[i];
+%>
+
+
+<html lan='en'>
+<head>
+    <title> Spaces4all </title>
+</head>
+<body style='margin: 0 auto; width: 800px; font-family: monospace;'>
+<div>
+    <p style="text-align: right; line-height: 30px;">
+        View this in new window <a href="#" style="color: #26759e">Click here</a>
+    </p>
+    <div style="width: 100%;">
+        <a href="<%= base_url %>"><img alt="Space4all" src="<%= base_url %>assets/img/logo.jpg"></a>
+    </div>
+    <div style="background-image: url(<%= base_url %>bg.jpg); padding: 10px">
+
+        <h1 align="center"
+            style="color: #DD2F00"><?php if (!empty($row['plans'])){ echo $row['plans'].' BHK';}?> <?php echo $project_type_name.' '.$project_sub_name;?>
+            at <?php echo $locality.' ,'.$city;?>, Hyderabad</h1>
+        <h3 align="center">Area Range: <?=$row['min_builtup_area'];?>-<?=$row['max_builtup_area'];?> Sq.Ft. |
+            Possession: <?php echo date('M Y',strtotime($row['possesion_date']));?> | Price:
+            Rs. <?php if (!empty($min)){echo $min.' Onwards';}?>*</h3>
+        <div align="center">
+            <img alt='' src='<%= base_url %>uploads/projects/<?=$image1?>' style='width: 85%; height: 300px'>
+        </div>
+
+        <table>
+            <tr style="width: 100%">
+                <td style="width: 60%">
+                    <h3> PROJECT OVERVIEW</h3>
+                    <p>
+                        <%= project.description %>
+                    </p>
+                    <% if(project.configuration_id) { %>
+                        <table border="2px" style="width: 100%">
+                            <tr style="width: 100%; background-color: #000; color: #fff">
+                                <td style="width: 30%"> TYPE</td>
+                                <td style="width: 35%"> AREA RANGE</td>
+                                <td style="width: 35%"> PRICE</td>
+                            </tr>
+                            <tr style="width: 100%">
+                                <td style="width: 30%"> <%= project.plan %> </td>
+                                <td style="width: 35%"> <%= project.size %> </td>
+                                <td style="width: 35%"> Rs <%= project.config_price %> </td>
+                            </tr>
+                        </table>
+                    <% } %>
+
+                    <h3>SPECIAL FEATURES</h3>
+                    <ul>
+                        <li> Total Units : <%= project.total_units %></li>
+                        <li> No.Of Floors : <%= project.no_of_floors %></li>
+                        <li> Total Area : <%= project.total_area %></li>
+                    </ul>
+
+                </td>
+                <td style="width: 40%">
+                    <input type='button' value='Book Now' style='background-color: #26759e; background-image: -webkit-gradient(linear, left top, left bottom, from(#26759e), to(#133d5b)); border-radius: 5px; border:1px solid #1c5675; padding: 10px;background-image: -webkit-linear-gradient(top, #26759e, #133d5b);
+ background-image: -moz-linear-gradient(top, #26759e, #133d5b);
+ background-image: -ms-linear-gradient(top, #26759e, #133d5b);
+ background-image: -o-linear-gradient(top, #26759e, #133d5b);
+ background-image: linear-gradient(to bottom, #26759e, #133d5b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#26759e, endColorstr=#133d5b); color: #fff; width: 100%'>
+                    <br/><br/>
+                    <div style="background-color: rgba(130, 173, 202, 0.48); padding: 15px; border-radius: 5px; ">
+                        <h2 align="center">Show Your Interest</h2>
+                        <table style="width: 100%">
+                            <tr>
+                                <td>Name: <br/>
+                                    <input type="text" name="name" style="width: 100%; height: 30px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>E mail Id: <br/>
+                                    <input type="text" name="name" style="width: 100%; height: 30px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Phone No : <br/>
+                                    <input type="text" name="name" style="width: 100%; height: 30px">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><br/><input type='button' value='Yes, Iam Intrested' style='background-color: #26759e; background-image: -webkit-gradient(linear, left top, left bottom, from(#26759e), to(#133d5b)); border-radius: 5px; border:1px solid #1c5675; padding: 10px;background-image: -webkit-linear-gradient(top, #26759e, #133d5b);
+ background-image: -moz-linear-gradient(top, #26759e, #133d5b);
+ background-image: -ms-linear-gradient(top, #26759e, #133d5b);
+ background-image: -o-linear-gradient(top, #26759e, #133d5b);
+ background-image: linear-gradient(to bottom, #26759e, #133d5b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#26759e, endColorstr=#133d5b); color: #fff; width: 100%'>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="background-color: rgba(165, 218, 238, 0.23); padding: 5px;">
+        <div>
+            <p><b>Disclaimer: </b>Spaces4all is only an intermediary offering its platform to
+                facilitate the transactions between Seller and Customer/Buyer/User
+                and is not and cannot be a party to or control in any manner any
+                transactions between the Seller and the Customer/Buyer/User. If
+                there is any dispute between seller and Customer/Buyer/User , it is
+                agreed upon by the Customer/Buyer/User that Company has no
+                obligation whatsoever to be involved in any such dispute/s.
+            </p>
+        </div>
+        <div style="height: 1px; background-color: #777"></div>
+        <div>
+            <p style="text-align: center;">
+                spaces4all.com, #502, Divya residency, plot no 82 & 83, c-block, madhura nagar , Hyderabad -500038
+            </p>
+            <p style="text-align: center;">
+                Copyrights &copy; 2015 by <a href="<%= base_url %>"><b>spaces4all.com</b></a> - All Rights
+                Reserved
+            </p>
+            <p style="text-align: center;">
+                To Unsubscribe <a href="#" style="color: #26759e">Click here</a>
+            </p>
+        </div>
+    </div>
+
+    <% } %>
+</div>
+</body>
+</html>
+<% } %>

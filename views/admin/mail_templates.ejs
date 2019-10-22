@@ -1,0 +1,101 @@
+<% include includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include includes/menu.ejs %>
+<script>
+    function loadTemplate() {
+        var temp = $('#template_name option:selected').val();
+        console.log(temp);
+        $('#template-container').html(temp);
+
+    }
+</script>
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+                        <div class="form-group">
+
+                            <label for="template_name">Template Name</label><br/>
+
+                            <select name="template_name" id="template_name" class="form-control" onchange="loadTemplate()">
+
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+
+                        </div>
+
+
+                        <div id="template-container">
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<% include includes/footer.ejs %>

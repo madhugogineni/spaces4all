@@ -21,7 +21,7 @@
 
             $('#car_parking').attr("disabled", false);
 
-            $('#furnishing').attr("disabled", false);
+            $('#furnishing_status').attr("disabled", false);
 
         }
 
@@ -40,7 +40,7 @@
 
             $('#car_parking').attr("disabled", false);
 
-            $('#furnishing').attr("disabled", false);
+            $('#furnishing_status').attr("disabled", false);
 
 
         }
@@ -84,40 +84,7 @@
 
             $('#car_parking').attr("disabled", true);
 
-            $('#furnishing').attr("disabled", true); */
-
-        } else if (str == '') {
-
-            $('.normalfields').show();
-
-            $('.residentialfields').hide();
-
-            if (value == '1') {
-
-                $('#bedrooms').attr("disabled", true);
-
-                $('#bathrooms').attr("disabled", true);
-
-
-            } else {
-
-                $('#bed_fields').show;
-
-                $('#bedrooms').attr("disabled", false);
-
-                $('#bathrooms').attr("disabled", false);
-
-            }
-
-            $('#construction_age').attr("disabled", false);
-
-            $('#floor_no').attr("disabled", false);
-
-            $('#floors').attr("disabled", false);
-
-            $('#car_parking').attr("disabled", false);
-
-            $('#furnishing').attr("disabled", false);
+            $('#furnishing_status').attr("disabled", true); */
 
         } else {
 
@@ -133,7 +100,7 @@
 
             } else {
 
-                $('#bed_fields').show;
+                $('#bed_fields').show();
 
                 $('#bedrooms').attr("disabled", false);
 
@@ -149,23 +116,24 @@
 
             $('#car_parking').attr("disabled", false);
 
-            $('#furnishing').attr("disabled", false);
+            $('#furnishing_status').attr("disabled", false);
 
         }
 
     }
+
     $(document).ready(function () {
 
         $("body").prepend('<div id="overlay" class="ui-widget-overlay" style="z-index: 1001; display: none;"></div>');
 
-        $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%=base_url %>assets/images/loading.gif'/></div>");
+        $("body").prepend("<div id='PleaseWait' style='display: none;'><img src='<%= base_url %>assets/images/loading.gif'/></div>");
 
         $("form#list_property").submit(function (e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
                 type: "POST",
-                url: "<%=base_url %>admin/update_property_details/<%=property.list_property_id%>",
+                url: "<%= base_url %>admin/list_property/update/<%= property.list_property_id %>",
                 data: formData,
                 success: function (result) {
                     var className = "";
@@ -174,7 +142,7 @@
                     } else {
                         className = "alert alert-error fade in";
                     }
-                    var displayMsg = '<div class="'+className+'"> <a href="#" data-dismiss="alert" class="close">x</a><strong>'+result.message+'</strong></div>';
+                    var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
                     $("#list_property").prepend(displayMsg);
                 },
                 cache: false,
@@ -253,7 +221,8 @@
 
                         <!--                             ?>-->
 
-                        <form action="<%= base_url %>admin/update_property_details/<%=property.list_property_id %>" method="post"
+                        <form action="<%= base_url %>admin/update_property_details/<%= property.list_property_id %>"
+                              method="post"
                               enctype="multipart/form-data" id="list_property">
 
                             <div class="row">
@@ -415,7 +384,7 @@
                                                         <option value="">---SELECT---</option>
 
                                                         <% for(var i = 0;i <= 20;i++) { %>
-                                                        <option value="<%= i %>"><%= i %></option>
+                                                            <option value="<%= i %>"><%= i %></option>
                                                         <% } %>
 
                                                     </select>
@@ -432,7 +401,7 @@
                                                         <option value="">---SELECT---</option>
 
                                                         <% for(var i = 0;i <= 10;i++) { %>
-                                                        <option value="<%= i %>"><%= i %></option>
+                                                            <option value="<%= i %>"><%= i %></option>
                                                         <% } %>
                                                     </select>
 
@@ -605,7 +574,7 @@
 
                                                     <label>FURNISHING STATUS:</label>
 
-                                                    <select name="furnishing" id="furnishing"
+                                                    <select name="furnishing_status" id="furnishing_status"
                                                             class="form-control margin-0 ">
 
                                                         <option value="">---SELECT---</option>
@@ -719,7 +688,11 @@
     getPropertySubTypes("<%= property.property_type %>", "#property_sub_type", "<%= property.property_sub_type %>");
     setUpCities('#city', "<%= property.city %>")
     setUpStates('#state', "<%= property.state %>")
-    showLocality('<%= property.city %>', '#locality', '<%= property.locality %>')
+    showLocality('<%= property.city %>', '#locality', '<%= property.locality %>');
+    setUpAmenities('#amenity_options')
+    setTimeout(function () {
+        selectAmenities("<%= property.amenities %>")
+    }, 500)
 
     $(document).ready(function () {
         setUpValue("name", "<%= property.name %>")
@@ -750,7 +723,7 @@
         setUpValue("construction_age", "<%= property.construction_age %>")
         setUpValue("floors", "<%= property.floors %>")
         setUpValue("floor_no", "<%= property.floor_no %>")
-        selectOption("furnishing", "<%= property.furnishing_status %>")
+        selectOption("furnishing_status", "<%= property.furnishing_status %>")
         selectOption("car_parking", "<%= property.car_parking %>")
 
         <% } %>
@@ -762,10 +735,6 @@
 
         selectOption("bedrooms", "<%= property.bedrooms %>")
         selectOption("bathrooms", "<%= property.bathrooms %>")
-        setUpAmenities('#amenity_options')
-        setTimeout(function() {
-            selectAmenities("<%=property.amenities%>")
-        },500)
         <% } %>
     })
 </script>

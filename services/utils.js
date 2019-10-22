@@ -2,6 +2,8 @@ var moment = require('moment');
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var fs = require('fs');
 var crudModel = require('../models/crudModel');
+var ejs = require('ejs');
+var urls = require('../external-config/url-config');
 module.exports = {
     getPrice: function (price, isProject) {
         var responsePrice;
@@ -84,5 +86,11 @@ module.exports = {
                 }
             });
         });
+    },
+    getTemplateForMail: function (fileName, parameters) {
+        var result = ejs.compile(fs.readFileSync(__dirname + '/../views/mailers/' + fileName, 'utf8'));
+        parameters.base_url = urls.base_url;
+        var html = result(parameters);
+        return html;
     }
 }

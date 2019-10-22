@@ -1,0 +1,12 @@
+var express = require('express');
+var router = express.Router();
+var crudModel = require('../../models/crudModel');
+var multer = require('multer');
+var upload = multer();
+var utils = require('../../services/utils');
+var validatorpackage = require("node-input-validator");
+var nodeGeocoder = require("node-geocoder");
+var geocoderoptions = require("../../external-config/geocoding-config");
+var geocoder = nodeGeocoder(geocoderoptions);
+var deepclone = require('lodash.clonedeep');
+module.exports = router;

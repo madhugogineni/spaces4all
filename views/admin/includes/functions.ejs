@@ -58,10 +58,13 @@
             url: "<%= api_url %>get_home_slider",
             success: function (response) {
                 var result = '';
-                for (var i = 0; i < response.length; i++) {
-                    var slide = response[i];
-                    result += '<li class="parallax" style="background-image:url(uploads/home-slide/' + slide.image + ');">';
-                    result += '<a href="' + slide.url + '" class="btn" style="width: 100%; height: 100%;"> </a></li>';
+                if (response.success) {
+                    var data = response.data;
+                    for (var i = 0; i < data.length; i++) {
+                        var slide = data[i];
+                        result += '<li class="parallax" style="background-image:url(uploads/home-slide/' + slide.image + ');">';
+                        result += '<a href="' + slide.url + '" class="btn" style="width: 100%; height: 100%;"> </a></li>';
+                    }
                 }
                 $("#slides").html(result);
             }

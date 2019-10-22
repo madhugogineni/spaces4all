@@ -139,14 +139,17 @@ router.get("/area_conversion_calculator", function (req, res) {
         page_title: "Area Conversion Table"
     });
 });
-router.get("/stamp_duty_calculator", function (req, res) {
-    crudModel.getStampDuty().then(function (response) {
-        res.render("home/stamp_duty_calculator", {
-            page_name: "Stamp Duty Calculator",
-            page_title: "Stamp Duty Calculator",
-            stamp_duty: response
-        });
-    });
+router.get("/stamp_duty_calculator", async function (req, res) {
+    var data = {
+        page_name: "Stamp Duty Calculator",
+        page_title: "Stamp Duty Calculator",
+        stamp_duty: []
+    };
+    var stampDutyResponse = crudModel.getStampDuty();
+    if (stampDutyResponse.success) {
+        data.stamp_duty = stampDutyResponse.data;
+    }
+    res.render("home/stamp_duty_calculator", data);
 });
 
 //Mortagage Tab links are defined here
@@ -162,7 +165,7 @@ router.get("/loan_eligibility_check", function (req, res) {
         page_title: "Loan Eligibility Check"
     });
 });
-router.get("/apply_home_loan",async function (req, res) {
+router.get("/apply_home_loan", async function (req, res) {
     var data = {
         page_name: "Apply Home Loan",
         page_title: "Apply Home Loan",
@@ -171,10 +174,10 @@ router.get("/apply_home_loan",async function (req, res) {
         loanError: loanError
     };
     var banksResponse = await crudModel.getBanks();
-    if(banksResponse.success) {
+    if (banksResponse.success) {
         data.banks = banksResponse.data;
     }
-    res.render("home/apply_home_loan",data);
+    res.render("home/apply_home_loan", data);
     loanError = false;
     loanErrorMsg = "";
 
@@ -437,8 +440,8 @@ router.post(
                 var date = utils.getDate();
                 var city1 = await crudModel.getCityById(city);
                 var cityName = ""
-                if(city1.success)  {
-                 cityName = city1.data.city;
+                if (city1.success) {
+                    cityName = city1.data.city;
                 }
                 var locality1 = await crudModel.getLocalityById(locality);
                 var localityName = locality1[0].locality;
@@ -569,7 +572,7 @@ router.post(
                 var date = utils.getDate();
                 var city1 = await crudModel.getCityById(city);
                 var cityName = ""
-                if(city1.success)  {
+                if (city1.success) {
                     cityName = city1.data.city;
                 }
                 var locality1 = await crudModel.getLocalityById(locality);
@@ -613,24 +616,32 @@ router.post(
                 );
                 if (queryResult.success) {
                     var propertyId = queryResult.propertyId;
-                    var photoFiles = req.files["photos[]"] || [];
-                    var uploadImagesResult = await utils.uploadImages(
-                        photoFiles,
-                        propertyId,
-                        "public/uploads/list_property/"
-                    );
-                    if (uploadImagesResult.success) {
+                    var photoFiles = req.files["photos[]"] || null;
+                    if (photoFiles) {
+                        var uploadImagesResult = await utils.uploadImages(
+                            photoFiles,
+                            propertyId,
+                            "public/uploads/list_property/"
+                        );
+                        if (uploadImagesResult.success) {
+                            res.send({
+                                success: true,
+                                message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
+                            });
+                        } else {
+                            res.send({
+                                success: false,
+                                message: "Your Property Listing Has Failed ! Please Try Again."
+                            });
+                            // removeProperty(propertyId, "");
+                        }
+                    } else {
                         res.send({
                             success: true,
                             message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
                         });
-                    } else {
-                        res.send({
-                            success: false,
-                            message: "Your Property Listing Has Failed ! Please Try Again."
-                        });
-                        // removeProperty(propertyId, "");
                     }
+
                 } else {
                     res.send({
                         success: false,
@@ -740,7 +751,7 @@ router.post(
             var date = utils.getDate();
             var city1 = await crudModel.getCityById(city);
             var cityName = ""
-            if(city1.success)  {
+            if (city1.success) {
                 cityName = city1.data.city;
             }
             var locality1 = await crudModel.getLocalityById(locality);
@@ -959,7 +970,7 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
             duration: duration,
             datetime: date
         };
-        var insertResponse = await crudModel.postRequirement(data);
+        var insertResponse = await crudModel.addPostRequirement(data);
         if (insertResponse.success) {
             var dataForEmail = await getPostRequirementEmailDetails(
                 propertyType,
@@ -1043,7 +1054,7 @@ router.get("/property_details/:property_id", async function (req, res) {
         var propertyDetails = await crudModel.getPropertyDetailsById(req.params.property_id);
         if (propertyDetails.success) {
             var amenitiesList = await crudModel.getAmenityNames(propertyDetails.data.amenities);
-            propertyDetails.data.quoted_price = utils.getPrice(propertyDetails.data.quoted_price,false);
+            propertyDetails.data.quoted_price = utils.getPrice(propertyDetails.data.quoted_price, false);
             var data = propertyDetails.data;
             var path = urls.base_url + "uploads/list_property/" + propertyDetails.data.photo;
             if (!fs.existsSync(path)) {
@@ -1097,7 +1108,7 @@ router.get("/compare/:type", async function (req, res) {
             var response = await crudModel.getPropertyDetailsById(propertyId);
             if (response.success) {
                 var amenitiesList = await crudModel.getAmenityNames(response.data.amenities);
-                response.data.quoted_price = utils.getPrice(response.data.quoted_price,false);
+                response.data.quoted_price = utils.getPrice(response.data.quoted_price, false);
                 var path = urls.base_url + "uploads/list_property/" + response.data.photo;
                 if (!fs.existsSync(path)) {
                     response.data.photo = "1no-photo.jpg";
@@ -1150,7 +1161,7 @@ router.get("/delete_compare/:type/:project_id", function (req, res) {
     var projectId = req.params.project_id;
     var type = req.params.type;
     req.session.compare[type] = pushOrPopIdFromCompare(projectId, req.session.compare[type]);
-    res.redirect('/home/compare/'+type);
+    res.redirect('/home/compare/' + type);
 });
 
 router.get("/compare_count/:type", function (req, res) {
@@ -1221,7 +1232,7 @@ async function getPostRequirementEmailDetails(
     }
     var city1 = await crudModel.getCityById(city);
     var cityName = ""
-    if(city1.success)  {
+    if (city1.success) {
         cityName = city1.data.city;
     }
     var localityResponse = await crudModel.getLocalityById(locality);
@@ -1258,25 +1269,6 @@ async function getPostRequirementEmailDetails(
         max_price: finalMaxPrice
     };
 }
-
-// function getPrice(price) {
-//     var responsePrice;
-//     if (price) {
-//         if (price > 10000000) {
-//             responsePrice = Math.round(parseFloat(price) / 10000000, 2);
-//             responsePrice = responsePrice + " Cr";
-//         } else if (price > 100000) {
-//             responsePrice = Math.round(parseFloat(price) / 100000, 2);
-//             responsePrice = responsePrice + " Lac";
-//         } else {
-//             responsePrice = price;
-//         }
-//         responsePrice = "Rs. " + responsePrice;
-//     } else {
-//         responsePrice = "Price on request"
-//     }
-//     return responsePrice;
-// }
 
 function pushOrPopIdFromCompare(id, compareArray) {
     if (compareArray.includes(id)) {

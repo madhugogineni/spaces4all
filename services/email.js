@@ -8,9 +8,9 @@ var transporter = nodemailer.createTransport({
     }
 });
 module.exports = {
-    sendMail: function(subject, html) {
+    sendMail: function (subject, html, to) {
         transporter.sendMail({
-            to: emailConfig.emailId,
+            to: to ? to : emailConfig.emailId,
             subject: subject,
             html: html
         });

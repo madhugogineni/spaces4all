@@ -178,6 +178,16 @@
             ><a href="<%= base_url %>admin/send_mails"><i
                             class="fa fa-envelope-o"></i> <span>Send Mails</span></a></li>
 
+            <li
+            <% if (page_name == 'mail_templates') { %>
+                <%= "class='active'" %>
+                    <% } %>
+            >
+                <a href="<%= base_url %>admin/mail_templates">
+                    <i class="fa fa-star"></i> <span>Mail Templates</span>
+                </a>
+            </li>
+
 
             <li class="treeview <% if (page_name == 'property_enquiry' || page_name == 'project_enquiry' || page_name == 'rent_enquiry') {
 
@@ -195,7 +205,7 @@
                             <%
                             } %>
                     ><a
-                                href="<%= base_url %>admin/property_enquiry"><i class="fa fa-star"></i> <span>	Property Enquiry</span></a>
+                                href="<%= base_url %>admin/enquiry/property"><i class="fa fa-star"></i> <span>	Property Enquiry</span></a>
                     </li>
 
                     <li
@@ -205,7 +215,7 @@
                             <%
                             } %>
                     ><a
-                                href="<%= base_url %>admin/project_enquiry"><i class="fa fa-star"></i>
+                                href="<%= base_url %>admin/enquiry/project"><i class="fa fa-star"></i>
                             <span>Project Enquiry</span></a></li>
 
                     <li
@@ -215,7 +225,7 @@
                             <%
                             } %>
                     ><a
-                                href="<%= base_url %>admin/rent_enquiry"><i class="fa fa-star"></i>
+                                href="<%= base_url %>admin/enquiry/rent"><i class="fa fa-star"></i>
                             <span>Rent Enquiry</span></a></li>
 
                 </ul>
@@ -224,13 +234,14 @@
 
 
             <li
-            <% if (page_name == 'stamp_duty') {
-            %>
+            <% if (page_name == 'stamp_duty') { %>
                 <%= "class='active'" %>
-                    <%
-                    } %>
-            ><a href="<%= base_url %>admin/stamp_duty"><i
-                            class="fa fa-star"></i> <span>Stamp Duty</span></a></li>
+                    <% } %>
+            >
+                <a href="<%= base_url %>admin/stamp_duty">
+                    <i class="fa fa-star"></i> <span>Stamp Duty</span>
+                </a>
+            </li>
 
 
             <li
