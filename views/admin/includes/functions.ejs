@@ -265,7 +265,7 @@
                 if (response.success) {
                     var data = response.data;
                     for (var i = 0; i < data.length; i++) {
-                        result += "<div class='col-md-3'><label><input type='checkbox' name='amenities1[]' value=" + data[i].amenity_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].amenity + "</div>";
+                        result += "<div class='col-md-3'><label><input type='checkbox' class='amenity_count' name='amenities1[]' value=" + data[i].amenity_id + "></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + data[i].amenity + "</div>";
                     }
                 }
                 $(divId).html(result);

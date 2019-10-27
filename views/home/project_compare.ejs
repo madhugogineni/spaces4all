@@ -1,0 +1,358 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>css/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
+
+    <link class="alt" href="<%= base_url %>css/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>js/modernizr.js"></script>
+
+    <style>
+
+        div.show-image {
+
+            position: relative;
+
+            float: left;
+
+            margin: 5px;
+
+        }
+
+        div.show-image:hover img {
+
+            opacity: 0.5;
+
+        }
+
+        div.show-image.delete {
+
+            display: block;
+
+        }
+
+        div.show-image .delete {
+
+            position: absolute;
+
+        }
+
+        div.show-image .delete {
+
+            top: 0%;
+
+            left: 91%;
+
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="body">
+
+    <!-- Start Site Header -->
+
+    <% include includes/header.ejs %>
+
+    <!-- End Site Header -->
+
+    <!-- Site Showcase -->
+
+    <div class="site-showcase">
+
+        <!-- Start Page Header -->
+
+        <div class="parallax page-header">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <h1> <%= page_title %> </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- End Page Header -->
+
+    </div>
+
+    <!-- Start Content -->
+
+    <div class="main" role="main">
+
+        <div id="content" class="content full" style="min-height: 400px">
+
+            <div class="container">
+
+                <div class="page">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+
+                            <div>
+                                <% if(count > 0) { %>
+                                    <table class="table table-bordered table-striped dataTable no-footer"
+                                           id="example1" role="grid" aria-describedby="example1_info">
+
+
+                                        <tbody>
+
+
+                                        <tr role="row" class="odd">
+
+                                            <td></td>
+                                            <%- getRowDetails(projects, "project_photo", "projects") %>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Project Name</span></td>
+                                            <%- getRowDetails(projects, "project_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Project Type</span></td>
+
+                                            <%- getRowDetails(projects, "project_type_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Project Sub Type</span></td>
+                                            <%- getRowDetails(projects, "project_sub_type_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">City</span></td>
+                                            <%- getRowDetails(projects, "city_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Locality</span></td>
+                                            <%- getRowDetails(projects, "locality_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Launch Date</span></td>
+
+                                            <%- getRowDetails(projects, "launch_date") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Possesion Date</span></td>
+                                            <%- getRowDetails(projects, "possession_date") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">No Of Buildings</span></td>
+                                            <%- getRowDetails(projects, "no_of_buildings") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">No Of Floors</span></td>
+                                            <%- getRowDetails(projects, "no_of_floors") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Total Area</span></td>
+                                            <%- getRowDetails(projects, "total_area") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Total Units</span></td>
+                                            <%- getRowDetails(projects, "total_units") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Plans</span></td>
+                                            <%- getRowDetails(projects, "plans") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Min Builtup Area</span></td>
+                                            <%- getRowDetails(projects, "min_builtup_area") %>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Max Builtup Area</span></td>
+                                            <%- getRowDetails(projects, "max_builtup_area") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Min Price</span></td>
+                                            <%- getRowDetails(projects, "min_price") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Max Price</span></td>
+                                            <%- getRowDetails(projects, "max_price") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Maintenance Charge</span></td>
+                                            <%- getRowDetails(projects, "maintenance_charge") %>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Floor Rise</span></td>
+                                            <%- getRowDetails(projects, "floor_rise") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Commencement</span></td>
+                                            <%- getRowDetails(projects, "commencement") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Approved Banks</span></td>
+
+                                            <%- getRowDetails(projects, "bank_list_string") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Amenities</span></td>
+                                            <%- getRowDetails(projects, "amenities_list_string") %>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Posted By</span></td>
+                                            <%- getRowDetails(projects, "posted_by") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Status</span></td>
+                                            <%- getRowDetails(projects, "status") %>
+
+                                        </tr>
+
+
+                                        </tbody>
+
+                                    </table>
+
+                            </div>
+
+                            <% }else { %>
+
+                                <h3 align='center'>There Are No Projects In Compare List</h3>
+
+                            <% } %>
+
+                        </div>
+
+                        <!-- Start Sidebar 
+
+                        <div class="sidebar right-sidebar col-md-3">
+
+                            <div class="widget sidebar-widget">
+
+                                
+
+                            </div>
+
+
+
+                        </div>
+
+                        -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Start Site Footer -->
+
+    <% include includes/footer.ejs %>
+
+
+</body>
+
+</html>

@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>css/bootstrap.css" rel="stylesheet"
+
+          type="text/css">
+
+    <link href="<%= base_url %>css/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link
+
+            href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css"
+
+            rel="stylesheet" type="text/css">
+
+    <link
+
+            href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css"
+
+            rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
+
+    <link class="alt" href="<%= base_url %>css/color.css"
+
+          rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>js/modernizr.js"></script>
+
+
+    <style>
+
+        div.show-image {
+
+            position: relative;
+
+            float: left;
+
+            margin: 5px;
+
+        }
+
+        div.show-image:hover img {
+
+            opacity: 0.5;
+
+        }
+
+        div.show-image:hover .delete {
+
+            display: block;
+
+        }
+
+        div.show-image .delete {
+
+            position: absolute;
+
+            display: none;
+
+        }
+
+        div.show-image .delete {
+
+            top: 1%;
+
+            left: 85%;
+
+        }
+
+    </style>
+
+
+</head>
+
+<body>
+
+<div class="body">
+
+    <!-- Start Site Header -->
+
+    <% include includes/header.ejs %>
+
+    <!-- End Site Header -->
+
+    <!-- Site Showcase -->
+
+    <div class="site-showcase">
+
+        <!-- Start Page Header -->
+
+        <div class="parallax page-header">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <h1> <%= page_title %> </h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- End Page Header -->
+
+    </div>
+
+    <!-- Start Content -->
+
+    <div class="main" role="main">
+
+        <div id="content" class="content full">
+
+            <div class="container">
+
+                <div class="page">
+
+                    <div class="row" style="min-height: 400px">
+
+                        <div class="col-md-12">
+
+
+                            <div>
+                                <% if(count > 0) { %>
+
+                                    <table class="table table-bordered table-striped dataTable no-footer"
+                                           id="example1" role="grid" aria-describedby="example1_info">
+
+                                        <tbody>
+
+                                        <tr role="row" class="odd">
+
+                                            <td></td>
+                                            <%- getRowDetails(rent, "photos", "rent") %>
+
+                                        <tr>
+                                            <td><span class="bldtx1">Property Type</span></td>
+                                            <%- getRowDetails(rent, "property_type_name") %>
+                                        </tr>
+
+                                        <tr>
+                                            <td><span class="bldtx1">Property Sub Type</span></td>
+                                            <%- getRowDetails(rent, "property_sub_type_name") %>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">City</span></td>
+                                            <%- getRowDetails(rent, "city_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Locality</span></td>
+                                            <%- getRowDetails(rent, "locality_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Landmark</span></td>
+                                            <%- getRowDetails(rent, "landmark") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">State</span></td>
+                                            <%- getRowDetails(rent, "state_name") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Bedrooms</span></td>
+                                            <%- getRowDetails(rent, "bedrooms") %>
+
+                                            <?php }?>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Bathrooms</span></td>
+                                            <%- getRowDetails(rent, "bathrooms") %>
+
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Price</span></td>
+                                            <%- getRowDetails(rent, "price") %>
+
+                                        </tr>
+
+                                        <tr>
+                                            <td><span class="bldtx1">Maintenance</span></td>
+                                            <%- getRowDetails(rent, "maintenance") %>
+                                        </tr>
+
+                                        <tr>
+                                            <td><span class="bldtx1">Available Time</span></td>
+                                            <%- getRowDetails(rent, "available_time") %>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td><span class="bldtx1">Posted By</span></td>
+                                            <%- getRowDetails(rent, "posted_by") %>
+                                        </tr>
+
+                                        </tbody>
+
+                                    </table>
+
+                            </div>
+
+
+                        </div>
+
+                        <% }else { %>
+
+                            <h3 align='center'>There Are No Properties In Compare List</h3>
+
+                        <% } %>
+
+                        <!-- Start Sidebar
+
+                        <div class="sidebar right-sidebar col-md-3">
+
+                            <div class="widget sidebar-widget">
+
+                                <?php include 'includes/sidebar.php';?>
+
+                            </div>
+
+
+
+                        </div>
+
+                        -->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Start Site Footer -->
+
+    <% include includes/footer.ejs %>
+
+
+</body>
+
+</html>

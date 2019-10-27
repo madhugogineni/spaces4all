@@ -26,6 +26,7 @@ router.get('/add', upload.none(), async function (req, res) {
 });
 router.post('/add', upload.none(), async function (req, res) {
     var data = deepclone(req.body);
+    console.log(data);
     data.datetime = utils.getDate();
     await crudModel.addNews(data);
     res.redirect('/admin/news');

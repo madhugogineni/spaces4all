@@ -208,6 +208,7 @@ module.exports = {
             });
         });
     },
+
     getPropertyDetailsById: function (propertyId) {
         return new Promise(function (resolve, reject) {
             con.query("SELECT list_property.*,state.state_name as state_name, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +

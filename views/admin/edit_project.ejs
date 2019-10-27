@@ -5,13 +5,13 @@
 
 <% include includes/menu.ejs %>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $("form#project_form").submit(function (e) {
             e.preventDefault();
             var formData = new FormData(this);
             $.ajax({
                 type: "POST",
-                url: "<%= base_url %>admin/project/update/<%= project_id %>",
+                url: "<%= base_url %>admin/projects/update/<%= project_id %>",
                 data: formData,
                 success: function (result) {
                     var className = "";
@@ -20,7 +20,7 @@
                     } else {
                         className = "alert alert-error fade in";
                     }
-                    var displayMsg = '<div class="'+className+'"> <a href="#" data-dismiss="alert" class="close">x</a><strong>'+result.message+'</strong></div>';
+                    var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
                     $("#project_form").prepend(displayMsg);
                 },
                 cache: false,
@@ -85,7 +85,7 @@
 
                     <div class="box-body">
 
-                        <form action="<%= base_url %>admin/project/update/<%= project_id %>" method="post"
+                        <form action="<%= base_url %>admin/projects/update/<%= project_id %>" method="post"
                               enctype="multipart/form-data" id="project_form">
 
                             <div class="row">
@@ -241,34 +241,28 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">No Of Buildings</label> <input
-
-                                                        type="text" class="form-control" id="" name="buildings"
-
-                                                        placeholder="Enter No Of Buildings"
-                                                        value="<%= project_details.no_of_buildings %>">
+                                                <label for="exampleInputEmail1">No Of Buildings</label>
+                                                <input type="text" class="form-control" id="" name="buildings"
+                                                       placeholder="Enter No Of Buildings"
+                                                       value="<%= project_details.no_of_buildings %>">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">No Of Floors</label> <input
-
-                                                        type="text" class="form-control" id="" name="floors"
-
-                                                        placeholder="Enter No Of Floors"
-                                                        value="<%= project_details.no_of_floors %>">
+                                                <label for="exampleInputEmail1">No Of Floors</label>
+                                                <input type="text" class="form-control" id="" name="floors"
+                                                       placeholder="Enter No Of Floors"
+                                                       value="<%= project_details.no_of_floors %>">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Total Area</label> <input
-
-                                                        type="text" class="form-control" id="" name="total_area"
-
-                                                        placeholder="Enter Total Area"
-                                                        value="<%= project_details.total_area %>">
+                                                <label for="exampleInputEmail1">Total Area</label>
+                                                <input type="text" class="form-control" id="" name="total_area"
+                                                       placeholder="Enter Total Area"
+                                                       value="<%= project_details.total_area %>">
 
                                             </div>
 
@@ -295,8 +289,7 @@
                                                 <label for="exampleInputEmail1">Plans</label>
 
                                                 <select name="plans[]" id="example-getting-started"
-                                                        class="form-control"
-                                                        multiple="multiple" required="required">
+                                                        class="form-control" multiple="multiple" required="required">
 
                                                     <% for(var i = 1;i <= 10;i++){ %>
 
@@ -321,12 +314,10 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Max Builtup Area</label> <input
-
-                                                        type="text" class="form-control" id="" name="max_builtup"
-
-                                                        placeholder="Enter Max Builtup Area"
-                                                        value="<%= project_details.max_builtup_area %>">
+                                                <label for="exampleInputEmail1">Max Builtup Area</label>
+                                                <input type="text" class="form-control" id="" name="max_builtup"
+                                                       placeholder="Enter Max Builtup Area"
+                                                       value="<%= project_details.max_builtup_area %>">
 
                                             </div>
 
@@ -933,7 +924,7 @@
         $(".text2").wysihtml5();
 
     });
-    setUpProjectTypes('#project_type',"<%= project_details.project_type %>");
+    setUpProjectTypes('#project_type', "<%= project_details.project_type %>");
     getProjectSubTypes("<%= project_details.project_type %>", "#project_sub_type", "<%= project_details.project_sub_type %>");
     selectOption("posted_by", "<%= project_details.posted_by %>");
     setUpCities("#city", "<%= project_details.city %>");

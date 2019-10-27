@@ -92,5 +92,12 @@ module.exports = {
         parameters.base_url = urls.base_url;
         var html = result(parameters);
         return html;
+    },
+    getErrorMessage: function (errors) {
+        var errorMsg = "";
+        Object.keys(errors).map(function (key) {
+            errorMsg += errors[key].message + "<br/>";
+        });
+        return errorMsg;
     }
 }

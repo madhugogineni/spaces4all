@@ -1097,6 +1097,27 @@ router.get("/property_details/:property_id", async function (req, res) {
         }
     }
 });
+router.get('/project_details/:id/:name', async function (req, res) {
+    var id = req.params.id;
+    var data = {
+        page_name: 'project_details',
+        page_title: 'Project Details',
+        project_id: id,
+        project: {}
+    };
+    if (id) {
+        var response = await crudModel.getProjectById(id);
+        if (response.success) {
+            data.project = response.data;
+        } else {
+            res.redirect('/');
+        }
+        console.log(data);
+        res.render('home/project_details', data);
+    } else {
+        res.redirect('/');
+    }
+});
 router.get("/compare/:type", async function (req, res) {
     var type = req.params.type;
     var solutions = [];
@@ -1141,9 +1162,73 @@ router.get("/compare/:type", async function (req, res) {
             count: solutions.length
         });
     } else if (type == "project") {
+        var data = {
+            page_name: 'project_compare',
+            page_title: 'Project Compare',
+            projects: [],
+            count: 0
+        };
+        var response = await crudModel.getProjectByIds(ids);
+        if (response.success) {
+            for (var i = 0; i < response.data.length; i++) {
+                var amenitiesList = await crudModel.getAmenityNames(response.data[i].amenities);
+                if (amenitiesList.success) {
+                    response.data[i].amenities_list = amenitiesList.data;
+                    var amenitiesString = "";
+                    for (var j = 0; j < amenitiesList.data.length; j++) {
+                        amenitiesString += amenitiesList.data[j].amenity
+                        if (j != (amenitiesList.data.length - 1)) {
+                            amenitiesString += ', '
+                        }
+                    }
+                    if (amenitiesString === "") {
+                        amenitiesString = "No amenities available";
+                    }
+                    response.data[i].amenities_list_string = amenitiesString
+                } else {
+                    response.data[i].amenities_list = [];
+                    response.data[i].amenities_list_string = ""
+                }
+                var banksList = await crudModel.getBanksById(response.data[i].approved_banks);
+                if (banksList.success) {
+                    response.data[i].banks_list = banksList.data;
+                    var banksString = "";
+                    for (var j = 0; j < banksList.data.length; j++) {
+                        banksString += banksList.data[j].bank_name
+                        if (j != (banksList.data.length - 1)) {
+                            banksString += ', '
+                        }
+                    }
+                    if (banksString === "") {
+                        banksString = "No amenities available";
+                    }
+                    response.data[i].banks_list_string = banksString
+                } else {
+                    response.data[i].banks_list = [];
+                    response.data[i].banks_list_string = "";
+                }
+            }
+            data.projects = response.data;
+            data.count = response.data.length;
+        }
+        console.log(data.projects);
+        res.render('home/project_compare', data);
+
 
     } else if (type == "rent") {
-
+        var response = await crudModel.getRentDetailsByIds(ids);
+        var data = {
+            page_name: 'rent_compare',
+            page_title: 'Rent Compare',
+            rent: [],
+            count: 0
+        }
+        if (response.success) {
+            data.rent = response.data;
+            data.count = response.data.length
+        }
+        console.log(data.rent);
+        res.render('home/rent_compare', data);
     } else {
         res.send("incorrect url")
     }
@@ -1169,31 +1254,6 @@ router.get("/compare_count/:type", function (req, res) {
     res.send({success: true, count: req.session.compare[type].length || 0});
 });
 
-// async function uploadImages(photoFiles, propertyId, path) {
-//     if (photoFiles.length) {
-//         var imagesToUpload = [];
-//         var fileNames = [];
-//         for (var i = 0; i < photoFiles.length; i++) {
-//             var fileName = photoFiles[i].originalname;//propertyId + "|" +
-//             var uploadResponse = await writeFile(
-//                 fileName,
-//                 photoFiles[i].buffer,
-//                 path
-//             );
-//             if (uploadResponse.success) {
-//                 fileNames.push(fileName);
-//                 var photoFile = [propertyId, fileName, utils.getDate()];
-//                 imagesToUpload.push(photoFile);
-//             }
-//         }
-//         var response = await crudModel.addPropertyPhotos(imagesToUpload);
-//         if (response.success) {
-//             return {success: true, fileNames: fileNames};
-//         } else {
-//             return {success: false};
-//         }
-//     }
-// }
 
 function getErrorMessage(errors) {
     var errorMsg = "";

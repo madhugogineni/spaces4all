@@ -113,7 +113,7 @@
                                        onclick="updateValues('<%= configuration.configuration_id %>','<%= configuration.plan %>','<%= configuration.size %>','<%= configuration.price %>')"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/delete_project_configurations/<%= project_id %>/<%= configuration.configuration_id %>"
+                                    <a href="<%= base_url %>admin/projects/configurations/delete/<%= project_id %>/<%= configuration.configuration_id %>"
                                        onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
                                 </td>
@@ -161,7 +161,7 @@
 
         <div class="modal-content">
 
-            <form action="<%= base_url %>admin/edit_project_configurations/<%= project_id %>" method="post">
+            <form action="<%= base_url %>admin/projects/configurations/edit/<%= project_id %>" method="post">
 
                 <div class="modal-header">
 
@@ -259,7 +259,7 @@
 
             </div>
 
-            <form action="<%= base_url %>admin/add_project_configurations/<%= project_id %>" method="post">
+            <form action="<%= base_url %>admin/projects/configurations/add/<%= project_id %>" method="post">
 
                 <div class="modal-body">
 

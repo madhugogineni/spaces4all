@@ -3,6 +3,9 @@
 <!-- Left side column. contains the logo and sidebar -->
 
 <% include includes/menu.ejs %>
+<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="<%= base_url %>admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
+        type="text/javascript"></script>
 <script>
     function loadTemplate() {
         var temp = $('#template_name option:selected').val();
@@ -10,6 +13,45 @@
         $('#template-container').html(temp);
 
     }
+
+    // var limit = 3;
+    // $('input.amenity_count').on('change', function(evt) {
+    //     if($(this).siblings(':checked').length >= limit) {
+    //         this.checked = false;
+    //     }
+    // });
+    $(function () {
+
+        // Replace the <textarea id="editor1"> with a CKEditor
+
+        // instance, using default configuration.
+
+        CKEDITOR.replace('editor1');
+
+        //bootstrap WYSIHTML5 - text editor
+
+        $(".textarea").wysihtml5();
+
+    });
+
+    function showPreview() {
+        var formData = new FormData(document.querySelector('#mailer_config'));
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+        formData.append('hightlights', CKEDITOR.instances['editor1'].getData());
+        $.ajax({
+            type: "POST",
+            url: "<%= base_url %>admin/mailer/preview",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    }
+
 </script>
 
 <!-- Content Wrapper. Contains page content -->
@@ -46,36 +88,96 @@
 
             <div class="col-xs-12">
 
+                <form id="mailer_config" action="<%= base_url %>admin/mailer/send" method="post"
+                      enctype="multipart/form-data">
 
-                <div class="box">
+                    <div class="box">
 
-                    <!-- /.box-header -->
+                        <!-- /.box-header -->
 
-                    <div class="box-body">
+                        <div class="box-body">
 
-                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="title">Name</label>
+                                <input class="form-control" id="name" name="name" placeholder="Enter Name"
+                                       type="text" required="required">
 
-                            <label for="template_name">Template Name</label><br/>
+                            </div>
 
-                            <select name="template_name" id="template_name" class="form-control" onchange="loadTemplate()">
+                            <div class="form-group">
+                                <label for="title">Location</label>
+                                <input class="form-control" id="location" name="location" placeholder="Enter Location"
+                                       type="text" required="required">
 
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Sizing</label>
+                                <input class="form-control" id="sizing" name="sizing"
+                                       placeholder="Eg: 2BHK Villa, 4 BHK Flat" type="text" required="required">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Price</label>
+                                <input class="form-control" id="price" name="price" placeholder="Enter Price"
+                                       type="text" required="required">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Saleable Area</label>
+                                <input class="form-control" id="saleable_area" name="saleable_area"
+                                       placeholder="Eg: 200 Sqft, 2200 - 2400 Sqft" type="text" required="required">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">RERA ID</label>
+                                <input class="form-control" id="rera_id" name="rera_id" placeholder="Enter RERA ID"
+                                       type="text" required="required">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">I'm Interested Link</label>
+                                <input class="form-control" id="interested_link" name="interested_link"
+                                       placeholder="Enter I'm Interested Link" type="text" required="required">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Highlights</label>
+                                <textarea id="editor1" name="hightlights" rows="10" cols="100" min="10"
+                                          required="required" placeholder="Enter Hightlights"></textarea>
+
+                            </div>
+                            <div class="form-group">
+                                <label for="title">Highlights</label>
+                                <input class="form-control" id="image" name="image" type="file" required="required">
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="title">Amenities(Select only 4 amenities)</label>
+                                <div class="checkbox" id="amenity_options">
+                                    <script>
+                                        setUpAmenities("#amenity_options");
+                                    </script>
+                                </div>
+                            </div>
+
 
                         </div>
 
+                        <div align="center">
+                            <button class="btn btn-info btn-sm" title="Add">Add</button>
 
-                        <div id="template-container">
+                            <button type="button" class="btn btn-info btn-sm" onclick="showPreview()" title="Preview">
+                                Preview
+                            </button>
+                        </div>
+                        <div id="mailer-preview">
 
                         </div>
-
+                        <!-- /.box-body -->
+                        <br/>
                     </div>
-
-                    <!-- /.box-body -->
-
-                </div>
+                </form>
 
 
                 <!-- /.box -->

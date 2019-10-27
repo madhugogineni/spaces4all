@@ -217,6 +217,27 @@ module.exports = {
             });
         });
     },
+    getRentDetailsByIds: function (id) {
+        return new Promise(function (resolve, reject) {
+
+            var query = "SELECT rent.*,property_type.type as property_type_name,property_sub_type.sub_type as " +
+                "property_sub_type_name, city.city as city_name, locality.locality as locality_name, " +
+                "state.state_name as state_name from rent inner join property_type on rent.property_type = " +
+                "property_type.property_type_id inner join property_sub_type on rent.property_sub_type = " +
+                "property_sub_type.property_sub_type_id inner join city on rent.city = city.city_id inner join " +
+                "locality on rent.locality = locality.locality_id inner join state on rent.state = " +
+                "state.state_id where rent_id in (" + id + ")";
+            // console.log(query);
+            con.query(query, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                } else {
+                    resolve({success: true, data: result});
+                }
+            });
+        });
+    },
 
     insertToRent: function (data) {
         return new Promise(function (resolve, reject) {
@@ -229,7 +250,7 @@ module.exports = {
             });
         });
     },
-    updateRent: function (data,rentId) {
+    updateRent: function (data, rentId) {
         return new Promise(function (resolve, reject) {
             con.query("update rent set ? where rent_id='" + rentId + "'", data, function (error, result) {
                 if (error) {
