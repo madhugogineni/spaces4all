@@ -34,70 +34,110 @@ module.exports = {
     getPropertyPhotosLimit: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from property_photos where property_id=" + id + " limit 1", function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },
     getPropertyPhotos: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from property_photos where property_id=" + id, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
             });
         });
     },
     getPropertyPhotoById: function (id) {
         return new Promise(function (resolve, reject) {
             con.query("select * from property_photos where photo_id=" + id, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
+            });
+        });
+    },
+    deletePropertyPhoto: function (id) {
+        return new Promise(function (resolve, reject) {
+            con.query("delete from property_photos  where photo_id = '" + id + "'", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true});
             });
         });
     },
 
-    getProperties: function (propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, possession) {
-        var query = "SELECT * FROM list_property where list_property_id !=0";
+    getProperties: function (parameters = {}, from, limit) {
+        var query = "SELECT list_property.*,state.state_name as state_name, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
+            "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides," +
+            "residential_plot_details.width, residential_plot_details.construction_done, residential_plot_details.boundary_wall, " +
+            "residential_plot_details.gated_colony, property_type.type as property_type_name, " +
+            "property_sub_type.sub_type as property_sub_type_name  FROM list_property left join state as state on list_property.state = state.state_id " +
+            " inner join city on list_property.city = city.city_id " +
+            "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
+            "list_property.list_property_id = residential_plot_details.list_property_id inner join property_type on " +
+            "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
+            "list_property.property_sub_type = property_sub_type.property_sub_type_id where list_property.list_property_id !=0";
 
-        if (propertyType != "") {
-            if (propertyType != 0) {
-                query += " AND property_type='" + propertyType + "'";
+        if (parameters.property_type != "" && parameters.property_type != undefined) {
+            if (parameters.property_type != 0) {
+                query += " AND list_property.property_type='" + parameters.property_type + "'";
             }
         }
-        if (propertySubType != "") {
-            query += " AND property_sub_type='" + propertySubType + "'";
+        if (parameters.property_sub_type != "" && parameters.property_sub_type != undefined) {
+            query += " AND list_property.property_sub_type='" + parameters.property_sub_type + "'";
         }
-        if (city != "") {
-            query += " AND city='" + city + "'";
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND list_property.city='" + parameters.city + "'";
         }
-        if (locality != "") {
-            query += " AND locality='" + locality + "'";
+        if (parameters.locality != "" && parameters.locality != undefined) {
+            query += " AND list_property.locality='" + parameters.locality + "'";
         }
-        if (bedrooms != "") {
-            query += " AND bedrooms='" + bedrooms + "'";
+        if (parameters.bedrooms != "" && parameters.bedrooms != undefined) {
+            console.log(parameters.bedrooms);
+            query += " AND list_property.bedrooms='" + parameters.bedrooms + "'";
+        } else {
+            console.log('empty');
         }
-        if (postedBy != "") {
-            query += " AND posted_by='" + postedBy + "'";
+        if (parameters.posted_by != "" && parameters.posted_by != undefined) {
+            query += " AND list_property.posted_by='" + parameters.posted_by + "'";
         }
-        if (minPrice != "") {
-            query += " AND quoted_price >='" + minPrice + "'";
+        if (parameters.min_price != "" && parameters.min_price != undefined) {
+            query += " AND list_property.quoted_price >=" + parameters.min_price;
         }
-        if (maxPrice != "") {
-            query += " AND quoted_price <='" + maxPrice + "'";
+        if (parameters.max_price != "" && parameters.max_price != undefined) {
+            query += " AND list_property.quoted_price <=" + parameters.max_price;
         }
-        if (possession != "") {
-            query += " AND possession ='" + possession + "'";
+        if (parameters.possession != "" && parameters.possession != undefined) {
+            query += " AND list_property.possession ='" + parameters.possession + "'";
         }
-        query += " AND status='1' ORDER BY datetime DESC ";
+        query += " AND list_property.status='1' ORDER BY datetime DESC ";
+        // console.log(query);
+        if (!from || from < 0) {
+            from = '0';
+        }
+
+        if (limit) {
+            query += " limit " + from + "," + limit;
+        }
         // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                console.log(result);
+                resolve({success: true, data: result});
             });
         });
     },
@@ -155,7 +195,6 @@ module.exports = {
         });
     },
 
-
     addPropertyPhotos: function (files) {
         console.log(files);
         return new Promise(function (resolve, reject) {
@@ -169,7 +208,6 @@ module.exports = {
             });
         });
     },
-
 
     insertPropertyEnquiry: function (data) {
         return new Promise(function (resolve, reject) {

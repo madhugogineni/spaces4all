@@ -1,8 +1,8 @@
-<% include includes/header.ejs %>
+<% include ../includes/header.ejs %>
 
 <!-- Left side column. contains the logo and sidebar -->
 
-<% include includes/menu.ejs %>
+<% include ../includes/menu.ejs %>
 
 
 <!-- Content Wrapper. Contains page content -->
@@ -48,7 +48,8 @@
 
                         <div class="col-md-2">
 
-                            <a href="<%= base_url %>admin/projects/add" class="btn btn-block btn-default">Add Project</a>
+                            <a href="<%= base_url %>admin/projects/add" class="btn btn-block btn-default">Add
+                                Project</a>
 
                         </div>
 
@@ -149,7 +150,7 @@
                                     <a href="#"
                                        onclick="showAjaxModal('<%= base_url %>admin/projects/<%= project.project_id %>','project')">Details</a>
                                     <br/>
-                                    <a href="<%= base_url %>admin/project_photos/<%= project.project_id %>">Images</a>
+                                    <a href="<%= base_url %>admin/projects/photos/<%= project.project_id %>">Images</a>
                                     <br/>
 
                                     <a href="<%= base_url %>admin/projects/configurations/<%= project.project_id %>">Configurations</a>
@@ -257,4 +258,4 @@
 </div>
 
 
-<% include includes/footer.ejs %>
+<% include ../includes/footer.ejs %>

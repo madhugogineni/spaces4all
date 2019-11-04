@@ -1,0 +1,633 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%= page_title %> </title>
+
+    <meta name="description" content="">
+
+    <meta name="keywords" content="">
+
+    <meta name="author" content="">
+
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+
+    <link href="<%= base_url %>css/bootstrap.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>css/style.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/prettyphoto/css/prettyPhoto.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.carousel.css" rel="stylesheet" type="text/css">
+
+    <link href="<%= base_url %>plugins/owl-carousel/css/owl.theme.css" rel="stylesheet" type="text/css">
+
+    <!--[if lte IE 9]>
+    <link rel="stylesheet" type="text/css" href="css/ie.css" media="screen"/><![endif]-->
+
+    <link class="alt" href="<%= base_url %>css/color.css" rel="stylesheet" type="text/css">
+
+    <script src="http://code.jquery.com/jquery-1.6.3.min.js"></script>
+
+    <script src="<%= base_url %>js/modernizr.js"></script>
+
+    <script>
+
+        function List_form() {
+            document.List_form.submit();
+        }
+
+
+        function Grid_form() {
+
+            document.Grid_form.submit();
+
+        }
+
+        function updateValues(id) {
+            var modalBody = '<div id="errorBox3"></div>' +
+                '<div class="row">' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>NAME*</label>' +
+                '<input type="text" id="call_name" name="call_name" class="form-control" placeholder="Name" required="required">' +
+                '</div>' +
+                '<div class="col-md-6 col-sm-6">' +
+                '<label>PHONE NUMBER*</label>' +
+                '<input type="text" id="call_phone" name="call_phone" class="form-control" placeholder="Phone Number" required="required">' +
+                '</div>' +
+                '<input type="hidden" id="call_project" name="call_project" value=' + id + '>' +
+                '</div>';
+            $('#call_back_response').html(modalBody);
+            $('#call_project').val(id);
+            $('#modal_ajax1').modal('show', {backdrop: 'true'});
+        }
+
+        function Show_Div(Div_id) {
+
+            if (false == $(Div_id).is(':visible')) {
+
+                $(Div_id).show(250);
+
+            } else {
+
+                $(Div_id).hide(250);
+
+            }
+
+        }
+
+        function hide_bedrooms(str) {
+
+            var value = document.getElementById("property_type").value;
+
+            if (str == '14') {
+
+                $('#bedrooms').attr("disabled", true);
+
+            } else {
+
+                if (value == '1') {
+
+                    $('#bedrooms').attr("disabled", true);
+
+                } else {
+
+                    $('#bedrooms').attr("disabled", false);
+
+                }
+
+            }
+
+        }
+
+
+        function Show_max_price(str) {
+
+            //alert(str);
+
+            $.ajax({
+
+                url: '<?php echo base_url();?>home/max_price/' + str,
+
+                success: function (response) {
+
+                    //alert(response);
+
+                    jQuery('#max_price').html(response);
+
+                }
+
+            });
+
+        }
+
+    </script>
+
+</head>
+
+<body>
+
+<div class="body">
+
+    <!-- Start Site Header -->
+
+    <% include includes/header.ejs %>
+
+    <!-- End Site Header -->
+
+    <!-- Site Showcase -->
+
+    <div class="site-showcase">
+
+        <!-- Start Page Header -->
+
+        <div class="parallax page-header" style="background-image:url(images/page-header1.jpg);">
+
+            <div class="container">
+
+                <div class="row">
+
+                    <div class="col-md-12">
+
+                        <h1>Properties</h1>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- End Page Header -->
+
+    </div>
+
+    <div>
+
+        <form action="<%= base_url %>home/properties/list_view" name="List_form" id="List_form" method="get">
+
+            <input type="hidden" name="property_type" value="<%= property_type %>">
+
+            <input type="hidden" name="property_sub_type" value="<%= property_sub_type %>">
+
+            <input type="hidden" name="city" value="<%= city %>">
+
+            <input type="hidden" name="locality" value="<%= locality %>">
+
+            <input type="hidden" name="bedrooms" value="<%= bedrooms %>">
+
+            <input type="hidden" name="min_price" value="<%= min_price %>">
+
+            <input type="hidden" name="max_price" value="<%= max_price %>">
+
+            <input type="hidden" name="possession" value="<%= possession %>">
+
+        </form>
+
+    </div>
+
+    <!-- Start Content -->
+
+    <div class="main" role="main">
+
+        <div id="content" class="content full">
+
+            <div class="container">
+
+                <div class="page">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <div class="block-heading">
+
+                                <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
+                                                class="fa fa-th-large"></i></span>Properties Grid View</h4>
+
+                                <div class="toggle-view pull-right">
+
+                                    <a href="javascript: Grid_form()" class="active" title="Grid View"><i
+                                                class="fa fa-th-large"></i></a>
+
+                                    <a href="javascript: List_form()" title="List View"><i
+                                                class="fa fa-th-list"></i></a>
+
+                                    <!--                                    <a href="javascript: Map_form()" title="Map View"><i class="fa fa-archive"></i></a>-->
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="search-list">
+
+                                <form action="<%= base_url %>home/properties" name="Grid_form" method="get">
+
+                                    <div class="row" style="padding-bottom: 10px">
+
+                                        <div class="col-md-4">
+
+                                            <select name="property_type" id="property_type"
+                                                    onchange="getPropertySubTypes(this.value,'#property_sub_type')"
+                                                    class="form-control margin-0">
+                                                <option value="0">Property Type</option>
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-4">
+
+                                            <select name="property_sub_type" id="property_sub_type"
+                                                    onchange="hide_bedrooms(this.value)" class="form-control margin-0">
+
+                                                <option value="">Property Sub Type</option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-4">
+
+                                            <select name="city" id="city"
+                                                    onchange="showLocality(this.value,'#Showlocality')"
+                                                    class="form-control margin-0">
+
+                                                <option value="">City</option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <!--<div class="col-md-1">   -->
+
+                                        <!--     <button type="button" onclick="Show_Div(Div_1)" class="btn btn-primary btn-block">Filters</button>-->
+
+                                        <!--</div>      -->
+
+
+                                    </div>
+
+                                    <div class="row" id="Div_1" style="padding-bottom: 10px">
+
+                                        <div class="col-md-2">
+
+                                            <select name="locality" id="Showlocality" class="form-control margin-0">
+
+                                                <option value="">---locality---</option>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-2">
+
+                                            <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+
+                                                <option value="">Bed Rooms</option>
+                                                <% for (var i = 1; i <= 5 ; i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                <% } %>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-2">
+
+                                            <select id="min_price" name="min_price" class="form-control margin-0 "
+                                                    onchange="Show_max_price(this.value)">
+
+                                                <option value="">Min Price</option>
+                                                <% for (var i = 500000; i <= 30000000; i += 1000000) {
+                                                    var price, value = i;
+                                                    if (value >= 10000000) {
+                                                        price = parseFloat(value) / 10000000;
+                                                        price = price + " Crore";
+                                                    } else if (value >= 100000) {
+                                                        price = parseFloat(value) / 100000;
+                                                        price = price + " Lac";
+                                                    }
+                                                %>
+                                                <option value="<%= value %>"> <%= price %></option>
+
+                                                <% } %>
+
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-2">
+
+                                            <select name="max_price" class="form-control margin-0 " id="max_price">
+
+                                                <option value="">Max Price</option>
+                                                <% for (var i = 1000000; i <= 50000000; i += 1000000) {
+                                                    var price, value = i;
+                                                    if (value >= 10000000) {
+                                                        price = parseFloat(value) / 10000000;
+                                                        price = price + " Crore";
+                                                    } else if (value >= 100000) {
+                                                        price = parseFloat(value) / 100000;
+                                                        price = price + " Lac";
+                                                    }
+                                                %>
+                                                <option value="<%= value %>"> <%= price %></option>
+
+                                                <% } %>
+                                            </select>
+
+                                        </div>
+
+
+                                        <div class="col-md-2">
+
+                                            <select name="possession" class="form-control margin-0 ">
+
+                                                <option value="">Possession</option>
+
+                                                <% for(var i = 2015;i <= 2025;i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                <% } %>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-md-2">
+
+                                            <button type="submit" class="btn btn-lg btn-primary btn-block"><i
+                                                        class="fa fa-search"></i> Search
+                                            </button>
+
+                                        </div>
+
+
+                                    </div>
+
+                                </form>
+
+                                <div class="block-heading">
+
+                                    <h4>&nbsp;</h4>
+
+                                    <div class="toggle-view pull-right">
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <br><br><br><br><br><br>
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <div id="property_success"></div>
+
+                                <div class="property-grid">
+
+                                    <% if (properties.length > 0) { %>
+
+                                        <ul class="grid-holder col-3 isotope"
+                                            style="position: relative; overflow: hidden; height: 700px;">
+
+                                            <% for(var i = 0;i < properties.length;i++) {
+                                                var property = properties[i]; %>
+
+                                            <li class="grid-item type-rent isotope-item"
+                                                style="position: absolute; left: 0px; top: 0px; transform: translate(533px, 350px);">
+
+                                                <div class="property-block">
+
+                                                    <a href="<%= base_url %>home/property_details/<%= property.list_property_id %>"
+                                                       class="property-featured-image">
+
+                                                        <img src="<%= base_url %>uploads/list_property/<%= property.image %>"
+                                                             style="height: 170px" alt="Spaces4all">
+
+                                                        <span class="images-count"> <%= property.city_name %> </span>
+
+                                                        <!--                                                        <span class="badges" style="color: #000">SELL</span>-->
+
+                                                    </a>
+
+                                                    <div class="property-info" style="line-height: 5px">
+                                                        <span class="pull-right" title="Compare">
+                                                        <input type="checkbox"
+                                                               onclick="add_Compare('property','<%= property.list_property_id %>',this)">
+                                                    </span>
+
+                                                        <h4>
+                                                            <a href="<%= base_url %>home/property_details/<%= property.list_property_id %>"
+                                                               style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><%= property.property_sub_type_name %></a>
+                                                        </h4>
+
+                                                        <hr>
+                                                        <span><%= property.property_name %></span>
+                                                        <hr>
+
+                                                        <span class="location"><%= property.locality_name %>, <%= property.city_name %></span>
+                                                        <hr>
+
+                                                        <% if(property.property_sub_type == '14' || property.property_sub_type == '18'){ %>
+
+                                                            <span><%= property.saleable_area %> Sq.Yds</span>
+                                                            <hr>
+
+                                                        <% }else if(property.property_type == '1' && property.property_sub_type != '18') { %>
+
+                                                            <span><%= property.saleable_area %> Sq.Ft</span>
+                                                            <hr>
+
+                                                        <% }else { %>
+
+                                                            <span><%= property.bedrooms %> BHK</span>
+                                                            <hr>
+
+                                                        <% } %>
+
+                                                        <span>
+                                                            <% if(property.quoted_price){ %><span
+                                                                    class="WebRupee">Rs.</span>
+                                                            <% } %>
+                                                            <%= property.quoted_price %></span>
+                                                        <hr>
+                                                        <br>
+
+                                                        <a href="<%= base_url %>home/property_details/<%= property.list_property_id %>">
+                                                            <button type="button" class="btn btn-danger">
+                                                                <i class="fa fa-angle-double-right"></i>&nbsp; View
+                                                                Details
+                                                            </button>
+                                                        </a>
+
+                                                        <a href="#"
+                                                           onclick="updateValues('<%= property.list_property_id %>')">
+                                                            <button type="button" class="btn pull-right">
+                                                                <i class="fa fa-phone"></i>&nbsp; &nbsp;Call Back
+                                                            </button>
+                                                        </a>
+                                                    </div>
+
+                                                </div>
+
+                                            </li>
+
+                                            <% } %>
+                                        </ul>
+
+                                    <% }else { %>
+                                        <br><br><h4 align='center'>There are No Results Available....</h4>
+
+                                    <% } %>
+
+                                </div>
+
+                                <!--                                <ul class="pagination pull-right">-->
+                                <!--                                    <?php -->
+                                <!--                            foreach ($links as $link) {-->
+                                <!--								echo "<li>". $link."</li>";-->
+                                <!--                                    }-->
+                                <!--                                    ?>-->
+                                <!--                                </ul>-->
+
+
+                                <!-- <ul class="pagination pull-right">
+            
+                                  <li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+            
+                                  <li class="active"><a href="#">1</a></li>
+            
+                                  <li><a href="#">2</a></li>
+            
+                                  <li><a href="#">3</a></li>
+            
+                                  <li><a href="#">4</a></li>
+            
+                                  <li><a href="#">5</a></li>
+            
+                                  <li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+            
+                                </ul> -->
+
+                            </div>
+
+                            <!-- Start Sidebar 
+          
+                            <div class="sidebar right-sidebar col-md-3">
+          
+                              
+          
+                                  <?php //include 'includes/sidebar.php';?>  
+          
+                              
+          
+                            </div>  -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Site Footer -->
+
+        <div class="modal fade" id="modal_ajax1">
+
+            <div class="modal-dialog">
+
+                <div class="modal-content">
+
+                    <form method="post">
+
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                            <h4 class="modal-title">Call Back</h4>
+
+                        </div>
+
+
+                        <div class="modal-body">
+
+                            <div id="call_back_response">
+
+                                <div id="errorBox3"></div>
+
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-6">
+
+                                        <label>NAME*</label>
+
+                                        <input type="text" id="call_name" name="call_name" class="form-control"
+                                               placeholder="Name" required="required">
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-6">
+
+                                        <label>PHONE NUMBER*</label>
+
+                                        <input type="text" id="call_phone" name="call_phone" class="form-control"
+                                               placeholder="Phone Number" required="required">
+
+                                    </div>
+
+                                    <input type="hidden" id="call_project" name="call_project" value="">
+                                </div>
+                            </div>
+
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                <button type="button" onclick="send_Property_Callback();" class="btn btn-primary">Send
+                                </button>
+
+                            </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+        <script>
+            setUpPropertyTypes("#property_type", "<%= property_type %>");
+            getPropertySubTypes("<%= property_type %>", "#property_sub_type","<%=property_sub_type%>");
+            setUpCities("#city", '<%= city %>');
+            showLocality('<%= city %>', "#showLocality",<%= locality %>)
+            selectOption("bedrooms", "<%= bedrooms %>");
+            selectOption("min_price", "<%= min_price %>");
+            selectOption("max_price", "<%= max_price %>");
+            selectOption("possession", "<%= possession %>");
+        </script>
+
+        <% include includes/footer.ejs %>
+
+  

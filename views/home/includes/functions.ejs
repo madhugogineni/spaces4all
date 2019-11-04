@@ -92,48 +92,85 @@
                 }
                 $(divId).find('option').remove().end();
                 $(divId).append(result);
+                // $(divId).selectpicker('refresh');
             }
         });
     }
 
-    function setUpProjectTypes() {
+    function setUpProjectTypes(divId, projectType) {
         $.ajax({
             method: "GET",
             url: "<%= api_url %>get_project_types",
             success: function (response) {
                 var result = '<option value="">Type</option>';
-                if(response.success) {
+                if (response.success) {
                     var data = response.data;
                     for (var i = 0; i < data.length; i++) {
                         var row = data[i];
-                        result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                        if (projectType && projectType == row.project_type_id) {
+                            result += '<option value="' + row.project_type_id + '" selected>' + row.type + '</option>';
+                        } else {
+                            result += '<option value="' + row.project_type_id + '">' + row.type + '</option>'
+                        }
                     }
-
                 }
-                $("#project_type").append(result);
-            }
-        });
-    }
-
-    function showLocality(cityId, divId) {
-        $.ajax({
-            method: "GET",
-            url: "<%= api_url %>get_localities",
-            data: {
-                city_id: cityId
-            },
-            success: function (response) {
-                var result = '';
-                result += '<option value="">Locality</option>';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
-                }
-
                 $(divId).find('option').remove().end();
                 $(divId).append(result);
             }
         });
+    }
+
+    function getProjectSubTypes(str, divId, selectedType) {
+        if(str) {
+            $.ajax({
+                type: 'GET',
+                url: '<%= api_url %>get_project_sub_types',
+                data: {
+                    project_type: str
+                },
+                success: function (response) {
+                    var result = '<option value="">---SELECT---</option>';
+                    for (var i = 0; i < response.length; i++) {
+
+                        if (selectedType && selectedType == response[i].project_sub_type_id) {
+                            result += '<option value="' + response[i].project_sub_type_id + '" selected>' + response[i].sub_type + '</option>';
+                        } else {
+                            result += '<option value="' + response[i].project_sub_type_id + '">' + response[i].sub_type + '</option>';
+                        }
+                    }
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
+
+                }
+            });
+        }
+    }
+
+    function showLocality(cityId, divId, localityId) {
+        if (cityId) {
+            $.ajax({
+                method: "GET",
+                url: "<%= api_url %>get_localities",
+                data: {
+                    city_id: cityId
+                },
+                success: function (response) {
+                    var result = '';
+                    result += '<option value="">--- Locality ---</option>';
+                    for (var i = 0; i < response.length; i++) {
+                        var row = response[i];
+                        if (localityId && row.locality_id == localityId) {
+                            result += '<option value="' + row.locality_id + '" selected>' + row.locality + '</option>'
+                        } else {
+                            result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+                        }
+                    }
+
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
+                }
+            });
+        }
     }
 
     function send_Project_Callback() {
@@ -192,7 +229,6 @@
     }
 
     function send_Property_Callback() {
-        console.log($("#call_project").val());
         var filter = /^[0-9-+]+$/;
 
         var name = $("#call_name").val();
@@ -203,27 +239,27 @@
 
         // var dataString = 'name=' + name + '&phone=' + phone + '&property_id=' + property_id;
 
-        if ($("#call_name1").val() == "") {
+        if (name == "") {
 
-            $("#call_name1").focus();
+            $("#call_name").focus();
 
             $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
 
-        } else if ($("#call_phone1").val() == "") {
+        } else if (phone == "") {
 
-            $("#call_phone1").focus();
+            $("#call_phone").focus();
 
             $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
         } else if (phone.length != "10") {
 
-            $("#call_phone1").focus();
+            $("#call_phone").focus();
 
             $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
         } else if (!filter.test(phone)) {
 
-            $("#call_phone1").focus();
+            $("#call_phone").focus();
 
             $("#errorBox3").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
 
@@ -268,18 +304,21 @@
             url: "<%= api_url %>get_property_types",
             success: function (response) {
                 var result = '<option value="">---Property Type---</option>';
-                if(response.success) {
+                if (response.success) {
+                    console.log('welcome');
                     var data = response.data;
                     for (var i = 0; i < data.length; i++) {
-                        if (selectedType == data[i].property_type_id) {
+                        if (selectedType && selectedType == data[i].property_type_id) {
                             result += '<option value="' + data[i].property_type_id + '" selected>' + data[i].type + '</option>';
                         } else {
                             result += '<option value="' + data[i].property_type_id + '">' + data[i].type + '</option>';
                         }
                     }
+                    console.log(result);
                 }
-
-                $(divId).html(result);
+                $(divId).find('option').remove().end();
+                $(divId).append(result);
+                // $(divId).selectpicker('refresh');
             }
         });
     }
@@ -302,24 +341,26 @@
     }
 
     function getPropertySubTypes(str, divId) {
-        $.ajax({
-            type: 'GET',
-            url: '<%= api_url %>get_property_sub_types',
-            data: {
-                property_type: str
-            },
-            success: function (response) {
-                var result = '<option value="">---SELECT---</option>';
-                if(response.success) {
-                    var data = response.data;
-                    for (var i = 0; i < data.length; i++) {
-                        result += '<option value="' + data[i].property_sub_type_id + '">' + data[i].sub_type + '</option>';
+        if (str && divId) {
+            $.ajax({
+                type: 'GET',
+                url: '<%= api_url %>get_property_sub_types',
+                data: {
+                    property_type: str
+                },
+                success: function (response) {
+                    var result = '<option value="">---SELECT---</option>';
+                    if (response.success) {
+                        var data = response.data;
+                        for (var i = 0; i < data.length; i++) {
+                            result += '<option value="' + data[i].property_sub_type_id + '">' + data[i].sub_type + '</option>';
+                        }
                     }
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
                 }
-                $(divId).find('option').remove().end();
-                $(divId).append(result);
-            }
-        });
+            });
+        }
     }
 
     function setUpSubPropertiesByPropertyType(propertyType, propertySubType) {
@@ -390,5 +431,66 @@
 
     function hideComparisonPopup() {
         $("#comparison-hover").hide();
+    }
+
+    function setUpValue(nameSelector, value) {
+        $("[name=" + nameSelector + "]").val(value)
+    }
+
+    function selectOption(nameSelector, value) {
+        var value1 = value
+        if (!value1) {
+            value1 = " invalid"
+        }
+        var values = value1.split(',');
+        values.forEach(function (eachValue) {
+            $('[name="' + nameSelector + '"] option[value="' + eachValue + '"]').attr('selected', 'selected')
+        })
+    }
+
+    function selectAmenities(amenities) {
+        var amenitiesList = amenities.split(',')
+        $("[name='amenities1[]']").each(function () {
+            if (amenitiesList.includes($(this).val())) {
+                $(this).prop('checked', true)
+            }
+        })
+    }
+
+    function selectBanks(banks) {
+        var banksList = banks.split(',')
+        $("[name='banks[]']").each(function () {
+            if (banksList.includes($(this).val())) {
+                $(this).prop('checked', true)
+            }
+        })
+    }
+
+    function showAjaxModal1(url, type) {
+        if (['property_possession', 'property_callback'].includes(type)) {
+
+        } else {
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    if (response.success) {
+                        var body = "";
+                        console.log('welcome');
+                        if (type == 'property') {
+                            body = prepareDetailsResponse(response.data);
+                        } else if (type == 'feedback') {
+                            body = prepareFeedbackDetails(response.data);
+                        } else if (type == 'post_requirement') {
+                            body = preparePostRequirementDetails(response.data);
+                        }
+                        $('#modal_ajax1 .modal-body').html(body);
+                    } else {
+                        $('#modal_ajax1 .modal-body').html("No Details Available");
+                    }
+
+                }
+            });
+        }
+        $('#modal_ajax1').modal('show', {backdrop: 'true'});
     }
 </script>

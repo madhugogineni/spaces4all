@@ -267,7 +267,7 @@
                                         <div class="col-md-2">
 
                                             <select id="search_type" onchange="ShowButton(this.value)"
-                                                    class="form-control input-lg selectpicker">
+                                                    class="form-control input-md">
 
                                                 <option value="BUY">BUY</option>
 
@@ -280,7 +280,7 @@
                                         <div class="col-md-3">
 
                                             <select name="property_type" id="index_property_type"
-                                                    class="form-control input-lg selectpicker">
+                                                    class="form-control input-md">
 
                                                 <script>setUpPropertyTypes('#index_property_type');</script>
 
@@ -290,11 +290,12 @@
 
                                         <div class="col-md-3">
 
-                                            <select name="city" id="property_city"
-                                                    class="form-control input-lg selectpicker">
+                                            <select name="city" id="property_city" class="form-control input-md">
 
                                                 <option value="">City</option>
-                                                <script>setUpCities("#property_city");</script>
+                                                <script>
+                                                    setUpCities("#property_city");
+                                                </script>
 
                                             </select>
 
@@ -332,19 +333,17 @@
 
                                         <div class="col-md-2">
 
-                                            <select name="project_type" id="project_type"
-                                                    class="form-control input-md selectpicker">
+                                            <select name="project_type" id="project_type" class="form-control input-md">
 
-                                                <script> setUpProjectTypes(); </script>
+                                                <script> setUpProjectTypes('#project_type'); </script>
                                             </select>
 
                                         </div>
 
                                         <div class="col-md-3">
 
-                                            <select name="city" id="project_city"
-                                                    onchange="showLocality(this.value,'#locality')"
-                                                    class="form-control input-md selectpicker">
+                                            <select name="city" id="project_city" class="form-control input-md"
+                                                    onchange="showLocality(this.value,'#locality')">
                                                 <script> setUpCities("#project_city"); </script>
 
                                             </select>
@@ -549,7 +548,7 @@
                                             <div class="col-md-4 pad-2 brbtm">
                                                 <ul class="">
                                                     <li>
-                                                        <a onclick="add_Compare('project',<%= latest_project.project_id%>,this)">
+                                                        <a onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
                                                             <button type="button" class="btn btn-default"><i
                                                                         class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
                                                                 &nbsp;&nbsp;
@@ -647,9 +646,10 @@
 <% include includes/footer.ejs %>
 <script type="text/javascript">
     function ticker() {
-        $('#ticker li:first').slideUp(function() {
+        $('#ticker li:first').slideUp(function () {
             $(this).appendTo($('#ticker')).slideDown();
         });
     }
+
     setInterval(ticker, 3000);
 </script>

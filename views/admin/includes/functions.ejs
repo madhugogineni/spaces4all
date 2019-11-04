@@ -123,28 +123,30 @@
     }
 
     function showLocality(cityId, divId, localityId) {
-        $.ajax({
-            method: "GET",
-            url: "<%= api_url %>get_localities",
-            data: {
-                city_id: cityId
-            },
-            success: function (response) {
-                var result = '';
-                result += '<option value="">--- Locality ---</option>';
-                for (var i = 0; i < response.length; i++) {
-                    var row = response[i];
-                    if (localityId && row.locality_id == localityId) {
-                        result += '<option value="' + row.locality_id + '" selected>' + row.locality + '</option>'
-                    } else {
-                        result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+        if (cityId) {
+            $.ajax({
+                method: "GET",
+                url: "<%= api_url %>get_localities",
+                data: {
+                    city_id: cityId
+                },
+                success: function (response) {
+                    var result = '';
+                    result += '<option value="">--- Locality ---</option>';
+                    for (var i = 0; i < response.length; i++) {
+                        var row = response[i];
+                        if (localityId && row.locality_id == localityId) {
+                            result += '<option value="' + row.locality_id + '" selected>' + row.locality + '</option>'
+                        } else {
+                            result += '<option value="' + row.locality_id + '">' + row.locality + '</option>'
+                        }
                     }
-                }
 
-                $(divId).find('option').remove().end();
-                $(divId).append(result);
-            }
-        });
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
+                }
+            });
+        }
     }
 
     function send_Project_Callback() {

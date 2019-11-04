@@ -9,184 +9,124 @@
     <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.8.95/css/materialdesignicons.min.css">
     <script src="https://kit.fontawesome.com/de79221ca3.js"></script>
     <style>
-        .ta-center {
-            text-align: center;
+
+
+        .hightlights-content {
         }
 
-        .p-10 {
-            padding: 10px 0px 10px 0px;
+        ul {
+            width: 35px;
+            margin-left: 225px;
         }
 
-        .pb-5 {
-            padding-bottom: 5px;
+        .mail-preview {
+            margin-left: 25%;
         }
 
-        .pb-3 {
-            padding-bottom: 3px;
-        }
-
-        .heading-container {
-            font-size: 20px;
-            background-color: #732BDC;
+        .interested_btn:hover {
             color: white;
-            text-transform: uppercase;
-        }
-
-        .heading-container .heading {
-            font-weight: 500;
-        }
-
-        .image {
-            height: 400px;
-            width: 100%;
-        }
-
-        .details {
-            background-color: #d3d3d3;
-            font-size: 20px;
-        }
-
-        hr {
-            margin: 0px !important;
-            border: 0.5px solid black;
-        }
-
-        .amenity {
-            width: 24%;
-            margin-bottom: 10px;
-            /* float: left; */
-            display: inline-block;
-        }
-
-        .amenity i {
-            font-size: 20px;
-        }
-
-        .amenity_name {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-top: 10px;
-        }
-
-        .disclaimer {
-            padding-left: 30px;
-            padding-right: 30px;
-            text-align: justify;
-            text-justify: inter-word;
-        }
-        .disclaimer a {
             text-decoration: none;
-            color: black;
         }
-
-        .disclaimer a:hover {
-            color: black;
-            cursor: pointer;
-        }
-
-        .sub-heading {}
-
-        .hightlights-content {}
     </style>
 </head>
 
 <body style="margin-left: 30%;margin-top: 40px;">
-<table style="border:1px solid black;border-spacing: 0px !important;" width="600">
+<table style="border:1px solid black;border-spacing: 0px !important;" width="600px">
     <tbody>
     <tr>
         <td>
-            <div class="ta-center" style="height: 25px;padding-top: 5px;">Welcome</div>
+            <div style="height: 25px;padding-top: 5px;text-align: center;">Spaces4all.com</div>
         </td>
     </tr>
     <tr>
         <td>
-            <div class="heading-container ta-center p-10">
-                <div class="heading pb-3">WElcome Welcome123123</div>
-                <div class="location">Welcome123123</div>
+            <div style="text-align: center;padding: 10px 0px 10px 0px;font-size: 20px;background-color: #732BDC;color: white;text-transform: uppercase;">
+                <div style="padding-bottom: 3px; font-weight: 500;"><%= name %></div>
+                <div class="location"><%= location %></div>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <img src="./59030.jpg" class="image" />
+            <img src="https://www.spaces4all.com/uploads/list_property/1554285244IMG-20180501-WA0079.jpg"
+                 style="height: 400px;width: 100%;"/>
         </td>
     </tr>
     <tr>
         <td>
-            <div class="details p-10">
-                <div class="ta-center pb-3">4 BHK Villa</div>
-                <div class="ta-center pb-3">Starting @ 1.8 Cr</div>
-                <div class="ta-center pb-3">Saleable Area : area sqft - area sqft</div>
-                <div class="ta-center pb-3">RERA ID : P02400000344</div>
+            <div style="padding: 10px 0px 10px 0px;background-color: #d3d3d3;font-size: 20px;">
+                <div style="text-align: center; padding-bottom:3px;"><%= sizing %></div>
+                <div style="text-align: center; padding-bottom:3px;">Starting @ <%= price %></div>
+                <div style="text-align: center; padding-bottom:3px;">Saleable Area : <%= saleable_area %></div>
+                <div style="text-align: center; padding-bottom:3px;">RERA ID : <%= rera_id %></div>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <div class="ta-center p-10">
-                <a class="btn btn-info btn-lg"
-                   style="background-color: #732BDC !important;border-color: #732BDC !important;">I'm
-                    Interested</a>
+            <div style="text-align: center; padding: 10px 0px 10px 0px;">
+                <br/>
+                <a style="font-size: 18px;line-height: 1.33333;padding: 10px 16px;border-radius: 6px;background-color: #732BDC !important;border-color: #732BDC !important;text-decoration: none;color: white;"
+                   href="<%= interested_link %>"
+                   style="background-color: #732BDC !important;border-color: #732BDC !important;">I'm Interested</a>
+                <br/>
+                <br/>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <hr />
-            <div class="sub-heading ta-center">
-                <h4>Property Hightlights</h4>
+            <hr style="margin: 0px !important;border: 0.5px solid black;"/>
+            <div class="sub-heading" style="text-align: center;">
+                <div style="font-size: 24px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 10px;margin-bottom: 10px;">
+                    Property Hightlights
+                </div>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <div class="hightlights-content ta-center p-10">
-                Welcome121212<br />
-                Welcome121212<br />
-                Welcome121212<br />
-                Welcome121212<br />
+            <div class="hightlights-content" style="text-align: center;padding: 10px 0px 10px 0px;">
+                <%- hightlights %>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <hr />
-            <div class="sub-heading ta-center">
-                <h4>Amenities</h4>
+            <hr style="margin: 0px !important;border: 0.5px solid black;"/>
+            <div class="sub-heading" style="text-align: center;">
+                <div style="font-size: 24px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 10px;margin-bottom: 10px;">
+                    Amenities
+                </div>
             </div>
         </td>
     </tr>
     <tr>
         <td>
             <div class="amenities-container">
-                <div class="amenity ta-center">
-                    <i class="fa fa-trash"></i>
-                    <span class="amenity_name"> Welcome </span>
-                </div>
-                <div class="amenity ta-center">
-                    <i class="fa fa-trash"></i>
-                    <span class="amenity_name"> Welcome </span>
-                </div>
-                <div class="amenity ta-center">
-                    <i class="fa fa-trash"></i>
-                    <span class="amenity_name"> Welcome </span>
-                </div>
-                <div class="amenity ta-center">
-                    <i class="fa fa-trash"></i>
-                    <span class="amenity_name"> Welcome </span>
-                </div>
+                <% if(amenities.length > 0) { %>
+                    <% for(var i = 0;i < amenities.length;i++) {
+                        var amenity = amenities[i]; %>
+                    <div style="text-align: center;width: 24%;margin-bottom: 10px;display: inline-block;">
+                        <i style="font-size: 20px;" class="<%= amenity.amenity_icon %>"></i>
+                        <span style="display: block;overflow: hidden;text-overflow: ellipsis;white-space: nowrap; margin-top: 10px;"> <%= amenity.amenity %> </span>
+                    </div>
+                    <% } %>
+                <% } else { %>
+                    <div style="font-size: 24px;font-family: inherit;font-weight: 500;line-height: 1.1;color: inherit;margin-top: 10px;margin-bottom: 10px;">
+                        No amenities Available
+                    </div>
+                <% } %>
             </div>
         </td>
     </tr>
     <tr>
         <td>
-            <hr />
-            <div class="p-10">
-                <div class="ta-center pb-5">Disclaimer:</div>
-                <div class="disclaimer">
-                    <a>
+            <hr style="margin: 0px !important;border: 0.5px solid black;"/>
+            <div style="padding: 10px 0px 10px 0px;">
+                <div style="text-align: center;padding-bottom: 5px;">Disclaimer:</div>
+                <div style="padding-left: 30px;padding-right: 30px;text-align: justify;text-justify: inter-word;">
+                    <a style="text-decoration: none;color: black;">
                         All the information displayed is as posted by the User and displayed on
                         the website for informational purposes only. Spaces4all makes no representations and
                         warranties of any kind, ... more.

@@ -19,7 +19,7 @@ router.get('/', async function (req, res) {
     if (bottomProjectResponse.success) {
         data.bottom_project_video = bottomProjectResponse.data;
     }
-    res.render('admin/project_video', data);
+    res.render('admin/project/project_video', data);
 });
 router.post('/update', upload.none(), async function (req, res) {
     var data = deepclone(req.body);

@@ -97,27 +97,56 @@ module.exports = {
     getPhotosByProject: function (projectId) {
         return new Promise(function (resolve, reject) {
             con.query("select * from project_photos where project_id=" + projectId + " order by photo_id ASC", function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
+            });
+        });
+    },
+    addProjectPhotos: function (data) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into project_photos(project_id,photo) values ?", [data], function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        });
+    },
+    deleteProjectPhoto: function (id) {
+        return new Promise(function (resolve, reject) {
+            con.query("delete from project_photos  where photo_id = '" + id + "'", function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true});
             });
         });
     },
     getProjectPhotoById: function (photoId) {
         return new Promise(function (resolve, reject) {
             con.query("select * from project_photos where photo_id=" + photoId, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },
     getLatestPhotoByProject: function (projectId) {
         return new Promise(function (resolve, reject) {
             con.query("select * from project_photos where project_id=" + projectId + " order by photo_id ASC limit 1", function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },
@@ -195,10 +224,11 @@ module.exports = {
     getProjects: function () {
         return new Promise(function (resolve, reject) {
             con.query("SELECT projects.*,project_type.type as project_type_name, " +
-                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name FROM `projects` " +
+                "project_sub_type.sub_type as project_sub_type_name,city.city as city_name, locality.locality as locality_name FROM `projects` " +
                 "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
                 "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
-                "inner join city on projects.city = city.city_id order by datetime DESC", function (error, result) {
+                "inner join city on projects.city = city.city_id inner join locality as locality projects.locality " +
+                "= locality.locality_id order by datetime DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false})
@@ -219,45 +249,59 @@ module.exports = {
             });
         });
     },
-    getProjectsSearch: function (projectType, projectSubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, searchType) {
-        var query = "SELECT * FROM projects where project_id !=0 and project_status=1";
+    getProjectsSearch: function (parameters = {}, from, limit) {
 
-        if (projectType != "") {
-            if (projectType != 0) {
-                query += " AND project_type='" + projectType + "'";
+        var query = "SELECT projects.*,project_type.type as project_type_name, " +
+            "project_sub_type.sub_type as project_sub_type_name,city.city as city_name, locality.locality as locality_name FROM `projects` " +
+            "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
+            "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
+            "inner join city on projects.city = city.city_id inner join locality as locality on projects.locality = locality.locality_id where project_id !=0 and project_status=1";
+
+        if (parameters.project_type != "" && parameters.project_type != undefined) {
+            if (parameters.project_type != 0) {
+                query += " AND projects.project_type='" + parameters.project_type + "'";
             }
         }
-        if (projectSubType != "") {
-            query += " AND project_sub_type='" + projectSubType + "'";
+        if (parameters.project_sub_type != "" && parameters.project_sub_type != undefined) {
+            query += " AND projects.project_sub_type='" + parameters.project_sub_type + "'";
         }
-        if (city != "") {
-            query += " AND city='" + city + "'";
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND projects.city='" + parameters.city + "'";
         }
-        if (locality != "") {
-            query += " AND locality='" + locality + "'";
+        if (parameters.locality != "" && parameters.locality != undefined) {
+            query += " AND projects.locality='" + parameters.locality + "'";
         }
-        if (bedrooms != "") {
-            query += " AND FIND_IN_SET('" + bedrooms + "',plans) > 0";
+        if (parameters.bedrooms != "" && parameters.bedrooms != undefined) {
+            query += " AND FIND_IN_SET('" + parameters.bedrooms + "',projects.plans) > 0";
         }
-        if (postedBy != "") {
-            query += " AND posted_by='" + postedBy + "'";
+        if (parameters.posted_by != "" && parameters.posted_by != undefined) {
+            query += " AND projects.posted_by='" + parameters.posted_by + "'";
         }
-        if (minPrice != "") {
-            query += " AND min_price >='" + minPrice + "'";
+        if (parameters.min_price != "" && parameters.min_price != undefined) {
+            query += " AND projects.min_price >='" + parameters.min_price + "'";
         }
-        if (maxPrice != "") {
-            query += " AND max_price <='" + maxPrice + "'";
+        if (parameters.max_price != "" && parameters.max_price != undefined) {
+            query += " AND projects.max_price <='" + parameters.max_price + "'";
         }
-        if (searchType != "") {
-            query += " AND want_to ='" + searchType + "'";
-        }
+        // if (searchType != "") {
+        //     query += " AND want_to ='" + searchType + "'";
+        // }
         query += " ORDER BY datetime DESC ";
+        if (!from || from < 0) {
+            from = '0';
+        }
+
+        if (limit) {
+            query += " limit " + from + "," + limit;
+        }
         console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
             });
         });
     },

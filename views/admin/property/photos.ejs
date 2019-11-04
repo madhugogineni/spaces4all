@@ -1,0 +1,219 @@
+<% include ../includes/header.ejs %>
+
+<!-- Left side column. contains the logo and sidebar -->
+
+<% include ../includes/menu.ejs %>
+
+<style>
+    div.show-image {
+
+        position: relative;
+
+        float: left;
+
+        margin: 5px;
+
+    }
+
+    div.show-image:hover img {
+
+        opacity: 0.5;
+
+    }
+
+    div.show-image:hover .delete {
+
+        display: block;
+
+    }
+
+    div.show-image .delete {
+
+        position: absolute;
+
+        display: none;
+
+    }
+
+    div.show-image .delete {
+
+        top: 40%;
+
+        left: 40%;
+
+    }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+
+<div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <section class="content-header">
+
+        <h1>
+
+            <%= page_title %>
+
+        </h1>
+
+        <ol class="breadcrumb">
+
+            <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+
+            <li class="active"><%= page_title %></li>
+
+        </ol>
+
+    </section>
+
+
+    <!-- Main content -->
+
+
+    <section class="content">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+
+
+                <div class="box">
+
+                    <div class="box-header">
+
+                        <div class="col-md-5"></div>
+
+                        <div class="col-md-2">
+
+                            <button type="button" class="btn btn-block btn-default"
+
+                                    data-toggle="modal" data-target="#myModal">Add Photos
+                            </button>
+
+                        </div>
+
+                    </div>
+                    <br>
+
+
+                    <div align="center">
+
+                        <div class="timeline-body">
+                            <% if(photos) {
+                            for (var i = 0;i < photos.length;i++) {
+                                var photo = photos[i]; %>
+                            <div class="show-image">
+
+                                <img class="margin" alt="Projects"
+                                     src="<%= base_url %>uploads/list_property/<%= photo.photo %>" height="180px"
+                                     width="240px">
+
+                                <a href="<%= base_url %>admin/list_property/photos/delete/<%= photo.photo_id %>/<%= photo.property_id %>"
+                                   onclick="return confirm('Are You Sure Want to Delete ?')">
+                                    <img alt="" class="delete" src="<%= base_url %>images/delete.png"></a>
+
+                            </div>
+
+                            <% } }else { %>
+
+                                <h4 align='center'>There Are No Photos Available !</h4>
+                            <% } %>
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-header -->
+
+                    <div class="box-body">
+
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+                </div>
+
+                <!-- /.box -->
+
+            </div>
+
+            <!-- /.col -->
+
+        </div>
+
+        <!-- /.row -->
+
+    </section>
+
+    <!-- /.content -->
+
+
+</div>
+
+<!-- /.content-wrapper -->
+
+
+<!-- Modal -->
+
+
+<div id="myModal" class="modal fade" role="dialog">
+
+    <div class="modal-dialog">
+
+
+        <!-- Modal content-->
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                <h4 class="modal-title">Add Property Photos</h4>
+
+            </div>
+
+            <form action="<%= base_url %>admin/list_property/photos/add/<%= property_id %>" method="post"
+                  enctype="multipart/form-data">
+
+                <div class="modal-body">
+
+
+                    <div class="box-body">
+
+                        <div class="form-group" align="center">
+
+                            <input class="btn btn-primary" name="photos[]" type="file" multiple="multiple"
+                                   accept="image/*" required="required">
+
+                        </div>
+
+                    </div>
+
+                    <!-- /.box-body -->
+
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                    <button type="submit" class="btn btn-primary">Add</button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<% include ../includes/footer.ejs %>

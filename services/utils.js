@@ -1,9 +1,9 @@
 var moment = require('moment');
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var fs = require('fs');
-var crudModel = require('../models/crudModel');
 var ejs = require('ejs');
 var urls = require('../external-config/url-config');
+var crudModel = require('../models/crudModel');
 module.exports = {
     getPrice: function (price, isProject) {
         var responsePrice;
@@ -44,7 +44,7 @@ module.exports = {
             var fileNames = [];
             for (var i = 0; i < photoFiles.length; i++) {
                 var fileName = photoFiles[i].originalname;//propertyId + "|" +
-                var uploadResponse = await this.writeFile(
+                var uploadResponse = await utils.writeFile(
                     fileName,
                     photoFiles[i].buffer,
                     path

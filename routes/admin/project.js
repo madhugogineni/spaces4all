@@ -33,12 +33,69 @@ router.get('/', async function (req, res) {
         data.projects = []
     }
 
-    res.render('admin/projects', data);
+    res.render('admin/project/projects', data);
 
     isAddErrorPresent = false;
     shouldBeConsidered = false;
 });
+router.get('/add', function (req, res) {
+    res.render('admin/project/add_project', {page_name: 'add_projects', page_title: 'Add Projects'});
+});
 
+router.post('/add', upload.none(), async function (req, res) {
+    var addProjectResponse = await addProject(req);
+    shouldBeConsidered = true;
+    if (addProjectResponse.success) {
+        isAddErrorPresent = false;
+    } else {
+        isAddErrorPresent = true;
+    }
+    res.redirect('/admin/projects');
+});
+router.get('/photos/:project_id', async function (req, res) {
+    var id = req.params.project_id;
+    if (id) {
+        var data = {
+            page_name: 'project_photos',
+            page_title: 'Project Photos',
+            project_id: id
+        };
+        var response = await crudModel.getPhotosByProject(id);
+        if (response.success) {
+            // for (var i = 0; i < response.data.length; i++) {
+            //     var path = urls.base_url + "uploads/projects/" + response.data[i].photo;
+            //     if (!fs.existsSync(path)) {
+            //         response.data[i].photo = "no-photo.jpg";
+            //     }
+            // }
+            data.photos = response.data;
+        }
+        res.render('admin/project/photos', data);
+    } else {
+        res.redirect('/admin/projects');
+    }
+});
+router.post('/photos/add/:project_id', upload.array('photos[]', 10), async function (req, res) {
+    var id = req.params.project_id;
+    if (id) {
+        await uploadImages(req.files, id, "public/uploads/projects/");
+    }
+    res.redirect('/admin/projects');
+});
+router.get('/photos/delete/:photo_id/:project_id', async function (req, res) {
+    var id = req.params.photo_id;
+    var projectId = req.params.project_id;
+    if (id && projectId) {
+        var imageResponse = await crudModel.getProjectPhotoById(id);
+        if (imageResponse.success) {
+            var response = await crudModel.deleteProjectPhoto(id);
+            if (response.success) {
+                utils.deleteFile(imageResponse.data.photo, "public/uploads/projects/");
+            }
+        }
+    }
+    res.redirect('/admin/projects/photos/' + projectId);
+});
 router.get('/exclusive/:value/:project_id', function (req, res) {
     var value = req.params.value, projectId = req.params.project_id
     if (value == 'undefined' || value == null) {
@@ -77,32 +134,7 @@ router.get('/delete/:project_id', async function (req, res) {
     }
     res.redirect('/admin/projects')
 });
-router.get('/:project_id', async function (req, res) {
-    var projectId = req.params.project_id;
-    if (projectId != '' && projectId != null && projectId != undefined) {
-        var projectResponse = await crudModel.getProjectById(projectId);
-        if (projectResponse.success) {
-            projectResponse.data.quoted_price = utils.getPrice(projectResponse.data.quoted_price, false);
-            var amenitiesList = await crudModel.getAmenityNames(projectResponse.data.amenities);
-            if (amenitiesList.success) {
-                projectResponse.data.amenities_list = amenitiesList.data;
-            } else {
-                projectResponse.data.amenities_list = [];
-            }
-            var banksList = await crudModel.getBanksById(projectResponse.data.approved_banks);
-            if (banksList.success) {
-                projectResponse.data.banks_list = banksList.data;
-            } else {
-                projectResponse.data.banks_list = []
-            }
-            res.send(projectResponse)
-        } else {
-            res.send({success: false});
-        }
-    } else {
-        res.send({success: false});
-    }
-});
+
 router.get('/configurations/:project_id', async function (req, res) {
     var projectId = req.params.project_id;
     var data = {
@@ -113,7 +145,7 @@ router.get('/configurations/:project_id', async function (req, res) {
     var configurationsResponse = await crudModel.getProjectConfigurations(projectId);
     configurationsResponse.success ? data.configurations = configurationsResponse.data : data.configurations = []
 
-    res.render('admin/project_configuration', data)
+    res.render('admin/project/project_configuration', data)
 })
 
 router.get('/configurations/delete/:project_id/:configuration_id', async function (req, res) {
@@ -177,7 +209,7 @@ router.get('/edit/:project_id', async function (req, res) {
             data.project_details = undefined;
         }
         console.log(data.project_details);
-        res.render('admin/edit_project', data);
+        res.render('admin/project/edit_project', data);
     } else {
         res.redirect('/admin/')
     }
@@ -206,19 +238,31 @@ router.post('/update/:project_id', upload.none(), async function (req, res) {
         });
     }
 });
-router.get('/add', function (req, res) {
-    res.render('admin/add_project', {page_name: 'add_projects', page_title: 'Add Projects'});
-});
-
-router.post('/add', upload.none(), async function (req, res) {
-    var addProjectResponse = await addProject(req);
-    shouldBeConsidered = true;
-    if (addProjectResponse.success) {
-        isAddErrorPresent = false;
+router.get('/:project_id', async function (req, res) {
+    var projectId = req.params.project_id;
+    if (projectId != '' && projectId != null && projectId != undefined) {
+        var projectResponse = await crudModel.getProjectById(projectId);
+        if (projectResponse.success) {
+            projectResponse.data.quoted_price = utils.getPrice(projectResponse.data.quoted_price, false);
+            var amenitiesList = await crudModel.getAmenityNames(projectResponse.data.amenities);
+            if (amenitiesList.success) {
+                projectResponse.data.amenities_list = amenitiesList.data;
+            } else {
+                projectResponse.data.amenities_list = [];
+            }
+            var banksList = await crudModel.getBanksById(projectResponse.data.approved_banks);
+            if (banksList.success) {
+                projectResponse.data.banks_list = banksList.data;
+            } else {
+                projectResponse.data.banks_list = []
+            }
+            res.send(projectResponse)
+        } else {
+            res.send({success: false});
+        }
     } else {
-        isAddErrorPresent = true;
+        res.send({success: false});
     }
-    res.redirect('/admin/projects');
 });
 
 async function addProject(req, projectId) {
@@ -317,6 +361,32 @@ async function addProject(req, projectId) {
         'latitude': latitude
     }, projectId);
     return addProjectResponse;
+}
+
+async function uploadImages(photoFiles, id, path) {
+    if (photoFiles.length) {
+        var imagesToUpload = [];
+        var fileNames = [];
+        for (var i = 0; i < photoFiles.length; i++) {
+            var fileName = photoFiles[i].originalname;//propertyId + "|" +
+            var uploadResponse = await utils.writeFile(
+                fileName,
+                photoFiles[i].buffer,
+                path
+            );
+            if (uploadResponse.success) {
+                fileNames.push(fileName);
+                var photoFile = [id, fileName];
+                imagesToUpload.push(photoFile);
+            }
+        }
+        var response = await crudModel.addProjectPhotos(imagesToUpload);
+        if (response.success) {
+            return {success: true, fileNames: fileNames};
+        } else {
+            return {success: false};
+        }
+    }
 }
 
 module.exports = router;

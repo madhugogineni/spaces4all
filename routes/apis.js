@@ -42,37 +42,38 @@ router.get("/get_localities", function (req, res) {
 });
 router.get("/add_property_call_back", function (req, res) {
     var query = req.query;
-    crudModel.addPropertyCallback(query.property_id, query.name, query.phone).then(function (response) {
-        if (response.success) {
-            transporter.sendMail({
-                to: emailConfig.emailId,
-                subject: "Spaces4all - Request For Call Back",
-                html: "Spaces4all - " + query.name + " Has Requested For Call Back Of Property : spaces4all.com <br><br> " +
+    if (query.property_id) {
+        crudModel.addPropertyCallback(query.property_id, query.name, query.phone).then(function (response) {
+            if (response.success) {
+                var body = "Spaces4all - " + query.name + " Has Requested For Call Back Of Property : spaces4all.com <br><br> " +
                     "<table border='1px'>" +
                     "<tr><td width='100px'>Name</td><td>" + query.name + "</td></tr>" +
                     "<tr><td>Phone</td><td>" + query.phone + "</td></tr>" +
-                    "</table>"
-            });
-            res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
-        } else {
-            res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");
-        }
+                    "</table>";
+                var subject = "Spaces4all - Request For Call Back";
+                mailservice.sendMail(subject, body);
+                res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
+            } else {
+                res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");
+            }
 
-    });
+        });
+    } else {
+        res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");
+    }
+
 });
 router.get("/add_project_call_back", function (req, res) {
     var query = req.query;
     crudModel.addProjectCallback(query.project_id, query.name, query.phone).then(function (response) {
         if (response.success) {
-            transporter.sendMail({
-                to: emailConfig.emailId,
-                subject: "Spaces4all - Request For Call Back",
-                html: "Spaces4all - " + query.name + " Has Requested For Call Back Of Property : spaces4all.com <br><br> " +
-                    "<table border='1px'>" +
-                    "<tr><td width='100px'>Name</td><td>" + query.name + "</td></tr>" +
-                    "<tr><td>Phone</td><td>" + query.phone + "</td></tr>" +
-                    "</table>"
-            });
+            var subject = "Spaces4all - Request For Call Back";
+            var body = "Spaces4all - " + query.name + " Has Requested For Call Back Of Property : spaces4all.com <br><br> " +
+                "<table border='1px'>" +
+                "<tr><td width='100px'>Name</td><td>" + query.name + "</td></tr>" +
+                "<tr><td>Phone</td><td>" + query.phone + "</td></tr>" +
+                "</table>"
+            mailservice.sendMail(subject, body);
             res.send("<h5>Details Sent Successfully !</h5><p>With pleasure, we shall revert shortly.</p><br/>");
         } else {
             res.send("<h5>Details Sending Failed ! Please Try Again.</h5><br>");

@@ -11,20 +11,159 @@ var geocoder = nodeGeocoder(geocoderoptions);
 var upload = multer();
 var mailservice = require("../services/email");
 var urls = require("../external-config/url-config");
-var utils = require('../services/utils')
+var utils = require('../services/utils');
+var deepclone = require('lodash.clonedeep');
 
 var addContactMessage = "",
     isError = 0;
 var loanErrorMsg = "",
     loanError = false;
-// var dateFormat = "YYYY-MM-DD HH:mm:ss";
+
 router.get("/index", function (req, res) {
     res.redirect("/");
 });
+
 router.get("/", function (req, res) {
     res.redirect("/");
 });
+router.get('/projects', async function (req, res) {
+    var data = {
+        page_name: 'projects',
+        page_title: 'Projects',
+        project_type: req.query.project_type || '',
+        project_sub_type: req.query.project_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || '',
+        projects: []
+    };
+    var page = 1, rowCount = 15;
+    if (req.params.per_page) {
+        page = req.query.per_page;
+    }
+    var response = await crudModel.getProjectsSearch(req.query, (page - 1) * rowCount, rowCount);
+    if (response.success) {
+        for (var i = 0; i < response.data.length; i++) {
+            response.data[i].image = "1no-photo.jpg";
+            var imageresponse = await crudModel.getLatestPhotoByProject(response.data[i].project_id);
+            if (imageresponse.success && imageresponse.data) {
+                if (imageresponse.data.photo) {
+                    response.data[i].image = imageresponse.data.photo;
+                }
+            }
+        }
+        data.projects = response.data;
+        console.log(data.projects);
+    }
+    res.render('home/projects', data);
+});
+router.get('/projects/list_view', async function (req, res) {
+    var data = {
+        page_name: 'projects_list_view',
+        page_title: 'Projects',
+        project_type: req.query.project_type || '',
+        project_sub_type: req.query.project_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || '',
+        projects: []
+    };
+    var page = 1, rowCount = 15;
+    if (req.params.per_page) {
+        page = req.query.per_page;
+    }
+    var response = await crudModel.getProjectsSearch(req.query, (page - 1) * rowCount, rowCount);
+    if (response.success) {
+        for (var i = 0; i < response.data.length; i++) {
+            response.data[i].image = "1no-photo.jpg";
+            var imageresponse = await crudModel.getLatestPhotoByProject(response.data[i].project_id);
+            if (imageresponse.success && imageresponse.data) {
+                if (imageresponse.data.photo) {
+                    response.data[i].image = imageresponse.data.photo;
+                }
+            }
+        }
+        data.projects = response.data;
+    }
+    res.render('home/projects_list_view', data);
+});
+
+router.get('/properties', async function (req, res) {
+    var data = {
+        page_name: 'properties',
+        page_title: 'Properties',
+        property_type: req.query.property_type || '',
+        property_sub_type: req.query.property_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || '',
+        properties: []
+    };
+    var page = 1, rowCount = 15;
+    if (req.params.per_page) {
+        page = req.query.per_page;
+    }
+    var response = await crudModel.getProperties(req.query, (page - 1) * rowCount, rowCount);
+    if (response.success) {
+        for (var i = 0; i < response.data.length; i++) {
+            response.data[i].image = "1no-photo.jpg";
+            var imageresponse = await crudModel.getPropertyPhotosLimit(response.data[i].list_property_id);
+            if (imageresponse.success && imageresponse.data) {
+                if (imageresponse.data.photo) {
+                    response.data[i].image = imageresponse.data.photo;
+                }
+            }
+        }
+        data.properties = response.data;
+    }
+    res.render('home/properties', data);
+});
+router.get('/properties/list_view', async function (req, res) {
+    var data = {
+        page_name: 'list_view',
+        page_title: 'Properties',
+        property_type: req.query.property_type || '',
+        property_sub_type: req.query.property_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || '',
+        properties: []
+    };
+    var page = 1, rowCount = 15;
+    if (req.params.per_page) {
+        page = req.query.per_page;
+    }
+    var response = await crudModel.getProperties(req.query, (page - 1) * rowCount, rowCount);
+    if (response.success) {
+        for (var i = 0; i < response.data.length; i++) {
+            response.data[i].image = "1no-photo.jpg";
+            var imageresponse = await crudModel.getPropertyPhotosLimit(response.data[i].list_property_id);
+            if (imageresponse.success && imageresponse.data) {
+                if (imageresponse.data.photo) {
+                    response.data[i].image = imageresponse.data.photo;
+                }
+            }
+        }
+        data.properties = response.data;
+    }
+    res.render('home/properties_list_view', data);
+});
+
+
 // footer news letter api url are defined here
+
 router.post("/add_news_letter", async function (req, res) {
     var errorMsg =
         "<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Sorry ! Your Subscription Has Failed Please Try Again.</strong></div>";
@@ -47,7 +186,9 @@ router.post("/add_news_letter", async function (req, res) {
         );
     }
 });
+
 // contacts page and related links are defined here
+
 router.get("/contact", function (req, res) {
     res.render("home/contactus", {
         page_name: "contact",
@@ -58,6 +199,7 @@ router.get("/contact", function (req, res) {
     addContactMessage = "";
     isError = 0;
 });
+
 router.post("/add_contact", async function (req, res) {
     let validator = new validatorpackage(req.body, {
         name: "required|minLength:3",
@@ -118,27 +260,32 @@ router.post("/add_contact", async function (req, res) {
 });
 
 //Info Tab links are defined here
+
 router.get("/information", function (req, res) {
     res.render("home/information", {
         page_name: "information",
         page_title: "Information"
     });
 });
+
 router.get("/glossarys", function (req, res) {
     res.render("home/glossarys", {
         page_name: "glossarys",
         page_title: "glossarys"
     });
 });
+
 router.get("/faqs", function (req, res) {
     res.render("home/faqs", {page_name: "faqs", page_title: "faqs"});
 });
+
 router.get("/area_conversion_calculator", function (req, res) {
     res.render("home/area_conversion_calculator", {
         page_name: "Area Conversion Calculator",
         page_title: "Area Conversion Table"
     });
 });
+
 router.get("/stamp_duty_calculator", async function (req, res) {
     var data = {
         page_name: "Stamp Duty Calculator",
@@ -153,18 +300,21 @@ router.get("/stamp_duty_calculator", async function (req, res) {
 });
 
 //Mortagage Tab links are defined here
+
 router.get("/emi_calculator", function (req, res) {
     res.render("home/emi_calculator", {
         page_name: "EMI Calculator",
         page_title: "EMI Calculator"
     });
 });
+
 router.get("/loan_eligibility_check", function (req, res) {
     res.render("home/loan_eligibility_check", {
         page_name: "Loan Eligibility Check",
         page_title: "Loan Eligibility Check"
     });
 });
+
 router.get("/apply_home_loan", async function (req, res) {
     var data = {
         page_name: "Apply Home Loan",
@@ -182,6 +332,7 @@ router.get("/apply_home_loan", async function (req, res) {
     loanErrorMsg = "";
 
 });
+
 router.post("/add_home_loan", function (req, res) {
     var data = req.body;
     crudModel
@@ -242,12 +393,14 @@ router.post("/add_home_loan", function (req, res) {
             res.redirect("apply_home_loan");
         });
 });
+
 router.get("/req_docs_forloan", function (req, res) {
     res.render("home/req_docs_forloan", {
         page_name: "Apply Home Loan",
         page_title: "Apply Home Loan"
     });
 });
+
 router.get("/hot_properties/:cityId", function (req, res) {
     var cityId = req.params.cityId || "";
     crudModel.getHotPropertyDetails(cityId).then(function (hotProperties) {
@@ -492,7 +645,7 @@ router.post(
                         gatedColony
                     );
                     var photoFiles = req.files["photos1[]"] || [];
-                    var uploadImagesResult = await utils.uploadImages(
+                    var uploadImagesResult = await uploadImages(
                         photoFiles,
                         propertyId,
                         "public/uploads/list_property/"
@@ -803,7 +956,7 @@ router.post(
             var rentResponse = await crudModel.insertToRent(data);
             if (rentResponse.success) {
                 var propertyId = rentResponse.propertyId;
-                var uploadImagesResult = await utils.uploadImages(
+                var uploadImagesResult = await uploadImages(
                     photoFiles,
                     propertyId,
                     "public/uploads/rent/"
@@ -1337,6 +1490,32 @@ function pushOrPopIdFromCompare(id, compareArray) {
         compareArray.push(id);
     }
     return compareArray
+}
+
+async function uploadImages(photoFiles, propertyId, path) {
+    if (photoFiles.length) {
+        var imagesToUpload = [];
+        var fileNames = [];
+        for (var i = 0; i < photoFiles.length; i++) {
+            var fileName = photoFiles[i].originalname;//propertyId + "|" +
+            var uploadResponse = await utils.writeFile(
+                fileName,
+                photoFiles[i].buffer,
+                path
+            );
+            if (uploadResponse.success) {
+                fileNames.push(fileName);
+                var photoFile = [propertyId, fileName, utils.getDate()];
+                imagesToUpload.push(photoFile);
+            }
+        }
+        var response = await crudModel.addPropertyPhotos(imagesToUpload);
+        if (response.success) {
+            return {success: true, fileNames: fileNames};
+        } else {
+            return {success: false};
+        }
+    }
 }
 
 module.exports = router;

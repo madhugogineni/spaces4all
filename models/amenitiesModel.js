@@ -24,8 +24,6 @@ module.exports = {
         });
     },
     getAmenityNames: function (amenitiesList) {
-        console.log(amenitiesList);
-        console.log("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")");
         return new Promise(function (resolve, reject) {
             if (amenitiesList) {
                 con.query("SELECT amenity,amenity_icon FROM `amenities` WHERE amenity_id IN (" + amenitiesList + ")", function (error, result) {

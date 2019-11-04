@@ -11,17 +11,18 @@ var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
 
 router.get('/', async function (req, res) {
-    var listProperty = await crudModel.getPropertyDetails()
+    var listProperty = await crudModel.getProperties();
     var responseObject = {
         page_name: 'list_property',
         page_title: 'List Property'
-    }
+    };
     if (listProperty.success) {
         responseObject.list_property = listProperty.data
+        console.log(listProperty.data);
     } else {
         responseObject.list_property = []
     }
-    res.render('admin/list_property', responseObject);
+    res.render('admin/property/list_property', responseObject);
 });
 
 router.get('/status/:value/:property_id', async function (req, res) {
@@ -39,23 +40,6 @@ router.get('/latest/:value/:property_id', async function (req, res) {
     var updateResponse = crudModel.updateColumnInListProperty('latest_property', value, propertyId)
     res.redirect('/admin/list_property')
 });
-router.get('/:property_id', async function (req, res) {
-    var propertyId = req.params.property_id;
-
-    if (propertyId != '' && propertyId != null && propertyId != undefined) {
-        var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
-        if (propertyResponse.success) {
-            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price, false);
-            var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
-            if (amenitiesList.success) {
-                propertyResponse.data.amenities_list = amenitiesList.data;
-            }
-            res.send(propertyResponse)
-        } else {
-            res.send({success: false});
-        }
-    }
-});
 router.get('/delete/:property_id', async function (req, res) {
     var propertyId = req.params.property_id;
     if (propertyId) {
@@ -70,7 +54,7 @@ router.get('/edit/:property_id?', async function (req, res) {
     if (propertyId) {
         var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
         if (propertyResponse.success) {
-            res.render('admin/edit_property', {
+            res.render('admin/property/edit_property', {
                 page_name: 'edit_property',
                 page_title: 'Edit Property',
                 property: propertyResponse.data
@@ -255,14 +239,88 @@ router.post('/update/:property_id', upload.none(),
             res.redirect('/admin')
         }
     });
-router.get('photos/:property_id?', async function (req, res) {
-    var propertyId = req.params.property_id
-    if (propertyId) {
-        res.send('welcome')
+router.get('/photos/:property_id', async function (req, res) {
+    var id = req.params.property_id;
+    if (id) {
+        var data = {
+            page_name: "property_photos",
+            page_title: "Property Photos",
+            property_id: id,
+            photos: []
+        };
+        var response = await crudModel.getPropertyPhotos(id);
+        if (response.success) {
+            data.photos = response.data;
+        }
+        res.render("admin/property/photos", data);
     } else {
         res.redirect('/admin/')
     }
 });
+router.post('/photos/add/:property_id', upload.array('photos[]', 10), async function (req, res) {
+    var id = req.params.property_id;
+    if (id) {
+        await uploadImages(req.files, id, "public/uploads/list_property/");
+    }
+    res.redirect('/admin/list_property/photos/' + id);
+});
+router.get('/photos/delete/:photo_id/:property_id', async function (req, res) {
+    var id = req.params.photo_id;
+    var propertyId = req.params.property_id;
+    if (id && propertyId) {
+        var imageResponse = await crudModel.getPropertyPhotoById(id);
+        if (imageResponse.success) {
+            var response = await crudModel.deletePropertyPhoto(id);
+            if (response.success) {
+                utils.deleteFile(imageResponse.data.photo, "public/uploads/list_property/");
+            }
+        }
+    }
+    res.redirect('/admin/list_property/photos/' + propertyId);
+});
 
+router.get('/:property_id', async function (req, res) {
+    var propertyId = req.params.property_id;
+
+    if (propertyId != '' && propertyId != null && propertyId != undefined) {
+        var propertyResponse = await crudModel.getPropertyDetailsById(propertyId)
+        if (propertyResponse.success) {
+            propertyResponse.data.quoted_price = utils.getPrice(propertyResponse.data.quoted_price, false);
+            var amenitiesList = await crudModel.getAmenityNames(propertyResponse.data.amenities);
+            if (amenitiesList.success) {
+                propertyResponse.data.amenities_list = amenitiesList.data;
+            }
+            res.send(propertyResponse)
+        } else {
+            res.send({success: false});
+        }
+    }
+});
+
+async function uploadImages(photoFiles, propertyId, path) {
+    if (photoFiles.length) {
+        var imagesToUpload = [];
+        var fileNames = [];
+        for (var i = 0; i < photoFiles.length; i++) {
+            var fileName = photoFiles[i].originalname;//propertyId + "|" +
+            var uploadResponse = await utils.writeFile(
+                fileName,
+                photoFiles[i].buffer,
+                path
+            );
+            if (uploadResponse.success) {
+                fileNames.push(fileName);
+                var photoFile = [propertyId, fileName, utils.getDate()];
+                imagesToUpload.push(photoFile);
+            }
+        }
+        var response = await crudModel.addPropertyPhotos(imagesToUpload);
+        if (response.success) {
+            return {success: true, fileNames: fileNames};
+        } else {
+            return {success: false};
+        }
+    }
+}
 
 module.exports = router;
