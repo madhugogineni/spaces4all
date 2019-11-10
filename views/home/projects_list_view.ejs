@@ -64,6 +64,26 @@
             }
 
         }
+        function updatePageNo(pageNo) {
+            var page = parseInt(getValue('page'));
+
+            var toPage = pageNo;
+            if (pageNo == 'previous') {
+                if (page > 1) {
+                    toPage = page - 1;
+                } else {
+                    toPage = page;
+                }
+            } else if (pageNo == 'next') {
+                if (page < parseInt('<%= total_pages %>')) {
+                    toPage = page + 1;
+                } else {
+                    toPage = page;
+                }
+            }
+            setUpValue('page', toPage);
+            List_form();
+        }
 
         function updateValues(project_id) {
             var modalBody = '<div id="errorBox3"></div>' +
@@ -165,6 +185,8 @@
 
             <input type="hidden" name="possession" value="<%= possession %>">
 
+            <input type="hidden" name="page" value="<%= page %>">
+
         </form>
 
     </div>
@@ -207,6 +229,7 @@
 
                                     <div class="row" style="padding-bottom: 10px">
 
+                                        <input type="hidden" name="page" value="<%= page %>">
 
                                         <div class="col-md-4">
 
@@ -363,7 +386,7 @@
 
                         <div class="row">
 
-                            <div class="col-md-9">
+                            <div class="col-md-12">
 
                                 <div id="property_success"></div>
 
@@ -498,23 +521,18 @@
                                 </div>
 
                                 <ul class="pagination pull-right">
-                                    <?php
-                            foreach ($links as $link) {
-								echo "<li>".$link."</li>";
-                                    }
-                                    ?>
+                                    <li id="previous_button" onclick="updatePageNo('previous')"><a>Previous</a></li>
+                                    <% for(var i = 1;i <= total_pages && i <= 3 ;i++) { %>
+                                        <li onclick="updatePageNo('<%= i %>')"><a
+                                            <% if(i == page) { %> class="active"
+                                                    <% } %>
+                                            ><%= i %></a></li>
+                                    <% } %>
+                                    <li id="next_button" onclick="updatePageNo('next')"><a>Next</a></li>
+
                                 </ul>
 
                             </div>
-
-                            <!-- Start Sidebar -->
-
-                            <div class="sidebar right-sidebar col-md-3">
-
-                                <% include includes/sidebar.ejs %>
-
-                            </div>
-
                         </div>
 
                     </div>

@@ -3,94 +3,8 @@
 <html class="no-js">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">
     <script>
-
-
-        function show_sub_type(str) {
-
-            //alert(1);
-
-            if (str.length == 0) {
-
-                document.getElementById("property_sub_type").innerHTML = "";
-
-                return;
-
-            }
-
-
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-                xmlhttp = new XMLHttpRequest();
-
-            } else {// code for IE6, IE5
-
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-            }
-
-            xmlhttp.onreadystatechange = function () {
-
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    //alert(xmlhttp.responseText);
-
-                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
-
-                }
-
-            }
-
-            //alert(str);
-
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
-
-            xmlhttp.send();
-
-        }
-
-
-        function Show_locality(str) {
-
-            //alert(str);
-
-            if (str.length == 0) {
-
-                document.getElementById("Showlocality").innerHTML = "";
-
-                return;
-
-            }
-
-
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-                xmlhttp = new XMLHttpRequest();
-
-            } else {// code for IE6, IE5
-
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-            }
-
-            xmlhttp.onreadystatechange = function () {
-
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    //alert(xmlhttp.responseText);
-
-                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-                }
-
-            }
-
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-            xmlhttp.send();
-
-        }
-
 
         function ShowButton(str) {
 
@@ -383,115 +297,19 @@
 
         <div id="content" class="content full">
 
-            <div id="featured-properties">
-
-                <div class="container">
-
-                    <div class="row">
-
-                        <div class="col-md-12">
-
-                            <div id="property_success"></div>
-
-                            <div class="block-heading">
-
-                                <h4><span class="heading-icon"><i class="fa fa-star"></i></span>Latest Properties
-                                </h4>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-
-                        <ul class="owl-carousel owl-alt-controls" data-columns="4" data-autoplay="no"
-                            data-pagination="no" data-arrows="yes" data-single-item="no">
-                            <%
-                            for(var i = 0;i < latest_properties.length;i++) {
-
-                                var latest_property = latest_properties[i];
-                            %>
-                            <li class="item property-block">
-
-                                <a href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"
-                                   class="property-featured-image">
-                                    <img src="<%= base_url %>uploads/list_property/<%= latest_property.property_photo %>"
-                                         style="height: 170px" alt="Spacel4all">
-                                </a>
-                                <div class="property-info" style="line-height: 5px">
-                                    <h4>
-                                        <a
-                                                href="<%= base_url %>home/property_details/<%= latest_property.property_id %>"><%= latest_property.property_sub_type %></a>
-                                    </h4>
-                                    <hr/>
-                                    <span><%= latest_property.property_type %></span>
-                                    <hr/>
-
-                                    <span class="location"><%= latest_property.locality_name %>,
-                                            <%= latest_property.city_name %></span>
-                                    <hr>
-
-                                    <% if(latest_property.property_sub_type_id == '14' || latest_property.property_sub_type_id == '18'){ %>
-
-                                        <span><%= latest_property.area %> Sq.Yds</span>
-                                        <hr>
-
-                                    <% }else if(latest_property.property_type_id == '1' && latest_property.property_sub_type_id != '18') { %>
-
-                                        <span><%= latest_property.area %> Sq.Ft</span>
-                                        <hr>
-
-                                    <% }else { %>
-
-                                        <span><%= latest_property.bedrooms %> BHK</span>
-                                        <hr>
-
-                                    <% } %>
-
-                                    <span>
-                                        <% if(latest_property.quotes_price != ""){ %><span
-                                                class="WebRupee">Rs.</span>
-                                        <% } %>
-                                        <%= latest_property.quoted_price %></span>
-                                    <hr>
-
-                                    <a
-                                            href="<%= base_url %>home/property_details/<%= latest_property.property_id %>">
-                                        <button type="button" class="btn btn-danger"><i
-                                                    class="fa fa-angle-double-right"></i>&nbsp; View Details
-                                        </button>
-                                    </a>&nbsp;
-                                    <a href="#" onclick="showAjaxModal1('<%= latest_property.property_id %>')">
-                                        <button type="button" class="btn"><i class="fa fa-phone"></i>&nbsp;
-                                            &nbsp;Call Back
-                                        </button>
-                                    </a>
-                                </div>
-
-                            </li>
-                            <% } %>
-                        </ul>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <br/>
-
             <div class="container">
 
                 <div class="row">
 
-                    <div class="col-md-9">
+                    <div class="col-md-12">
 
                         <div class="block-heading">
 
-                            <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i
-                                            class="fa fa-leaf"></i></span>Featured Projects</h4>
+                            <h4>
+                                <span class="heading-icon">
+                                    <i class="fa fa-leaf"></i>
+                                </span>Featured Projects
+                            </h4>
                         </div>
 
                         <div class="property-listing">
@@ -501,19 +319,21 @@
                                 <% for(var i = 0;i < 12; i++)  {
                                     var latest_project = latest_projects[i]; %>
                                 <li class="type-rent col-md-12">
-                                    <div class="col-md-4">
+                                    <div class="col-md-5 image-container">
                                         <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"
                                            class="property-featured-image">
                                             <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
-                                                 style="height: 180px; width:100%" alt="">
+                                                 class="image" alt="">
                                         </a>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-7">
                                         <div class="row">
                                             <div class="col-md-8">
-                                                <div class="property-info" style="line-height: 5px">
-                                                    <h3><a
-                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"><?=$row5['project_name']?></a>
+                                                <div class="property-info">
+                                                    <h3>
+                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>">
+                                                            <%= latest_project.project_name %>
+                                                        </a>
                                                     </h3>
                                                     <hr>
                                                     <span><%= latest_project.group_name %></span>
@@ -584,12 +404,6 @@
 
                         </div>
 
-                    </div>
-
-                    <!-- Start Sidebar -->
-
-                    <div class="sidebar right-sidebar col-md-3">
-                        <% include includes/sidebar.ejs %>
                     </div>
 
                 </div>

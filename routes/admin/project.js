@@ -16,12 +16,20 @@ router.get('/', async function (req, res) {
     var data = {
         page_name: 'project',
         page_title: 'Projects',
-        shouldBeConsidered: shouldBeConsidered
+        shouldBeConsidered: shouldBeConsidered,
+        project_type: req.query.project_type || '',
+        project_sub_type: req.query.project_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || '',
     };
     if (shouldBeConsidered) {
         data.isError = isAddErrorPresent;
     }
-    var projectsResponse = await crudModel.getProjects()
+    var projectsResponse = await crudModel.getProjectsSearch(req.query);
     if (projectsResponse.success) {
         data.projects = projectsResponse.data
         data.projects.forEach((project, index) => {

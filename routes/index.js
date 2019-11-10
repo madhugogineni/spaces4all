@@ -27,6 +27,7 @@ router.get("/", function (req, res) {
     res.redirect("/");
 });
 router.get('/projects', async function (req, res) {
+    var page = req.query.page || 1, rowCount = 15;
     var data = {
         page_name: 'projects',
         page_title: 'Projects',
@@ -38,11 +39,16 @@ router.get('/projects', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        page: page,
+        total_pages: 1,
         projects: []
     };
-    var page = 1, rowCount = 15;
-    if (req.params.per_page) {
-        page = req.query.per_page;
+    var response1 = await crudModel.getProjectsSearchCount(req.query);
+    console.log(response1);
+    if (response1.success) {
+        var count = response1.data.count;
+        var pages = Math.ceil(count / rowCount);
+        data.total_pages = pages;
     }
     var response = await crudModel.getProjectsSearch(req.query, (page - 1) * rowCount, rowCount);
     if (response.success) {
@@ -56,11 +62,12 @@ router.get('/projects', async function (req, res) {
             }
         }
         data.projects = response.data;
-        console.log(data.projects);
+        // console.log(data.projects);
     }
     res.render('home/projects', data);
 });
 router.get('/projects/list_view', async function (req, res) {
+    var page = req.query.page || 1, rowCount = 15;
     var data = {
         page_name: 'projects_list_view',
         page_title: 'Projects',
@@ -72,11 +79,16 @@ router.get('/projects/list_view', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        page: page,
+        total_pages: 1,
         projects: []
     };
-    var page = 1, rowCount = 15;
-    if (req.params.per_page) {
-        page = req.query.per_page;
+    var response1 = await crudModel.getProjectsSearchCount(req.query);
+    console.log(response1);
+    if (response1.success) {
+        var count = response1.data.count;
+        var pages = Math.ceil(count / rowCount);
+        data.total_pages = pages;
     }
     var response = await crudModel.getProjectsSearch(req.query, (page - 1) * rowCount, rowCount);
     if (response.success) {
@@ -95,6 +107,7 @@ router.get('/projects/list_view', async function (req, res) {
 });
 
 router.get('/properties', async function (req, res) {
+    var page = req.query.page || 1, rowCount = 15;
     var data = {
         page_name: 'properties',
         page_title: 'Properties',
@@ -106,11 +119,16 @@ router.get('/properties', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        page: page,
+        total_pages: 1,
         properties: []
     };
-    var page = 1, rowCount = 15;
-    if (req.params.per_page) {
-        page = req.query.per_page;
+    var response1 = await crudModel.getPropertiesCount(req.query);
+    console.log(response1);
+    if (response1.success) {
+        var count = response1.data.count;
+        var pages = Math.ceil(count / rowCount);
+        data.total_pages = pages;
     }
     var response = await crudModel.getProperties(req.query, (page - 1) * rowCount, rowCount);
     if (response.success) {
@@ -128,6 +146,7 @@ router.get('/properties', async function (req, res) {
     res.render('home/properties', data);
 });
 router.get('/properties/list_view', async function (req, res) {
+    var page = req.query.page || 1, rowCount = 15;
     var data = {
         page_name: 'list_view',
         page_title: 'Properties',
@@ -139,11 +158,16 @@ router.get('/properties/list_view', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        page: page,
+        total_pages: 1,
         properties: []
     };
-    var page = 1, rowCount = 15;
-    if (req.params.per_page) {
-        page = req.query.per_page;
+    var response1 = await crudModel.getPropertiesCount(req.query);
+    console.log(response1);
+    if (response1.success) {
+        var count = response1.data.count;
+        var pages = Math.ceil(count / rowCount);
+        data.total_pages = pages;
     }
     var response = await crudModel.getProperties(req.query, (page - 1) * rowCount, rowCount);
     if (response.success) {

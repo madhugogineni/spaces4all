@@ -105,8 +105,6 @@ module.exports = {
         if (parameters.bedrooms != "" && parameters.bedrooms != undefined) {
             console.log(parameters.bedrooms);
             query += " AND list_property.bedrooms='" + parameters.bedrooms + "'";
-        } else {
-            console.log('empty');
         }
         if (parameters.posted_by != "" && parameters.posted_by != undefined) {
             query += " AND list_property.posted_by='" + parameters.posted_by + "'";
@@ -129,6 +127,56 @@ module.exports = {
         if (limit) {
             query += " limit " + from + "," + limit;
         }
+        console.log(query);
+        return new Promise(function (resolve, reject) {
+            con.query(query, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
+            });
+        });
+    },
+    getPropertiesCount: function (parameters = {}) {
+        var query = "SELECT count(*) as count FROM list_property left join state as state on list_property.state = state.state_id " +
+            " inner join city on list_property.city = city.city_id " +
+            "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
+            "list_property.list_property_id = residential_plot_details.list_property_id inner join property_type on " +
+            "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
+            "list_property.property_sub_type = property_sub_type.property_sub_type_id where list_property.list_property_id !=0";
+
+        if (parameters.property_type != "" && parameters.property_type != undefined) {
+            if (parameters.property_type != 0) {
+                query += " AND list_property.property_type='" + parameters.property_type + "'";
+            }
+        }
+        if (parameters.property_sub_type != "" && parameters.property_sub_type != undefined) {
+            query += " AND list_property.property_sub_type='" + parameters.property_sub_type + "'";
+        }
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND list_property.city='" + parameters.city + "'";
+        }
+        if (parameters.locality != "" && parameters.locality != undefined) {
+            query += " AND list_property.locality='" + parameters.locality + "'";
+        }
+        if (parameters.bedrooms != "" && parameters.bedrooms != undefined) {
+            console.log(parameters.bedrooms);
+            query += " AND list_property.bedrooms='" + parameters.bedrooms + "'";
+        }
+        if (parameters.posted_by != "" && parameters.posted_by != undefined) {
+            query += " AND list_property.posted_by='" + parameters.posted_by + "'";
+        }
+        if (parameters.min_price != "" && parameters.min_price != undefined) {
+            query += " AND list_property.quoted_price >=" + parameters.min_price;
+        }
+        if (parameters.max_price != "" && parameters.max_price != undefined) {
+            query += " AND list_property.quoted_price <=" + parameters.max_price;
+        }
+        if (parameters.possession != "" && parameters.possession != undefined) {
+            query += " AND list_property.possession ='" + parameters.possession + "'";
+        }
+        query += " AND list_property.status='1' ORDER BY datetime DESC ";
         // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
@@ -136,50 +184,7 @@ module.exports = {
                     console.log(error);
                     resolve({success: false});
                 }
-                console.log(result);
-                resolve({success: true, data: result});
-            });
-        });
-    },
-    getPropertiesCount: function (propertyType, propertySubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, possession) {
-        var query = "SELECT list_property_id FROM list_property where list_property_id !=0";
-
-        if (propertyType != "") {
-            if (propertyType != 0) {
-                query += " AND property_type='" + propertyType + "'";
-            }
-        }
-        if (propertySubType != "") {
-            query += " AND property_sub_type='" + propertySubType + "'";
-        }
-        if (city != "") {
-            query += " AND city='" + city + "'";
-        }
-        if (locality != "") {
-            query += " AND locality='" + locality + "'";
-        }
-        if (bedrooms != "") {
-            query += " AND bedrooms='" + bedrooms + "'";
-        }
-        if (postedBy != "") {
-            query += " AND posted_by='" + postedBy + "'";
-        }
-        if (minPrice != "") {
-            query += " AND quoted_price >='" + minPrice + "'";
-        }
-        if (maxPrice != "") {
-            query += " AND quoted_price <='" + maxPrice + "'";
-        }
-        if (possession != "") {
-            query += " AND possession ='" + possession + "'";
-        }
-        query += " AND status='1' ORDER BY datetime DESC ";
-        // console.log(query);
-        return new Promise(function (resolve, reject) {
-            con.query(query, function (error, result) {
-                if (error)
-                    console.log(error);
-                resolve(result.length);
+                resolve({success: true, data: result[0]});
             });
         });
     },

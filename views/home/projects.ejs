@@ -66,6 +66,27 @@
 
         }
 
+        function updatePageNo(pageNo) {
+            var page = parseInt(getValue('page'));
+
+            var toPage = pageNo;
+            if (pageNo == 'previous') {
+                if (page > 1) {
+                    toPage = page - 1;
+                } else {
+                    toPage = page;
+                }
+            } else if (pageNo == 'next') {
+                if (page < parseInt('<%= total_pages %>')) {
+                    toPage = page + 1;
+                } else {
+                    toPage = page;
+                }
+            }
+            setUpValue('page', toPage);
+            Grid_form();
+        }
+
         function updateValues(project_id) {
             var modalBody = '<div id="errorBox3"></div>' +
                 '<div class="row">' +
@@ -165,6 +186,8 @@
 
             <input type="hidden" name="possession" value="<%= possession %>">
 
+            <input type="hidden" name="page" value="<%= page %>">
+
         </form>
 
     </div>
@@ -207,6 +230,7 @@
 
                                     <div class="row" style="padding-bottom: 10px">
 
+                                        <input type="hidden" name="page" value="<%= page %>">
 
                                         <div class="col-md-4">
 
@@ -466,11 +490,15 @@
                             </div>
 
                             <ul class="pagination pull-right">
-                                <?php
-                            foreach ($links as $link) {
-								echo "<li>".$link."</li>";
-                                }
-                                ?>
+                                <li id="previous_button" onclick="updatePageNo('previous')"><a>Previous</a></li>
+                                <% for(var i = 1;i <= total_pages && i <= 3 ;i++) { %>
+                                    <li onclick="updatePageNo('<%= i %>')"><a
+                                        <% if(i == page) { %> class="active"
+                                                <% } %>
+                                        ><%= i %></a></li>
+                                <% } %>
+                                <li id="next_button" onclick="updatePageNo('next')"><a>Next</a></li>
+
                             </ul>
 
                             <!-- <ul class="pagination pull-right">
@@ -576,16 +604,17 @@
         </div>
 
     </div>
-    <script>
-        setUpProjectTypes('#project_type', '<%= project_type %>');
-        getProjectSubTypes("<%= project_type %>", "#project_sub_type", "<%= project_sub_type %>");
-        setUpCities("#city", '<%= city %>');
-        showLocality('<%= city %>', "#Showlocality",<%= locality %>)
-        selectOption("bedrooms", "<%= bedrooms %>");
-        selectOption("min_price", "<%= min_price %>");
-        selectOption("max_price", "<%= max_price %>");
-        selectOption("possession", "<%= possession %>");
-    </script>
+</div>
+<script>
+    setUpProjectTypes('#project_type', '<%= project_type %>');
+    getProjectSubTypes("<%= project_type %>", "#project_sub_type", "<%= project_sub_type %>");
+    setUpCities("#city", '<%= city %>');
+    showLocality('<%= city %>', "#Showlocality",<%= locality %>)
+    selectOption("bedrooms", "<%= bedrooms %>");
+    selectOption("min_price", "<%= min_price %>");
+    selectOption("max_price", "<%= max_price %>");
+    selectOption("possession", "<%= possession %>");
+</script>
 
-    <% include includes/footer.ejs %>
+<% include includes/footer.ejs %>
 

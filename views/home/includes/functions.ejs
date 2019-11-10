@@ -121,7 +121,7 @@
     }
 
     function getProjectSubTypes(str, divId, selectedType) {
-        if(str) {
+        if (str) {
             $.ajax({
                 type: 'GET',
                 url: '<%= api_url %>get_project_sub_types',
@@ -492,5 +492,9 @@
             });
         }
         $('#modal_ajax1').modal('show', {backdrop: 'true'});
+    }
+
+    function getValue(nameSelector) {
+        return $("[name=" + nameSelector + "]").val();
     }
 </script>

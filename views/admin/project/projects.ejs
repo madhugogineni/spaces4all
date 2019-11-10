@@ -37,6 +37,167 @@
 
         <div class="row">
 
+            <div class="col-md-12">
+
+                <div class="search-list">
+
+                    <form action="<%= base_url %>admin/projects" name="Grid_form" method="get">
+
+                        <div class="row" style="padding-bottom: 10px">
+
+
+                            <div class="col-md-4">
+
+                                <select name="project_type" id="project_type"
+                                        onchange="getProjectSubTypes(this.value,'#project_sub_type')"
+                                        class="form-control margin-0">
+
+                                    <option value="0">Project Type</option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <select name="project_sub_type" id="project_sub_type"
+                                        class="form-control margin-0">
+
+                                    <option value="">Project Sub Type</option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <select name="city" id="city"
+                                        onchange="showLocality(this.value,'#Showlocality')"
+                                        class="form-control margin-0">
+                                    <!--showLocality(this.value,'#showLocality')"-->
+
+                                    <option value="">City</option>
+                                </select>
+
+                            </div>
+
+
+                            <!--<div class="col-md-1">   -->
+
+                            <!--     <button type="button" onclick="Show_Div(Div_1)" class="btn btn-primary btn-block">Filters</button>-->
+
+                            <!--</div> -->
+
+                        </div>
+
+                        <div class="row" id="Div_1" style="padding-bottom: 10px">
+
+
+                            <div class="col-md-2">
+
+                                <select name="locality" id="Showlocality" class="form-control margin-0">
+
+                                    <option value="">---locality---</option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+
+                                    <option value="">Bed Rooms</option>
+                                    <% for (var i = 1; i <= 5 ; i++) { %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <select id="min_price" name="min_price" class="form-control margin-0 "
+                                        onchange="Show_max_price(this.value)">
+
+                                    <option value="">Min Price</option>
+                                    <% for (var i = 500000; i <= 30000000; i += 1000000) {
+                                        var price, value = i;
+                                        if (value >= 10000000) {
+                                            price = parseFloat(value) / 10000000;
+                                            price = price + " Crore";
+                                        } else if (value >= 100000) {
+                                            price = parseFloat(value) / 100000;
+                                            price = price + " Lac";
+                                        }
+                                    %>
+                                    <option value="<%= value %>"> <%= price %></option>
+
+                                    <% } %>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <select name="max_price" class="form-control margin-0 " id="max_price">
+
+                                    <option value="">Max Price</option>
+                                    <% for (var i = 1000000; i <= 50000000; i += 1000000) {
+                                        var price, value = i;
+                                        if (value >= 10000000) {
+                                            price = parseFloat(value) / 10000000;
+                                            price = price + " Crore";
+                                        } else if (value >= 100000) {
+                                            price = parseFloat(value) / 100000;
+                                            price = price + " Lac";
+                                        }
+                                    %>
+                                    <option value="<%= value %>"> <%= price %></option>
+
+                                    <% } %>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <select name="possession" class="form-control margin-0 ">
+
+                                    <option value="">Possession</option>
+
+                                    <% for(var i = 2015;i <= 2025;i++) { %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <button type="submit" class="btn btn-lg btn-primary btn-block"><i
+                                            class="fa fa-search"></i> Search
+                                </button>
+
+                            </div>
+
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
             <div class="col-xs-12">
 
 
@@ -256,6 +417,16 @@
     </div>
 
 </div>
+<script>
+    setUpProjectTypes('#project_type', '<%= project_type %>');
+    getProjectSubTypes("<%= project_type %>", "#project_sub_type", "<%= project_sub_type %>");
+    setUpCities("#city", '<%= city %>');
+    showLocality('<%= city %>', "#Showlocality",<%= locality %>)
+    selectOption("bedrooms", "<%= bedrooms %>");
+    selectOption("min_price", "<%= min_price %>");
+    selectOption("max_price", "<%= max_price %>");
+    selectOption("possession", "<%= possession %>");
+</script>
 
 
 <% include ../includes/footer.ejs %>

@@ -335,53 +335,58 @@
     }
 
     function getPropertySubTypes(str, divId, selectedType) {
-        $.ajax({
-            type: 'GET',
-            url: '<%= api_url %>get_property_sub_types',
-            data: {
-                property_type: str
-            },
-            success: function (response) {
-                var result = '<option value="">---SELECT---</option>';
-                if (response.success) {
-                    var data = response.data;
-                    for (var i = 0; i < data.length; i++) {
-                        if (selectedType && selectedType == data[i].property_sub_type_id) {
-                            result += '<option value="' + data[i].property_sub_type_id + '" selected>' + data[i].sub_type + '</option>';
-                        } else {
-                            result += '<option value="' + data[i].property_sub_type_id + '">' + data[i].sub_type + '</option>';
+        if (str) {
+            $.ajax({
+                type: 'GET',
+                url: '<%= api_url %>get_property_sub_types',
+                data: {
+                    property_type: str
+                },
+                success: function (response) {
+                    var result = '<option value="">---SELECT---</option>';
+                    if (response.success) {
+                        var data = response.data;
+                        for (var i = 0; i < data.length; i++) {
+                            if (selectedType && selectedType == data[i].property_sub_type_id) {
+                                result += '<option value="' + data[i].property_sub_type_id + '" selected>' + data[i].sub_type + '</option>';
+                            } else {
+                                result += '<option value="' + data[i].property_sub_type_id + '">' + data[i].sub_type + '</option>';
+                            }
                         }
                     }
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
                 }
-                $(divId).find('option').remove().end();
-                $(divId).append(result);
-            }
-        });
+            });
+        }
     }
 
     function getProjectSubTypes(str, divId, selectedType) {
         console.log(str, divId, selectedType)
-        $.ajax({
-            type: 'GET',
-            url: '<%= api_url %>get_project_sub_types',
-            data: {
-                project_type: str
-            },
-            success: function (response) {
-                var result = '<option value="">---SELECT---</option>';
-                for (var i = 0; i < response.length; i++) {
+        if (str) {
+            $.ajax({
+                type: 'GET',
+                url: '<%= api_url %>get_project_sub_types',
+                data: {
+                    project_type: str
+                },
+                success: function (response) {
+                    var result = '<option value="">---SELECT---</option>';
+                    for (var i = 0; i < response.length; i++) {
 
-                    if (selectedType && selectedType == response[i].project_sub_type_id) {
-                        result += '<option value="' + response[i].project_sub_type_id + '" selected>' + response[i].sub_type + '</option>';
-                    } else {
-                        result += '<option value="' + response[i].project_sub_type_id + '">' + response[i].sub_type + '</option>';
+                        if (selectedType && selectedType == response[i].project_sub_type_id) {
+                            result += '<option value="' + response[i].project_sub_type_id + '" selected>' + response[i].sub_type + '</option>';
+                        } else {
+                            result += '<option value="' + response[i].project_sub_type_id + '">' + response[i].sub_type + '</option>';
+                        }
                     }
-                }
-                $(divId).find('option').remove().end();
-                $(divId).append(result);
+                    $(divId).find('option').remove().end();
+                    $(divId).append(result);
 
-            }
-        });
+                }
+            });
+        }
+
     }
 
     function setUpSubPropertiesByPropertyType(propertyType, propertySubType) {

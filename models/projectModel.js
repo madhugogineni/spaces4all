@@ -329,45 +329,46 @@ module.exports = {
             });
         });
     },
-    getProjectsSearchCount: function (projectType, projectSubType, city, locality, bedrooms, postedBy, minPrice, maxPrice, searchType) {
-        var query = "SELECT * FROM projects where project_id !=0 and project_status=1";
+    getProjectsSearchCount: function (parameters = {}) {
+        var query = "SELECT count(*) as count FROM projects " +
+            "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
+            "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
+            "inner join city on projects.city = city.city_id inner join locality as locality on projects.locality = locality.locality_id where project_id !=0 and project_status=1";
 
-        if (projectType != "" && projectType != null && projectType != undefined) {
-            if (projectType != 0) {
-                query += " AND project_type='" + projectType + "'";
+        if (parameters.project_type != "" && parameters.project_type != undefined) {
+            if (parameters.project_type != 0) {
+                query += " AND projects.project_type='" + parameters.project_type + "'";
             }
         }
-        if (projectSubType != "" && projectSubType != null && projectSubType != undefined) {
-            query += " AND project_sub_type='" + projectSubType + "'";
+        if (parameters.project_sub_type != "" && parameters.project_sub_type != undefined) {
+            query += " AND projects.project_sub_type='" + parameters.project_sub_type + "'";
         }
-        if (city != "" && projectSubType != null && projectSubType != undefined) {
-            query += " AND city='" + city + "'";
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND projects.city='" + parameters.city + "'";
         }
-        if (locality != "" && projectSubType != null && projectSubType != undefined) {
-            query += " AND locality='" + locality + "'";
+        if (parameters.locality != "" && parameters.locality != undefined) {
+            query += " AND projects.locality='" + parameters.locality + "'";
         }
-        if (bedrooms != "" && projectSubType != null && projectSubType != undefined) {
-            query += " AND FIND_IN_SET('" + bedrooms + "',plans) > 0";
+        if (parameters.bedrooms != "" && parameters.bedrooms != undefined) {
+            query += " AND FIND_IN_SET('" + parameters.bedrooms + "',projects.plans) > 0";
         }
-        if (postedBy != "" && postedBy != null && postedBy != undefined) {
-            query += " AND posted_by='" + postedBy + "'";
+        if (parameters.posted_by != "" && parameters.posted_by != undefined) {
+            query += " AND projects.posted_by='" + parameters.posted_by + "'";
         }
-        if (minPrice != "" && minPrice != null && minPrice != undefined) {
-            query += " AND min_price >='" + minPrice + "'";
+        if (parameters.min_price != "" && parameters.min_price != undefined) {
+            query += " AND projects.min_price >='" + parameters.min_price + "'";
         }
-        if (maxPrice != "" && maxPrice != null && maxPrice != undefined) {
-            query += " AND max_price <='" + maxPrice + "'";
-        }
-        if (searchType != "" && searchType != null && searchType != undefined) {
-            query += " AND want_to ='" + searchType + "'";
+        if (parameters.max_price != "" && parameters.max_price != undefined) {
+            query += " AND projects.max_price <='" + parameters.max_price + "'";
         }
         query += " ORDER BY datetime DESC ";
-        // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
-                if (error)
+                if (error) {
                     console.log(error);
-                resolve(result.length);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },

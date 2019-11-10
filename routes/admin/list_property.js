@@ -11,14 +11,24 @@ var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
 
 router.get('/', async function (req, res) {
-    var listProperty = await crudModel.getProperties();
+    console.log(req.params);
+    console.log('-------------');
+    var listProperty = await crudModel.getProperties(req.query);
     var responseObject = {
         page_name: 'list_property',
-        page_title: 'List Property'
+        page_title: 'List Property',
+        property_type: req.query.property_type || '',
+        property_sub_type: req.query.property_sub_type || '',
+        city: req.query.city || '',
+        locality: req.query.locality || '',
+        bedrooms: req.query.bedrooms || '',
+        min_price: req.query.min_price || '',
+        max_price: req.query.max_price || '',
+        possession: req.query.possession || ''
     };
     if (listProperty.success) {
         responseObject.list_property = listProperty.data
-        console.log(listProperty.data);
+        // console.log(listProperty.data);
     } else {
         responseObject.list_property = []
     }

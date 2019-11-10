@@ -8,8 +8,8 @@
 <!-- Content Wrapper. Contains page content -->
 <script>
     function showPossession(listPropertyId) {
-        setUpValue('list_property_id',listPropertyId)
-        showAjaxModal('<%= base_url %>admin/popup/property_possession/'+listPropertyId,'property_possession')
+        setUpValue('list_property_id', listPropertyId)
+        showAjaxModal('<%= base_url %>admin/popup/property_possession/' + listPropertyId, 'property_possession')
     }
 </script>
 
@@ -40,179 +40,340 @@
 
 
     <section class="content">
-
+        <br>
         <div class="row">
 
-            <div class="col-xs-12">
+            <div class="col-md-12">
 
 
-                <div class="box">
+                <div class="search-list">
 
-                    <div class="box-header">
+                    <form action="<%= base_url %>admin/list_property" name="Grid_form" method="get">
 
-                        <div class="col-md-5"></div>
+                        <div class="row" style="padding-bottom: 10px">
 
-                        <div class="col-md-2">
+                            <div class="col-md-4">
+
+                                <select name="property_type" id="property_type"
+                                        onchange="getPropertySubTypes(this.value,'#property_sub_type')"
+                                        class="form-control margin-0">
+                                    <option value="0">Property Type</option>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <select name="property_sub_type" id="property_sub_type"
+                                        onchange="hide_bedrooms(this.value)" class="form-control margin-0">
+
+                                    <option value="">Property Sub Type</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-4">
+
+                                <select name="city" id="city"
+                                        onchange="showLocality(this.value,'#Showlocality')"
+                                        class="form-control margin-0">
+
+                                    <option value="">City</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!--<div class="col-md-1">   -->
+
+                            <!--     <button type="button" onclick="Show_Div(Div_1)" class="btn btn-primary btn-block">Filters</button>-->
+
+                            <!--</div>      -->
 
 
                         </div>
 
-                    </div>
+                        <div class="row" id="Div_1" style="padding-bottom: 10px">
 
-                    <!--                    <div align="center">-->
+                            <div class="col-md-2">
 
-                    <!--                        <?php-->
+                                <select name="locality" id="Showlocality" class="form-control margin-0">
 
-                    <!--					if ($this->session->flashdata('message')) {-->
+                                    <option value="">---locality---</option>
 
-                    <!--                        echo "<h5>".$this->session->flashdata('message')."</h5>";-->
+                                </select>
 
-                    <!--                        }-->
+                            </div>
 
-                    <!--                        ?>-->
 
-                    <!--                    </div>-->
+                            <div class="col-md-2">
 
-                    <!-- /.box-header -->
+                                <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
 
-                    <div class="box-body">
-
-                        <table id="example1" class="table table-bordered table-striped">
-
-                            <thead>
-
-                            <tr>
-
-                                <th>S.No</th>
-
-                                <th>Name</th>
-
-                                <th>Email</th>
-
-                                <th>Phone</th>
-
-                                <th>Property Type</th>
-
-                                <th>Property Sub Type</th>
-
-                                <th>City</th>
-
-                                <th>Quoted Price</th>
-
-                                <th>Status</th>
-
-                                <th>Hot Property</th>
-
-                                <th>Actions</th>
-
-                            </tr>
-
-                            </thead>
-
-                            <tbody>
-                            <% for(var i = 0;i < list_property.length;i++) {
-                                var property = list_property[i]
-                            %>
-
-                            <tr>
-
-                                <td><%= i %></td>
-
-                                <td><%= property.name %></td>
-
-                                <td><%= property.email %></td>
-
-                                <td><%= property.phone %></td>
-
-                                <td><%= property.property_type_name %></td>
-
-                                <td><%= property.property_sub_type_name %></td>
-
-                                <td><%= property.city_name %></td>
-
-                                <td><%= property.quoted_price %></td>
-
-                                <td>
-                                    <% if(property.status == '1') { %>
-
-                                        <a href="<%= base_url %>admin/list_property/status/0/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to Inactive ?')"><b>Active</b></a>
-                                    <% } else { %>
-                                        <a href="<%= base_url %>admin/list_property/status/1/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to Active ?')"><b
-                                                    style="color: red">In-active</b></a>
+                                    <option value="">Bed Rooms</option>
+                                    <% for (var i = 1; i <= 5 ; i++) { %>
+                                        <option value="<%= i %>"><%= i %></option>
                                     <% } %>
-                                </td>
 
-                                <td>
-                                    <% if(property.hot_property == '1') { %>
+                                </select>
 
-                                        <a href="<%= base_url %>admin/list_property/hot/0/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
-                                                    style="color: red">Yes</b></a>
-                                    <% } else { %>
-                                        <a href="<%= base_url %>admin/list_property/hot/1/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>No</b></a>
+                            </div>
 
-                                    <% } %>
-                                </td>
 
-                                <td>
+                            <div class="col-md-2">
 
-                                    <a href="#"
-                                       onclick="showPossession('<%= property.list_property_id %>')"><b>Possession</b></a>&nbsp;&nbsp;&nbsp;
+                                <select id="min_price" name="min_price" class="form-control margin-0 "
+                                        onchange="Show_max_price(this.value)">
 
-                                    <a href="<%= base_url %>admin/list_property/edit/<%= property.list_property_id %>"
-                                       title="Edit"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
-
-                                    <a href="<%= base_url %>admin/list_property/delete/<%= property.list_property_id %>"
-                                       onclick="return confirm('Are You Sure Want to Delete ?')"
-                                       title="Delete"><i class="fa fa-trash-o"></i></a>
-                                    <br/>
-                                    <a href="#"
-                                       onclick="showAjaxModal1('<%= base_url %>admin/list_property/<%= property.list_property_id %>','property')"><b>View
-                                            Details</b></a>
-                                    <br/>
-                                    <a href="<%= base_url %>admin/list_property/photos/<%= property.list_property_id %>"><b>Edit
-                                            Images</b>
-                                    </a>
-                                    <br/>
-                                    <% if(property.latest_property == '1') { %>
-
-                                        <a href="<%= base_url %>admin/list_property/latest/0/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
-                                                    style="color: red">Remove Latest Property</b></a>
-                                    <% } else { %>
-                                        <a href="<%= base_url %>admin/list_property/latest/1/<%= property.list_property_id %>"
-                                           onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>Make
-                                                Latest Property</b></a>
+                                    <option value="">Min Price</option>
+                                    <% for (var i = 500000; i <= 30000000; i += 1000000) {
+                                        var price, value = i;
+                                        if (value >= 10000000) {
+                                            price = parseFloat(value) / 10000000;
+                                            price = price + " Crore";
+                                        } else if (value >= 100000) {
+                                            price = parseFloat(value) / 100000;
+                                            price = price + " Lac";
+                                        }
+                                    %>
+                                    <option value="<%= value %>"> <%= price %></option>
 
                                     <% } %>
 
-                                </td>
+                                </select>
 
-                            </tr>
+                            </div>
 
-                            <% } %>
-                            </tbody>
 
-                        </table>
+                            <div class="col-md-2">
 
-                    </div>
+                                <select name="max_price" class="form-control margin-0 " id="max_price">
 
-                    <!-- /.box-body -->
+                                    <option value="">Max Price</option>
+                                    <% for (var i = 1000000; i <= 50000000; i += 1000000) {
+                                        var price, value = i;
+                                        if (value >= 10000000) {
+                                            price = parseFloat(value) / 10000000;
+                                            price = price + " Crore";
+                                        } else if (value >= 100000) {
+                                            price = parseFloat(value) / 100000;
+                                            price = price + " Lac";
+                                        }
+                                    %>
+                                    <option value="<%= value %>"> <%= price %></option>
+
+                                    <% } %>
+                                </select>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+
+                                <select name="possession" class="form-control margin-0 ">
+
+                                    <option value="">Possession</option>
+
+                                    <% for(var i = 2015;i <= 2025;i++) { %>
+                                        <option value="<%= i %>"><%= i %></option>
+                                    <% } %>
+                                </select>
+
+                            </div>
+
+                            <div class="col-md-2">
+
+                                <button type="submit" class="btn btn-lg btn-primary btn-block"><i
+                                            class="fa fa-search"></i> Search
+                                </button>
+
+                            </div>
+
+
+                        </div>
+
+                    </form>
 
                 </div>
 
-                <!-- /.box -->
+            </div>
+            <br>
+
+            <div class="row">
+
+                <div class="col-xs-12">
+
+                    <div class="box">
+
+                        <div class="box-header">
+
+                            <div class="col-md-5"></div>
+
+                            <div class="col-md-2">
+
+
+                            </div>
+
+                        </div>
+
+                        <!--                    <div align="center">-->
+
+                        <!--                        <?php-->
+
+                        <!--					if ($this->session->flashdata('message')) {-->
+
+                        <!--                        echo "<h5>".$this->session->flashdata('message')."</h5>";-->
+
+                        <!--                        }-->
+
+                        <!--                        ?>-->
+
+                        <!--                    </div>-->
+
+                        <!-- /.box-header -->
+
+                        <div class="box-body">
+
+                            <table id="example1" class="table table-bordered table-striped">
+
+                                <thead>
+
+                                <tr>
+
+                                    <th>S.No</th>
+
+                                    <th>Name</th>
+
+                                    <th>Email</th>
+
+                                    <th>Phone</th>
+
+                                    <th>Property Type</th>
+
+                                    <th>Property Sub Type</th>
+
+                                    <th>City</th>
+
+                                    <th>Quoted Price</th>
+
+                                    <th>Status</th>
+
+                                    <th>Hot Property</th>
+
+                                    <th>Actions</th>
+
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+                                <% for(var i = 0;i < list_property.length;i++) {
+                                    var property = list_property[i]
+                                %>
+
+                                <tr>
+
+                                    <td><%= i %></td>
+
+                                    <td><%= property.name %></td>
+
+                                    <td><%= property.email %></td>
+
+                                    <td><%= property.phone %></td>
+
+                                    <td><%= property.property_type_name %></td>
+
+                                    <td><%= property.property_sub_type_name %></td>
+
+                                    <td><%= property.city_name %></td>
+
+                                    <td><%= property.quoted_price %></td>
+
+                                    <td>
+                                        <% if(property.status == '1') { %>
+
+                                            <a href="<%= base_url %>admin/list_property/status/0/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to Inactive ?')"><b>Active</b></a>
+                                        <% } else { %>
+                                            <a href="<%= base_url %>admin/list_property/status/1/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to Active ?')"><b
+                                                        style="color: red">In-active</b></a>
+                                        <% } %>
+                                    </td>
+
+                                    <td>
+                                        <% if(property.hot_property == '1') { %>
+
+                                            <a href="<%= base_url %>admin/list_property/hot/0/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
+                                                        style="color: red">Yes</b></a>
+                                        <% } else { %>
+                                            <a href="<%= base_url %>admin/list_property/hot/1/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>No</b></a>
+
+                                        <% } %>
+                                    </td>
+
+                                    <td>
+
+                                        <a href="#"
+                                           onclick="showPossession('<%= property.list_property_id %>')"><b>Possession</b></a>&nbsp;&nbsp;&nbsp;
+
+                                        <a href="<%= base_url %>admin/list_property/edit/<%= property.list_property_id %>"
+                                           title="Edit"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;&nbsp;
+
+                                        <a href="<%= base_url %>admin/list_property/delete/<%= property.list_property_id %>"
+                                           onclick="return confirm('Are You Sure Want to Delete ?')"
+                                           title="Delete"><i class="fa fa-trash-o"></i></a>
+                                        <br/>
+                                        <a href="#"
+                                           onclick="showAjaxModal1('<%= base_url %>admin/list_property/<%= property.list_property_id %>','property')"><b>View
+                                                Details</b></a>
+                                        <br/>
+                                        <a href="<%= base_url %>admin/list_property/photos/<%= property.list_property_id %>"><b>Edit
+                                                Images</b>
+                                        </a>
+                                        <br/>
+                                        <% if(property.latest_property == '1') { %>
+
+                                            <a href="<%= base_url %>admin/list_property/latest/0/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to Remove From Hot Property ?')"><b
+                                                        style="color: red">Remove Latest Property</b></a>
+                                        <% } else { %>
+                                            <a href="<%= base_url %>admin/list_property/latest/1/<%= property.list_property_id %>"
+                                               onclick="return confirm('Are You Sure Want to  Make It Hot Property ?')"><b>Make
+                                                    Latest Property</b></a>
+
+                                        <% } %>
+
+                                    </td>
+
+                                </tr>
+
+                                <% } %>
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                        <!-- /.box-body -->
+
+                    </div>
+
+                    <!-- /.box -->
+
+                </div>
+
+                <!-- /.col -->
 
             </div>
 
-            <!-- /.col -->
-
-        </div>
-
-        <!-- /.row -->
+            <!-- /.row -->
 
     </section>
 
@@ -303,7 +464,16 @@
     </div>
 
 </div>
-
+<script>
+    setUpPropertyTypes("#property_type", "<%= property_type %>");
+    getPropertySubTypes("<%= property_type %>", "#property_sub_type", "<%= property_sub_type %>");
+    setUpCities("#city", '<%= city %>');
+    showLocality('<%= city %>', "#showLocality",<%= locality %>)
+    selectOption("bedrooms", "<%= bedrooms %>");
+    selectOption("min_price", "<%= min_price %>");
+    selectOption("max_price", "<%= max_price %>");
+    selectOption("possession", "<%= possession %>");
+</script>
 
 
 <% include ../includes/footer.ejs %>
