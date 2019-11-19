@@ -39,6 +39,7 @@ router.get('/projects', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        search_field: req.query.search_field || '',
         page: page,
         total_pages: 1,
         projects: []
@@ -79,6 +80,7 @@ router.get('/projects/list_view', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        search_field: req.query.search_field || '',
         page: page,
         total_pages: 1,
         projects: []
@@ -119,6 +121,7 @@ router.get('/properties', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        search_field: req.query.search_field || '',
         page: page,
         total_pages: 1,
         properties: []
@@ -158,6 +161,7 @@ router.get('/properties/list_view', async function (req, res) {
         min_price: req.query.min_price || '',
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
+        search_field: req.query.search_field || '',
         page: page,
         total_pages: 1,
         properties: []

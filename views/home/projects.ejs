@@ -186,6 +186,8 @@
 
             <input type="hidden" name="possession" value="<%= possession %>">
 
+            <input type="hidden" name="search_field" value="<%= search_field %>">
+
             <input type="hidden" name="page" value="<%= page %>">
 
         </form>
@@ -255,7 +257,7 @@
                                         </div>
 
 
-                                        <div class="col-md-4">
+                                        <div class="col-md-2">
 
                                             <select name="city" id="city"
                                                     onchange="showLocality(this.value,'#Showlocality')"
@@ -263,6 +265,15 @@
                                                 <!--showLocality(this.value,'#showLocality')"-->
 
                                                 <option value="">City</option>
+                                            </select>
+
+                                        </div>
+
+                                        <div class="col-md-2">
+
+                                            <select name="locality" id="Showlocality" class="form-control margin-0">
+
+                                                <option value="">---locality---</option>
                                             </select>
 
                                         </div>
@@ -278,17 +289,6 @@
 
                                     <div class="row" id="Div_1" style="padding-bottom: 10px">
 
-
-                                        <div class="col-md-2">
-
-                                            <select name="locality" id="Showlocality" class="form-control margin-0">
-
-                                                <option value="">---locality---</option>
-                                            </select>
-
-                                        </div>
-
-
                                         <div class="col-md-2">
 
                                             <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
@@ -302,6 +302,18 @@
 
                                         </div>
 
+                                        <div class="col-md-2">
+
+                                            <select name="possession" class="form-control margin-0 ">
+
+                                                <option value="">Possession</option>
+
+                                                <% for(var i = 2015;i <= 2025;i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                <% } %>
+                                            </select>
+
+                                        </div>
 
                                         <div class="col-md-2">
 
@@ -349,17 +361,9 @@
 
                                         </div>
 
-
                                         <div class="col-md-2">
 
-                                            <select name="possession" class="form-control margin-0 ">
-
-                                                <option value="">Possession</option>
-
-                                                <% for(var i = 2015;i <= 2025;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                <% } %>
-                                            </select>
+                                            <input type="text" name="search_field" placeholder="Enter a locality, builder, project or RERA ID" class="form-control margin-0" />
 
                                         </div>
 
@@ -614,6 +618,7 @@
     selectOption("min_price", "<%= min_price %>");
     selectOption("max_price", "<%= max_price %>");
     selectOption("possession", "<%= possession %>");
+    setUpValue('search_field', "<%= search_field %>");
 </script>
 
 <% include includes/footer.ejs %>

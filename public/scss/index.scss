@@ -1,31 +1,53 @@
-.type-rent {
-  padding-top: 0px !important;
-  padding-bottom: 0px !important;
-  padding-left: 0px !important;
-  height: 259px;
-
-  .image-container {
+@import "./components/searchbar.scss";
+.home {
+  .type-rent {
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
     padding-left: 0px !important;
+    height: 259px;
 
-    .image {
-      height: 259px;
-      width: 100%;
+    .image-container {
+      padding-left: 0px !important;
+
+      .image {
+        height: 259px;
+        width: 100%;
+      }
+    }
+
+    .property-info {
+      padding: 10px 0px 10px 0px;
+
+      hr {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+      }
+    }
+
+    .property-amenities {
+      background: transparent;
+
+      span {
+        background: rgba(171, 0, 0, 0.02);
+      }
     }
   }
 
-  .property-info {
-    padding: 10px 0px 10px 0px;
-
-    hr {
-      margin-top: 5px !important;
-      margin-bottom: 5px !important;
-    }
+  .site-search-module a {
+    color: #000;
   }
 
-  .property-amenities {
-    background: transparent;
-    span {
-      background: rgba(171, 0, 0, 0.02);
-    }
+  .site-search-module {
+    position: absolute;
+    z-index: 18;
+    height: 240px;
+    left: 0;
+    width: 100%;
+    bottom: 0px;
   }
 }
+.no-border {
+  border: none !important;
+}
+
+

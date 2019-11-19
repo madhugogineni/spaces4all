@@ -227,6 +227,8 @@
 
             <input type="hidden" name="possession" value="<%= possession %>">
 
+            <input type="hidden" name="search_field" value="<%= search_field %>">
+
             <input type="hidden" name="page" value="<%= page %>">
 
         </form>
@@ -273,7 +275,7 @@
                                     <div class="row" style="padding-bottom: 10px">
                                         <input type="hidden" name="page" value="<%= page %>">
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
 
                                             <select name="property_type" id="property_type"
                                                     onchange="getPropertySubTypes(this.value,'#property_sub_type')"
@@ -287,7 +289,7 @@
                                         </div>
 
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-4">
 
                                             <select name="property_sub_type" id="property_sub_type"
                                                     onchange="hide_bedrooms(this.value)" class="form-control margin-0">
@@ -297,7 +299,7 @@
                                         </div>
 
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
 
                                             <select name="city" id="city"
                                                     onchange="showLocality(this.value,'#Showlocality')"
@@ -309,29 +311,6 @@
 
                                         </div>
 
-
-                                        <div class="col-md-2">
-
-                                            <button type="submit" class="btn btn-primary btn-block">
-                                                <i class="fa fa-search"></i> Search
-                                            </button>
-
-                                        </div>
-
-
-                                        <div class="col-md-1">
-
-                                            <button type="button" onclick="Show_Div(Div_1)"
-                                                    class="btn btn-primary btn-block">Filters
-                                            </button>
-
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="row" id="Div_1" style="display: none;padding-bottom: 10px">
-
                                         <div class="col-md-2">
 
                                             <select name="locality" id="Showlocality" class="form-control margin-0">
@@ -341,6 +320,11 @@
                                             </select>
 
                                         </div>
+
+                                    </div>
+
+                                    <div class="row" id="Div_1" style="padding-bottom: 10px">
+
 
 
                                         <div class="col-md-2">
@@ -355,6 +339,17 @@
 
                                         </div>
 
+                                        <div class="col-md-2">
+
+                                            <select name="possession" class="form-control margin-0 ">
+
+                                                <option value="">Possession</option>
+                                                <% for(var i = 2015;i <= 2025;i++) { %>
+                                                    <option value="<%= i %>"><%= i %></option>
+                                                <% } %>
+                                            </select>
+
+                                        </div>
 
                                         <div class="col-md-2">
 
@@ -402,18 +397,21 @@
 
                                         </div>
 
+
+
                                         <div class="col-md-2">
 
-                                            <select name="possession" class="form-control margin-0 ">
-
-                                                <option value="">Possession</option>
-                                                <% for(var i = 2015;i <= 2025;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                <% } %>
-                                            </select>
+                                            <input type="text" name="search_field" placeholder="Enter a locality, builder, project or RERA ID" class="form-control margin-0" />
 
                                         </div>
 
+                                        <div class="col-md-2">
+
+                                            <button type="submit" class="btn btn-lg btn-primary btn-block">
+                                                <i class="fa fa-search"></i> Search
+                                            </button>
+
+                                        </div>
 
                                     </div>
 
@@ -710,8 +708,9 @@
             selectOption("min_price", "<%= min_price %>");
             selectOption("max_price", "<%= max_price %>");
             selectOption("possession", "<%= possession %>");
+            setUpValue('search_field', "<%= search_field %>");
         </script>
 
-        <% include includes/footer.ejs %>   
+        <% include includes/footer.ejs %>
 
   

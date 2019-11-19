@@ -253,4 +253,78 @@
   color: black;
 }
 
+.searchbar-container .searchbar_field {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+.searchbar-container .searchbar_field select {
+  border-radius: 0;
+  margin-right: -3px;
+  border-right: 0px solid transparent;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-position: right 50%;
+  background-repeat: no-repeat;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=);
+  padding: 0.3em;
+  padding-right: 1.5em;
+  padding-left: 1em;
+}
+.searchbar-container .searchbar_field select:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.searchbar-container .searchbar_field input {
+  border-radius: 0px !important;
+}
+.searchbar-container .submit-button {
+  background-color: #AB0000;
+  border: 1px solid #AB0000;
+  color: white;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
+}
+
+.home .type-rent {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 0px !important;
+  height: 259px;
+}
+.home .type-rent .image-container {
+  padding-left: 0px !important;
+}
+.home .type-rent .image-container .image {
+  height: 259px;
+  width: 100%;
+}
+.home .type-rent .property-info {
+  padding: 10px 0px 10px 0px;
+}
+.home .type-rent .property-info hr {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+.home .type-rent .property-amenities {
+  background: transparent;
+}
+.home .type-rent .property-amenities span {
+  background: rgba(171, 0, 0, 0.02);
+}
+.home .site-search-module a {
+  color: #000;
+}
+.home .site-search-module {
+  position: absolute;
+  z-index: 18;
+  height: 240px;
+  left: 0;
+  width: 100%;
+  bottom: 0px;
+}
+
+.no-border {
+  border: none !important;
+}
+
 /*# sourceMappingURL=final.css.map */

@@ -283,9 +283,16 @@ module.exports = {
         if (parameters.max_price != "" && parameters.max_price != undefined) {
             query += " AND projects.max_price <='" + parameters.max_price + "'";
         }
+
+        if (parameters.search_field != "" && parameters.search_field != undefined) {
+            query += " AND (projects.project_name LIKE '%" + parameters.search_field + "%'";
+            query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
+            query += " OR projects.group_name LIKE '%" + parameters.search_field + "%' )";
+        }
         // if (searchType != "") {
         //     query += " AND want_to ='" + searchType + "'";
         // }
+        // console.log(query);
         query += " ORDER BY datetime DESC ";
         if (!from || from < 0) {
             from = '0';
@@ -294,7 +301,7 @@ module.exports = {
         if (limit) {
             query += " limit " + from + "," + limit;
         }
-        console.log(query);
+        // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
                 if (error) {
@@ -360,6 +367,11 @@ module.exports = {
         }
         if (parameters.max_price != "" && parameters.max_price != undefined) {
             query += " AND projects.max_price <='" + parameters.max_price + "'";
+        }
+        if (parameters.search_field != "" && parameters.search_field != undefined) {
+            query += " AND (projects.project_name LIKE '%" + parameters.search_field + "%'";
+            query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
+            query += " OR projects.group_name LIKE '%" + parameters.search_field + "%')";
         }
         query += " ORDER BY datetime DESC ";
         return new Promise(function (resolve, reject) {

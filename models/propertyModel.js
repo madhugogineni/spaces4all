@@ -118,6 +118,10 @@ module.exports = {
         if (parameters.possession != "" && parameters.possession != undefined) {
             query += " AND list_property.possession ='" + parameters.possession + "'";
         }
+        if (parameters.search_field != "" && parameters.search_field != undefined) {
+            query += " AND (list_property.property_name LIKE '%" + parameters.search_field + "%'";
+            query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%')";
+        }
         query += " AND list_property.status='1' ORDER BY datetime DESC ";
         // console.log(query);
         if (!from || from < 0) {
@@ -127,7 +131,7 @@ module.exports = {
         if (limit) {
             query += " limit " + from + "," + limit;
         }
-        console.log(query);
+        // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
                 if (error) {
@@ -176,7 +180,12 @@ module.exports = {
         if (parameters.possession != "" && parameters.possession != undefined) {
             query += " AND list_property.possession ='" + parameters.possession + "'";
         }
+        if (parameters.search_field != "" && parameters.search_field != undefined) {
+            query += " AND (list_property.property_name LIKE '%" + parameters.search_field + "%'";
+            query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%')";
+        }
         query += " AND list_property.status='1' ORDER BY datetime DESC ";
+
         // console.log(query);
         return new Promise(function (resolve, reject) {
             con.query(query, function (error, result) {
@@ -459,6 +468,67 @@ module.exports = {
                     console.log(error);
                 }
                 resolve(result);
+            });
+        });
+    },
+
+    getPropertiesForSearch: function (parameters = {}, from, limit) {
+        var query = "SELECT list_property.*,state.state_name as state_name, city.city as city_name, locality.locality as locality_name, residential_plot_details.east, " +
+            "residential_plot_details.west, residential_plot_details.north, residential_plot_details.south, residential_plot_details.open_slides," +
+            "residential_plot_details.width, residential_plot_details.construction_done, residential_plot_details.boundary_wall, " +
+            "residential_plot_details.gated_colony, property_type.type as property_type_name, " +
+            "property_sub_type.sub_type as property_sub_type_name  FROM list_property left join state as state on list_property.state = state.state_id " +
+            " inner join city on list_property.city = city.city_id " +
+            "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
+            "list_property.list_property_id = residential_plot_details.list_property_id inner join property_type on " +
+            "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
+            "list_property.property_sub_type = property_sub_type.property_sub_type_id where list_property.list_property_id !=0";
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND list_property.city='" + parameters.city + "'";
+        }
+        query += " AND list_property.property_name LIKE '%" + parameters.search_field + "%'";
+        query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%'";
+        query += " AND list_property.status='1' ORDER BY datetime DESC ";
+        // console.log(query);
+        if (!from || from < 0) {
+            from = '0';
+        }
+
+        if (limit) {
+            query += " limit " + from + "," + limit;
+        }
+        // console.log(query);
+        return new Promise(function (resolve, reject) {
+            con.query(query, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result});
+            });
+        });
+    },
+    getPropertiesCountForSearch: function (parameters = {}) {
+        var query = "SELECT count(*) as count FROM list_property left join state as state on list_property.state = state.state_id " +
+            " inner join city on list_property.city = city.city_id " +
+            "inner join locality on list_property.locality = locality.locality_id left join residential_plot_details on " +
+            "list_property.list_property_id = residential_plot_details.list_property_id inner join property_type on " +
+            "list_property.property_type = property_type.property_type_id inner join property_sub_type on " +
+            "list_property.property_sub_type = property_sub_type.property_sub_type_id where list_property.list_property_id !=0";
+        if (parameters.city != "" && parameters.city != undefined) {
+            query += " AND list_property.city='" + parameters.city + "'";
+        }
+        query += " AND list_property.property_name LIKE '%" + parameters.search_field + "%'";
+        query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%'";
+        query += " AND list_property.status='1' ORDER BY datetime DESC ";
+        // console.log(query);
+        return new Promise(function (resolve, reject) {
+            con.query(query, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                }
+                resolve({success: true, data: result[0]});
             });
         });
     },

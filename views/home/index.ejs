@@ -3,7 +3,7 @@
 <html class="no-js">
 
 <head>
-    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">
+<!--    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">-->
     <script>
 
         function ShowButton(str) {
@@ -148,89 +148,22 @@
 
             <div class="container">
 
-                <div class="site-search-module-inside">
+                <div class="site-search-module-inside  col-md-10 col-md-offset-1 searchbar-container">
 
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs no-border">
 
-                        <li class="active"><i class="fa fa-caret-down fa-4x"></i> <a data-toggle="tab"
-                                                                                     href="#sampletab2"> Projects</a>
+                        <li class="active"><i class="fa fa-caret-down fa-4x"></i>
+                            <a data-toggle="tab" href="#sampletab2"> Projects</a>
                         </li>
 
-                        <li><i class="fa fa-caret-down fa-4x "></i> <a data-toggle="tab" href="#sampletab1">
-                                Properties </a></li>
+                        <li><i class="fa fa-caret-down fa-4x "></i>
+                            <a data-toggle="tab" href="#sampletab1"> Properties </a>
+                        </li>
 
                     </ul>
 
 
                     <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
-
-                        <div id="sampletab1" class="tab-pane">
-
-                            <br>
-
-                            <form method="get">
-
-                                <div class="form-group">
-
-                                    <div class="row">
-
-                                        <div class="col-md-1">
-
-                                        </div>
-
-                                        <div class="col-md-2">
-
-                                            <select id="search_type" onchange="ShowButton(this.value)"
-                                                    class="form-control input-md">
-
-                                                <option value="BUY">BUY</option>
-
-                                                <option value="RENT">RENT</option>
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-3">
-
-                                            <select name="property_type" id="index_property_type"
-                                                    class="form-control input-md">
-
-                                                <script>setUpPropertyTypes('#index_property_type');</script>
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-3">
-
-                                            <select name="city" id="property_city" class="form-control input-md">
-
-                                                <option value="">City</option>
-                                                <script>
-                                                    setUpCities("#property_city");
-                                                </script>
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-2" id="action_type">
-                                            <button type="submit"
-                                                    formaction="<%= base_url %>home/properties"
-                                                    class="btn btn-primary btn-block btn-lg"><i
-                                                        class="fa fa-search"></i> Search
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
 
                         <div id="sampletab2" class="tab-pane active">
 
@@ -241,38 +174,16 @@
                                 <div class="form-group">
 
                                     <div class="row">
-
-                                        <div class="col-md-1">
-                                        </div>
-
-                                        <div class="col-md-2">
-
-                                            <select name="project_type" id="project_type" class="form-control input-md">
-
-                                                <script> setUpProjectTypes('#project_type'); </script>
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-3">
-
-                                            <select name="city" id="project_city" class="form-control input-md"
-                                                    onchange="showLocality(this.value,'#locality')">
+                                        <div class="col-md-2 col-md-offset-1 searchbar_field">
+                                            <select class="form-control" name="city" id="project_city">
                                                 <script> setUpCities("#project_city"); </script>
-
-                                            </select>
-
-                                        </div>
-                                        <div class="col-md-3">
-                                            <select name="locality" id="locality" class="form-control input-md">
-                                                <option value="">Locality</option>
                                             </select>
                                         </div>
-                                        <div class="col-md-2">
-                                            <button type="submit"
-                                                    class="btn btn-primary btn-block btn-lg"><i
-                                                        class="fa fa-search"></i> Search
-                                            </button>
+                                        <div class="col-md-7 searchbar_field">
+                                            <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="project_search_field" name="search_field" type="text">
+                                        </div>
+                                        <div class="col-md-1 searchbar_field">
+                                            <button class="form-control submit-button">Submit</button>
                                         </div>
 
                                     </div>
@@ -280,6 +191,37 @@
                                 </div>
 
                             </form>
+                        </div>
+
+                        <div id="sampletab1" class="tab-pane">
+
+                            <br>
+
+                            <form method="get" action="<%= base_url %>home/properties %>">
+
+                                <div class="form-group form-group-lg">
+
+                                    <div class="row">
+
+                                        <div class="col-md-2 col-md-offset-1 searchbar_field">
+                                            <select class="form-control" name="city" id="property_city">
+                                                <option>City</option>
+                                                <script> setUpCities("#property_city"); </script>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-7 searchbar_field">
+                                            <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="property_search_field" name="search_field" type="text">
+                                        </div>
+                                        <div class="col-md-1 searchbar_field">
+                                            <button class="form-control submit-button">Submit</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </form>
+
                         </div>
                     </div>
 
