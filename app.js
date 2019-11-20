@@ -119,7 +119,7 @@ app.use('/admin', adminRouter);
 app.use('/apis', apiRouter);
 
 app.locals.base_url = process.env.NODE_ENV == "production" ? "http://3.17.143.129:3000/" : "http://localhost:3000/";
-app.locals.api_url = process.env.NODE_ENV == "production" ? "http://3.17.143.129:3000/" : app.locals.base_url + "apis/";
+app.locals.api_url = process.env.NODE_ENV == "production" ? "http://3.17.143.129:3000/apis/" : app.locals.base_url + "apis/";
 crudModel.getProjectVideos("bottom").then(function (response) {
     if (response.success) {
         app.locals.footer_project_link = response.data;
