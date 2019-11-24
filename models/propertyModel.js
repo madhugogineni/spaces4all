@@ -533,4 +533,17 @@ module.exports = {
         });
     },
 
+    addProperty: function (data) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into list_property set ?", data, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false});
+                } else {
+                    resolve({success: true});
+                }
+            });
+        });
+    }
+
 }

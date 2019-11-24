@@ -66,8 +66,9 @@
                 $('#residentialfields').show();
 
                 $('#posted_by').attr('required', false);
-
                 $('#posted_by1').attr('required', true);
+                $('#quoted_price').attr('required', false);
+                $('#saleable_area').attr('required', false);
 
             } else if (str == '') {
 
@@ -78,6 +79,9 @@
                 $('#posted_by').attr('required', true);
 
                 $('#posted_by1').attr('required', false);
+
+                $('#quoted_price').attr('required', true);
+                $('#saleable_area').attr('required', true);
 
                 if (value == '1') {
 
@@ -451,7 +455,6 @@
                                         <br>
 
                                         <div class="row">
-
 
                                             <div class="col-md-4 col-sm-4">
 

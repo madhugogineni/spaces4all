@@ -5,96 +5,6 @@
 
 <% include ../includes/menu.ejs %>
 
-
-<script>
-
-
-    function show_sub_type(str) {
-
-
-        if (str.length == 0) {
-
-            document.getElementById("project_sub_type").innerHTML = "";
-
-            return;
-
-        }
-
-
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-            xmlhttp = new XMLHttpRequest();
-
-        } else {// code for IE6, IE5
-
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-        }
-
-        xmlhttp.onreadystatechange = function () {
-
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                document.getElementById("project_sub_type").innerHTML = xmlhttp.responseText;
-
-            }
-
-        }
-
-//alert(str);
-
-        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_project_sub_type/" + str, true);
-
-        xmlhttp.send();
-
-    }
-
-
-    function Show_locality(str) {
-
-        //alert(str);
-
-        if (str.length == 0) {
-
-            document.getElementById("Showlocality").innerHTML = "";
-
-            return;
-
-        }
-
-
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-            xmlhttp = new XMLHttpRequest();
-
-        } else {// code for IE6, IE5
-
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-        }
-
-        xmlhttp.onreadystatechange = function () {
-
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                //alert(xmlhttp.responseText);
-
-                document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-            }
-
-        }
-
-        xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-        xmlhttp.send();
-
-    }
-
-
-</script>
-
-
 <!-- Content Wrapper. Contains page content -->
 
 <div class="content-wrapper">
@@ -419,21 +329,25 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Maintenanace Charge</label> <input
-
-                                                        type="text" class="form-control" id="" name="maintenance"
-
+                                                <label for="exampleInputEmail1">Maintenanace Charge</label>
+                                                <input type="text" class="form-control" id="" name="maintenance"
                                                         placeholder="Enter Maintenanace Charge">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Floor Rise</label> <input
+                                                <label for="exampleInputEmail1">Floor Rise</label>
+                                                <input type="text" class="form-control" id="" name="floor_rise"
+                                                       placeholder="Enter Floor Rise">
 
-                                                        type="text" class="form-control" id="" name="floor_rise"
+                                            </div>
 
-                                                        placeholder="Enter Floor Rise">
+                                            <div class="form-group">
+
+                                                <label for="exampleInputEmail1">Rera Id</label>
+                                                <input type="text" class="form-control" id="rera_id" name="rera_id"
+                                                       placeholder="Enter Rera Id">
 
                                             </div>
                                             <br>

@@ -100,15 +100,23 @@ router.use('/projects', projectRouter);
 
 /* GET users listing. */
 router.get('/', async function (req, res) {
-
     var responseVariable = {
         page_name: 'index',
         page_title: 'Dashboard',
-        properties_count: await crudModel.getPropertiesCount() || 0,
-        projects_search_count: await crudModel.getProjectsSearchCount() || 0,
+        properties_count: 0,
+        projects_search_count: 0,
         rent_count: await crudModel.getRentCount() || 0,
         post_requirement_count: await crudModel.getPostRequirementCount() || 0
     }
+    var response = await crudModel.getPropertiesCount();
+    if (res.success) {
+        responseVariable.properties_count = response.data;
+    }
+    var response = await crudModel.getProjectsSearchCount();
+    if (res.success) {
+        responseVariable.projects_search_count = response.data;
+    }
+
     res.render("admin/index", responseVariable);
 });
 router.get("/login", function (req, res) {

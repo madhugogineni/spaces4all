@@ -597,7 +597,8 @@ router.post(
                 gatedColony = req.body.gated_colony || "",
                 description = req.body.description1 || "",
                 amenities = req.body.amenities1 || "",
-                postedBy = req.body.posted_by || "Owner";
+                postedBy = req.body.posted_by || "Owner",
+                reraId = req.body.rera_id || "";
             let validator = new validatorpackage(req.body, {
                 facing1: "required|alpha",
                 plot_area: "numeric",
@@ -635,6 +636,8 @@ router.post(
                 });
                 var latitude = geocoderResponse[0].latitude,
                     longitude = geocoderResponse[0].longitude;
+                console.log(req.body);
+                console.log("------------");
                 var queryResult = await crudModel.addResidentialPlotToListProperty(
                     name,
                     email,

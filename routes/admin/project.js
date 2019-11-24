@@ -307,7 +307,8 @@ async function addProject(req, projectId) {
         amenities = req.body.amenities1,
         banksString = "",
         amenitiesString = "",
-        plansString = "";
+        plansString = "",
+        reraId = req.body.rera_id || "";
     if (banks) {
         banksString = banks.toString();
     }
@@ -366,7 +367,8 @@ async function addProject(req, projectId) {
         'approved_banks': banksString,
         'amenities': amenitiesString,
         'longitude': longitude,
-        'latitude': latitude
+        'latitude': latitude,
+        'rera_id': reraId
     }, projectId);
     return addProjectResponse;
 }
