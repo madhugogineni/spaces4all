@@ -1,0 +1,1 @@
+ALTER TABLE `projects` ADD `plans_configuration` JSON NULL AFTER `plans`;
