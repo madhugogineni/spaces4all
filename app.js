@@ -8,7 +8,7 @@ var crudModel = require('./models/crudModel');
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var apiRouter = require('./routes/apis');
-var enviornmentConfig = require('./external-config/enviornment');
+var enviornmentConfig = require('./external-config/environment');
 
 var app = express();
 app.use(session({secret: 'sekhar gogineni'}));
