@@ -8,6 +8,7 @@ var crudModel = require('./models/crudModel');
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var apiRouter = require('./routes/apis');
+var enviornmentConfig = require('./external-config/enviornment');
 
 var app = express();
 app.use(session({secret: 'sekhar gogineni'}));
@@ -118,8 +119,8 @@ app.use('/home', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/apis', apiRouter);
 
-app.locals.base_url = process.env.NODE_ENV == "production" ? "http://3.17.143.129:3000/" : "http://localhost:3000/";
-app.locals.api_url = process.env.NODE_ENV == "production" ? "http://3.17.143.129:3000/apis/" : app.locals.base_url + "apis/";
+app.locals.base_url = enviornmentConfig.url;
+app.locals.api_url = enviornmentConfig.url + "apis/";
 crudModel.getProjectVideos("bottom").then(function (response) {
     if (response.success) {
         app.locals.footer_project_link = response.data;
@@ -141,9 +142,9 @@ crudModel.getTestimonialLimit().then(function (response) {
     app.locals.sidebar_testimonials = response;
 });
 crudModel.getHomeAds().then(function (response) {
-    if(response.success) {
+    if (response.success) {
         app.locals.sidebar_home_ads = response.data;
-    }else {
+    } else {
         app.locals.sidebar_home_ads = [];
     }
 });
