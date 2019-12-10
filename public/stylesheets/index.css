@@ -1,0 +1,52 @@
+.searchbar-container .searchbar_field {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+
+.home .type-rent {
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 0px !important;
+  height: 259px;
+}
+.home .type-rent .image-container {
+  padding-left: 0px !important;
+}
+.home .type-rent .image-container .image {
+  height: 259px;
+  width: 100%;
+}
+.home .type-rent .property-info {
+  padding: 10px 0px 10px 0px;
+}
+.home .type-rent .property-info hr {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+.home .type-rent .property-amenities {
+  background: transparent;
+}
+.home .type-rent .property-amenities span {
+  background: rgba(171, 0, 0, 0.02);
+}
+.home .site-search-module a {
+  color: #000;
+}
+.home .site-search-module {
+  position: absolute;
+  z-index: 18;
+  height: 240px;
+  left: 0;
+  width: 100%;
+  bottom: 0px;
+}
+
+.no-border {
+  border: none !important;
+}
+
+.submit-button {
+  background-color: #AB0000;
+}
+
+/*# sourceMappingURL=index.css.map */
