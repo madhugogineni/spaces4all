@@ -327,4 +327,14 @@
   border: none !important;
 }
 
+.project_details_main_page .powered_by {
+  background-color: #e6e6e6;
+  text-align: center;
+  padding: 3px 0px 3px 0px;
+}
+.project_details_main_page .powered_by a {
+  color: #AB0000;
+  font-size: 17px;
+}
+
 /*# sourceMappingURL=final.css.map */

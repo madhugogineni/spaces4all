@@ -3,7 +3,9 @@
 <html class="no-js">
 
 <head>
-    <% include includes/includes.ejs %>
+    <% include ./includes/functions.ejs %>
+    <% include ./includes/ejs_functions.ejs %>
+    <% include ./includes/includes.ejs %>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
@@ -330,65 +332,68 @@
 
     <!-- Start Site Header -->
 
-    <% include includes/header.ejs %>
+    <% //include includes/header.ejs     %>
 
     <!-- End Site Header -->
 
     <!-- Site Showcase -->
 
-    <div class="site-showcase">
+    <!--    <div class="site-showcase">-->
 
-        <!-- Start Page Header -->
+    <!--        &lt;!&ndash; Start Page Header &ndash;&gt;-->
 
-        <div class="parallax page-header" style="background-image:url(images/page-header1.jpg);">
+    <!--        <div class="parallax page-header" style="background-image:url(images/page-header1.jpg);">-->
 
-            <div class="container">
+    <!--            <div class="container">-->
 
-                <div class="row">
+    <!--                <div class="row">-->
 
-                    <div class="col-md-12">
+    <!--                    <div class="col-md-12">-->
 
-                        <h1> Project Details </h1>
+    <!--                        <h1> Project Details </h1>-->
 
-                    </div>
+    <!--                    </div>-->
 
-                </div>
+    <!--                </div>-->
 
-            </div>
+    <!--            </div>-->
 
-        </div>
+    <!--        </div>-->
 
-        <!-- End Page Header -->
+    <!--        &lt;!&ndash; End Page Header &ndash;&gt;-->
 
-    </div>
+    <!--    </div>-->
 
     <!-- Start Content -->
 
     <div class="main" role="main">
 
-        <div id="content" class="content full">
+        <!--        <div id="content" class="content full">-->
 
-            <% if(project) { %>
+        <% if(project) { %>
 
-                <div id="project_details">
+            <div id="project_details" class="project_details_main_page">
 
-                    <div class="container-fluid">
-
-                    </div>
-                    <div class="container">
-
-                        <div id="property_success"></div>
-
-                        <div class="page">
-
-
-                        </div>
-
+                <div class="container-fluid">
+                    <!--Powered By div-->
+                    <div class="powered_by">
+                        Powered by <a href="<%= base_url %>">Spaces4all.com</a>
                     </div>
                 </div>
-            <% } %>
+                <div class="container">
 
-        </div>
+                    <div id="property_success"></div>
+
+                    <div class="page">
+
+
+                    </div>
+
+                </div>
+            </div>
+        <% } %>
+
+        <!--        </div>-->
 
     </div>
 
@@ -542,5 +547,5 @@
     });
 </script>
 
-<% include includes/footer.ejs %>
+<% // include includes/footer.ejs     %>
 
