@@ -9,10 +9,15 @@ var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var apiRouter = require('./routes/apis');
 var enviornmentConfig = require('./external-config/environment');
+var cors = require('cors');
 
 var app = express();
 app.use(session({secret: 'sekhar gogineni'}));
-
+var corsOptions = {
+    origin: 'https://spaces4all.com',
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}
+app.use(cors(corsOptions));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
