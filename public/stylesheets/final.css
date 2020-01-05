@@ -363,6 +363,7 @@
   padding-left: 30px !important;
   padding-right: 20px;
   word-wrap: break-word;
+  text-transform: uppercase;
 }
 .project-details-page .project-header-details {
   display: flex !important;
