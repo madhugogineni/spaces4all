@@ -14,7 +14,7 @@ var cors = require('cors');
 var app = express();
 app.use(session({secret: 'sekhar gogineni'}));
 var corsOptions = {
-    origin: 'https://spaces4all.com',
+    origin: 'https://www.spaces4all.com',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 app.use(cors(corsOptions));
