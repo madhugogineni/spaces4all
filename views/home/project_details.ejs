@@ -82,194 +82,9 @@
 
     </style>
 
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-
-
     <script type="text/javascript">
-
-
-        function showAjaxModal(url) {
-
-            // SHOWING AJAX PRELOADER IMAGE
-
-            jQuery('#modal_ajax .modal-body').html('');
-
-
-            // LOADING THE AJAX MODAL
-
-            jQuery('#modal_ajax').modal('show', {backdrop: 'true'});
-
-
-            // SHOW AJAX RESPONSE ON REQUEST SUCCESS
-
-            $.ajax({
-
-                url: url,
-
-                success: function (response) {
-
-                    jQuery('#modal_ajax .modal-body').html(response);
-
-                }
-
-            });
-
-        }
-
-
-        function showAjaxModal1(url) {
-
-            // SHOWING AJAX PRELOADER IMAGE
-
-            jQuery('#modal_ajax1 .modal-body').html('');
-
-
-            // LOADING THE AJAX MODAL
-
-            jQuery('#modal_ajax1').modal('show', {backdrop: 'true'});
-
-
-            // SHOW AJAX RESPONSE ON REQUEST SUCCESS
-
-            $.ajax({
-
-                url: url,
-
-                success: function (response) {
-
-                    jQuery('#modal_ajax1 .modal-body').html(response);
-
-                }
-
-            });
-
-        }
-
-
-        function shedule_site_visit() {
-
-            var name1 = $("#name1").val();
-
-            var phone1 = $("#phone1").val();
-
-            var email1 = $("#email1").val();
-
-            var date = $("#date").val();
-
-            var from_time = $("#from_time").val();
-
-            var from_value = $("#from_value").val();
-
-            var to_time = $("#to_time").val();
-
-            var to_value = $("#to_value").val();
-
-
-            var dataString = 'name=' + name1 + '&phone=' + phone1 + '&email=' + email1 + '&date=' + date + '&from=' + from_time + ' ' + from_value + '&to=' + to_time + ' ' + to_value;
-
-
-            $.ajax({
-
-                type: "POST",
-
-                url: "<%= base_url %>home/shedule_site_visit/project",
-
-                data: dataString,
-
-                success: function (response) {
-
-                    jQuery('#shedule_visit_response').html(response);
-
-                }
-
-            });
-
-        }
-
-
-        function tell_to_friend() {
-
-            var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
-
-            var filter = /^[0-9-+]+$/;
-
-            var name = $("#your_name").val();
-
-            var f_name = $("#friend_name").val();
-
-            var your_email = $("#your_email").val();
-
-            var email = $("#friend_email").val();
-
-            var id = '<%= project_id %>'
-
-            if (name == "") {
-
-                $("#your_name").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Name</strong></div>");
-
-
-            } else if (your_email == "") {
-
-                $("#your_email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Valid Email Id</strong></div>");
-
-
-            } else if (!emailRegex.test(your_email)) {
-
-                $("#your_email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Valid Email Id</strong></div>");
-
-
-            } else if (f_name == "") {
-
-                $("#friend_name").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Friend Name</strong></div>");
-
-
-            } else if (email == "") {
-
-                $("#friend_email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Friend Valid Email Id</strong></div>");
-
-
-            } else if (!emailRegex.test(email)) {
-
-                $("#friend_email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Your Friend Valid Email Id</strong></div>");
-
-
-            } else {
-
-
-                var dataString = 'name=' + name + '&f_name=' + f_name + '&your_email=' + your_email + '&email=' + email + '&type_id=' + id;
-
-
-                $.ajax({
-
-                    type: "POST",
-
-                    url: "<%= base_url %>home/add_tell_to_friend/project",
-
-                    data: dataString,
-
-                    success: function (response) {
-
-                        jQuery('#tell_friend_response').html(response);
-
-                    }
-
-                });
-
-
-            }
-
+        function test() {
+            console.log('welcome');
         }
 
         function send_enquiry() {
@@ -283,20 +98,13 @@
             var comments2 = $("#comments2").val();
 
             var dataString = 'name=' + name2 + '&phone=' + phone2 + '&comments=' + comments2 + '&email=' + email2;
-
-
             $.ajax({
-
-                type: "POST",
-
-                url: "<%= base_url %>home/project_enquiry/<%= project_id %>",
-
-                data: dataString,
-
+                type: "GET",
+                url: "<%= api_url %>project_enquiry/<%= project_id %>?" + dataString,
                 success: function (response) {
-
-                    jQuery('#enquiry_response').html(response);
-
+                    if (response.success) {
+                        $('#enquiry_response').html(response.message);
+                    }
                 }
 
             });
@@ -332,68 +140,215 @@
 
     <!-- Start Site Header -->
 
-    <% //include includes/header.ejs     %>
+    <% //include includes/header.ejs                                                          %>
 
     <!-- End Site Header -->
-
-    <!-- Site Showcase -->
-
-    <!--    <div class="site-showcase">-->
-
-    <!--        &lt;!&ndash; Start Page Header &ndash;&gt;-->
-
-    <!--        <div class="parallax page-header" style="background-image:url(images/page-header1.jpg);">-->
-
-    <!--            <div class="container">-->
-
-    <!--                <div class="row">-->
-
-    <!--                    <div class="col-md-12">-->
-
-    <!--                        <h1> Project Details </h1>-->
-
-    <!--                    </div>-->
-
-    <!--                </div>-->
-
-    <!--            </div>-->
-
-    <!--        </div>-->
-
-    <!--        &lt;!&ndash; End Page Header &ndash;&gt;-->
-
-    <!--    </div>-->
 
     <!-- Start Content -->
 
     <div class="main" role="main">
 
-        <!--        <div id="content" class="content full">-->
+        <% if(project) {
+            var mainImage = "no-photo.jpg"; %>
+        <% if (project.photos.length > 0) {
+            var mainImage = project.photos[0].photo;
+        } %>
 
-        <% if(project) { %>
+        <div class="project-details-page">
 
-            <div id="project_details" class="project_details_main_page">
-
-                <div class="container-fluid">
-                    <!--Powered By div-->
-                    <div class="powered_by">
-                        Powered by <a href="<%= base_url %>">Spaces4all.com</a>
-                    </div>
-                </div>
-                <div class="container">
-
-                    <div id="property_success"></div>
-
-                    <div class="page">
-
-
-                    </div>
-
+            <div class="container-fluid">
+                <!--Powered By div-->
+                <div class="powered-by">
+                    Powered by <a href="<%= base_url %>">Spaces4all.com</a>
                 </div>
             </div>
-        <% } %>
+            <div class="container-fluid project-header">
+                <div class="row">
+                    <div class="hidden-xs col-sm-2 col-md-2 builder-name"><%= project.group_name %></div>
+                    <div class="col-xs-12 col-sm-7 col-md-7 project-header-details">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 description">
+                                <%= project.plans %> BHK at <%= project.locality_name %>,<%= project.city_name %>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12 specifications">
+                                Area:
+                                <span><%= project.min_builtup_area %> - <%= project.max_builtup_area %> Sq. Ft.</span>
+                                |
+                                Starting Price: <span>Rs <%= project.min_price %></span> |
+                                Possession: <span><%= getDate(project.possesion_date) %></span>
 
-        <!--        </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-xs col-sm-3 col-md-3 quick-links">
+                        <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a href="#">
+                            Contact Advertiser</a>
+                    </div>
+                </div>
+                <div class="row image-container">
+                    <div class="col-xs-12 col-sm-12 col-md-12 image">
+                        <img src="<%= base_url %>uploads/projects/<%= mainImage %>"
+                             alt="Project Image"/>
+                    </div>
+                </div>
+            </div>
+            <div class="container project-details">
+                <div class="row overview">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">OVERVIEW</h1>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <%- project.description %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row floor-plan">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">FLOOR PLANS</h1>
+                        <table class="table table-hovered floor-plan-table">
+                            <thead>
+                            <tr>
+                                <th>BHK</th>
+                                <th>Built Up Area</th>
+                                <th>Price</th>
+                                <th>Floor Plan</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% for(var i = 0;i < project.plans_configuration.length;i++) {
+                                var planConfiguration = project.plans_configuration[i]; %>
+                            <tr>
+                                <td>
+                                    <%= planConfiguration.plan %> BHK
+                                </td>
+                                <td><%= planConfiguration.size %> Sqft</td>
+                                <td>Rs. <%= planConfiguration.price %></td>
+                                <td><%- planConfiguration.facing.join(' <span style="font-size: 20px;top: 3px;position: relative;">|</span> ') %></td>
+                            </tr>
+
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row amenities">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">AMENITIES</h1>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <ul class="mt5px">
+                                    <% if(project.amenities_list.length) { %>
+                                        <% for(var i = 0;i < project.amenities_list.length; i++) {
+                                            var amenity_data = project.amenities_list[i];
+                                        %>
+                                        <li class="p10px">
+                                            <i class="<%= amenity_data.amenity_icon %> amenity-icon"></i>
+                                            <span class="amenity-name"> <%= amenity_data.amenity %> </span>
+                                        </li>
+                                        <% } %>
+                                    <% } else { %>
+                                        <h3> No amenities available</h3>
+                                    <% } %>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row specifications">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">SPECIFICATIONS</h1>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <%- project.specifications %>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row gallery">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">GALLERY</h1>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <ul class="mt5px">
+                                    <% if(project.photos.length) { %>
+                                        <% for(var i = 1;i < project.photos.length; i++) {
+                                            var photo_data = project.photos[i];
+                                        %>
+                                        <li class="p10px">
+                                            <img src="<%= base_url %>uploads/projects/<%= photo_data.photo %>"
+                                                 alt="Photo Not Available"
+                                                 onclick="showPhotoModal('photo-modal','<%= base_url %>uploads/projects/<%= photo_data.photo %>')">
+                                            <span>CLICK TO VIEW</span>
+                                        </li>
+                                        <% } %>
+                                    <% } else { %>
+                                        <h3> No amenities available</h3>
+                                    <% } %>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12">
+                        <h1 class="sub-heading">ENQUIRY FORM</h1>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div id="enquiry_response"></div>
+                                <form>
+
+                                    <div class="col-md-7 margin-15">
+
+                                        <div class="form-group">
+
+                                            <input type="text" id="name2" name="name" class="form-control input-sm"
+                                                   placeholder="Name*" required="required">
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <input type="email" id="email2" name="email" class="form-control input-sm"
+                                                   placeholder="Email*" required="required">
+
+                                        </div>
+
+                                        <div class="form-group">
+
+                                            <input type="text" id="phone2" name="phone" class="form-control input-sm"
+                                                   placeholder="Phone*" required="required">
+
+                                        </div>
+
+
+                                        <div class="form-group">
+
+                                        <textarea cols="6" rows="3" id="comments2" name="comments" required="required"
+                                                  class="form-control input-lg" placeholder="Comments"></textarea>
+
+                                            <button type="button" onclick="send_enquiry();" class="btn btn-primary">
+                                                Submit Now !
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% } %>
 
     </div>
 
@@ -539,13 +494,24 @@
         </div>
 
     </div>
+
+
+    <div id="photo-modal" class="modal modal-lg fade photo-modal" role="dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <img src=""/>
+            </div>
+        </div>
+
+    </div>
 </div>
 
-<script type="text/javascript">
-    $('#lctn').click(function () {
-        initialize();
-    });
-</script>
+<!--<script type="text/javascript">-->
+<!--    $('#lctn').click(function () {-->
+<!--        initialize();-->
+<!--    });-->
+<!--</script>-->
 
-<% // include includes/footer.ejs     %>
+<% include includes/footer.ejs %>
 

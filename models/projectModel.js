@@ -96,7 +96,7 @@ module.exports = {
     },
     getPhotosByProject: function (projectId) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from project_photos where project_id=" + projectId + " order by photo_id ASC", function (error, result) {
+            con.query("select * from project_photos where project_id=" + projectId + " order by photo_id DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -383,5 +383,17 @@ module.exports = {
                 resolve({success: true, data: result[0]});
             });
         });
+    },
+    insertProjectEnquiry: function (data) {
+        return new Promise(function (resolve, reject) {
+            con.query("insert into project_enquiry set ?", data, function (error, result) {
+                if (error) {
+                    console.log(error);
+                    resolve({success: false, message: error});
+                } else {
+                    resolve({success: true, data: result});
+                }
+            });
+        })
     },
 }

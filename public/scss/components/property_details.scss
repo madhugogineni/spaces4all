@@ -53,6 +53,19 @@
       width: 24.5%;
       display: inline-block;
       text-align: center;
+
+      .amenity-icon {
+        font-size: 30px;
+        margin-bottom: 10px;
+      }
+
+      .amenity-name {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 10px;
+      }
     }
   }
 

@@ -1241,7 +1241,10 @@ router.get("/property_details/:property_id", async function (req, res) {
             propertyDetails.data.quoted_price = utils.getPrice(propertyDetails.data.quoted_price, false);
             var data = propertyDetails.data;
             var path = urls.base_url + "uploads/list_property/" + propertyDetails.data.photo;
-            if (!fs.existsSync(path)) {
+            // if (!fs.existsSync(path)) {
+            //     propertyDetails.data.photo = "1no-photo.jpg";
+            // }
+            if (!propertyDetails.data.photo) {
                 propertyDetails.data.photo = "1no-photo.jpg";
             }
             if (data.property_sub_type == "14" || data.property_sub_type == "14") {
@@ -1281,7 +1284,7 @@ router.get("/property_details/:property_id", async function (req, res) {
         }
     }
 });
-router.get('/project_details/:id/:name', async function (req, res) {
+router.get('/project_details/:id', async function (req, res) {
     var id = req.params.id;
     var data = {
         page_name: 'project_details',
@@ -1292,7 +1295,23 @@ router.get('/project_details/:id/:name', async function (req, res) {
     if (id) {
         var response = await crudModel.getProjectById(id);
         if (response.success) {
+            var amenitiesList = await crudModel.getAmenityNames(response.data.amenities);
+            var projectPhotos = await crudModel.getPhotosByProject(id);
+            if(projectPhotos.success) {
+                response.data.photos = projectPhotos.data;
+                console.log(response.data.photos[0])
+            }else {
+                response.data.photos = [];
+            }
+            if (amenitiesList.success) {
+                response.data.amenities_list = amenitiesList.data;
+            } else {
+                res.send('Some error occured. Please try again later !')
+                console.log("error");
+            }
+            response.data.plans_configuration = response.data.plans_configuration ? JSON.parse(response.data.plans_configuration) : [];
             data.project = response.data;
+
         } else {
             res.redirect('/');
         }

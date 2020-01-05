@@ -1,0 +1,1 @@
+UPDATE `amenities` SET `amenity_icon` = 'fab fa-dribbble-square' WHERE `amenities`.`amenity_id` = 57;

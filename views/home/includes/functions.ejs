@@ -493,6 +493,10 @@
         }
         $('#modal_ajax1').modal('show', {backdrop: 'true'});
     }
+    function showPhotoModal(target,url) {
+        $('#'+target+' img').attr('src',url);
+        $('#'+target).modal('show', {backdrop: 'true'});
+    }
 
     function getValue(nameSelector) {
         return $("[name=" + nameSelector + "]").val();

@@ -1,0 +1,19 @@
+@mixin font($size: false,$color: false,$weight: false) {
+  @if($size != false) {
+    font-size: $size;
+
+  }
+  @if($color != false) {
+    color: $color;
+
+  }
+  @if($weight!= false) {
+    font-weight: $weight;
+  }
+}
+
+@mixin align-content-to-center {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+}
