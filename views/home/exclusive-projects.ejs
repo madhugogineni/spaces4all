@@ -3,7 +3,7 @@
 <html class="no-js">
 
 <head>
-<% include includes/includes.ejs %>
+    <% include includes/includes.ejs %>
     <script>
 
         function Show_locality(str) {
@@ -180,7 +180,8 @@
 
                                                                 <h3>
 
-                                                                    <a href="#"><%= exclusive_project.project_name %> by
+                                                                    <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>"><%= exclusive_project.project_name %>
+                                                                        by
                                                                         <%= exclusive_project.group_name %></a>
 
                                                                 </h3>

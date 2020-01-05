@@ -491,4 +491,68 @@
             }
         })
     }
+
+    function addRowToPlansConfigurationTable(tableId) {
+        var newRow = $("<tr>");
+        var cols = "";
+        cols += '<td class="col-sm-3"><select name="plan" id="example-getting-started" class="form-control" required="required"><option value="1">1 BHK</option><option value="2">2 BHK</option><option value="3">3 BHK</option><option value="4">4 BHK</option><option value="5">5 BHK</option><option value="6">6 BHK</option><option value="7">7 BHK</option><option value="8">8 BHK</option><option value="9">9 BHK</option><option value="10">10 BHK</option></select></td>';
+        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="size" class="form-control"/></td>';
+        cols += '<td class="col-sm-3"><input type="text" placeholder="Enter Price per Sqft" name="price" class="form-control"/></td>';
+        cols += '<td class="col-sm-3"><div class="container-fluid">';
+        cols += '<input type="checkbox" name="direction1[]" value="North"/>&nbsp;North<br/><input type="checkbox" name="direction1[]" value="South"/>&nbsp;South<br/><input type="checkbox" name="direction1[]" value="East"/>&nbsp;East<br/><input type="checkbox" name="direction1[]" value="West"/>&nbsp;West</div></td>';
+        // cols += '<input type="checkbox" name="direction'+counter+'[]" value="North"/>&nbsp;North<br/><input type="checkbox" name="direction'+counter+'[]" value="South"/>&nbsp;South<br/><input type="checkbox" name="direction'+counter+'[]" value="East"/>&nbsp;East<br/><input type="checkbox" name="direction'+counter+'[]" value="West"/>&nbsp;West</div></td>';
+        cols += '<td class="col-sm-2"><a id="ibtnDel" class="deleteRow btn btn-sm btn-danger">Delete Row</a></td>';
+
+        newRow.append(cols);
+        $(tableId).append(newRow);
+    }
+
+    function removeRowFromPlansConfigurationTable() {
+        $(this).closest("tr").remove();
+    }
+
+    function setUpPlanConfigurationRows(tableId, data) {
+        if (data != "") {
+            data = JSON.parse(data);
+            console.log(data);
+            data.forEach(function (plan) {
+                addRowToPlansConfigurationTable(tableId);
+            });
+        } else {
+
+        }
+        setTimeout(function () {
+            setUpPlanConfigurationValues(tableId, data);
+        }, 1000);
+
+    }
+
+    function setUpPlanConfigurationValues(tableId, data) {
+        var table = document.getElementById(tableId.substr(1));
+
+        for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
+            var planObject = data[i];
+            for (var j = 0, col; col = row.cells[j]; j++) {
+                var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
+                if (j == 0) {
+                    trObject.find('td:eq(' + j + ') select option[value ="' + planObject.plan + '"]').attr('selected', 'selected');
+                }
+                if (j == 1) {
+                    trObject.find('td:eq(' + j + ') input').val(planObject.size);
+                }
+                if (j == 2) {
+                    trObject.find('td:eq(' + j + ') input').val(planObject.price);
+                }
+                if (j == 3) {
+                    trObject.find('td:eq(' + j + ') input[name="direction1[]"]').each(function () {
+                        if (planObject.facing.includes($(this).val())) {
+                            $(this).prop('checked', true)
+                        }
+                    })
+                }
+            }
+        }
+    }
+
 </script>

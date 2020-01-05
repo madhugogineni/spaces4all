@@ -1,0 +1,207 @@
+.project-details-page {
+
+  .powered-by {
+    background-color: $lightGray;
+    text-align: center;
+    padding: 3px 0px 3px 0px;
+
+    a {
+      color: $red;
+      font-size: 17px;
+    }
+  }
+
+  .project-header {
+    height: 70px;
+    padding: 10px 0px 0px 0px;
+    background-color: $projectHeaderBGColor;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+
+    .builder-name {
+      @include font(20px, $black, bold);
+      height: 50px;
+      overflow: hidden;
+      text-align: center;
+      padding-left: 30px !important;
+      padding-right: 20px;
+      word-wrap: break-word;
+    }
+
+    &-details {
+      @include align-content-to-center;
+      height: 50px;
+      border-left: 1px solid $gray67;
+
+      .description {
+        @include font($size: 20px, $color: $black, $weight: normal);
+      }
+
+      .specifications {
+        @include font($size: 15px);
+
+        span {
+          @include font($color: $tealBlue);
+        }
+      }
+    }
+
+    .quick-links {
+      height: 50px;
+
+      span {
+        @include font($size: 20px);
+      }
+
+      a {
+        @include font($color: $black);
+      }
+    }
+
+    .image-container {
+      margin-top: 10px;
+      height: 600px;
+
+      .image {
+        height: 600px;
+
+        img {
+          min-height: 100%;
+          min-width: 100%;
+          height: 100%;
+          width: 100%;
+          //object-fit: contain;
+        }
+      }
+    }
+  }
+
+  .project-details {
+    .sub-heading {
+      @include font($color: $tealBlue, $weight: bold);
+      border-bottom: 1px solid $subHeadingBorderColor;
+      padding-top: 20px;
+      padding-bottom: 10px;
+    }
+
+    .floor-plan {
+      .floor-plan-table {
+        thead {
+          background-color: $floorPlanHeaderColor;
+          color: $white;
+
+          th {
+            padding: 13px;
+            border: 1px solid $white;
+          }
+        }
+
+        tbody {
+          tr:nth-child(1) {
+            background-color: $stripedTableBG1;
+          }
+
+          tr:nth-child(2) {
+            background-color: $stripedTableBG2;
+          }
+          td {
+            padding: 13px;
+            border: 1px solid $white;
+          }
+        }
+      }
+    }
+
+    .amenities {
+      color: $gray;
+      padding-left: 3px;
+
+      li {
+        width: 19.5%;
+        display: inline-block;
+        text-align: center;
+
+        .amenity-icon {
+          font-size: 50px;
+          margin-bottom: 10px;
+        }
+
+        .amenity-name {
+          display: block;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          margin-top: 10px;
+        }
+      }
+    }
+    .gallery {
+      li {
+        display: inline-block;
+        img {
+          width: 300px;
+          height: 250px;
+          cursor: pointer;
+        }
+        span {
+          display: block;
+          padding: 12px;
+          text-transform: uppercase;
+          background-color: $lightBlack;
+          @include font($size: 15px,$color: $white,$weight: bold);
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .project-details-page {
+    .project-header {
+      .builder-name {
+        height: 30px;
+        padding-right: 30px;
+      }
+
+      &-details {
+        border-left: 0px solid $transparent !important;
+
+        .description,
+        .specifications {
+          text-align: center;
+        }
+      }
+      .image-container {
+        margin-top: 10px;
+      }
+    }
+
+    .project-details {
+      .amenities {
+
+        li {
+          width: 24% !important;
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .project-details-page {
+    .powered-by {
+      margin-bottom: 10px;
+    }
+    .project-header {
+      .builder-name {
+        @include align-content-to-center;
+      }
+
+      &-details {
+      }
+
+      .quick-links {
+        @include align-content-to-center;
+      }
+    }
+  }
+}

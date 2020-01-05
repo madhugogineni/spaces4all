@@ -262,7 +262,7 @@
                                     var latest_project = latest_projects[i]; %>
                                 <li class="type-rent col-md-12">
                                     <div class="col-md-5 image-container">
-                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>"
+                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>"
                                            class="property-featured-image">
                                             <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
                                                  class="image" alt="">
@@ -273,7 +273,7 @@
                                             <div class="col-md-8">
                                                 <div class="property-info">
                                                     <h3>
-                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>">
+                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
                                                             <%= latest_project.project_name %>
                                                         </a>
                                                     </h3>
@@ -319,7 +319,7 @@
                                                     </li>
 
                                                     <li>
-                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %>/<%= latest_project.project_name %>">
+                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
                                                             <button type="button" class="btn btn-danger"><i
                                                                         class="fa  fa-angle-double-right"></i> View
                                                                 Details

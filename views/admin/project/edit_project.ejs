@@ -6,9 +6,55 @@
 <% include ../includes/menu.ejs %>
 <script>
     $(document).ready(function () {
+
+        $("#addrow").on("click", function () {
+            addRowToPlansConfigurationTable("#order-list");
+        });
+
+
+        $("table.order-list").on("click", "#ibtnDel", function (event) {
+            removeRowFromPlansConfigurationTable();
+        });
+
         $("form#project_form").submit(function (e) {
             e.preventDefault();
             var formData = new FormData(this);
+            var table = document.getElementById("order-list");
+            var plansObject = [];
+            for (var i = 0; i < table.rows.length; i++) {
+                var row = table.rows[i];
+                var planObject = {};
+
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    var trObject = $('#order-list tbody tr:eq(' + i + ')');
+                    if (j == 0) {
+                        var plan = trObject.find('td:eq(' + j + ') select option:selected').val();
+                        // plan = plan.replace(" BHK", "");
+                        if (plan == undefined || plan == "") {
+                            break;
+                        }
+                        planObject.plan = plan;
+                    }
+                    if (j == 1) {
+                        planObject.size = trObject.find('td:eq(' + j + ') input').val();
+                    }
+                    if (j == 2) {
+                        planObject.price = trObject.find('td:eq(' + j + ') input').val();
+                    }
+                    if (j == 3) {
+                        var values = []
+                        $.each(trObject.find('td:eq(' + j + ') input[name="direction1[]"]:checked'), function () {
+                            values.push($(this).val());
+                        });
+                        planObject.facing = values;
+                    }
+                }
+                if (Object.keys(planObject).length !== 0) {
+                    plansObject.push(planObject);
+                }
+            }
+
+            formData.append('plans_configuration', JSON.stringify(plansObject));
             $.ajax({
                 type: "POST",
                 url: "<%= base_url %>admin/projects/update/<%= project_id %>",
@@ -363,7 +409,8 @@
 
                                                 <label for="exampleInputEmail1">Rera Id</label>
                                                 <input type="text" class="form-control" id="rera_id" name="rera_id"
-                                                       placeholder="Enter Rera Id" value="<%=project_details.rera_id%>">
+                                                       placeholder="Enter Rera Id"
+                                                       value="<%= project_details.rera_id %>">
 
                                             </div>
                                             <br>
@@ -443,6 +490,38 @@
 
                                     </div>
 
+                                </div>
+
+                            </div>
+
+                            <div class="row" id="plans-specifications" style="padding-left: 30px">
+
+                                <div class="col-md-12">
+
+                                    <label for="plans">Plans</label>
+                                    <table id="order-list" class=" table order-list">
+                                        <thead>
+                                        <tr>
+                                            <td>Plan</td>
+                                            <td>Size</td>
+                                            <td>Price</td>
+                                            <td>Facing</td>
+                                            <td>Delete</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="5" style="text-align: left;">
+                                                <input type="button" class="btn btn-warning" id="addrow"
+                                                       value="Add Row"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                        </tr>
+                                        </tfoot>
+                                    </table>
                                 </div>
 
                             </div>
@@ -941,12 +1020,16 @@
     selectOption("plans[]", "<%= project_details.plans %>");
     setUpAmenities('#amenity_options')
     setUpBanks("#approved_banks");
+    setUpPlanConfigurationRows("#order-list", '<%- project_details.plans_configuration %>');
+    // addRowToPlansConfigurationTable("#order-list")
     setTimeout(function () {
         selectAmenities("<%= project_details.amenities %>");
     }, 500)
     setTimeout(function () {
         selectBanks("<%= project_details.approved_banks %>");
     }, 500)
+
+
 </script>
 
 

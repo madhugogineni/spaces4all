@@ -5,6 +5,7 @@ var validatorpackage = require("node-input-validator");
 var moment = require("moment");
 var mailservice = require("../services/email");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
+var deepclone = require('lodash.clonedeep');
 
 router.get("/calculate_stamp_duty", function (req, res) {
     var id = req.query.id;
@@ -150,5 +151,44 @@ router.get("/property_enquiry/:property_id", async function (req, res) {
         res.send({success: false, message: errorMsg});
     }
 });
-
+router.get("/project_enquiry/:project_id", async function (req, res) {
+    if (req.params.project_id) {
+        let validator = new validatorpackage(req.query, {
+            name: "required|minLength:3",
+            email: "required|email",
+            phone: "required|numeric|maxLength:12|minLength:10",
+            comments: "required|minLength:10"
+        });
+        var validationResult = await validator.check();
+        if (validationResult) {
+            var data = deepclone(req.query);
+            data.project_id = req.params.project_id;
+            data.datetime = moment().format(dateFormat);
+            var insertResponse = await crudModel.insertProjectEnquiry(data);
+            if (insertResponse.success) {
+                var subject = "Spaces4all - Project Enquiry";
+                var html = "Spaces4all - " + req.query.name + " has enquired regarding project : " + req.url + " <br><br> " +
+                    "<table border='1px'>" +
+                    "<tr><td width='100px'>Name</td><td>" + req.query.name + "</td></tr>" +
+                    "<tr><td>Email</td><td>" + req.query.email + "</td></tr>" +
+                    "<tr><td>Phone</td><td>" + req.query.phone + "</td></tr>" +
+                    "<tr><td>Comments</td><td>" + req.query.comments + "</td></tr>" +
+                    "</table>";
+                mailservice.sendMail(subject, html);
+                res.send({
+                    success: true,
+                    message: "Thank you for the details. We have the pleasure to contact you soon.!"
+                })
+            } else {
+                res.send({success: false, message: "Something went wrong! Please Try again Later"});
+            }
+        } else {
+            var errorMsg = "";
+            Object.keys(validator.errors).map(function (key) {
+                errorMsg += validator.errors[key].message + "<br/>";
+            });
+            res.send({success: false, message: errorMsg});
+        }
+    }
+});
 module.exports = router;

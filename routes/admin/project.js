@@ -274,6 +274,7 @@ router.get('/:project_id', async function (req, res) {
 });
 
 async function addProject(req, projectId) {
+    console.log(req.body.plans_configuration);
     var projectName = req.body.project_name || "",
         projectType = req.body.project_type || 0,
         projectSubType = req.body.project_sub_type || 0,
@@ -308,6 +309,7 @@ async function addProject(req, projectId) {
         banksString = "",
         amenitiesString = "",
         plansString = "",
+        plansConfiguration = req.body.plans_configuration || "[]",
         reraId = req.body.rera_id || "";
     if (banks) {
         banksString = banks.toString();
@@ -368,7 +370,8 @@ async function addProject(req, projectId) {
         'amenities': amenitiesString,
         'longitude': longitude,
         'latitude': latitude,
-        'rera_id': reraId
+        'rera_id': reraId,
+        'plans_configuration': plansConfiguration
     }, projectId);
     return addProjectResponse;
 }

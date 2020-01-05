@@ -233,6 +233,17 @@
   display: inline-block;
   text-align: center;
 }
+.property_details .property_details_amenities li .amenity-icon {
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+.property_details .property_details_amenities li .amenity-name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 10px;
+}
 
 .enquiryform {
   margin-left: 20px;
@@ -325,6 +336,181 @@
 
 .no-border {
   border: none !important;
+}
+
+.project-details-page .powered-by {
+  background-color: #e6e6e6;
+  text-align: center;
+  padding: 3px 0px 3px 0px;
+}
+.project-details-page .powered-by a {
+  color: #AB0000;
+  font-size: 17px;
+}
+.project-details-page .project-header {
+  height: 70px;
+  padding: 10px 0px 0px 0px;
+  background-color: #f4f4f4;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+}
+.project-details-page .project-header .builder-name {
+  font-size: 20px;
+  color: black;
+  font-weight: bold;
+  height: 50px;
+  overflow: hidden;
+  text-align: center;
+  padding-left: 30px !important;
+  padding-right: 20px;
+  word-wrap: break-word;
+}
+.project-details-page .project-header-details {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  border-left: 1px solid #ababab;
+}
+.project-details-page .project-header-details .description {
+  font-size: 20px;
+  color: black;
+  font-weight: normal;
+}
+.project-details-page .project-header-details .specifications {
+  font-size: 15px;
+}
+.project-details-page .project-header-details .specifications span {
+  color: #0a5384;
+}
+.project-details-page .project-header .quick-links {
+  height: 50px;
+}
+.project-details-page .project-header .quick-links span {
+  font-size: 20px;
+}
+.project-details-page .project-header .quick-links a {
+  color: black;
+}
+.project-details-page .project-header .image-container {
+  margin-top: 10px;
+  height: 600px;
+}
+.project-details-page .project-header .image-container .image {
+  height: 600px;
+}
+.project-details-page .project-header .image-container .image img {
+  min-height: 100%;
+  min-width: 100%;
+  height: 100%;
+  width: 100%;
+}
+.project-details-page .project-details .sub-heading {
+  color: #0a5384;
+  font-weight: bold;
+  border-bottom: 1px solid #a3a3a3;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+.project-details-page .project-details .floor-plan .floor-plan-table thead {
+  background-color: #0a5384;
+  color: white;
+}
+.project-details-page .project-details .floor-plan .floor-plan-table thead th {
+  padding: 13px;
+  border: 1px solid white;
+}
+.project-details-page .project-details .floor-plan .floor-plan-table tbody tr:nth-child(1) {
+  background-color: #f5f5f5;
+}
+.project-details-page .project-details .floor-plan .floor-plan-table tbody tr:nth-child(2) {
+  background-color: #e0e0e0;
+}
+.project-details-page .project-details .floor-plan .floor-plan-table tbody td {
+  padding: 13px;
+  border: 1px solid white;
+}
+.project-details-page .project-details .amenities {
+  color: #666;
+  padding-left: 3px;
+}
+.project-details-page .project-details .amenities li {
+  width: 19.5%;
+  display: inline-block;
+  text-align: center;
+}
+.project-details-page .project-details .amenities li .amenity-icon {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+.project-details-page .project-details .amenities li .amenity-name {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 10px;
+}
+.project-details-page .project-details .gallery li {
+  display: inline-block;
+}
+.project-details-page .project-details .gallery li img {
+  width: 300px;
+  height: 250px;
+  cursor: pointer;
+}
+.project-details-page .project-details .gallery li span {
+  display: block;
+  padding: 12px;
+  text-transform: uppercase;
+  background-color: rgba(0, 0, 0, 0.8);
+  font-size: 15px;
+  color: white;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 768px) {
+  .project-details-page .project-header .builder-name {
+    height: 30px;
+    padding-right: 30px;
+  }
+  .project-details-page .project-header-details {
+    border-left: 0px solid transparent !important;
+  }
+  .project-details-page .project-header-details .description,
+.project-details-page .project-header-details .specifications {
+    text-align: center;
+  }
+  .project-details-page .project-header .image-container {
+    margin-top: 10px;
+  }
+  .project-details-page .project-details .amenities li {
+    width: 24% !important;
+  }
+}
+@media only screen and (min-width: 769px) {
+  .project-details-page .powered-by {
+    margin-bottom: 10px;
+  }
+  .project-details-page .project-header .builder-name {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  .project-details-page .project-header .quick-links {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+}
+.photo-modal .modal-content {
+  height: 100%;
+}
+.photo-modal .modal-content .modal-body {
+  height: 100%;
+}
+.photo-modal .modal-content .modal-body img {
+  margin-top: 3px;
+  height: 96%;
+  width: 100%;
 }
 
 /*# sourceMappingURL=final.css.map */
