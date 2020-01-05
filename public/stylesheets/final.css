@@ -264,6 +264,12 @@
   color: black;
 }
 
+.searchbar-container .nav-tabs li .fa.fa-caret-down {
+  display: none;
+}
+.searchbar-container .nav-tabs li.active .fa.fa-caret-down {
+  display: inline-block;
+}
 .searchbar-container .searchbar_field {
   padding-left: 0px !important;
   padding-right: 0px !important;

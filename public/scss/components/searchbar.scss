@@ -1,4 +1,19 @@
 .searchbar-container {
+
+  .nav-tabs {
+    li {
+      .fa.fa-caret-down {
+        display: none;
+      }
+
+      &.active {
+        .fa.fa-caret-down {
+          display: inline-block;
+        }
+      }
+    }
+  }
+
   .searchbar_field {
     padding-left: 0px !important;
     padding-right: 0px !important;
