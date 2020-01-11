@@ -1294,7 +1294,7 @@ router.get('/project_details/:id', async function (req, res) {
     };
     if (id) {
         var response = await crudModel.getProjectById(id);
-        if (response.success) {
+        if (response.success && response.data) {
             var amenitiesList = await crudModel.getAmenityNames(response.data.amenities);
             var projectPhotos = await crudModel.getPhotosByProject(id);
             if(projectPhotos.success) {

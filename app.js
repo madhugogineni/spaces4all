@@ -12,7 +12,7 @@ var enviornmentConfig = require('./external-config/environment');
 var cors = require('cors');
 
 var app = express();
-app.use(session({secret: 'sekhar gogineni'}));
+app.use(session({ secret: 'sekhar gogineni' }));
 var corsOptions = {
     origin: 'https://www.spaces4all.com',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 
 // app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));

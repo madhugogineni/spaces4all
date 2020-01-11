@@ -141,7 +141,7 @@ module.exports = {
     },
     getLatestPhotoByProject: function (projectId) {
         return new Promise(function (resolve, reject) {
-            con.query("select * from project_photos where project_id=" + projectId + " order by photo_id ASC limit 1", function (error, result) {
+            con.query("select * from project_photos where project_id=" + projectId + " order by photo_id DESC limit 1", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({success: false});
@@ -203,7 +203,7 @@ module.exports = {
                 " as total_area,projects.project_name as project_name, projects.min_price as min_price from featured_projects inner join projects on featured_projects.project_id = projects.project_id inner join city on" +
                 " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
                 " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
-                " left join project_photos on projects.project_id = project_photos.project_id order by featured_project_id ASC", function (error, result) {
+                " left join project_photos on projects.project_id = project_photos.project_id order by featured_project_id ASC, project_photos.photo_id DESC", function (error, result) {
                 if (error) {
                     console.log(error);
                 }
