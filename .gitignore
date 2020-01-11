@@ -7,3 +7,5 @@ views/home/test
 uploads/
 uploads1/
 external-config/
+test.ejs
+.DS_Store
