@@ -84,6 +84,27 @@
       padding-bottom: 10px;
     }
 
+    .overview {
+      .rera {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        ul {
+          li {
+            display: inline-block;
+            padding: 2px 7px 2px;
+            display: table-cell;
+            font-size: 11px;
+            text-align: center;
+            border: 1px solid $tealBlue;
+            border-left: none;
+            &:first-child {
+              background-color: $tealBlue;
+              color: $white;
+            }
+          }
+        }
+      }
+    }
     .floor-plan {
       .floor-plan-table {
         thead {

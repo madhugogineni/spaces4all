@@ -304,7 +304,7 @@ router.get("/glossarys", function (req, res) {
 });
 
 router.get("/faqs", function (req, res) {
-    res.render("home/faqs", {page_name: "faqs", page_title: "faqs"});
+    res.render("home/faqs", { page_name: "faqs", page_title: "faqs" });
 });
 
 router.get("/area_conversion_calculator", function (req, res) {
@@ -564,7 +564,7 @@ router.get("/list_property", function (req, res) {
 router.post(
     "/add_list_property",
     upload.fields([
-        {name: "photos[]", maxCount: 10},
+        { name: "photos[]", maxCount: 10 },
         {
             name: "photos1[]",
             maxCount: 10
@@ -617,7 +617,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({success: false, message: errorMsg});
+                res.send({ success: false, message: errorMsg });
             } else {
                 var date = utils.getDate();
                 var city1 = await crudModel.getCityById(city);
@@ -664,11 +664,11 @@ router.post(
                     var propertyId = queryResult.propertyId;
                     await crudModel.addResidentialPlotDetails(
                         queryResult.propertyId, {
-                            north: north,
-                            south: south,
-                            east: east,
-                            west: west
-                        },
+                        north: north,
+                        south: south,
+                        east: east,
+                        west: west
+                    },
                         openSlides,
                         width,
                         constructionDone,
@@ -722,7 +722,7 @@ router.post(
                 for (var keys in validationError) {
                     errorMsg += validationError[keys].message + "<br/>";
                 }
-                res.send({success: false, message: errorMsg});
+                res.send({ success: false, message: errorMsg });
             } else {
                 var name = req.body.name || "";
                 var email = req.body.email || "";
@@ -838,7 +838,7 @@ router.post(
 );
 router.get("/rent_in", function (req, res) {
     crudModel.getRentInDetails().then(function (rentDetails) {
-        var responseObj = {page_title: "Rent In", page_name: "Rent In"};
+        var responseObj = { page_title: "Rent In", page_name: "Rent In" };
         if (rentDetails.success && rentDetails.data != undefined) {
             var finalPrice = "";
             var rentPrice = rentDetails.data.price;
@@ -864,12 +864,12 @@ router.get("/rent_in", function (req, res) {
     });
 });
 router.get("/rent_out", function (req, res) {
-    var responseObj = {page_title: "Rent Out", page_name: "Rent Out"};
+    var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
     res.render("home/rent-out", responseObj);
 });
 router.post(
     "/add_rent_out",
-    upload.fields([{name: "photos[]", maxCount: 10}]),
+    upload.fields([{ name: "photos[]", maxCount: 10 }]),
     async function (req, res) {
         let validator = new validatorpackage(req.body, {
             property_name: "required",
@@ -893,7 +893,7 @@ router.post(
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });
-            res.send({success: false, message: errorMsg});
+            res.send({ success: false, message: errorMsg });
         } else {
             var propertyName = req.body.property_name || "",
                 propertyType = req.body.property_type || "",
@@ -1114,7 +1114,7 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMessage = getErrorMessage(validator.errors);
-        res.send({success: false, message: errorMessage});
+        res.send({ success: false, message: errorMessage });
     } else {
         var propertyType = req.body.property_type || 0;
         var propertySubType = req.body.property_sub_type || 0;
@@ -1297,10 +1297,10 @@ router.get('/project_details/:id', async function (req, res) {
         if (response.success && response.data) {
             var amenitiesList = await crudModel.getAmenityNames(response.data.amenities);
             var projectPhotos = await crudModel.getPhotosByProject(id);
-            if(projectPhotos.success) {
+            if (projectPhotos.success) {
                 response.data.photos = projectPhotos.data;
                 console.log(response.data.photos[0])
-            }else {
+            } else {
                 response.data.photos = [];
             }
             if (amenitiesList.success) {
@@ -1309,6 +1309,10 @@ router.get('/project_details/:id', async function (req, res) {
                 res.send('Some error occured. Please try again later !')
                 console.log("error");
             }
+            var formattedPrice = utils.getPrice({min_price: response.data.min_price, max_price: response.data.max_price}, true)
+            response.data.min_price_formatted = formattedPrice.min_price
+            response.data.max_price_formatted = formattedPrice.max_price
+
             response.data.plans_configuration = response.data.plans_configuration ? JSON.parse(response.data.plans_configuration) : [];
             data.project = response.data;
 
@@ -1442,7 +1446,7 @@ router.get("/add_compare/:type/:project_id", function (req, res) {
     var projectId = req.params.project_id;
     var type = req.params.type;
     req.session.compare[type] = pushOrPopIdFromCompare(projectId, req.session.compare[type]);
-    res.send({success: true});
+    res.send({ success: true });
 });
 
 router.get("/delete_compare/:type/:project_id", function (req, res) {
@@ -1454,7 +1458,7 @@ router.get("/delete_compare/:type/:project_id", function (req, res) {
 
 router.get("/compare_count/:type", function (req, res) {
     var type = req.params.type;
-    res.send({success: true, count: req.session.compare[type].length || 0});
+    res.send({ success: true, count: req.session.compare[type].length || 0 });
 });
 
 
@@ -1561,9 +1565,9 @@ async function uploadImages(photoFiles, propertyId, path) {
         }
         var response = await crudModel.addPropertyPhotos(imagesToUpload);
         if (response.success) {
-            return {success: true, fileNames: fileNames};
+            return { success: true, fileNames: fileNames };
         } else {
-            return {success: false};
+            return { success: false };
         }
     }
 }

@@ -418,6 +418,23 @@
   padding-top: 20px;
   padding-bottom: 10px;
 }
+.project-details-page .project-details .overview .rera {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+.project-details-page .project-details .overview .rera ul li {
+  display: inline-block;
+  padding: 2px 7px 2px;
+  display: table-cell;
+  font-size: 11px;
+  text-align: center;
+  border: 1px solid #0a5384;
+  border-left: none;
+}
+.project-details-page .project-details .overview .rera ul li:first-child {
+  background-color: #0a5384;
+  color: white;
+}
 .project-details-page .project-details .floor-plan .floor-plan-table thead {
   background-color: #0a5384;
   color: white;
