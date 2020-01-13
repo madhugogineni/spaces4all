@@ -3,7 +3,7 @@
 <html class="no-js">
 
 <head>
-<!--    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">-->
+    <!--    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">-->
     <script>
 
         function ShowButton(str) {
@@ -38,7 +38,7 @@
                 '</div>'
             $("#call_back_response").html(modalBody);
             $("#call_project").val(propertyId);
-            jQuery('#modal_ajax1').modal('show', {backdrop: 'true'});
+            jQuery('#modal_ajax1').modal('show', { backdrop: 'true' });
 
         }
 
@@ -113,116 +113,121 @@
 
 <body class="home">
 
-<div class="body">
+    <div class="body">
 
-    <!-- Start Site Header -->
+        <!-- Start Site Header -->
 
-    <% include includes/header.ejs %>
+        <% include includes/header.ejs %>
 
-    <!-- End Site Header -->
+        <!-- End Site Header -->
 
-    <!-- Site Showcase -->
+        <!-- Site Showcase -->
 
-    <div class="site-showcase" id="success">
+        <div class="site-showcase" id="success">
 
-        <div class="slider-mask overlay-transparent"></div>
+            <div class="slider-mask overlay-transparent"></div>
 
-        <!-- Start Hero Slider -->
+            <!-- Start Hero Slider -->
 
-        <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
-             data-style="fade" data-pause="yes">
+            <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
+                data-style="fade" data-pause="yes">
 
-            <ul class="slides" id="slides">
-                <script>
-                    setUpHomeSlider();
-                </script>
-            </ul>
+                <ul class="slides" id="slides">
+                    <script>
+                        setUpHomeSlider();
+                    </script>
+                </ul>
 
-        </div>
+            </div>
 
-        <!-- End Hero Slider -->
+            <!-- End Hero Slider -->
 
-        <!-- Site Search Module -->
+            <!-- Site Search Module -->
 
-        <div class="site-search-module">
+            <div class="site-search-module">
+                <div class="container">
+                    <div class="site-search-module-inside  col-md-10 col-md-offset-1 searchbar-container">
 
-            <div class="container">
+                        <ul class="nav nav-tabs no-border">
 
-                <div class="site-search-module-inside  col-md-10 col-md-offset-1 searchbar-container">
+                            <li class="active"><i class="fa fa-caret-down fa-4x"></i>
+                                <a data-toggle="tab" href="#sampletab2"> Projects</a>
+                            </li>
 
-                    <ul class="nav nav-tabs no-border">
+                            <li><i class="fa fa-caret-down fa-4x "></i>
+                                <a data-toggle="tab" href="#sampletab1"> Properties </a>
+                            </li>
 
-                        <li class="active"><i class="fa fa-caret-down fa-4x"></i>
-                            <a data-toggle="tab" href="#sampletab2"> Projects</a>
-                        </li>
-
-                        <li><i class="fa fa-caret-down fa-4x "></i>
-                            <a data-toggle="tab" href="#sampletab1"> Properties </a>
-                        </li>
-
-                    </ul>
+                        </ul>
 
 
-                    <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
+                        <div class="tab-content" style="margin-top: -10px; background:rgba(0,0,0,0.5);">
 
-                        <div id="sampletab2" class="tab-pane active">
+                            <div id="sampletab2" class="tab-pane active">
 
-                            <br>
+                                <br>
 
-                            <form action="<%= base_url %>home/projects" method="get">
+                                <form action="<%= base_url %>home/projects" method="get">
 
-                                <div class="form-group">
+                                    <div class="form-group">
 
-                                    <div class="row">
-                                        <div class="col-md-2 col-md-offset-1 searchbar_field">
-                                            <select class="form-control" name="city" id="project_city">
-                                                <script> setUpCities("#project_city"); </script>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-7 searchbar_field">
-                                            <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="project_search_field" name="search_field" type="text">
-                                        </div>
-                                        <div class="col-md-1 searchbar_field">
-                                            <button class="form-control submit-button">Submit</button>
-                                        </div>
+                                        <div class="row">
+                                            <div
+                                                class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 searchbar_field">
+                                                <select class="form-control" name="city" id="project_city">
+                                                    <script> setUpCities("#project_city"); </script>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7 searchbar_field">
+                                                <input class="form-control"
+                                                    placeholder="Enter a locality, builder, project or RERA ID"
+                                                    id="project_search_field" name="search_field" type="text">
+                                            </div>
+                                            <div class="col-md-1 searchbar_field">
+                                                <button class="form-control submit-button">Submit</button>
+                                            </div>
 
-                                    </div>
-
-                                </div>
-
-                            </form>
-                        </div>
-
-                        <div id="sampletab1" class="tab-pane">
-
-                            <br>
-
-                            <form method="get" action="<%= base_url %>home/properties %>">
-
-                                <div class="form-group form-group-lg">
-
-                                    <div class="row">
-
-                                        <div class="col-md-2 col-md-offset-1 searchbar_field">
-                                            <select class="form-control" name="city" id="property_city">
-                                                <option>City</option>
-                                                <script> setUpCities("#property_city"); </script>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-7 searchbar_field">
-                                            <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="property_search_field" name="search_field" type="text">
-                                        </div>
-                                        <div class="col-md-1 searchbar_field">
-                                            <button class="form-control submit-button">Submit</button>
                                         </div>
 
                                     </div>
 
-                                </div>
+                                </form>
+                            </div>
 
-                            </form>
+                            <div id="sampletab1" class="tab-pane">
 
+                                <br>
+
+                                <form method="get" action="<%= base_url %>home/properties %>">
+
+                                    <div class="form-group form-group-lg">
+
+                                        <div class="row">
+
+                                            <div class="col-md-2 col-md-offset-1 searchbar_field">
+                                                <select class="form-control" name="city" id="property_city">
+                                                    <option>City</option>
+                                                    <script> setUpCities("#property_city"); </script>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-7 searchbar_field">
+                                                <input class="form-control"
+                                                    placeholder="Enter a locality, builder, project or RERA ID"
+                                                    id="property_search_field" name="search_field" type="text">
+                                            </div>
+                                            <div class="col-md-1 searchbar_field">
+                                                <button class="form-control submit-button">Submit</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
                         </div>
+
                     </div>
 
                 </div>
@@ -231,181 +236,182 @@
 
         </div>
 
-    </div>
+        <!-- Start Content -->
 
-    <!-- Start Content -->
+        <div class="main" role="main">
 
-    <div class="main" role="main">
+            <div id="content" class="content full">
 
-        <div id="content" class="content full">
+                <div class="container">
 
-            <div class="container">
+                    <div class="row">
 
-                <div class="row">
+                        <div class="col-md-12">
 
-                    <div class="col-md-12">
+                            <div class="block-heading">
 
-                        <div class="block-heading">
+                                <h4>
+                                    <span class="heading-icon">
+                                        <i class="fa fa-leaf"></i>
+                                    </span>Featured Projects
+                                </h4>
+                            </div>
 
-                            <h4>
-                                <span class="heading-icon">
-                                    <i class="fa fa-leaf"></i>
-                                </span>Featured Projects
-                            </h4>
-                        </div>
+                            <div class="property-listing">
 
-                        <div class="property-listing">
+                                <ul>
 
-                            <ul>
-
-                                <% for(var i = 0;i < 12; i++)  {
+                                    <% for(var i = 0;i < 12; i++)  {
                                     var latest_project = latest_projects[i]; %>
-                                <li class="type-rent col-md-12">
-                                    <div class="col-md-5 image-container">
-                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>"
-                                           class="property-featured-image">
-                                            <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
-                                                 class="image" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-md-7">
-                                        <div class="row">
-                                            <div class="col-md-8">
-                                                <div class="property-info">
-                                                    <h3>
-                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
-                                                            <%= latest_project.project_name %>
-                                                        </a>
-                                                    </h3>
-                                                    <hr>
-                                                    <span><%= latest_project.group_name %></span>
-                                                    <hr>
+                                    <li class="type-rent col-md-12">
+                                        <div class="col-md-5 image-container">
+                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>"
+                                                class="property-featured-image">
+                                                <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
+                                                    class="image" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="property-info">
+                                                        <h3>
+                                                            <a
+                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
+                                                                <%= latest_project.project_name %>
+                                                            </a>
+                                                        </h3>
+                                                        <hr>
+                                                        <span><%= latest_project.group_name %></span>
+                                                        <hr>
 
-                                                    <span class="location"> <%= latest_project.locality %>,
+                                                        <span class="location"> <%= latest_project.locality %>,
                                                             <%= latest_project.city %></span>
-                                                    <hr>
+                                                        <hr>
 
-                                                    <span>Sizes ( Range) :
+                                                        <span>Sizes ( Range) :
                                                             <%= latest_project.min_builtup_area %> -
                                                             <%= latest_project.max_builtup_area %> Sq.Ft
                                                         </span>
-                                                    <hr>
+                                                        <hr>
 
-                                                    <span>Plans : <%= latest_project.plans %></span>
-                                                    <hr>
+                                                        <span>Plans : <%= latest_project.plans %></span>
+                                                        <hr>
 
-                                                    <span>
-                                                        <% if(latest_project.min_price != ""){ %><span
+                                                        <span>
+                                                            <% if(latest_project.min_price != ""){ %><span
                                                                 class="WebRupee">Rs.</span>
-                                                        <%= latest_project.min_price %>
-                                                        Onwards
-                                                        <% }else { %>
                                                             <%= latest_project.min_price %>
-                                                        <% } %>
-                                                    </span>
-                                                    <hr>
+                                                            Onwards
+                                                            <% }else { %>
+                                                            <%= latest_project.min_price %>
+                                                            <% } %>
+                                                        </span>
+                                                        <hr>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="col-md-4 pad-2 brbtm">
+                                                    <ul class="">
+                                                        <li>
+                                                            <a
+                                                                onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
+                                                                <button type="button" class="btn btn-default"><i
+                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
+                                                                    &nbsp;&nbsp;
+                                                                </button>
+                                                            </a><br /><br />
+                                                        </li>
+
+                                                        <li>
+                                                            <a
+                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
+                                                                <button type="button" class="btn btn-danger"><i
+                                                                        class="fa  fa-angle-double-right"></i> View
+                                                                    Details
+                                                                </button>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </div>
-                                            <br/>
-                                            <div class="col-md-4 pad-2 brbtm">
-                                                <ul class="">
-                                                    <li>
-                                                        <a onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
-                                                            <button type="button" class="btn btn-default"><i
-                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
-                                                                &nbsp;&nbsp;
-                                                            </button>
-                                                        </a><br/><br/>
-                                                    </li>
-
-                                                    <li>
-                                                        <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
-                                                            <button type="button" class="btn btn-danger"><i
-                                                                        class="fa  fa-angle-double-right"></i> View
-                                                                Details
-                                                            </button>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="property-amenities clearfix">
+                                            <div class="property-amenities clearfix">
                                                 <span
-                                                        class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
+                                                    class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
 
-                                            <span
+                                                <span
                                                     class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
 
-                                            <span class="parking"><strong>&nbsp;Type :
+                                                <span class="parking"><strong>&nbsp;Type :
                                                     </strong><%= latest_project.project_sub_type %></span>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <% } %>
-                            </ul>
+                                    </li>
+                                    <% } %>
+                                </ul>
+
+                            </div>
 
                         </div>
 
                     </div>
 
                 </div>
+            </div>
 
+        </div>
+
+    </div>
+
+    </div>
+
+    <!-- Start Site Footer -->
+
+
+    <!-- (Ajax Modal)-->
+
+    <div class="modal fade" id="modal_ajax1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Call Back</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="call_back_response">
+                            <div id="errorBox3"></div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6">
+                                    <label>NAME*</label>
+                                    <input type="text" id="call_name" name="call_name" class="form-control"
+                                        placeholder="Name" required="required">
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <label>PHONE NUMBER*</label>
+                                    <input type="text" id="call_phone" name="call_phone" class="form-control"
+                                        placeholder="Phone Number" required="required">
+                                </div>
+                                <input type="hidden" id="call_project" name="call_project" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" onclick="send_Property_Callback();" class="btn btn-primary">Send</button>
+                    </div>
+                </form>
             </div>
         </div>
-
     </div>
 
-</div>
+    <% include includes/footer.ejs %>
+    <script type="text/javascript">
+        function ticker() {
+            $('#ticker li:first').slideUp(function () {
+                $(this).appendTo($('#ticker')).slideDown();
+            });
+        }
 
-</div>
-
-<!-- Start Site Footer -->
-
-
-<!-- (Ajax Modal)-->
-
-<div class="modal fade" id="modal_ajax1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="post">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Call Back</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="call_back_response">
-                        <div id="errorBox3"></div>
-                        <div class="row">
-                            <div class="col-md-6 col-sm-6">
-                                <label>NAME*</label>
-                                <input type="text" id="call_name" name="call_name" class="form-control"
-                                       placeholder="Name" required="required">
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <label>PHONE NUMBER*</label>
-                                <input type="text" id="call_phone" name="call_phone" class="form-control"
-                                       placeholder="Phone Number" required="required">
-                            </div>
-                            <input type="hidden" id="call_project" name="call_project"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="send_Property_Callback();" class="btn btn-primary">Send</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<% include includes/footer.ejs %>
-<script type="text/javascript">
-    function ticker() {
-        $('#ticker li:first').slideUp(function () {
-            $(this).appendTo($('#ticker')).slideDown();
-        });
-    }
-
-    setInterval(ticker, 3000);
-</script>
+        setInterval(ticker, 3000);
+    </script>
