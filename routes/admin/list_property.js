@@ -11,8 +11,6 @@ var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
 
 router.get('/', async function (req, res) {
-    console.log(req.params);
-    console.log('-------------');
     var listProperty = await crudModel.getProperties(req.query);
     var responseObject = {
         page_name: 'list_property',
@@ -76,7 +74,7 @@ router.get('/edit/:property_id?', async function (req, res) {
         invalid = true
     }
     if (invalid) {
-        res.redirect('/admin/welcome')
+        res.redirect('/admin')
     }
 });
 router.post('/update/:property_id', upload.none(),
