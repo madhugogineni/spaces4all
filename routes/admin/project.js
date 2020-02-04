@@ -242,7 +242,7 @@ router.post('/update/:project_id', upload.none(), async function (req, res) {
     } else {
         res.send({
             success: false,
-            message: "Your Project Updating Has Failed ! Please Try Again."
+            message: "Invalid Project."
         });
     }
 });
