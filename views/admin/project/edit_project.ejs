@@ -1,6 +1,4 @@
 <% include ../includes/header.ejs %>
-
-
 <!-- Left side column. contains the logo and sidebar -->
 
 <% include ../includes/menu.ejs %>
@@ -132,7 +130,7 @@
                     <div class="box-body">
 
                         <form action="<%= base_url %>admin/projects/update/<%= project_id %>" method="post"
-                              enctype="multipart/form-data" id="project_form">
+                            enctype="multipart/form-data" id="project_form">
 
                             <div class="row">
 
@@ -146,21 +144,17 @@
 
                                                 <label for="exampleInputEmail1">Project Name</label>
                                                 <input type="text" class="form-control" id="" name="project_name"
-                                                       placeholder="Enter Project Name"
-                                                       value="<%= project_details.project_name %>"
-                                                       required="required">
+                                                    placeholder="Enter Project Name"
+                                                    value="<%= project_details.project_name %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Project Type</label> <select
-
-                                                        name="project_type" id="project_type"
-
-                                                        onchange="getProjectSubTypes(this.value,'#project_sub_type')"
-
-                                                        class="form-control margin-0" required="required">
+                                                    name="project_type" id="project_type"
+                                                    onchange="getProjectSubTypes(this.value,'#project_sub_type')"
+                                                    class="form-control margin-0" required="required">
 
                                                     <option value="">---SELECT---</option>
 
@@ -172,7 +166,7 @@
 
                                                 <label for="exampleInputEmail1">Project Sub Type</label>
                                                 <select name="project_sub_type" id="project_sub_type"
-                                                        class="form-control margin-0" required="required">
+                                                    class="form-control margin-0" required="required">
 
                                                 </select>
 
@@ -181,10 +175,8 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Posted By</label> <select
-
-                                                        name="posted_by" id="posted_by"
-
-                                                        class="form-control margin-0" required="required">
+                                                    name="posted_by" id="posted_by" class="form-control margin-0"
+                                                    required="required">
 
                                                     <option value="">---SELECT---</option>
 
@@ -202,20 +194,16 @@
 
                                                 <label for="exampleInputEmail1">Group Name</label>
                                                 <input type="text" class="form-control" id="" name="group_name"
-                                                       placeholder="Enter Group Name"
-                                                       value="<%= project_details.group_name %>"
-                                                       required="required">
+                                                    placeholder="Enter Group Name"
+                                                    value="<%= project_details.group_name %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">City</label> <select
-
-                                                        name="city" id="city"
-                                                        onchange="showLocality(this.value,'#locality')"
-
-                                                        class="form-control margin-0 " required="required">
+                                                <label for="exampleInputEmail1">City</label> <select name="city"
+                                                    id="city" onchange="showLocality(this.value,'#locality')"
+                                                    class="form-control margin-0 " required="required">
 
 
                                                 </select>
@@ -232,10 +220,8 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Status</label> <select
-
-                                                        name="status" id="status" class="form-control margin-0"
-                                                        required="required">
+                                                <label for="exampleInputEmail1">Status</label> <select name="status"
+                                                    id="status" class="form-control margin-0" required="required">
 
                                                     <option value="Available">Available</option>
 
@@ -254,14 +240,13 @@
                                                 <div class='input-group date' id=''>
 
                                                     <input type="date" name="launch_date"
-                                                           value="<%= launchDateString %>"
-                                                           class="form-control"/><!-- launch date -->
+                                                        value="<%= launchDateString %>" class="form-control" />
+                                                    <!-- launch date -->
 
                                                     <span class="input-group-addon"> <span
+                                                            class="glyphicon glyphicon-calendar"></span>
 
-                                                                class="glyphicon glyphicon-calendar"></span>
-
-												</span>
+                                                    </span>
 
                                                 </div>
 
@@ -273,13 +258,13 @@
 
                                                 <div class='input-group date' id=''>
 
-                                                    <input type="date" name="possesion_date"
-                                                           class="form-control" value="<%= possessionDateString %>"/>
+                                                    <input type="date" name="possesion_date" class="form-control"
+                                                        value="<%= possessionDateString %>" />
                                                     <!-- possession date -->
                                                     <span class="input-group-addon"> <span
-                                                                class="glyphicon glyphicon-calendar"></span>
+                                                            class="glyphicon glyphicon-calendar"></span>
 
-												</span>
+                                                    </span>
 
                                                 </div>
 
@@ -289,8 +274,8 @@
 
                                                 <label for="exampleInputEmail1">No Of Buildings</label>
                                                 <input type="text" class="form-control" id="" name="buildings"
-                                                       placeholder="Enter No Of Buildings"
-                                                       value="<%= project_details.no_of_buildings %>">
+                                                    placeholder="Enter No Of Buildings"
+                                                    value="<%= project_details.no_of_buildings %>">
 
                                             </div>
 
@@ -298,8 +283,8 @@
 
                                                 <label for="exampleInputEmail1">No Of Floors</label>
                                                 <input type="text" class="form-control" id="" name="floors"
-                                                       placeholder="Enter No Of Floors"
-                                                       value="<%= project_details.no_of_floors %>">
+                                                    placeholder="Enter No Of Floors"
+                                                    value="<%= project_details.no_of_floors %>">
 
                                             </div>
 
@@ -307,8 +292,8 @@
 
                                                 <label for="exampleInputEmail1">Total Area</label>
                                                 <input type="text" class="form-control" id="" name="total_area"
-                                                       placeholder="Enter Total Area"
-                                                       value="<%= project_details.total_area %>">
+                                                    placeholder="Enter Total Area"
+                                                    value="<%= project_details.total_area %>">
 
                                             </div>
 
@@ -316,8 +301,8 @@
 
                                                 <label for="exampleInputEmail1">Total Units</label>
                                                 <input type="text" class="form-control" id="" name="total_units"
-                                                       placeholder="Enter Total Units"
-                                                       value="<%= project_details.total_units %>">
+                                                    placeholder="Enter Total Units"
+                                                    value="<%= project_details.total_units %>">
 
                                             </div>
 
@@ -334,12 +319,12 @@
 
                                                 <label for="exampleInputEmail1">Plans</label>
 
-                                                <select name="plans[]" id="example-getting-started"
-                                                        class="form-control" multiple="multiple" required="required">
+                                                <select name="plans[]" id="example-getting-started" class="form-control"
+                                                    multiple="multiple" required="required">
 
                                                     <% for(var i = 1;i <= 10;i++){ %>
 
-                                                        <option value="<%= i %>"><%= i %>BHK</option>
+                                                    <option value="<%= i %>"><%= i %>BHK</option>
 
                                                     <% } %>
 
@@ -352,9 +337,8 @@
 
                                                 <label for="exampleInputEmail1">Min Builtup Area</label>
                                                 <input type="text" class="form-control" id="" name="min_builtup"
-                                                       placeholder="Enter Min Builtup Area"
-                                                       value="<%= project_details.min_builtup_area %>"
-                                                       required="required">
+                                                    placeholder="Enter Min Builtup Area"
+                                                    value="<%= project_details.min_builtup_area %>" required="required">
 
                                             </div>
 
@@ -362,19 +346,17 @@
 
                                                 <label for="exampleInputEmail1">Max Builtup Area</label>
                                                 <input type="text" class="form-control" id="" name="max_builtup"
-                                                       placeholder="Enter Max Builtup Area"
-                                                       value="<%= project_details.max_builtup_area %>">
+                                                    placeholder="Enter Max Builtup Area"
+                                                    value="<%= project_details.max_builtup_area %>">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Min Price</label> <input
-
-                                                        type="text" class="form-control" id="" name="min_price"
-
-                                                        placeholder="Enter Min Price"
-                                                        value="<%= project_details.min_price %>">
+                                                <label for="exampleInputEmail1">Min Price</label> <input type="text"
+                                                    class="form-control" id="" name="min_price"
+                                                    placeholder="Enter Min Price"
+                                                    value="<%= project_details.min_price %>">
 
                                             </div>
 
@@ -382,8 +364,8 @@
 
                                                 <label for="exampleInputEmail1">Max Price</label>
                                                 <input type="text" class="form-control" id="" name="max_price"
-                                                       placeholder="Enter Max Price"
-                                                       value="<%= project_details.max_price %>">
+                                                    placeholder="Enter Max Price"
+                                                    value="<%= project_details.max_price %>">
 
                                             </div>
 
@@ -391,8 +373,8 @@
 
                                                 <label for="exampleInputEmail1">Maintenanace Charge</label>
                                                 <input type="text" class="form-control" id="" name="maintenance"
-                                                       placeholder="Enter Maintenanace Charge"
-                                                       value="<%= project_details.maintenance_charge %>">
+                                                    placeholder="Enter Maintenanace Charge"
+                                                    value="<%= project_details.maintenance_charge %>">
 
                                             </div>
 
@@ -400,8 +382,8 @@
 
                                                 <label for="exampleInputEmail1">Floor Rise</label>
                                                 <input type="text" class="form-control" id="" name="floor_rise"
-                                                       placeholder="Enter Floor Rise"
-                                                       value="<%= project_details.floor_rise %>">
+                                                    placeholder="Enter Floor Rise"
+                                                    value="<%= project_details.floor_rise %>">
 
                                             </div>
 
@@ -409,8 +391,7 @@
 
                                                 <label for="exampleInputEmail1">Rera Id</label>
                                                 <input type="text" class="form-control" id="rera_id" name="rera_id"
-                                                       placeholder="Enter Rera Id"
-                                                       value="<%= project_details.rera_id %>">
+                                                    placeholder="Enter Rera Id" value="<%= project_details.rera_id %>">
 
                                             </div>
                                             <br>
@@ -420,11 +401,8 @@
                                                 <label for="exampleInputEmail1">Commencement Certificate</label>
 
                                                 <input type="checkbox" class="minimal" id="" name="commencement"
-                                                       value="Yes"
-                                                <% if(project_details.commencement == 'Yes'){ %>
-                                                    <%= 'checked' %>
-                                                        <% } %>
-                                                >
+                                                    value="Yes" <% if(project_details.commencement == 'Yes'){ %>
+                                                    <%= 'checked' %> <% } %>>
 
                                             </div>
                                             <br>
@@ -434,8 +412,8 @@
 
                                                 <label for="exampleInputEmail1">Name</label>
                                                 <input type="text" class="form-control" id="" name="person_name"
-                                                       placeholder="Enter Name" value="<%= project_details.name %>"
-                                                       required="required">
+                                                    placeholder="Enter Name" value="<%= project_details.name %>"
+                                                    required="required">
 
                                             </div>
 
@@ -444,9 +422,8 @@
                                                 <label for="exampleInputEmail1">Mobile</label>
 
                                                 <input type="text" class="form-control" id="" name="mobile"
-                                                       placeholder="Enter Mobile"
-                                                       value="<%= project_details.mobile %>"
-                                                       required="required">
+                                                    placeholder="Enter Mobile" value="<%= project_details.mobile %>"
+                                                    required="required">
 
                                             </div>
 
@@ -454,8 +431,8 @@
 
                                                 <label for="exampleInputEmail1">Office Phone</label>
                                                 <input type="text" class="form-control" id="" name="office_phone"
-                                                       placeholder="Enter Office Phone"
-                                                       value="<%= project_details.office_phone %>">
+                                                    placeholder="Enter Office Phone"
+                                                    value="<%= project_details.office_phone %>">
 
                                             </div>
 
@@ -463,9 +440,8 @@
 
                                                 <label for="exampleInputEmail1">Email</label>
                                                 <input type="email" class="form-control" id="" name="email"
-                                                       placeholder="Enter Email"
-                                                       value="<%= project_details.email %>"
-                                                       required="required">
+                                                    placeholder="Enter Email" value="<%= project_details.email %>"
+                                                    required="required">
 
                                             </div>
 
@@ -501,25 +477,25 @@
                                     <label for="plans">Plans</label>
                                     <table id="order-list" class=" table order-list">
                                         <thead>
-                                        <tr>
-                                            <td>Plan</td>
-                                            <td>Size</td>
-                                            <td>Price</td>
-                                            <td>Facing</td>
-                                            <td>Delete</td>
-                                        </tr>
+                                            <tr>
+                                                <td>Plan</td>
+                                                <td>Size</td>
+                                                <td>Price</td>
+                                                <td>Facing</td>
+                                                <td>Delete</td>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
                                         <tfoot>
-                                        <tr>
-                                            <td colspan="5" style="text-align: left;">
-                                                <input type="button" class="btn btn-warning" id="addrow"
-                                                       value="Add Row"/>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                        </tr>
+                                            <tr>
+                                                <td colspan="5" style="text-align: left;">
+                                                    <input type="button" class="btn btn-warning" id="addrow"
+                                                        value="Add Row" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -533,7 +509,7 @@
                                     <label for="specifications">Specifications</label>
 
                                     <textarea id="editor1" class="text1" name="specifications" rows="10" min="10"
-                                              style="width: 100%"><%= project_details.specifications %></textarea>
+                                        style="width: 100%"><%= project_details.specifications %></textarea>
 
                                 </div>
 
@@ -546,8 +522,8 @@
 
                                     <label for="description">Description</label>
 
-                                    <textarea id="editor" class="text2" name="description" rows="10"
-                                              style="width: 100%" min="10">
+                                    <textarea id="editor" class="text2" name="description" rows="10" style="width: 100%"
+                                        min="10">
                                             <%= project_details.description %></textarea>
 
                                 </div>
@@ -618,7 +594,7 @@
 
     </section>
     <% } else { %>
-        <%- "&nbsp;&nbsp;<h1>Project Not Found </h1>" %>
+    <%- "&nbsp;&nbsp;<h1>Project Not Found </h1>" %>
     <% } %>
     <!-- /.content -->
 
@@ -857,7 +833,7 @@
 
                         Report panel usage
 
-                        <input type="checkbox" class="pull-right" checked/>
+                        <input type="checkbox" class="pull-right" checked />
 
                     </label>
 
@@ -876,7 +852,7 @@
 
                         Allow mail redirect
 
-                        <input type="checkbox" class="pull-right" checked/>
+                        <input type="checkbox" class="pull-right" checked />
 
                     </label>
 
@@ -895,7 +871,7 @@
 
                         Expose author name in posts
 
-                        <input type="checkbox" class="pull-right" checked/>
+                        <input type="checkbox" class="pull-right" checked />
 
                     </label>
 
@@ -917,7 +893,7 @@
 
                         Show me as online
 
-                        <input type="checkbox" class="pull-right" checked/>
+                        <input type="checkbox" class="pull-right" checked />
 
                     </label>
 
@@ -930,7 +906,7 @@
 
                         Turn off notifications
 
-                        <input type="checkbox" class="pull-right"/>
+                        <input type="checkbox" class="pull-right" />
 
                     </label>
 
@@ -956,54 +932,23 @@
     </div>
 
 </aside><!-- /.control-sidebar -->
-
-<!-- Add the sidebar's background. This div must be placed
-
-     immediately after the control sidebar -->
-
+<!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
 <div class='control-sidebar-bg'></div>
-
-</div><!-- ./wrapper -->
-
-
-<!-- jQuery 2.1.4 -->
-
-<script src="<%= base_url %>admin/plugins/jQuery/jQuery-2.1.4.min.js"></script>
-
-<!-- Bootstrap 3.3.2 JS -->
+</div>
 
 <script src="<%= base_url %>admin/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!-- FastClick -->
-
 <script src='<%= base_url %>admin/plugins/fastclick/fastclick.min.js'></script>
-
-<!-- AdminLTE App -->
-
 <script src="<%= base_url %>admin/dist/js/app.min.js" type="text/javascript"></script>
-
-<!-- AdminLTE for demo purposes -->
-
 <script src="<%= base_url %>admin/dist/js/demo.js" type="text/javascript"></script>
-
-<!-- CK Editor -->
-
-<script src="https://cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
-
-<!-- Bootstrap WYSIHTML5 -->
-
 <script src="<%= base_url %>admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
-        type="text/javascript"></script>
+    type="text/javascript"></script>
 
 <script type="text/javascript">
 
     $(function () {
 
         // Replace the <textarea id="editor1"> with a CKEditor
-
         // instance, using default configuration.
-
-
         //bootstrap WYSIHTML5 - text editor
 
         $(".text1").wysihtml5();
