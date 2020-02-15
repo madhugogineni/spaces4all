@@ -3,8 +3,6 @@
 <html class="no-js">
 
 <head>
-    <% include ./includes/functions.ejs %>
-    <% include ./includes/ejs_functions.ejs %>
     <% include ./includes/includes.ejs %>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -136,14 +134,6 @@
 
     <div class="body">
 
-        <!-- Start Site Header -->
-
-        <% //include includes/header.ejs                                                          %>
-
-        <!-- End Site Header -->
-
-        <!-- Start Content -->
-
         <div class="main" role="main">
 
             <% if(project) {
@@ -156,13 +146,7 @@
             }%>
 
             <div class="project-details-page">
-
-                <div class="container-fluid">
-                    <!--Powered By div-->
-                    <div class="powered-by">
-                        Powered by <a href="<%= base_url %>">Spaces4all.com</a>
-                    </div>
-                </div>
+                <% // to added powered by add powered-by to css%>
                 <div class="container-fluid project-header">
                     <div class="row">
                         <div class="hidden-xs col-sm-2 col-md-2 builder-name"><%= project.project_name %></div>
@@ -177,14 +161,14 @@
                                         Ft.</span>
                                     |
                                     Starting Price: <span><%= project.min_price_formatted %></span> |
-                                    Possession: <span><%= getDate(project.possesion_date) %></span>
+                                    Possession: <span><%= getYear(project.possesion_date) %></span>
 
                                 </div>
                             </div>
                         </div>
                         <div class="hidden-xs col-sm-3 col-md-3 quick-links">
                             <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a
-                                href="#enquiry_form"> Contact Advertiser</a>
+                                href="#enquiry_form"> Contact</a>
                         </div>
                     </div>
                     <div class="row image-container">
@@ -204,7 +188,7 @@
                                             <% if(reraRegistered) { %>
                                             REGISTERED
                                             <%}else { %>
-                                            NOT REGISTERED
+                                            NOT APPLICABLE
                                             <% } %>
                                         </li>
                                         <% if(reraRegistered) { %>

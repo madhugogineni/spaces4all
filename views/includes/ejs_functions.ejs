@@ -21,4 +21,13 @@ getDate = function (date) {
         return 'Date not available'
     }
 }
+
+getYear = function(date) {
+    if (date) {
+        var dateVariable = new Date(date);
+        return dateVariable.getFullYear()
+    } else {
+        return 'Date not available'
+    }
+}
 %>

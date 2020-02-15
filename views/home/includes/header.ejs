@@ -1,5 +1,3 @@
-<% include functions.ejs %>
-<% include ejs_functions.ejs %>
 <% include includes.ejs %>
 <style type="text/css">
     .fb a {
@@ -27,7 +25,7 @@
     }
 </style>
 
-<link rel="stylesheet" href="<%= base_url %>rupeefont/rupee.css" type='text/css'/>
+<link rel="stylesheet" href="<%= base_url %>rupeefont/rupee.css" type='text/css' />
 
 <script type="text/javascript">
 
@@ -189,11 +187,14 @@
     <div class="comparison-hover" id="comparison-hover">
         <span>&nbsp;&nbsp;&nbsp;Comparing</span>
         <span class="mdi mdi-close" style="float:right;margin-right:5px;" onclick="hideComparisonPopup()"></span>
-        <hr/>
+        <hr />
         <ul class="list-group nomargin">
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/property">Property [<span id="property_compare_count">0</span>]</a></li>
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/project">Projects [<span id="project_compare_count">0</span>]</a></li>
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/rent">Rent [<span id="rent_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/property">Property [<span
+                        id="property_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/project">Projects [<span
+                        id="project_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/rent">Rent [<span
+                        id="rent_compare_count">0</span>]</a></li>
         </ul>
     </div>
 

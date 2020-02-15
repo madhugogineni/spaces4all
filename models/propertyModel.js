@@ -463,7 +463,7 @@ module.exports = {
                 " inner join locality on list_property.locality = locality.locality_id " +
                 " inner join property_type on list_property.property_type = property_type.property_type_id " +
                 " inner join property_sub_type on list_property.property_sub_type = property_sub_type.property_sub_type_id " +
-                " left join property_photos on list_property.list_property_id = property_photos.property_id", function (error, result) {
+                " left join property_photos on list_property.list_property_id = property_photos.property_id order by latest_property.latest_property_id ASC", function (error, result) {
                 if (error) {
                     console.log(error);
                 }
