@@ -130,7 +130,7 @@ router.get('/featured/:value/:project_id', function (req, res) {
         value = 0;
     }
     if (projectId) {
-        crudModel.updateColumnInProjects('featured_projects', value, projectId)
+        crudModel.updateColumnInProjects('featured_project', value, projectId)
     }
     res.redirect('/admin/projects');
 });
