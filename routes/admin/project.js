@@ -9,9 +9,6 @@ var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
-var isAddErrorPresent = false;
-var shouldBeConsidered = false;
-
 router.get('/', async function (req, res) {
     var data = {
         page_name: 'project',
@@ -26,39 +23,31 @@ router.get('/', async function (req, res) {
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
     };
-    if (shouldBeConsidered) {
-        data.isError = isAddErrorPresent;
-    }
     var projectsResponse = await crudModel.getProjectsSearch(req.query);
     if (projectsResponse.success) {
         data.projects = projectsResponse.data
         data.projects.forEach((project, index) => {
-            var formattedPrice = utils.getPrice({min_price: project.min_price, max_price: project.max_price}, true)
+            var formattedPrice = utils.getPrice({ min_price: project.min_price, max_price: project.max_price }, true)
             data.projects[index].min_price_formatted = formattedPrice.min_price
             data.projects[index].max_price_formatted = formattedPrice.max_price
         });
     } else {
         data.projects = []
     }
-
     res.render('admin/project/projects', data);
-
-    isAddErrorPresent = false;
-    shouldBeConsidered = false;
 });
 router.get('/add', function (req, res) {
-    res.render('admin/project/add_project', {page_name: 'add_projects', page_title: 'Add Projects'});
+    res.render('admin/project/add_project', { page_name: 'add_projects', page_title: 'Add Projects' });
 });
 
 router.post('/add', upload.none(), async function (req, res) {
     var addProjectResponse = await addProject(req);
-    shouldBeConsidered = true;
     if (addProjectResponse.success) {
-        isAddErrorPresent = false;
+        res.send({ success: true, message: "Successfully created !" })
     } else {
         isAddErrorPresent = true;
+        res.send({ success: false, message: "There was an error while creating! Please try again later" })
     }
-    res.redirect('/admin/projects');
 });
 router.get('/photos/:project_id', async function (req, res) {
     var id = req.params.project_id;
@@ -266,10 +255,10 @@ router.get('/:project_id', async function (req, res) {
             }
             res.send(projectResponse)
         } else {
-            res.send({success: false});
+            res.send({ success: false });
         }
     } else {
-        res.send({success: false});
+        res.send({ success: false });
     }
 });
 
@@ -395,9 +384,9 @@ async function uploadImages(photoFiles, id, path) {
         }
         var response = await crudModel.addProjectPhotos(imagesToUpload);
         if (response.success) {
-            return {success: true, fileNames: fileNames};
+            return { success: true, fileNames: fileNames };
         } else {
-            return {success: false};
+            return { success: false };
         }
     }
 }

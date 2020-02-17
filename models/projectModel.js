@@ -197,13 +197,15 @@ module.exports = {
     },
     getLatestProjectDetails: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select projects.project_id as project_id,project_photos.photo as project_photo,city.city as city, locality.locality as locality," +
-                " project_type.type as project_type, project_sub_type.sub_type as project_sub_type,projects.plans as plans,projects.min_builtup_area as min_builtup_area," +
-                " projects.max_builtup_area as max_builtup_area, projects.group_name as group_name,projects.total_units as total_units, projects.total_area" +
-                " as total_area,projects.project_name as project_name, projects.min_price as min_price from featured_projects inner join projects on featured_projects.project_id = projects.project_id inner join city on" +
-                " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
-                " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
-                " left join project_photos on projects.project_id = project_photos.project_id order by featured_project_id ASC, project_photos.photo_id DESC", function (error, result) {
+            var query = "select projects.project_id as project_id,project_photos.photo as project_photo,city.city as city, locality.locality as locality," +
+            " project_type.type as project_type, project_sub_type.sub_type as project_sub_type,projects.plans as plans,projects.min_builtup_area as min_builtup_area," +
+            " projects.max_builtup_area as max_builtup_area, projects.group_name as group_name,projects.total_units as total_units, projects.total_area" +
+            " as total_area,projects.project_name as project_name, projects.min_price as min_price from projects inner join city on" +
+            " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
+            " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
+            " left join project_photos on projects.project_id = project_photos.project_id where projects.featured_project = 1 order by projects.project_id ASC, project_photos.photo_id DESC";
+            console.log(query);
+            con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
                 }
@@ -255,7 +257,7 @@ module.exports = {
             "project_sub_type.sub_type as project_sub_type_name,city.city as city_name, locality.locality as locality_name FROM `projects` " +
             "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
             "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
-            "inner join city on projects.city = city.city_id inner join locality as locality on projects.locality = locality.locality_id where project_id !=0 and project_status=1";
+            "inner join city on projects.city = city.city_id inner join locality as locality on projects.locality = locality.locality_id where project_id !=0";
 
         if (parameters.project_type != "" && parameters.project_type != undefined) {
             if (parameters.project_type != 0) {
@@ -292,7 +294,7 @@ module.exports = {
         // if (searchType != "") {
         //     query += " AND want_to ='" + searchType + "'";
         // }
-        // console.log(query);
+        console.log(query);
         query += " ORDER BY datetime DESC ";
         if (!from || from < 0) {
             from = '0';
