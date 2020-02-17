@@ -13,7 +13,6 @@ router.get('/', async function (req, res) {
     var data = {
         page_name: 'project',
         page_title: 'Projects',
-        shouldBeConsidered: shouldBeConsidered,
         project_type: req.query.project_type || '',
         project_sub_type: req.query.project_sub_type || '',
         city: req.query.city || '',
