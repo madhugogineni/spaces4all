@@ -111,11 +111,23 @@ app.get("/", function (req, res) {
                     finalLatestProjects.push(latestProject);
                 }
             }
-            res.render("home/index", {
-                page_title: 'Index',
-                page_name: 'Index',
-                latest_properties: finalLatestProperties,
-                latest_projects: finalLatestProjects
+
+            crudModel.getHomeSlide().then(function (response) {
+                var homeSliderData;
+                if (response.success) {
+                    homeSliderData = response.data
+                } else {
+                    homeSliderData = []
+                }
+                console.log("home slider data = ")
+                console.log(homeSliderData)
+                res.render("home/index", {
+                    page_title: 'Index',
+                    page_name: 'Index',
+                    latest_properties: finalLatestProperties,
+                    latest_projects: finalLatestProjects,
+                    home_slider: homeSliderData
+                });
             });
         });
     });

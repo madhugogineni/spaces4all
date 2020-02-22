@@ -66,8 +66,17 @@ module.exports = {
         });
     },
 
-
-
+    getHomeSlide: function () {
+        return new Promise(function (resolve, reject) {
+            con.query('select * from home_slide limit 5', function (error, result) {
+                if (error) {
+                    console.log(error)
+                    resolve({ success: false });
+                }
+                resolve({ success: true, data: result });
+            });
+        });
+    },
 
     getPriceTrendsSearch: function (type, city, locality) {
         var query = "select * from price_trends where type='" + type + "' and city='" + city + "'";
@@ -119,9 +128,9 @@ module.exports = {
             con.query("insert into contact(name,email,phone,message,datetime) values('" + name + "','" + email + "'," + phone + ",'" + message + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
-                    resolve({success: true, insertId: result.insertId});
+                    resolve({ success: true, insertId: result.insertId });
                     // con.query("select * from contact where contact_id=" + result.insertId, function (error1, result1) {
                     //     if (error1) {
                     //         console.log(error1);
@@ -140,9 +149,9 @@ module.exports = {
             con.query("insert into news_letter(email,datetime) values('" + email + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false, message: error});
+                    resolve({ success: false, message: error });
                 } else {
-                    resolve({success: true});
+                    resolve({ success: true });
                     // con.query("select * from news_letter where news_letter_id=" + result.insertId, function (error1, result1) {
                     //     if (error1) {
                     //         console.log(error1);
@@ -161,14 +170,14 @@ module.exports = {
             con.query("insert into loan_requests(purpose,bank,loan_amount,annual_income,name,mobile,email,dob,city,datetime) values('" + purpose + "'," + bank + ",'" + loanAmount + "','" + annualIncome + "','" + name + "','" + mobile + "','" + email + "','" + dob + "','" + city + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
                     con.query("select * from loan_requests where loan_id=" + result.insertId, function (error1, result1) {
                         if (error1) {
                             console.log(error1);
-                            resolve({success: false});
+                            resolve({ success: false });
                         }
-                        resolve({success: true, data: result1});
+                        resolve({ success: true, data: result1 });
                     });
                 }
             });
@@ -180,9 +189,9 @@ module.exports = {
             con.query("insert into property_call_back(property_id,name,phone,datetime) values(" + propertyId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, result: result});
+                resolve({ success: true, result: result });
             });
         });
     },
@@ -192,9 +201,9 @@ module.exports = {
             con.query("insert into call_back(project_id,name,phone,datetime) values(" + projectId + ",'" + name + "','" + phone + "','" + datetime + "')", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, result: result});
+                resolve({ success: true, result: result });
             });
         });
     },
