@@ -291,6 +291,9 @@ module.exports = {
             query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.group_name LIKE '%" + parameters.search_field + "%' )";
         }
+        if(!parameters.is_admin) {
+            query += " AND projects.project_status ='1'";
+        }
         // if (searchType != "") {
         //     query += " AND want_to ='" + searchType + "'";
         // }

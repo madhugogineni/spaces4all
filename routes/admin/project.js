@@ -22,6 +22,7 @@ router.get('/', async function (req, res) {
         max_price: req.query.max_price || '',
         possession: req.query.possession || '',
     };
+    req.query.is_admin = true;
     var projectsResponse = await crudModel.getProjectsSearch(req.query);
     if (projectsResponse.success) {
         data.projects = projectsResponse.data

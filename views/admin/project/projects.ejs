@@ -305,13 +305,13 @@
                                     <% if (project.project_status == '1') { %>
 
                                         <a href="<%= base_url %>admin/projects/status/0/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to Inactive ?')"><b>Active</b></a>
+                                           onclick="return confirm('Are You Sure Want to Inactive ?')"><b>In-active</b></a>
 
                                     <% }else { %>
 
                                         <a href="<%= base_url %>admin/projects/status/1/<%= project.project_id %>"
                                            onclick="return confirm('Are You Sure Want to Active ?')"><b
-                                                    style="color: red">In-active</b></a>
+                                                    style="color: red">Active</b></a>
 
                                     <% } %>
                                     <br/>

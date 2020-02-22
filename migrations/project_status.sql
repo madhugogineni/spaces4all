@@ -1,0 +1,1 @@
+ALTER TABLE `projects` CHANGE `project_status` `project_status` INT(11) NOT NULL DEFAULT '0';
