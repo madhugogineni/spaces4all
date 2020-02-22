@@ -104,27 +104,6 @@
             $('#call_project_id').val(project_id);
             $('#modal_ajax').modal('show', {backdrop: 'true'});
         }
-
-        function Show_max_price(str) {
-
-            //alert(str);
-
-            $.ajax({
-
-                url: '<?php echo base_url();?>home/max_price/' + str,
-
-                success: function (response) {
-
-                    //alert(response);
-
-                    jQuery('#max_price').html(response);
-
-                }
-
-            });
-
-        }
-
     </script>
 
 </head>
@@ -456,7 +435,7 @@
                                                         <% if(project.min_price){ %>
                                                             <span class="WebRupee">Rs.</span> <%= project.min_price %>
                                                         <% }else { %>
-                                                            No Data Available
+                                                            Price on Request
                                                         <% } %>
                                                     </span>
                                                     <hr>
@@ -613,7 +592,7 @@
     setUpProjectTypes('#project_type', '<%= project_type %>');
     getProjectSubTypes("<%= project_type %>", "#project_sub_type", "<%= project_sub_type %>");
     setUpCities("#city", '<%= city %>');
-    showLocality('<%= city %>', "#Showlocality",<%= locality %>)
+    showLocality('<%= city %>', "#Showlocality","<%= locality %>")
     selectOption("bedrooms", "<%= bedrooms %>");
     selectOption("min_price", "<%= min_price %>");
     selectOption("max_price", "<%= max_price %>");
