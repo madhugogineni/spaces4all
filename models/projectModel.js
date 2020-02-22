@@ -4,24 +4,24 @@ var dateFormat = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
     updateColumnInProjects: function (column, value, projectId) {
         return new Promise(function (resolve, reject) {
-            console.log("update projects set " + column + " = " + value + " where project_id = " + projectId)
+            // console.log("update projects set " + column + " = " + value + " where project_id = " + projectId) 
             con.query('update projects set ' + column + ' = ' + value + ' where project_id = ' + projectId, function (error, result) {
                 if (error) {
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
-                    resolve({success: true})
+                    resolve({ success: true })
                 }
             });
         })
     },
     deleteProject: function (projectId) {
         return new Promise(function (resolve, reject) {
-            console.log('delete from projects where project_id=' + projectId)
+            // console.log('delete from projects where project_id=' + projectId)
             con.query('delete from projects where project_id=' + projectId, function (error, result) {
                 if (error) {
                     console.log(error)
                 } else {
-                    resolve({success: true, message: error});
+                    resolve({ success: true, message: error });
                 }
             })
         });
@@ -31,9 +31,9 @@ module.exports = {
             con.query('delete from project_configurations where configuration_id = ' + configurationId, function (error, result) {
                 if (error) {
                     console.log(error)
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true})
+                resolve({ success: true })
             });
         });
     },
@@ -48,9 +48,9 @@ module.exports = {
             con.query(query, data, function (error, result) {
                 if (error) {
                     console.log(error)
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
-                    resolve({success: true});
+                    resolve({ success: true });
                 }
             });
         })
@@ -67,9 +67,9 @@ module.exports = {
             con.query(query, data, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
-                    resolve({success: true});
+                    resolve({ success: true });
                 }
             });
         });
@@ -79,9 +79,9 @@ module.exports = {
             con.query('select project_name,project_id from projects', function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result});
+                resolve({ success: true, data: result });
             });
         });
     },
@@ -99,9 +99,9 @@ module.exports = {
             con.query("select * from project_photos where project_id=" + projectId + " order by photo_id DESC", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result});
+                resolve({ success: true, data: result });
             });
         });
     },
@@ -110,9 +110,9 @@ module.exports = {
             con.query("insert into project_photos(project_id,photo) values ?", [data], function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 } else {
-                    resolve({success: true});
+                    resolve({ success: true });
                 }
             });
         });
@@ -122,9 +122,9 @@ module.exports = {
             con.query("delete from project_photos  where photo_id = '" + id + "'", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true});
+                resolve({ success: true });
             });
         });
     },
@@ -133,9 +133,9 @@ module.exports = {
             con.query("select * from project_photos where photo_id=" + photoId, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result[0]});
+                resolve({ success: true, data: result[0] });
             });
         });
     },
@@ -144,9 +144,9 @@ module.exports = {
             con.query("select * from project_photos where project_id=" + projectId + " order by photo_id DESC limit 1", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result[0]});
+                resolve({ success: true, data: result[0] });
             });
         });
     },
@@ -157,12 +157,12 @@ module.exports = {
                 "inner join project_type as project_type on projects.project_type = project_type.project_type_id " +
                 "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
                 "inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id where project_id=" + projectId, function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false})
-                }
-                resolve({success: true, data: result[0]});
-            });
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false })
+                    }
+                    resolve({ success: true, data: result[0] });
+                });
         });
     },
     getProjectByIds: function (projectId) {
@@ -178,12 +178,12 @@ module.exports = {
                 "project_photos on projects.project_id = project_photos.project_id left join project_configurations " +
                 "on projects.project_id = project_configurations.project_id where " +
                 "projects.project_id in (" + projectId + ")", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false})
-                }
-                resolve({success: true, data: result});
-            });
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false })
+                    }
+                    resolve({ success: true, data: result });
+                });
         });
     },
     getLatestProjects: function () {
@@ -198,13 +198,13 @@ module.exports = {
     getLatestProjectDetails: function () {
         return new Promise(function (resolve, reject) {
             var query = "select projects.project_id as project_id,project_photos.photo as project_photo,city.city as city, locality.locality as locality," +
-            " project_type.type as project_type, project_sub_type.sub_type as project_sub_type,projects.plans as plans,projects.min_builtup_area as min_builtup_area," +
-            " projects.max_builtup_area as max_builtup_area, projects.group_name as group_name,projects.total_units as total_units, projects.total_area" +
-            " as total_area,projects.project_name as project_name, projects.min_price as min_price from projects inner join city on" +
-            " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
-            " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
-            " left join project_photos on projects.project_id = project_photos.project_id where projects.featured_project = 1 order by projects.project_id ASC, project_photos.photo_id DESC";
-            console.log(query);
+                " project_type.type as project_type, project_sub_type.sub_type as project_sub_type,projects.plans as plans,projects.min_builtup_area as min_builtup_area," +
+                " projects.max_builtup_area as max_builtup_area, projects.group_name as group_name,projects.total_units as total_units, projects.total_area" +
+                " as total_area,projects.project_name as project_name, projects.min_price as min_price from projects inner join city on" +
+                " projects.city = city.city_id inner join locality on projects.locality = locality.locality_id inner join project_type on" +
+                " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
+                " left join project_photos on projects.project_id = project_photos.project_id where projects.featured_project = 1 order by projects.project_id ASC, project_photos.photo_id DESC";
+            // console.log(query);
             con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
@@ -231,13 +231,13 @@ module.exports = {
                 "inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id " +
                 "inner join city on projects.city = city.city_id inner join locality as locality projects.locality " +
                 "= locality.locality_id order by datetime DESC", function (error, result) {
-                if (error) {
-                    console.log(error);
-                    resolve({success: false})
-                } else {
-                    resolve({success: true, data: result});
-                }
-            });
+                    if (error) {
+                        console.log(error);
+                        resolve({ success: false })
+                    } else {
+                        resolve({ success: true, data: result });
+                    }
+                });
         });
     },
     getProjectConfigurations: function (projectId) {
@@ -245,9 +245,9 @@ module.exports = {
             con.query("select * from project_configurations where project_id='" + projectId + "' order by project_id ASC", function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false})
+                    resolve({ success: false })
                 }
-                resolve({success: true, data: result});
+                resolve({ success: true, data: result });
             });
         });
     },
@@ -289,15 +289,16 @@ module.exports = {
         if (parameters.search_field != "" && parameters.search_field != undefined) {
             query += " AND (projects.project_name LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
+            query += " OR locality.locality LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.group_name LIKE '%" + parameters.search_field + "%' )";
         }
-        if(!parameters.is_admin) {
+        if (!parameters.is_admin) {
             query += " AND projects.project_status ='1'";
         }
         // if (searchType != "") {
         //     query += " AND want_to ='" + searchType + "'";
         // }
-        console.log(query);
+        // console.log(query);
         query += " ORDER BY datetime DESC ";
         if (!from || from < 0) {
             from = '0';
@@ -311,9 +312,9 @@ module.exports = {
             con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result});
+                resolve({ success: true, data: result });
             });
         });
     },
@@ -334,11 +335,11 @@ module.exports = {
                 " inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id left join project_photos on" +
                 " projects.project_id = project_photos.project_id where projects.project_id !=0 and projects.project_status=1 and projects.exclusive='1' and" +
                 " projects.city=" + city + " ORDER BY datetime DESC;", function (error, result) {
-                if (error) {
-                    console.log(error);
-                }
-                resolve(result);
-            });
+                    if (error) {
+                        console.log(error);
+                    }
+                    resolve(result);
+                });
         });
     },
     getProjectsSearchCount: function (parameters = {}) {
@@ -376,6 +377,7 @@ module.exports = {
         if (parameters.search_field != "" && parameters.search_field != undefined) {
             query += " AND (projects.project_name LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
+            query += " OR locality.locality LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.group_name LIKE '%" + parameters.search_field + "%')";
         }
         query += " ORDER BY datetime DESC ";
@@ -383,9 +385,9 @@ module.exports = {
             con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false});
+                    resolve({ success: false });
                 }
-                resolve({success: true, data: result[0]});
+                resolve({ success: true, data: result[0] });
             });
         });
     },
@@ -394,9 +396,9 @@ module.exports = {
             con.query("insert into project_enquiry set ?", data, function (error, result) {
                 if (error) {
                     console.log(error);
-                    resolve({success: false, message: error});
+                    resolve({ success: false, message: error });
                 } else {
-                    resolve({success: true, data: result});
+                    resolve({ success: true, data: result });
                 }
             });
         })

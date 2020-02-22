@@ -49,8 +49,8 @@
                             <div class="col-md-4">
 
                                 <select name="project_type" id="project_type"
-                                        onchange="getProjectSubTypes(this.value,'#project_sub_type')"
-                                        class="form-control margin-0">
+                                    onchange="getProjectSubTypes(this.value,'#project_sub_type')"
+                                    class="form-control margin-0">
 
                                     <option value="0">Project Type</option>
                                 </select>
@@ -60,8 +60,7 @@
 
                             <div class="col-md-4">
 
-                                <select name="project_sub_type" id="project_sub_type"
-                                        class="form-control margin-0">
+                                <select name="project_sub_type" id="project_sub_type" class="form-control margin-0">
 
                                     <option value="">Project Sub Type</option>
                                 </select>
@@ -71,9 +70,8 @@
 
                             <div class="col-md-4">
 
-                                <select name="city" id="city"
-                                        onchange="showLocality(this.value,'#Showlocality')"
-                                        class="form-control margin-0">
+                                <select name="city" id="city" onchange="showLocality(this.value,'#Showlocality')"
+                                    class="form-control margin-0">
                                     <!--showLocality(this.value,'#showLocality')"-->
 
                                     <option value="">City</option>
@@ -109,7 +107,7 @@
 
                                     <option value="">Bed Rooms</option>
                                     <% for (var i = 1; i <= 5 ; i++) { %>
-                                        <option value="<%= i %>"><%= i %></option>
+                                    <option value="<%= i %>"><%= i %></option>
                                     <% } %>
 
                                 </select>
@@ -120,7 +118,7 @@
                             <div class="col-md-2">
 
                                 <select id="min_price" name="min_price" class="form-control margin-0 "
-                                        onchange="Show_max_price(this.value)">
+                                    onchange="Show_max_price(this.value)">
 
                                     <option value="">Min Price</option>
                                     <% for (var i = 500000; i <= 30000000; i += 1000000) {
@@ -171,7 +169,7 @@
                                     <option value="">Possession</option>
 
                                     <% for(var i = 2015;i <= 2025;i++) { %>
-                                        <option value="<%= i %>"><%= i %></option>
+                                    <option value="<%= i %>"><%= i %></option>
                                     <% } %>
                                 </select>
 
@@ -180,7 +178,7 @@
                             <div class="col-md-2">
 
                                 <button type="submit" class="btn btn-lg btn-primary btn-block"><i
-                                            class="fa fa-search"></i> Search
+                                        class="fa fa-search"></i> Search
                                 </button>
 
                             </div>
@@ -222,117 +220,119 @@
 
                             <thead>
 
-                            <tr>
+                                <tr>
 
-                                <th>S.No</th>
+                                    <th>S.No</th>
 
-                                <th>Project Name</th>
+                                    <th>Project Name</th>
 
-                                <th>Project Type</th>
+                                    <th>Project Type</th>
 
-                                <th>Project Sub Type</th>
+                                    <th>Project Sub Type</th>
 
-                                <th>City</th>
+                                    <th>City</th>
 
-                                <th>Price Range(Rs)</th>
+                                    <th>Price Range(Rs)</th>
 
-                                <th>Exclusive</th>
+                                    <th>Exclusive</th>
 
-                                <th>Actions</th>
+                                    <th>Actions</th>
 
-                            </tr>
+                                </tr>
 
                             </thead>
 
                             <tbody>
-                            <% for(var i = 0; i < projects.length;i++) {
+                                <% for(var i = 0; i < projects.length;i++) {
                                 var project = projects[i] %>
-                            <tr>
+                                <tr>
 
-                                <td><%= i %></td>
+                                    <td><%= i %></td>
 
-                                <td><%= project.project_name %></td>
+                                    <td><%= project.project_name %></td>
 
-                                <td><%= project.project_type_name %></td>
+                                    <td><%= project.project_type_name %></td>
 
-                                <td><%= project.project_sub_type_name %></td>
+                                    <td><%= project.project_sub_type_name %></td>
 
-                                <td><%= project.city %></td>
+                                    <td><%= project.city %></td>
 
-                                <td>
-                                    <% if(project.min_price_formatted == 'Price on request' && project.max_price_formatted == 'Price on request') { %>
+                                    <td>
+                                        <% if(project.min_price_formatted == 'Price on request' && project.max_price_formatted == 'Price on request') { %>
                                         <%= "Price on Request" %>
-                                    <% }else { %>
+                                        <% }else { %>
                                         <%= project.min_price_formatted %> - <%= project.max_price_formatted %>
-                                    <% } %>
+                                        <% } %>
 
-                                </td>
+                                    </td>
 
-                                <td>
+                                    <td>
 
-                                    <% if (project.exclusive == '1') { %>
+                                        <% if (project.exclusive == '1') { %>
                                         <a href="<%= base_url %>admin/projects/exclusive/0/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to Remove From Exclusive Projects ?')"><b
-                                                    style="color: red">Yes</b></a>
+                                            onclick="return confirm('Are You Sure Want to Remove From Exclusive Projects ?')"><b
+                                                style="color: red">Yes</b></a>
 
-                                    <% }else { %>
+                                        <% }else { %>
 
                                         <a href="<%= base_url %>admin/projects/exclusive/1/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to  Make It Exclusive Project ?')"><b>No</b></a>
+                                            onclick="return confirm('Are You Sure Want to  Make It Exclusive Project ?')"><b>No</b></a>
 
-                                    <% } %>
+                                        <% } %>
 
-                                </td>
+                                    </td>
 
-                                <td>
+                                    <td>
 
-                                    <a href="<%= base_url %>admin/projects/edit/<%= project.project_id %>"><i
+                                        <a href="<%= base_url %>admin/projects/edit/<%= project.project_id %>"><i
                                                 class="fa fa-edit"></i></a>&nbsp;&nbsp;
 
-                                    <a href="<%= base_url %>admin/projects/delete/<%= project.project_id %>"
-                                       onclick="return confirm('Are You Sure Want to Delete ?')"><i
+                                        <a href="<%= base_url %>admin/projects/delete/<%= project.project_id %>"
+                                            onclick="return confirm('Are You Sure Want to Delete ?')"><i
                                                 class="fa fa-trash-o"></i></a>
-                                    <br/>
-                                    <a href="#"
-                                       onclick="showAjaxModal('<%= base_url %>admin/projects/<%= project.project_id %>','project')">Details</a>
-                                    <br/>
-                                    <a href="<%= base_url %>admin/projects/photos/<%= project.project_id %>">Images</a>
-                                    <br/>
+                                        <br />
+                                        <a href="#"
+                                            onclick="showAjaxModal('<%= base_url %>admin/projects/<%= project.project_id %>','project')">Details</a>
+                                        <br />
+                                        <a
+                                            href="<%= base_url %>admin/projects/photos/<%= project.project_id %>">Images</a>
+                                        <br />
 
-                                    <a href="<%= base_url %>admin/projects/configurations/<%= project.project_id %>">Configurations</a>
-                                    <br/>
+                                        <a
+                                            href="<%= base_url %>admin/projects/configurations/<%= project.project_id %>">Configurations</a>
+                                        <br />
 
-                                    <% if (project.project_status == '1') { %>
+                                        <% if (project.project_status == '1') { %>
 
                                         <a href="<%= base_url %>admin/projects/status/0/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to Inactive ?')"><b>In-active</b></a>
+                                            onclick="return confirm('Are You Sure Want to Inactive ?')"><b
+                                                style="color: red">In-active</b></a>
 
-                                    <% }else { %>
+                                        <% }else { %>
 
                                         <a href="<%= base_url %>admin/projects/status/1/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to Active ?')"><b
-                                                    style="color: red">Active</b></a>
+                                            onclick="return confirm('Are You Sure Want to Active ?')"><b>Active</b></a>
 
-                                    <% } %>
-                                    <br/>
+                                        <% } %>
+                                        <br />
 
-                                    <% if (project.featured_project == '1') { %>
+                                        <% if (project.featured_project == '1') { %>
 
                                         <a href="<%= base_url %>admin/projects/featured/0/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to Remove From Featured Projects ?')"><b
-                                                    style="color: red">Remove-Featured</b></a>
+                                            onclick="return confirm('Are You Sure Want to Remove From Featured Projects ?')"><b
+                                                style="color: red">Remove-Featured</b></a>
 
-                                    <% }else { %>
+                                        <% }else { %>
 
                                         <a href="<%= base_url %>admin/projects/featured/1/<%= project.project_id %>"
-                                           onclick="return confirm('Are You Sure Want to  Make It Featured Projects ?')"><b>Make-Featured</b></a>
+                                            onclick="return confirm('Are You Sure Want to  Make It Featured Projects ?')"><b>Make-Featured</b></a>
 
-                                    <% } %>
+                                        <% } %>
 
-                                </td>
+                                    </td>
 
-                            </tr>
-                            <% } %>
+                                </tr>
+                                <% } %>
                             </tbody>
 
                         </table>
@@ -406,7 +406,7 @@
     setUpProjectTypes('#project_type', '<%= project_type %>');
     getProjectSubTypes("<%= project_type %>", "#project_sub_type", "<%= project_sub_type %>");
     setUpCities("#city", '<%= city %>');
-    showLocality('<%= city %>', "#Showlocality",<%= locality %>)
+    showLocality('<%= city %>', "#Showlocality","<%= locality %>")
     selectOption("bedrooms", "<%= bedrooms %>");
     selectOption("min_price", "<%= min_price %>");
     selectOption("max_price", "<%= max_price %>");
