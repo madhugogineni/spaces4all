@@ -129,14 +129,12 @@
 
             <!-- Start Hero Slider -->
 
-            <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes"
-                data-style="fade" data-pause="yes">
+            <div class="hero-slider flexslider clearfix" data-autoplay="yes" data-pagination="no" data-arrows="yes" data-style="fade" data-pause="yes">
 
                 <ul class="slides" id="slides">
                     <% for(var i=0;i< home_slider.length;i++) {
                     var homeSliderRow = home_slider[i]%>
-                    <li class="parallax"
-                        style="background-image:url('<%=base_url%>uploads/home-slide/<%=homeSliderRow.image%>');display:list-item">
+                    <li class="parallax" style="background-image:url('<%=base_url%>uploads/home-slide/<%=homeSliderRow.image%>');display:list-item">
                         <a href="<%=homeSliderRow.url %>" class="btn" style="width: 100%; height: 100%;"> </a>
                     </li>
                     <% } %>
@@ -176,16 +174,13 @@
                                     <div class="form-group">
 
                                         <div class="row">
-                                            <div
-                                                class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 searchbar_field">
                                                 <select class="form-control" name="city" id="project_city">
                                                     <script> setUpCities("#project_city"); </script>
                                                 </select>
                                             </div>
                                             <div class="col-md-7 searchbar_field">
-                                                <input class="form-control"
-                                                    placeholder="Enter a locality, builder, project or RERA ID"
-                                                    id="project_search_field" name="search_field" type="text">
+                                                <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="project_search_field" name="search_field" type="text">
                                             </div>
                                             <div class="col-md-1 searchbar_field">
                                                 <button class="form-control submit-button">Submit</button>
@@ -215,9 +210,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-7 searchbar_field">
-                                                <input class="form-control"
-                                                    placeholder="Enter a locality, builder, project or RERA ID"
-                                                    id="property_search_field" name="search_field" type="text">
+                                                <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="property_search_field" name="search_field" type="text">
                                             </div>
                                             <div class="col-md-1 searchbar_field">
                                                 <button class="form-control submit-button">Submit</button>
@@ -269,10 +262,8 @@
                                     var latest_project = latest_projects[i]; %>
                                     <li class="type-rent col-md-12">
                                         <div class="col-md-5 image-container">
-                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>"
-                                                class="property-featured-image">
-                                                <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>"
-                                                    class="image" alt="">
+                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>" class="property-featured-image">
+                                                <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>" class="image" alt="">
                                             </a>
                                         </div>
                                         <div class="col-md-7">
@@ -280,8 +271,7 @@
                                                 <div class="col-md-8">
                                                     <div class="property-info">
                                                         <h3>
-                                                            <a
-                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
+                                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
                                                                 <%= latest_project.project_name %>
                                                             </a>
                                                         </h3>
@@ -303,10 +293,14 @@
                                                         <hr>
 
                                                         <span>
-                                                            <% if(latest_project.min_price != ""){ %><span
-                                                                class="WebRupee">Rs.</span>
+                                                            <% if(latest_project.min_price != ""){ %>
+                                                            <% if(latest_project.min_price !== "Price On Request") { %>
+                                                            <span class="WebRupee">Rs.</span>
+                                                            <%} %>
                                                             <%= latest_project.min_price %>
+                                                            <% if(latest_project.min_price !== "Price On Request") { %>
                                                             Onwards
+                                                            <%} %>
                                                             <% }else { %>
                                                             <%= latest_project.min_price %>
                                                             <% } %>
@@ -318,20 +312,16 @@
                                                 <div class="col-md-4 pad-2 brbtm">
                                                     <ul class="">
                                                         <li>
-                                                            <a
-                                                                onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
-                                                                <button type="button" class="btn btn-default"><i
-                                                                        class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
+                                                            <a onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
+                                                                <button type="button" class="btn btn-default"><i class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
                                                                     &nbsp;&nbsp;
                                                                 </button>
                                                             </a><br /><br />
                                                         </li>
 
                                                         <li>
-                                                            <a
-                                                                href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
-                                                                <button type="button" class="btn btn-danger"><i
-                                                                        class="fa  fa-angle-double-right"></i> View
+                                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
+                                                                <button type="button" class="btn btn-danger"><i class="fa  fa-angle-double-right"></i> View
                                                                     Details
                                                                 </button>
                                                             </a>
@@ -340,11 +330,9 @@
                                                 </div>
                                             </div>
                                             <div class="property-amenities clearfix">
-                                                <span
-                                                    class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
+                                                <span class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
 
-                                                <span
-                                                    class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
+                                                <span class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
 
                                                 <span class="parking"><strong>&nbsp;Type :
                                                     </strong><%= latest_project.project_sub_type %></span>
@@ -388,13 +376,11 @@
                             <div class="row">
                                 <div class="col-md-6 col-sm-6">
                                     <label>NAME*</label>
-                                    <input type="text" id="call_name" name="call_name" class="form-control"
-                                        placeholder="Name" required="required">
+                                    <input type="text" id="call_name" name="call_name" class="form-control" placeholder="Name" required="required">
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <label>PHONE NUMBER*</label>
-                                    <input type="text" id="call_phone" name="call_phone" class="form-control"
-                                        placeholder="Phone Number" required="required">
+                                    <input type="text" id="call_phone" name="call_phone" class="form-control" placeholder="Phone Number" required="required">
                                 </div>
                                 <input type="hidden" id="call_project" name="call_project" />
                             </div>
