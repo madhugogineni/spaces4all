@@ -14,8 +14,6 @@ var urls = require("../external-config/url-config");
 var utils = require('../services/utils');
 var deepclone = require('lodash.clonedeep');
 
-var addContactMessage = "",
-    isError = 0;
 var loanErrorMsg = "",
     loanError = false;
 
@@ -220,15 +218,11 @@ router.post("/add_news_letter", async function (req, res) {
 router.get("/contact", function (req, res) {
     res.render("home/contactus", {
         page_name: "contact",
-        page_title: "Contact",
-        errorMsg: addContactMessage,
-        isError: isError
+        page_title: "Contact"
     });
-    addContactMessage = "";
-    isError = 0;
 });
 
-router.post("/add_contact", async function (req, res) {
+router.post("/add_contact", upload.none(), async function (req, res) {
     let validator = new validatorpackage(req.body, {
         name: "required|minLength:3",
         email: "required|email",
@@ -239,9 +233,6 @@ router.post("/add_contact", async function (req, res) {
     var validatorResult = await validator.check();
 
     if (validatorResult) {
-        addContactMessage =
-            "Thank you for the details. We have the pleasure to contact you soon.";
-        isError = 0;
         var insertResult = await crudModel.insertContact(
             req.body.name,
             req.body.email,
@@ -249,9 +240,6 @@ router.post("/add_contact", async function (req, res) {
             req.body.message
         );
         if (insertResult.success) {
-            // $this->email->subject('Spaces4all - Contact Details');
-            //
-            // $this->email->message("Spaces4all - Contact form request details. <br><br> <table border='1px'><tr><td width='100px'>Name</td><td>".$name."</td></tr><tr><td>Email</td><td>".$email."</td></tr><tr><td>Phone</td><td>".$phone."</td></tr><tr><td>Message</td><td>".$message."</td></tr></table>");
             var body =
                 "Spaces4all - Contact form request details. <br><br> " +
                 "<table border='1px'>" +
@@ -270,20 +258,16 @@ router.post("/add_contact", async function (req, res) {
                 "</table>";
             var subject = "Spaces4all - Contact Details";
             mailservice.sendMail(subject, body);
+            res.send({ success: true, message: "Thank you for use Spaces4all. We will contact you shortly" });
         } else {
-            addContactMessage =
-                "There is some issue while saving your details. Please try again later";
-            isError = 1;
-            res.redirect("contact");
+            res.send({ success: false, message: "There is some issue while saving your details. Please try again later" });
         }
     } else {
         var errorMsg = "";
         Object.keys(validator.errors).map(function (key) {
             errorMsg += validator.errors[key].message + "<br/>";
         });
-        addContactMessage = errorMsg;
-        isError = 1;
-        res.redirect("contact");
+        res.send({ success: false, message: errorMsg });
     }
 });
 
@@ -1309,7 +1293,7 @@ router.get('/project_details/:id', async function (req, res) {
                 res.send('Some error occured. Please try again later !')
                 console.log("error");
             }
-            var formattedPrice = utils.getPrice({min_price: response.data.min_price, max_price: response.data.max_price}, true)
+            var formattedPrice = utils.getPrice({ min_price: response.data.min_price, max_price: response.data.max_price }, true)
             response.data.min_price_formatted = formattedPrice.min_price
             response.data.max_price_formatted = formattedPrice.max_price
 
