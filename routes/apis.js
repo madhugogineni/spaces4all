@@ -6,6 +6,8 @@ var moment = require("moment");
 var mailservice = require("../services/email");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var deepclone = require('lodash.clonedeep');
+var multer = require('multer');
+var upload = multer();
 
 router.get("/calculate_stamp_duty", function (req, res) {
     var id = req.query.id;
@@ -109,10 +111,10 @@ router.get('/get_states', function (req, res) {
     });
 });
 router.get('/get_property_subtype_using_property_type', function (req, res) {
-    console.log(req.query);
+    // console.log(req.query);
 });
-router.get("/property_enquiry/:property_id", async function (req, res) {
-    let validator = new validatorpackage(req.query, {
+router.post("/property_enquiry/:property_id", upload.none(), async function (req, res) {
+    let validator = new validatorpackage(req.body, {
         name: "required|minLength:3",
         email: "required|email",
         phone: "required|numeric|maxLength:12|minLength:10",
@@ -121,39 +123,39 @@ router.get("/property_enquiry/:property_id", async function (req, res) {
     var validationResult = await validator.check();
     if (validationResult) {
         var data = {
-            phone: req.query.phone,
-            email: req.query.email,
-            name: req.query.name,
-            comments: req.query.comments,
+            phone: req.body.phone,
+            email: req.body.email,
+            name: req.body.name,
+            comments: req.body.comments,
             property_id: req.params.property_id,
             datetime: moment().format(dateFormat)
         }
         var insertResponse = await crudModel.insertPropertyEnquiry(data);
         if (insertResponse.success) {
             var subject = "Spaces4all - Property Enquiry";
-            var html = "Spaces4all - " + req.query.name + " has enquired regarding property : " + req.url + " <br><br> " +
+            var html = "Spaces4all - " + data.name + " has enquired regarding property : " + "https://spaces4all.com/home/property_details/" + data.property_id + " <br><br> " +
                 "<table border='1px'>" +
-                "<tr><td width='100px'>Name</td><td>" + req.query.name + "</td></tr>" +
-                "<tr><td>Email</td><td>" + req.query.email + "</td></tr>" +
-                "<tr><td>Phone</td><td>" + req.query.phone + "</td></tr>" +
-                "<tr><td>Comments</td><td>" + req.query.comments + "</td></tr>" +
+                "<tr><td width='100px'>Name</td><td>" + data.name + "</td></tr>" +
+                "<tr><td>Email</td><td>" + data.email + "</td></tr>" +
+                "<tr><td>Phone</td><td>" + data.phone + "</td></tr>" +
+                "<tr><td>Comments</td><td>" + data.comments + "</td></tr>" +
                 "</table>";
             mailservice.sendMail(subject, html);
-            res.send({success: true, message: "Thank you for the details. We have the pleasure to contact you soon.!"})
+            res.send({ success: true, message: "Thank you for the details. We have the pleasure to contact you soon.!" })
         } else {
-            res.send({success: false, message: "Something went wrong! Please Try again Later"});
+            res.send({ success: false, message: "Something went wrong! Please Try again Later" });
         }
     } else {
         var errorMsg = "";
         Object.keys(validator.errors).map(function (key) {
             errorMsg += validator.errors[key].message + "<br/>";
         });
-        res.send({success: false, message: errorMsg});
+        res.send({ success: false, message: errorMsg });
     }
 });
-router.get("/project_enquiry/:project_id", async function (req, res) {
+router.post("/project_enquiry/:project_id", upload.none(), async function (req, res) {
     if (req.params.project_id) {
-        let validator = new validatorpackage(req.query, {
+        let validator = new validatorpackage(req.body, {
             name: "required|minLength:3",
             email: "required|email",
             phone: "required|numeric|maxLength:12|minLength:10",
@@ -161,18 +163,18 @@ router.get("/project_enquiry/:project_id", async function (req, res) {
         });
         var validationResult = await validator.check();
         if (validationResult) {
-            var data = deepclone(req.query);
+            var data = deepclone(req.body);
             data.project_id = req.params.project_id;
             data.datetime = moment().format(dateFormat);
             var insertResponse = await crudModel.insertProjectEnquiry(data);
             if (insertResponse.success) {
                 var subject = "Spaces4all - Project Enquiry";
-                var html = "Spaces4all - " + req.query.name + " has enquired regarding project : " + req.url + " <br><br> " +
+                var html = "Spaces4all - " + data.name + " has enquired regarding project : " + "https://spaces4all.com/home/project_details/" + data.project_id + " <br><br> " +
                     "<table border='1px'>" +
-                    "<tr><td width='100px'>Name</td><td>" + req.query.name + "</td></tr>" +
-                    "<tr><td>Email</td><td>" + req.query.email + "</td></tr>" +
-                    "<tr><td>Phone</td><td>" + req.query.phone + "</td></tr>" +
-                    "<tr><td>Comments</td><td>" + req.query.comments + "</td></tr>" +
+                    "<tr><td width='100px'>Name</td><td>" + data.name + "</td></tr>" +
+                    "<tr><td>Email</td><td>" + data.email + "</td></tr>" +
+                    "<tr><td>Phone</td><td>" + data.phone + "</td></tr>" +
+                    "<tr><td>Comments</td><td>" + data.comments + "</td></tr>" +
                     "</table>";
                 mailservice.sendMail(subject, html);
                 res.send({
@@ -180,14 +182,14 @@ router.get("/project_enquiry/:project_id", async function (req, res) {
                     message: "Thank you for the details. We have the pleasure to contact you soon.!"
                 })
             } else {
-                res.send({success: false, message: "Something went wrong! Please Try again Later"});
+                res.send({ success: false, message: "Something went wrong! Please Try again Later" });
             }
         } else {
             var errorMsg = "";
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });
-            res.send({success: false, message: errorMsg});
+            res.send({ success: false, message: errorMsg });
         }
     }
 });

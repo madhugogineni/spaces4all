@@ -16,14 +16,7 @@
                 url: "<%= base_url %>home/add_contact",
                 data: formData,
                 success: function (result) {
-                    var className = "";
-                    if (result.success) {
-                        className = "alert alert-success fade in";
-                    } else {
-                        className = "alert alert-error fade in";
-                    }
-                    var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
-                    $("#contact_form").prepend(displayMsg);
+                    alert(result.message)
                 },
                 cache: false,
                 contentType: false,
@@ -113,9 +106,7 @@
 
                                         <p><i class="fa fa-map-marker"></i> &nbsp; #502, Divya residency, plot no 82 &
                                             83, c-block ,<br /> madhura nagar , Hyderabad -500038 </p>
-                                        <p><i class="fa fa-phone"></i> &nbsp;<a href="tel:+918374778800"> +91 8374778800
-                                            </a>/<a href="tel:+919100100955"> +91 9100100955
-                                            </a> </p>
+                                        <p><i class="fa fa-phone"></i> &nbsp;<a href="tel:+919100100955"> +91 9100100955</a> </p>
 
                                         <p><i class="fa fa-envelope"></i> &nbsp; <a href="mailto:info@spaces4all.com">
                                                 info@spaces4all.com </a></p>

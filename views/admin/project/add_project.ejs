@@ -59,14 +59,7 @@
                 url: "<%= base_url %>admin/projects/add",
                 data: formData,
                 success: function (result) {
-                    var className = "";
-                    if (result.success) {
-                        className = "alert alert-success fade in";
-                    } else {
-                        className = "alert alert-error fade in";
-                    }
-                    var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
-                    $("#add_project_form").prepend(displayMsg);
+                    alert(result.message)
                 },
                 cache: false,
                 contentType: false,

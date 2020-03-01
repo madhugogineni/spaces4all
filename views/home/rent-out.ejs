@@ -104,16 +104,7 @@
                     url: "<%=base_url %>home/add_rent_out",
                     data: formData,
                     success: function (result) {
-                        console.log(result);
-                        var className = "";
-                        if (result.success) {
-                            className = "alert alert-success fade in";
-                            $('#form#rent_out_form').trigger("reset");
-                        } else {
-                            className = "alert alert-error fade in";
-                        }
-                        var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
-                        $("#rent_out_form").prepend(displayMsg);
+                        alert(result.message)
                     },
                     cache: false,
                     contentType: false,

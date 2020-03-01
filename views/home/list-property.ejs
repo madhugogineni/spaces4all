@@ -160,15 +160,7 @@
                     url: "<%= base_url %>home/add_list_property",
                     data: formData,
                     success: function (result) {
-                        console.log(result);
-                        var className = "";
-                        if (result.success) {
-                            className = "alert alert-success fade in";
-                        } else {
-                            className = "alert alert-error fade in";
-                        }
-                        var displayMsg = '<div class="' + className + '"> <a href="#" data-dismiss="alert" class="close">x</a><strong>' + result.message + '</strong></div>';
-                        $("#list_property").prepend(displayMsg);
+                        alert(result.message)
                     },
                     cache: false,
                     contentType: false,

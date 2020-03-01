@@ -15,8 +15,7 @@
 
     <meta name="author" content="">
 
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
     <link href="<%= base_url %>css/bootstrap.css" rel="stylesheet" type="text/css">
 
@@ -79,38 +78,24 @@
     </style>
 
     <script type="text/javascript">
-        function test() {
-            console.log('welcome');
-        }
-
-        function send_enquiry() {
-
-            var name2 = $("#name2").val();
-
-            var phone2 = $("#phone2").val();
-
-            var email2 = $("#email2").val();
-
-            var comments2 = $("#comments2").val();
-
-            var dataString = 'name=' + name2 + '&phone=' + phone2 + '&comments=' + comments2 + '&email=' + email2;
-            $.ajax({
-                type: "GET",
-                url: "<%= api_url %>project_enquiry/<%= project_id %>?" + dataString,
-                success: function (response) {
-                    if (response.success) {
-                        $('#enquiry_response').html(response.message);
-                    }
-                }
-
+        $(document).ready(function () {
+            $("form#project_enquiry_form").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: "<%= api_url %>project_enquiry/<%= project_id %>",
+                    data: formData,
+                    success: function (result) {
+                        alert(result.message);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
             });
-
-        }
-
-
+        })
     </script>
-
-
 </head>
 
 <body class="home" onload="initialize();">
@@ -119,18 +104,18 @@
 
     <script>(function (d, s, id) {
 
-            var js, fjs = d.getElementsByTagName(s)[0];
+                var js, fjs = d.getElementsByTagName(s)[0];
 
-            if (d.getElementById(id)) return;
+                if (d.getElementById(id)) return;
 
-            js = d.createElement(s);
-            js.id = id;
+                js = d.createElement(s);
+                js.id = id;
 
-            js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.5";
+                js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.5";
 
-            fjs.parentNode.insertBefore(js, fjs);
+                fjs.parentNode.insertBefore(js, fjs);
 
-        }(document, 'script', 'facebook-jssdk'));</script>
+            }(document, 'script', 'facebook-jssdk'));</script>
 
     <div class="body">
 
@@ -167,8 +152,7 @@
                             </div>
                         </div>
                         <div class="hidden-xs col-sm-3 col-md-3 quick-links">
-                            <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a
-                                href="#enquiry_form"> Contact</a>
+                            <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a href="#enquiry_form"> Contact Us</a>
                         </div>
                     </div>
                     <div class="row image-container">
@@ -281,9 +265,7 @@
                                             var photo_data = project.photos[i];
                                         %>
                                         <li class="p10px">
-                                            <img src="<%= base_url %>uploads/projects/<%= photo_data.photo %>"
-                                                alt="Photo Not Available"
-                                                onclick="showPhotoModal('photo-modal','<%= base_url %>uploads/projects/<%= photo_data.photo %>')">
+                                            <img src="<%= base_url %>uploads/projects/<%= photo_data.photo %>" alt="Photo Not Available" onclick="showPhotoModal('photo-modal','<%= base_url %>uploads/projects/<%= photo_data.photo %>')">
                                             <span>CLICK TO VIEW</span>
                                         </li>
                                         <% } %>
@@ -302,43 +284,23 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div id="enquiry_response"></div>
-                                    <form>
-
+                                    <form id="project_enquiry_form">
                                         <div class="col-md-7 margin-15">
 
                                             <div class="form-group">
-
-                                                <input type="text" id="name2" name="name" class="form-control input-sm"
-                                                    placeholder="Name*" required="required">
-
+                                                <input type="text" id="name" name="name" class="form-control input-sm" placeholder="Name*" required="required">
                                             </div>
 
                                             <div class="form-group">
-
-                                                <input type="email" id="email2" name="email"
-                                                    class="form-control input-sm" placeholder="Email*"
-                                                    required="required">
-
+                                                <input type="email" id="email" name="email" class="form-control input-sm" placeholder="Email*" required="required">
                                             </div>
 
                                             <div class="form-group">
-
-                                                <input type="text" id="phone2" name="phone"
-                                                    class="form-control input-sm" placeholder="Phone*"
-                                                    required="required">
-
+                                                <input type="text" id="phone" name="phone" class="form-control input-sm" placeholder="Phone*" required="required">
                                             </div>
-
-
                                             <div class="form-group">
-
-                                                <textarea cols="6" rows="3" id="comments2" name="comments"
-                                                    required="required" class="form-control input-lg"
-                                                    placeholder="Comments"></textarea>
-
-                                                <button type="button" onclick="send_enquiry();" class="btn btn-primary">
-                                                    Submit Now !
-                                                </button>
+                                                <textarea cols="6" rows="3" id="comments" name="comments" required="required" class="form-control input-lg" placeholder="Comments"></textarea>
+                                                <button type="submit" class="btn btn-primary"> Submit Now ! </button>
 
                                             </div>
 
@@ -468,8 +430,7 @@
 
                                 <div class="form-group">
 
-                                    <label for="state">State</label> <input class="form-control" id="state" name="state"
-                                        placeholder="Enter State Name" type="text" required="required">
+                                    <label for="state">State</label> <input class="form-control" id="state" name="state" placeholder="Enter State Name" type="text" required="required">
 
                                 </div>
 

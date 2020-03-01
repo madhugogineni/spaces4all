@@ -84,7 +84,7 @@ router.get('/projects/list_view', async function (req, res) {
         projects: []
     };
     var response1 = await crudModel.getProjectsSearchCount(req.query);
-    console.log(response1);
+    // console.log(response1);
     if (response1.success) {
         var count = response1.data.count;
         var pages = Math.ceil(count / rowCount);
@@ -200,8 +200,8 @@ router.post("/add_news_letter", async function (req, res) {
         var response1 = await crudModel.insertNewLetterSubscriber(req.body.email);
         if (response1.success) {
             var subject = "Spaces4all - Your Have Successfully Subscribed With Us";
-            var html = "Spaces4all - Your Have Successfully Subscribed With Us ! Thank You For Subscription. Please visit on spaces4all.com . For Further Details.";
-            mailservice.sendMail(subject, html)
+            var html = "You have successfully subscribed with Spaces4all ! Thank you for subscribing.";
+            mailservice.sendMail(subject, html, req.body.email)
             res.send(successMsg);
         } else {
             res.send(errorMsg);
@@ -1074,7 +1074,6 @@ router.get("/post_requirement", function (req, res) {
 });
 
 router.post("/add_post_requirement", upload.none(), async function (req, res) {
-    console.log(req.body);
     var validatorRules = {
         property_type: "required",
         property_sub_type: "required",
@@ -1203,8 +1202,8 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
             var subject = "Spaces4all - Post Requirement Request";
             mailservice.sendMail(subject, body);
             res.send({
-                success: false,
-                message: "Your Requirement Has Not Posted ! Please Try Again. !"
+                success: true,
+                message: "Your Requirement Has Posted. We will contact you soon !"
             });
         } else {
             res.send({
@@ -1283,7 +1282,6 @@ router.get('/project_details/:id', async function (req, res) {
             var projectPhotos = await crudModel.getPhotosByProject(id);
             if (projectPhotos.success) {
                 response.data.photos = projectPhotos.data;
-                console.log(response.data.photos[0])
             } else {
                 response.data.photos = [];
             }
@@ -1303,7 +1301,6 @@ router.get('/project_details/:id', async function (req, res) {
         } else {
             res.redirect('/');
         }
-        console.log(data);
         res.render('home/project_details', data);
     } else {
         res.redirect('/');

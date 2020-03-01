@@ -119,8 +119,6 @@ app.get("/", function (req, res) {
                 } else {
                     homeSliderData = []
                 }
-                console.log("home slider data = ")
-                console.log(homeSliderData)
                 res.render("home/index", {
                     page_title: 'Index',
                     page_name: 'Index',
