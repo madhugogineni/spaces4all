@@ -11,7 +11,7 @@ module.exports = {
     sendMail: function (subject, html, to) {
         try {
             transporter.sendMail({
-                to: to ? to : emailConfig.emailId,
+                to: to ? to : emailConfig.toEmailId,
                 subject: subject,
                 html: html
             });
