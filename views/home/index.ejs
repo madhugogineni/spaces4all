@@ -258,7 +258,12 @@
 
                                 <ul>
 
-                                    <% for(var i = 0;i < 12; i++)  {
+                                    <% 
+                                    var count = 12;
+                                    if(latest_projects.length < count) {
+                                        count = lastest_projects.length;
+                                    }
+                                    for(var i = 0;i < 12; i++)  {
                                     var latest_project = latest_projects[i]; %>
                                     <li class="type-rent col-md-12">
                                         <div class="col-md-5 image-container">
