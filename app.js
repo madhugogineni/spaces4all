@@ -119,13 +119,15 @@ app.get("/", function (req, res) {
                 } else {
                     homeSliderData = []
                 }
-                res.render("home/index", {
+                var responseData = {
                     page_title: 'Index',
                     page_name: 'Index',
                     latest_properties: finalLatestProperties,
                     latest_projects: finalLatestProjects,
                     home_slider: homeSliderData
-                });
+                }
+                console.log(responseData)
+                res.render("home/index", responseData);
             });
         });
     });
