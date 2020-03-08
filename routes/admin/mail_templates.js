@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var upload = multer();
-var validatorpackage = require("node-input-validator");
+var { Validator } = require("node-input-validator");
 var deepclone = require('lodash.clonedeep');
 var utils = require('../../services/utils');
 var email = require('../../services/email');
@@ -15,7 +15,7 @@ router.get('/', function (req, res) {
     res.render('admin/mail_templates', data);
 });
 router.post('/send', upload.single('image'), async function (req, res) {
-    let validator = new validatorpackage(req.body, {
+    let validator = new Validator(req.body, {
         name: "required",
         location: "required",
         sizing: "required",
@@ -30,10 +30,10 @@ router.post('/send', upload.single('image'), async function (req, res) {
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMsg = utils.getErrorMessage(validator.errors);
-        res.send({success: false, message: errorMsg});
+        res.send({ success: false, message: errorMsg });
         res.end();
     } else if (!req.file) {
-        res.send({success: false, message: "Please Provide Image"});
+        res.send({ success: false, message: "Please Provide Image" });
     } else {
         var data = deepclone(req.body);
         data.url = "data:" + req.file.mimetype + ";base64," + req.file.buffer.toString('base64');
@@ -43,12 +43,12 @@ router.post('/send', upload.single('image'), async function (req, res) {
         }
         data.hightlights = data.hightlights.toString().slice(1);
         var response = utils.getTemplateForMail("final_mailer.ejs", data);
-        email.sendMail("",response);
-        res.send({success: true, data: "Mail Sent Successfully"});
+        email.sendMail("", response);
+        res.send({ success: true, data: "Mail Sent Successfully" });
     }
 });
 router.post('/preview', upload.single('image'), async function (req, res) {
-    let validator = new validatorpackage(req.body, {
+    let validator = new Validator(req.body, {
         name: "required",
         location: "required",
         sizing: "required",
@@ -63,10 +63,10 @@ router.post('/preview', upload.single('image'), async function (req, res) {
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMsg = utils.getErrorMessage(validator.errors);
-        res.send({success: false, message: errorMsg});
+        res.send({ success: false, message: errorMsg });
         res.end();
     } else if (!req.file) {
-        res.send({success: false, message: "Please Provide Image"});
+        res.send({ success: false, message: "Please Provide Image" });
     } else {
         var data = deepclone(req.body);
         data.url = "data:" + req.file.mimetype + ";base64," + req.file.buffer.toString('base64');
@@ -76,7 +76,7 @@ router.post('/preview', upload.single('image'), async function (req, res) {
         }
         data.hightlights = data.hightlights.toString().slice(1);
         var response = utils.getTemplateForMail("final_mailer.ejs", data);
-        res.send({success: true, data: response});
+        res.send({ success: true, data: response });
     }
 });
 module.exports = router;

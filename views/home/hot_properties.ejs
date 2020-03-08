@@ -4,47 +4,6 @@
 
 <head>
 <% include includes/includes.ejs %>
-    <!-- <script>
-        function show_sub_type(str) {
-            //alert(1);
-            if (str.length == 0) {
-                document.getElementById("property_sub_type").innerHTML = "";
-                return;
-            }
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("property_sub_type").innerHTML = xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_property_sub_type/" + str, true);
-            xmlhttp.send();
-        }
-        function Show_locality(str) {
-            if (str.length == 0) {
-                document.getElementById("Showlocality").innerHTML = "";
-                return;
-            }
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-                xmlhttp = new XMLHttpRequest();
-            }
-            else {// code for IE6, IE5
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-                }
-            }
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-            xmlhttp.send();
-        }
-    </script> -->
 
 </head>
 
@@ -52,17 +11,9 @@
 
     <div class="body">
 
-        <!-- Start Site Header -->
-
         <% include includes/header.ejs %>
 
-        <!-- End Site Header -->
-
-        <!-- Site Showcase -->
-
         <div class="site-showcase">
-
-            <!-- Start Page Header -->
 
             <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
 
@@ -85,11 +36,6 @@
             <!-- End Page Header -->
 
         </div>
-
-
-
-
-
         <!-- Start Content -->
 
         <div class="main" role="main">
@@ -142,8 +88,7 @@
                                                         <h4 class="page-title">
                                                             <% if(hot_property.property_sub_type != '14' && hot_property.property_type != '1') { %>
                                                             <%=hot_property.bedrooms + 'BHK'+ hot_property.property_type_name %><% } %>
-                                                            <%=hot_property.property_sub_type_name %> in
-                                                            <span class="location"> <%=hot_property.locality %></span>
+                                                            <%=hot_property.property_sub_type_name %>
                                                         </h4>
                                                     </a>
 

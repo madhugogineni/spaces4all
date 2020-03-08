@@ -179,10 +179,10 @@
                                                     <script> setUpCities("#project_city"); </script>
                                                 </select>
                                             </div>
-                                            <div class="col-md-7 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-7 col-md-offset-0 searchbar_field">
                                                 <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="project_search_field" name="search_field" type="text">
                                             </div>
-                                            <div class="col-md-1 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-1 col-md-offset-0 searchbar_field">
                                                 <button class="form-control submit-button">Submit</button>
                                             </div>
 
@@ -203,16 +203,16 @@
 
                                         <div class="row">
 
-                                            <div class="col-md-2 col-md-offset-1 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-2 col-md-offset-1 searchbar_field">
                                                 <select class="form-control" name="city" id="property_city">
                                                     <option>City</option>
                                                     <script> setUpCities("#property_city"); </script>
                                                 </select>
                                             </div>
-                                            <div class="col-md-7 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-7 col-md-offset-0 searchbar_field">
                                                 <input class="form-control" placeholder="Enter a locality, builder, project or RERA ID" id="property_search_field" name="search_field" type="text">
                                             </div>
-                                            <div class="col-md-1 searchbar_field">
+                                            <div class="col-xs-10 col-xs-offset-1 col-sm-2 col-sm-offset-1 col-md-1 col-md-offset-0 searchbar_field">
                                                 <button class="form-control submit-button">Submit</button>
                                             </div>
 
@@ -257,7 +257,6 @@
                             <div class="property-listing">
 
                                 <ul>
-
                                     <% 
                                     var count = 12;
                                     if(latest_projects.length < count) {
@@ -265,82 +264,77 @@
                                     }
                                     for(var i = 0;i < count; i++)  {
                                     var latest_project = latest_projects[i]; %>
-                                    <li class="type-rent col-md-12">
-                                        <div class="col-md-5 image-container">
-                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>" class="property-featured-image">
-                                                <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>" class="image" alt="">
-                                            </a>
-                                        </div>
-                                        <div class="col-md-7">
-                                            <div class="row">
-                                                <div class="col-md-8">
-                                                    <div class="property-info">
-                                                        <h3>
-                                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
-                                                                <%= latest_project.project_name %>
-                                                            </a>
-                                                        </h3>
-                                                        <hr>
-                                                        <span><%= latest_project.group_name %></span>
-                                                        <hr>
+                                    <li class="type-rent col-md-12 col-sm-12 col-xs-12">
+                                        <div class="row">
+                                            <div class="col-md-5 col-sm-12 col-xs-12 image-container">
+                                                <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>" class="property-featured-image">
+                                                    <img src="<%= base_url %>uploads/projects/<%= latest_project.project_photo %>" class="image" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="col-md-7 col-sm-12 col-xs-12">
+                                                <div class="row">
+                                                    <div class="col-md-8 col-sm-12 col-xs-12">
+                                                        <div class="property-info">
+                                                            <h3 class="ml10px">
+                                                                <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
+                                                                    <%= latest_project.project_name %>
+                                                                </a>
+                                                            </h3>
+                                                            <hr>
+                                                            <span class="ml10px"><%= latest_project.group_name %></span>
+                                                            <hr>
 
-                                                        <span class="location"> <%= latest_project.locality %>,
-                                                            <%= latest_project.city %></span>
-                                                        <hr>
+                                                            <span class="location ml10px"> <%= latest_project.locality %>,
+                                                                <%= latest_project.city %></span>
+                                                            <hr>
 
-                                                        <span>Sizes ( Range) :
-                                                            <%= latest_project.min_builtup_area %> -
-                                                            <%= latest_project.max_builtup_area %> Sq.Ft
-                                                        </span>
-                                                        <hr>
+                                                            <span class="ml10px">Sizes ( Range) :
+                                                                <%= latest_project.min_builtup_area %> -
+                                                                <%= latest_project.max_builtup_area %> Sq.Ft
+                                                            </span>
+                                                            <hr>
 
-                                                        <span>Plans : <%= latest_project.plans %></span>
-                                                        <hr>
+                                                            <span class="ml10px">Plans : <%= latest_project.plans %></span>
+                                                            <hr>
 
-                                                        <span>
-                                                            <% if(latest_project.min_price != ""){ %>
-                                                            <% if(latest_project.min_price !== "Price On Request") { %>
-                                                            <span class="WebRupee">Rs.</span>
-                                                            <%} %>
-                                                            <%= latest_project.min_price %>
-                                                            <% if(latest_project.min_price !== "Price On Request") { %>
-                                                            Onwards
-                                                            <%} %>
-                                                            <% }else { %>
-                                                            <%= latest_project.min_price %>
-                                                            <% } %>
-                                                        </span>
-                                                        <hr>
+                                                            <span class="ml10px">
+                                                                <% if(latest_project.min_price != ""){ %>
+                                                                <% if(latest_project.min_price !== "Price On Request") { %>
+                                                                <span class="WebRupee">Rs.</span>
+                                                                <%} %>
+                                                                <%= latest_project.min_price %>
+                                                                <% if(latest_project.min_price !== "Price On Request") { %>
+                                                                Onwards
+                                                                <%} %>
+                                                                <% }else { %>
+                                                                <%= latest_project.min_price %>
+                                                                <% } %>
+                                                            </span>
+                                                            <hr>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="col-md-4 col-sm-12 col-xs-12 pad-2 brbtm">
+                                                        <ul class="">
+                                                            <li>
+                                                                <a onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
+                                                                    <button type="button" class="btn btn-default"><i class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
+                                                                        &nbsp;&nbsp;
+                                                                    </button>
+                                                                </a><br /><br />
+                                                            </li>
+
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <br />
-                                                <div class="col-md-4 pad-2 brbtm">
-                                                    <ul class="">
-                                                        <li>
-                                                            <a onclick="add_Compare('project',<%= latest_project.project_id %>,this)">
-                                                                <button type="button" class="btn btn-default"><i class="fa fa-th-list"></i>&nbsp;&nbsp; Compare
-                                                                    &nbsp;&nbsp;
-                                                                </button>
-                                                            </a><br /><br />
-                                                        </li>
+                                                <div class="property-amenities clearfix">
+                                                    <span class="col-sm-4 col-xs-4 area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
 
-                                                        <li>
-                                                            <a href="<%= base_url %>home/project_details/<%= latest_project.project_id %> %>">
-                                                                <button type="button" class="btn btn-danger"><i class="fa  fa-angle-double-right"></i> View
-                                                                    Details
-                                                                </button>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
+                                                    <span class="col-sm-4 col-xs-4 baths"><strong><%= latest_project.total_units %></strong>Units</span>
+
+                                                    <span class="col-sm-4 col-xs-4 parking"><strong>&nbsp;Type :
+                                                        </strong><%= latest_project.project_sub_type %></span>
                                                 </div>
-                                            </div>
-                                            <div class="property-amenities clearfix">
-                                                <span class="area"><strong><%= latest_project.total_area %></strong>&nbsp;</span>
-
-                                                <span class="baths"><strong><%= latest_project.total_units %></strong>Units</span>
-
-                                                <span class="parking"><strong>&nbsp;Type :
-                                                    </strong><%= latest_project.project_sub_type %></span>
                                             </div>
                                         </div>
                                     </li>

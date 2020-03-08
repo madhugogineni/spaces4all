@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var validatorpackage = require("node-input-validator");
+var validation = require('../services/validation');
+var { Validator } = require("node-input-validator");
 var multer = require("multer");
 // var moment = require("moment");
 var fs = require("fs");
@@ -43,7 +44,7 @@ router.get('/projects', async function (req, res) {
         projects: []
     };
     var response1 = await crudModel.getProjectsSearchCount(req.query);
-    console.log(response1);
+    // console.log(response1);
     if (response1.success) {
         var count = response1.data.count;
         var pages = Math.ceil(count / rowCount);
@@ -223,16 +224,18 @@ router.get("/contact", function (req, res) {
 });
 
 router.post("/add_contact", upload.none(), async function (req, res) {
-    let validator = new validatorpackage(req.body, {
-        name: "required|minLength:3",
+    let validator = new Validator(req.body, {
+        name: "required|alpha|minLength:3",
         email: "required|email",
-        phone: "required|numeric|maxLength:12|minLength:10",
+        phone: "required|numeric|maxLength:10|minLength:10",
         message: "required|minLength:10"
     });
 
+    var isValidEmail = validation.validateEmail(req.body.email);
+    var isValidComments = validation.validateMessage(req.body.message);
     var validatorResult = await validator.check();
 
-    if (validatorResult) {
+    if (validatorResult && isValidEmail && isValidComments) {
         var insertResult = await crudModel.insertContact(
             req.body.name,
             req.body.email,
@@ -264,8 +267,14 @@ router.post("/add_contact", upload.none(), async function (req, res) {
         }
     } else {
         var errorMsg = "";
+        if (!isValidEmail) {
+            errorMsg += "Please enter a valid email id ! \n"
+        }
+        if (!isValidComments) {
+            errorMsg += "Please enter a valid message ! \n"
+        }
         Object.keys(validator.errors).map(function (key) {
-            errorMsg += validator.errors[key].message + "<br/>";
+            errorMsg += validator.errors[key].message + "\n";
         });
         res.send({ success: false, message: errorMsg });
     }
@@ -583,7 +592,7 @@ router.post(
                 amenities = req.body.amenities1 || "",
                 postedBy = req.body.posted_by || "Owner",
                 reraId = req.body.rera_id || "";
-            let validator = new validatorpackage(req.body, {
+            let validator = new Validator(req.body, {
                 facing1: "required|alpha",
                 plot_area: "numeric",
                 quoted_price1: "numeric",
@@ -620,8 +629,8 @@ router.post(
                 });
                 var latitude = geocoderResponse[0].latitude,
                     longitude = geocoderResponse[0].longitude;
-                console.log(req.body);
-                console.log("------------");
+                // console.log(req.body);
+                // console.log("------------");
                 var queryResult = await crudModel.addResidentialPlotToListProperty(
                     name,
                     email,
@@ -685,7 +694,7 @@ router.post(
                 }
             }
         } else {
-            let validator = new validatorpackage(req.body, {
+            let validator = new Validator(req.body, {
                 name: "required|minLength:3",
                 email: "required|email",
                 phone: "required|numeric|digits:10",
@@ -843,7 +852,7 @@ router.get("/rent_in", function (req, res) {
             rentDetails.data.price = finalPrice;
             responseObj.rentDetails = rentDetails.data;
         } //uploads/list_property/
-        console.log(rentDetails.data);
+        // console.log(rentDetails.data);
         res.render("home/rent-in", responseObj);
     });
 });
@@ -855,7 +864,7 @@ router.post(
     "/add_rent_out",
     upload.fields([{ name: "photos[]", maxCount: 10 }]),
     async function (req, res) {
-        let validator = new validatorpackage(req.body, {
+        let validator = new Validator(req.body, {
             property_name: "required",
             property_type: "required",
             property_sub_type: "required",
@@ -1049,7 +1058,7 @@ router.get("/rent", function (req, res) {
                 }
                 rentDetailsData[i] = rentDetail;
             }
-            console.log(rentDetailsData);
+            // console.log(rentDetailsData);
             res.render("home/rent", {
                 page_title: "Rent",
                 page_name: "Rent",
@@ -1093,7 +1102,7 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
     } else {
         validatorRules.bedrooms = "required";
     }
-    let validator = new validatorpackage(req.body, validatorRules);
+    let validator = new Validator(req.body, validatorRules);
     var validatorResult = await validator.check();
     if (!validatorResult) {
         var errorMessage = getErrorMessage(validator.errors);
@@ -1253,7 +1262,7 @@ router.get("/property_details/:property_id", async function (req, res) {
 
             } else {
                 res.send('Some error occured. Please try again later !')
-                console.log("error");
+                // console.log("error");
             }
         } else {
             if (propertyDetails.message == "No Data") {
@@ -1261,9 +1270,10 @@ router.get("/property_details/:property_id", async function (req, res) {
                     page_name: "Property Details",
                     page_title: "Property Details",
                     has_details: false,
+                    property_id: propertyId
                 });
             }
-            console.log("error");
+            // console.log("error");
         }
     }
 });
@@ -1289,7 +1299,7 @@ router.get('/project_details/:id', async function (req, res) {
                 response.data.amenities_list = amenitiesList.data;
             } else {
                 res.send('Some error occured. Please try again later !')
-                console.log("error");
+                // console.log("error");
             }
             var formattedPrice = utils.getPrice({ min_price: response.data.min_price, max_price: response.data.max_price }, true)
             response.data.min_price_formatted = formattedPrice.min_price
@@ -1338,7 +1348,7 @@ router.get("/compare/:type", async function (req, res) {
 
                 } else {
                     res.send('Some error occured. Please try again later !');
-                    console.log("error");
+                    // console.log("error");
                 }
                 solutions.push(response.data)
             }
@@ -1399,7 +1409,7 @@ router.get("/compare/:type", async function (req, res) {
             data.projects = response.data;
             data.count = response.data.length;
         }
-        console.log(data.projects);
+        // console.log(data.projects);
         res.render('home/project_compare', data);
 
 
@@ -1415,7 +1425,7 @@ router.get("/compare/:type", async function (req, res) {
             data.rent = response.data;
             data.count = response.data.length
         }
-        console.log(data.rent);
+        // console.log(data.rent);
         res.render('home/rent_compare', data);
     } else {
         res.send("incorrect url")
@@ -1486,7 +1496,7 @@ async function getPostRequirementEmailDetails(
     var localityResponse = await crudModel.getLocalityById(locality);
     var localityName = localityResponse[0].locality;
     var stateResponse = await crudModel.getStateById(state);
-    console.log(stateResponse);
+    // console.log(stateResponse);
     var stateName = stateResponse[0].state_name;
 
     if (minPrice > 10000000) {

@@ -4,7 +4,7 @@ var crudModel = require('../../models/crudModel');
 var multer = require('multer');
 var upload = multer();
 var utils = require('../../services/utils');
-var validatorpackage = require("node-input-validator");
+var { Validator } = require("node-input-validator");
 var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
@@ -83,7 +83,7 @@ router.post('/update/:property_id', upload.none(),
         var isError = false;
         if (propertyId) {
             if (req.body.property_sub_type == 14 || req.body.property_sub_type == 18) {
-                let validator = new validatorpackage(req.body, {
+                let validator = new Validator(req.body, {
                     plot_area: "numeric",
                     quoted_price1: "numeric",
                     width: "numeric",
@@ -101,7 +101,7 @@ router.post('/update/:property_id', upload.none(),
                     for (var keys in validationError) {
                         errorMsg += validationError[keys].message + "<br/>";
                     }
-                    res.send({success: false, message: errorMsg});
+                    res.send({ success: false, message: errorMsg });
                 } else {
                     var data = deepclone(req.body);
                     var date = utils.getDate();
@@ -169,7 +169,7 @@ router.post('/update/:property_id', upload.none(),
                     }
                 }
             } else {
-                let validator = new validatorpackage(req.body, {
+                let validator = new Validator(req.body, {
                     name: "required|minLength:3",
                     email: "required|email",
                     phone: "required|numeric|digits:10",
@@ -190,7 +190,7 @@ router.post('/update/:property_id', upload.none(),
                     for (var keys in validationError) {
                         errorMsg += validationError[keys].message + "<br/>";
                     }
-                    res.send({success: false, message: errorMsg});
+                    res.send({ success: false, message: errorMsg });
                     res.end();
                 } else {
                     var data = deepclone(req.body);
@@ -300,7 +300,7 @@ router.get('/:property_id', async function (req, res) {
             }
             res.send(propertyResponse)
         } else {
-            res.send({success: false});
+            res.send({ success: false });
         }
     }
 });
@@ -324,9 +324,9 @@ async function uploadImages(photoFiles, propertyId, path) {
         }
         var response = await crudModel.addPropertyPhotos(imagesToUpload);
         if (response.success) {
-            return {success: true, fileNames: fileNames};
+            return { success: true, fileNames: fileNames };
         } else {
-            return {success: false};
+            return { success: false };
         }
     }
 }

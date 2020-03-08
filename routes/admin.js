@@ -7,7 +7,7 @@ var utils = require('../services/utils');
 var ejs = require('ejs');
 var fs = require('fs');
 
-var validatorpackage = require("node-input-validator");
+var { Validator } = require("node-input-validator");
 
 var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../external-config/geocoding-config");
@@ -120,7 +120,7 @@ router.get('/', async function (req, res) {
     res.render("admin/index", responseVariable);
 });
 router.get("/login", function (req, res) {
-    var data = {page_name: 'Login', page_title: 'Login'};
+    var data = { page_name: 'Login', page_title: 'Login' };
     if (req.session.isAdminLoggedIn) {
         res.redirect("/admin");
     } else {
@@ -131,7 +131,7 @@ router.get("/login", function (req, res) {
 router.post("/login", upload.none(), async function (req, res) {
     var email = req.body.email || "";
     var password = req.body.password || "";
-    var userCountResponse = await adminModel.getUserCount({email: email, password: password});
+    var userCountResponse = await adminModel.getUserCount({ email: email, password: password });
     if (userCountResponse.success) {
         if (userCountResponse.count > 0) {
             req.session.isAdminLoggedIn = true;
@@ -150,9 +150,9 @@ router.post("/login", upload.none(), async function (req, res) {
 router.get('/send_mail', function (req, res) {
     var fileName = req.query.fileName;
     if (!fileName) {
-        res.status(400).send({success: false, message: 'file name is invalid'});
+        res.status(400).send({ success: false, message: 'file name is invalid' });
     } else {
-        res.end({success: true, data: utils.getTemplateForMail(fileName, req.query)});
+        res.end({ success: true, data: utils.getTemplateForMail(fileName, req.query) });
     }
 });
 

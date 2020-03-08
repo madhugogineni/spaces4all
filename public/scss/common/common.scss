@@ -103,6 +103,10 @@
   margin-left: 5px;
 }
 
+.ml10px {
+  margin-left: 10px;
+}
+
 .fo {
   &:before {
     content: '';
@@ -181,4 +185,8 @@
 }
 .nostyleli {
   list-style-type: none;
+}
+
+.pl10px {
+  padding-left:10px;
 }

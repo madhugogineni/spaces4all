@@ -1,13 +1,14 @@
 var express = require("express");
 var router = express.Router();
 var crudModel = require("../models/crudModel");
-var validatorpackage = require("node-input-validator");
+var { Validator } = require("node-input-validator");
 var moment = require("moment");
 var mailservice = require("../services/email");
 var dateFormat = "YYYY-MM-DD HH:mm:ss";
 var deepclone = require('lodash.clonedeep');
 var multer = require('multer');
 var upload = multer();
+var validation = require('../services/validation')
 
 router.get("/calculate_stamp_duty", function (req, res) {
     var id = req.query.id;
@@ -114,14 +115,17 @@ router.get('/get_property_subtype_using_property_type', function (req, res) {
     // console.log(req.query);
 });
 router.post("/property_enquiry/:property_id", upload.none(), async function (req, res) {
-    let validator = new validatorpackage(req.body, {
+    let validator = new Validator(req.body, {
         name: "required|minLength:3",
         email: "required|email",
         phone: "required|numeric|maxLength:12|minLength:10",
         comments: "required|minLength:10"
     });
     var validationResult = await validator.check();
-    if (validationResult) {
+
+    var isValidEmail = validation.validateEmail(req.body.email);
+    var isValidComments = validation.validateMessage(req.body.comments);
+    if (validationResult && isValidEmail && isValidComments) {
         var data = {
             phone: req.body.phone,
             email: req.body.email,
@@ -147,6 +151,12 @@ router.post("/property_enquiry/:property_id", upload.none(), async function (req
         }
     } else {
         var errorMsg = "";
+        if (!isValidEmail) {
+            errorMsg += "Please enter a valid email id ! \n"
+        }
+        if (!isValidComments) {
+            errorMsg += "Please enter a valid message ! \n"
+        }
         Object.keys(validator.errors).map(function (key) {
             errorMsg += validator.errors[key].message + "<br/>";
         });
@@ -155,14 +165,16 @@ router.post("/property_enquiry/:property_id", upload.none(), async function (req
 });
 router.post("/project_enquiry/:project_id", upload.none(), async function (req, res) {
     if (req.params.project_id) {
-        let validator = new validatorpackage(req.body, {
+        let validator = new Validator(req.body, {
             name: "required|minLength:3",
             email: "required|email",
             phone: "required|numeric|maxLength:12|minLength:10",
             comments: "required|minLength:10"
         });
         var validationResult = await validator.check();
-        if (validationResult) {
+        var isValidEmail = validation.validateEmail(req.body.email);
+        var isValidComments = validation.validateMessage(req.body.comments);
+        if (validationResult && isValidEmail && isValidComments) {
             var data = deepclone(req.body);
             data.project_id = req.params.project_id;
             data.datetime = moment().format(dateFormat);
@@ -186,6 +198,12 @@ router.post("/project_enquiry/:project_id", upload.none(), async function (req, 
             }
         } else {
             var errorMsg = "";
+            if (!isValidEmail) {
+                errorMsg += "Please enter a valid email id ! \n"
+            }
+            if (!isValidComments) {
+                errorMsg += "Please enter a valid message ! \n"
+            }
             Object.keys(validator.errors).map(function (key) {
                 errorMsg += validator.errors[key].message + "<br/>";
             });

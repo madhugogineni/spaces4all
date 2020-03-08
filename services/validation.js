@@ -1,8 +1,8 @@
-var validatorpackage = require('node-input-validator');
+var { Validator } = require("node-input-validator");
 module.exports = {
     validate: async function (data, rules) {
         var response = {}
-        var validator = new validatorpackage(data, rules);
+        var validator = new Validator(data, rules);
         var validatorResponse = await validator.check();
         response.success = validatorResponse;
         if (!validatorResponse) {
@@ -14,5 +14,11 @@ module.exports = {
             response.message = errorMsg;
         }
         return response;
+    },
+    validateEmail: function (email) {
+        return email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.(com|in|edu)$/gi) == null ? false : true
+    },
+    validateMessage: function (message) {
+        return message.match(/^((?!(porn|girls|http|https|www|movie|Pharmacy|<a>)).)*$/gi) == null ? false : true
     }
 }
