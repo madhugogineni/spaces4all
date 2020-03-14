@@ -190,3 +190,7 @@
 .pl10px {
   padding-left:10px;
 }
+
+.c-r {
+  @include font($color: red);
+}

@@ -3,7 +3,7 @@
 <html class="no-js">
 
 <head>
-<% include includes/includes.ejs %>
+    <% include includes/includes.ejs %>
 
 </head>
 
@@ -38,7 +38,7 @@
         </div>
         <!-- Start Content -->
 
-        <div class="main" role="main">
+        <div class="main hot-properties" role="main">
 
             <div id="content" class="content full">
 
@@ -58,9 +58,7 @@
 
                                             <form action="<%= base_url %>home/hot_properties" method="POST">
 
-                                                <select name="city" id="hot_property_cities"
-                                                    class="form-control input-lg"
-                                                    onchange="this.form.submit()">
+                                                <select name="city" id="hot_property_cities" class="form-control input-lg" onchange="this.form.submit()">
                                                     <script>
                                                         setUpCities("#hot_property_cities", "<%=city_id %>");
                                                     </script>
@@ -78,26 +76,13 @@
                                             <% for(var i=0;i < hot_properties.length;i++) { 
                                                 var hot_property = hot_properties[i];
                                                 %>
-                                            <li class="type-rent col-md-12">
+                                            <li class="property col-md-12">
 
-                                                <div class="col-md-5">
-
-                                                    <a
-                                                        href="<%= base_url %>home/property_details/<?=$row['list_property_id']?>">
-
-                                                        <h4 class="page-title">
-                                                            <% if(hot_property.property_sub_type != '14' && hot_property.property_type != '1') { %>
-                                                            <%=hot_property.bedrooms + 'BHK'+ hot_property.property_type_name %><% } %>
-                                                            <%=hot_property.property_sub_type_name %>
-                                                        </h4>
-                                                    </a>
-
-                                                    <a href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>"
-                                                        class="property-featured-image">
-                                                        <div class="overlay" style="line-height: 151px"></div> <img
-                                                            src="<%= base_url %>uploads/list_property/<%=hot_property.property_photo %>"
-                                                            style="height: 260px" alt=""> <span class="images-count">
-                                                            <%= hot_property.city %> </span>
+                                                <div class="col-md-5 image-container">
+                                                    <a href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>" class="property-featured-image">
+                                                        <div class="overlay" style="line-height: 151px"></div>
+                                                        <img src="<%= base_url %>uploads/list_property/<%=hot_property.property_photo %>" class="image" alt="">
+                                                        <span class="images-count"> <%= hot_property.city %> </span>
                                                     </a>
                                                 </div>
 
@@ -113,39 +98,28 @@
 
                                                                     <% if(hot_property.property_sub_type == '14') { %>
 
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Yds</span>
+                                                                    <span class="area">Sq.Yds<br><strong><%=hot_property.saleable_area %></strong></span>
 
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.facing %></strong><br>Facing</span>
-                                                                    <span
-                                                                        class="baths"><strong><%=hot_property.open_slides %></strong><br>Open
-                                                                        Sides</span>
+                                                                    <span class="area">Facing<br><strong><%=hot_property.facing %></strong></span>
+                                                                    <span class="baths">Open Sides<br><strong><%=hot_property.open_slides %></strong></span>
 
                                                                     <% }else if(hot_property.property_type == '1') { %>
 
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Ft</span>
+                                                                    <span class="area">Sq.Ft<br><strong><%=hot_property.saleable_area %></strong></span>
 
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.facing %></strong><br>Facing</span>
-                                                                    <span
-                                                                        class="baths"><strong><%=hot_property.car_parking %></strong><br>Parking</span>
+                                                                    <span class="area">Facing<br><strong><%=hot_property.facing %></strong></span>
+                                                                    <span class="baths">Parking<br><strong><%=hot_property.car_parking %></strong></span>
 
                                                                     <%}else { %>
 
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.saleable_area %></strong><br>Sq.Ft</span>
-                                                                    <span
-                                                                        class="area"><strong><%=hot_property.bedrooms %></strong><br>Bedrooms</span>
-                                                                    <span
-                                                                        class="baths"><strong><%=hot_property.bathrooms %></strong><br>Bathrooms</span>
+                                                                    <span class="area">Sq.Ft<br><strong><%=hot_property.saleable_area %></strong></span>
+                                                                    <span class="area">Bedrooms<br><strong><%=hot_property.bedrooms %></strong></span>
+                                                                    <span class="area">For<br><strong>Sale</strong></span>
                                                                     <% } %>
                                                                     <span class="parking">
-                                                                        <strong>
-                                                                            <span class="WebRupee">Rs.</span>
-                                                                            <%=hot_property.quoted_price %>
-                                                                        </strong><br>Price
+                                                                        Price<br>
+                                                                        <strong><span class="WebRupee">Rs.</span>
+                                                                            <%=hot_property.quoted_price %></strong>
                                                                     </span>
 
                                                                 </div><br>
@@ -158,7 +132,7 @@
                                                                             <%=hot_property.property_name %></span></li>
                                                                     <hr>
                                                                     <li><span>Property Sub Type :
-                                                                            <%=hot_property.property_sub_name %></span>
+                                                                            <%=hot_property.property_sub_type_name %></span>
                                                                     </li>
                                                                     <hr>
                                                                     <li><span class="location">Location :
@@ -170,15 +144,11 @@
                                                                     </li>
                                                                     <hr>
 
-                                                                    <li>&nbsp;</li>
-
                                                                 </ul>
                                                                 <div class="price">
-                                                                    <a
-                                                                        href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>">
+                                                                    <a href="<%= base_url %>home/property_details/<%=hot_property.list_property_id %>">
                                                                         <button class="btn btn-danger" type="button">
-                                                                            <i
-                                                                                class="fa fa-angle-double-right"></i>&nbsp;
+                                                                            <i class="fa fa-angle-double-right"></i>&nbsp;
                                                                             View Details
                                                                         </button>
                                                                     </a>

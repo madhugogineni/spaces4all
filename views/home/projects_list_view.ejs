@@ -104,26 +104,6 @@
             $('#modal_ajax').modal('show', {backdrop: 'true'});
         }
 
-        function Show_max_price(str) {
-
-            //alert(str);
-
-            $.ajax({
-
-                url: '<?php echo base_url();?>home/max_price/' + str,
-
-                success: function (response) {
-
-                    //alert(response);
-
-                    jQuery('#max_price').html(response);
-
-                }
-
-            });
-
-        }
-
     </script>
 
 </head>
@@ -439,14 +419,14 @@
                                                                 <hr>
 
                                                                 <span class="location">
-                                                                    <%= project.locality %> , <%= project.city %></span>
+                                                                    <%= project.locality_name %> , <%= project.city_name %></span>
                                                                 <hr>
 
                                                                 <span>Sizes ( Range) : <%= project.min_builtup_area %> - <%= project.max_builtup_area %>
                                                                     Sq.Ft</span>
                                                                 <hr>
 
-                                                                <span>Plans : <%= project.plans %>BHK</span>
+                                                                <span>Plans : <%= project.plans %> BHK</span>
                                                                 <hr>
 
                                                                 <span>

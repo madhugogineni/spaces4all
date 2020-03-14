@@ -16,7 +16,7 @@ module.exports = {
         return response;
     },
     validateEmail: function (email) {
-        return email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z]+\.(com|in|edu)$/gi) == null ? false : true
+        return email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+\.(com|in|edu)$/gi) == null ? false : true
     },
     validateMessage: function (message) {
         return message.match(/^((?!(porn|girls|http|https|www|movie|Pharmacy|<a>)).)*$/gi) == null ? false : true

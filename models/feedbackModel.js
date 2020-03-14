@@ -20,7 +20,7 @@ module.exports = {
                     console.log(error);
                     resolve({sucess: false});
                 }
-                console.log(result);
+                // console.log(result);
                 if (result) {
                     resolve({success: true, data: result[0]});
                 } else {

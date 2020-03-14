@@ -63,7 +63,7 @@
                 '</div>';
             $('#call_back_response').html(modalBody);
             $('#call_project_id').val(project_id);
-            $('#modal_ajax').modal('show', {backdrop: 'true'});
+            $('#modal_ajax').modal('show', { backdrop: 'true' });
         }
 
 
@@ -73,29 +73,31 @@
 
 <body>
 
-<div class="body">
+    <div class="body">
 
-    <!-- Start Site Header -->
+        <!-- Start Site Header -->
 
-    <% include includes/header.ejs %>
+        <% include includes/header.ejs %>
 
-    <!-- End Site Header -->
+        <!-- End Site Header -->
 
-    <!-- Site Showcase -->
+        <!-- Site Showcase -->
 
-    <div class="site-showcase">
+        <div class="site-showcase">
 
-        <!-- Start Page Header -->
+            <!-- Start Page Header -->
 
-        <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
+            <div class="parallax page-header" style="background-image: url(images/page-header1.jpg);">
 
-            <div class="container">
+                <div class="container">
 
-                <div class="row">
+                    <div class="row">
 
-                    <div class="col-md-12">
+                        <div class="col-md-12">
 
-                        <h1><%= page_title %></h1>
+                            <h1><%= page_title %></h1>
+
+                        </div>
 
                     </div>
 
@@ -103,68 +105,63 @@
 
             </div>
 
+            <!-- End Page Header -->
+
         </div>
 
-        <!-- End Page Header -->
 
-    </div>
+        <!-- Start Content -->
 
+        <div class="main exclusive-properties" role="main">
 
-    <!-- Start Content -->
+            <div id="content" class="content full">
 
-    <div class="main" role="main">
+                <div class="container">
 
-        <div id="content" class="content full">
-
-            <div class="container">
-
-                <div class="page">
-
-                    <div class="row">
-
+                    <div class="page">
 
                         <div class="row">
 
-                            <div class="col-md-12">
 
-                                <div class="row">
+                            <div class="row">
 
-                                    <div class="col-md-3" style="float: right;">
+                                <div class="col-md-12">
 
-                                        <form action="<%= base_url %>home/exclusive_projects" method="POST">
+                                    <div class="row">
 
-                                            <select name="city" id="exclusive_projects_city"
-                                                    class="form-control input-lg" onchange="this.form.submit()">
+                                        <div class="col-md-3" style="float: right;">
 
-                                                <script> setUpCities("#exclusive_projects_city", "<%= city_id %>");</script>
+                                            <form action="<%= base_url %>home/exclusive_projects" method="POST">
 
-                                            </select>
+                                                <select name="city" id="exclusive_projects_city" class="form-control input-lg" onchange="this.form.submit()">
 
-                                        </form>
+                                                    <script> setUpCities("#exclusive_projects_city", "<%= city_id %>");</script>
+
+                                                </select>
+
+                                            </form>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
+                                    <div class="property-listing">
 
-                                <div class="property-listing">
-
-                                    <% if ( exclusive_projects.length > 0 ) { %>
+                                        <% if ( exclusive_projects.length > 0 ) { %>
 
                                         <ul>
 
                                             <% for(var i = 0; i < exclusive_projects.length; i++) {
                                                 var exclusive_project = exclusive_projects[i]; %>
 
-                                            <li class="type-rent col-md-12">
+                                            <li class="property col-md-12">
 
-                                                <div class="col-md-5">
+                                                <div class="col-md-5 image-container">
 
                                                     <a href="#" class="property-featured-image">
                                                         <div class="overlay" style="line-height: 151px"></div>
-                                                        <img
-                                                                src="<%= base_url %>uploads/projects/<%= exclusive_project.project_photo %>"
-                                                                alt="" style="height: 300px; width:100%"> <span
-                                                                class="images-count"> <%= exclusive_project.city_name %>
+                                                        <img src="<%= base_url %>uploads/projects/<%= exclusive_project.project_photo %>" class="image" alt="">
+                                                        <span class="images-count"> <%= exclusive_project.city_name %>
                                                         </span>
                                                     </a>
 
@@ -186,7 +183,7 @@
 
                                                                 </h3>
 
-                                                                <br/>
+                                                                <br />
 
                                                                 <ul class="">
 
@@ -197,12 +194,12 @@
                                                                     <hr>
 
                                                                     <li><span>Project Sub Type :
-                                                                            <%= exclusive_project.project_sub_type_name %></span><br/>
+                                                                            <%= exclusive_project.project_sub_type_name %></span><br />
                                                                     </li>
                                                                     <hr>
 
                                                                     <li><span>Plans : <%= exclusive_project.plans %>
-                                                                            BHK</span><br/></li>
+                                                                            BHK</span><br /></li>
                                                                     <hr>
 
                                                                     <li><span>Price : <span class="WebRupee">Rs.</span>
@@ -214,23 +211,10 @@
                                                                             <%= exclusive_project.status %></span></li>
                                                                     <hr>
 
-                                                                    <li>&nbsp;</li>
-
-
                                                                 </ul>
 
-
-                                                                <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>"
-                                                                   class="pull-right">
-                                                                    <button type="button" class="btn btn-danger">View
-                                                                        Details &raquo;
-                                                                    </button>
-                                                                </a>
-                                                                <a href="#"
-                                                                   onclick="showAjaxModal('<%= exclusive_project.project_id %>')">
-                                                                    <button type="button" class="btn">
-                                                                        <i class="fa fa-phone"></i> Call Back
-                                                                    </button>
+                                                                <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>">
+                                                                    <button type="button" class="btn btn-danger">View Details &raquo;</button>
                                                                 </a>
 
                                                             </div>
@@ -247,16 +231,18 @@
 
                                         </ul>
 
-                                    <% }else { %>
+                                        <% }else { %>
                                         <br><br>
                                         <h4 align='center'>There are No Projects Available....</h4>
-                                    <% } %>
+                                        <% } %>
+
+                                    </div>
+
 
                                 </div>
 
 
                             </div>
-
 
                         </div>
 
@@ -266,83 +252,78 @@
 
             </div>
 
-        </div>
-
-        <!-- Start Site Footer -->
+            <!-- Start Site Footer -->
 
 
-        <div class="modal fade" id="modal_ajax">
+            <div class="modal fade" id="modal_ajax">
 
-            <div class="modal-dialog">
+                <div class="modal-dialog">
 
-                <div class="modal-content">
+                    <div class="modal-content">
 
-                    <form method="post">
+                        <form method="post">
 
-                        <div class="modal-header">
+                            <div class="modal-header">
 
-                            <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;
-                            </button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
 
-                            <h4 class="modal-title">Call Back</h4>
-
-                        </div>
-
-
-                        <div class="modal-body">
-
-                            <div id="call_back_response">
-
-                                <div id="errorBox3"></div>
-
-
-                                <div class="row">
-
-                                    <div class="col-md-6 col-sm-6">
-
-                                        <label>NAME*</label>
-
-                                        <input type="text" id="call_name" name="call_name" class="form-control"
-                                               placeholder="Name" required="required">
-
-                                    </div>
-
-                                    <div class="col-md-6 col-sm-6">
-
-                                        <label>PHONE NUMBER*</label>
-
-                                        <input type="text" id="call_phone" name="call_phone" class="form-control"
-                                               placeholder="Phone Number" required="required">
-
-                                    </div>
-
-                                    <input type="hidden" id="call_project_id" name="call_project_id" value="">
-
-                                </div>
+                                <h4 class="modal-title">Call Back</h4>
 
                             </div>
 
 
-                        </div>
+                            <div class="modal-body">
+
+                                <div id="call_back_response">
+
+                                    <div id="errorBox3"></div>
 
 
-                        <div class="modal-footer">
+                                    <div class="row">
 
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        <div class="col-md-6 col-sm-6">
 
-                            <button type="button" onclick="send_Project_Callback();" class="btn btn-primary">Send
-                            </button>
+                                            <label>NAME*</label>
 
-                        </div>
+                                            <input type="text" id="call_name" name="call_name" class="form-control" placeholder="Name" required="required">
 
-                    </form>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6">
+
+                                            <label>PHONE NUMBER*</label>
+
+                                            <input type="text" id="call_phone" name="call_phone" class="form-control" placeholder="Phone Number" required="required">
+
+                                        </div>
+
+                                        <input type="hidden" id="call_project_id" name="call_project_id" value="">
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="modal-footer">
+
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                <button type="button" onclick="send_Project_Callback();" class="btn btn-primary">Send
+                                </button>
+
+                            </div>
+
+                        </form>
+
+                    </div>
 
                 </div>
 
             </div>
 
-        </div>
 
-
-<% include includes/footer.ejs %>
+            <% include includes/footer.ejs %>

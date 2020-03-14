@@ -4,23 +4,17 @@
 
 <head>
     <% include includes/includes.ejs %>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <title> Spaces4All - <%=page_title %> </title>
 
     <script>
-        function List_form() {
-
-            document.List_form.submit();
-
-        }
-
-
 
         function Grid_form() {
 
             document.Grid_form.submit();
 
         }
-
-
 
         function show_sub_type(str) {
 
@@ -41,60 +35,8 @@
                 return;
 
             }
-
             getPropertySubTypes(str, "#property_sub_type");
         }
-
-
-
-
-
-        function Show_locality(str) {
-
-            //alert(str);
-
-            if (str.length == 0) {
-
-                document.getElementById("Showlocality").innerHTML = "";
-
-                return;
-
-            }
-
-
-
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-                xmlhttp = new XMLHttpRequest();
-
-            }
-
-            else {// code for IE6, IE5
-
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-            }
-
-            xmlhttp.onreadystatechange = function () {
-
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    //alert(xmlhttp.responseText);
-
-                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-                }
-
-            }
-
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-            xmlhttp.send();
-
-        }
-
-
-
         function Show_Div(Div_id) {
 
             if (false == $(Div_id).is(':visible')) {
@@ -110,34 +52,6 @@
             }
 
         }
-
-
-
-        $(document).ready(function () {
-
-            $('#compare').load("<%=base_url %>home/compare_count");
-
-        });
-
-
-
-        function add_Compare(url) {
-
-            $.ajax({
-
-                url: url,
-
-                success: function () {
-
-                    $('#compare').load("<%=base_url %>home/compare_count");
-
-                }
-
-            });
-
-        }
-
-
 
         function hide_bedrooms(str) {
 
@@ -160,28 +74,6 @@
                 }
 
             }
-
-        }
-
-
-
-        function Show_max_price(str) {
-
-            //alert(str);
-
-            $.ajax({
-
-                url: '<?php echo base_url();?>home/max_price1/' + str,
-
-                success: function (response) {
-
-                    //alert(response);
-
-                    jQuery('#max_price').html(response);
-
-                }
-
-            });
 
         }
 
@@ -234,7 +126,7 @@
                 postedBy = posted_by;        
             }%>
 
-            <form action="<%=base_url %>home/rent/list_view" name="List_form" id="List_form" method="get">
+            <form action="<%=base_url %>home/rent" name="Grid_form" id="Grid_form" method="get">
 
                 <input type="hidden" name="property_type" value="<%=property_type%>">
 
@@ -272,13 +164,13 @@
 
                                 <div class="block-heading">
 
-                                    <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i class="fa fa-th-large"></i></span>Property Grid View</h4>
+                                    <h4><span class="heading-icon"><i class="fa fa-caret-right icon-design"></i><i class="fa fa-th-list"></i></span>Property List View</h4>
 
                                     <div class="toggle-view pull-right">
 
-                                        <a href="javascript: Grid_form()" class="active" title="Grid View"><i class="fa fa-th-large"></i></a>
+                                        <a href="javascript: Grid_form()" title="Grid View"><i class="fa fa-th-large"></i></a>
 
-                                        <a href="javascript: List_form()" title="List View"><i class="fa fa-th-list"></i></a>
+                                        <a href="javascript: List_form()" class="active" title="List View"><i class="fa fa-th-list"></i></a>
 
                                     </div>
 
@@ -288,9 +180,7 @@
 
                                 <div class="search-list">
 
-                                    <form action="<%=base_url %>home/rent" name="Grid_form" method="get">
-
-
+                                    <form action="<%=base_url %>home/rent_list_view" name="List_form" method="get">
 
                                         <div class="row" style="padding-bottom: 10px">
 
@@ -346,14 +236,11 @@
 
                                         <div class="row" id="Div_1" style="padding-bottom: 10px;display: none;">
 
-
-
                                             <div class="col-md-2">
 
                                                 <select name="locality" id="locality" class="form-control margin-0">
 
                                                     <option value="">---locality---</option>
-
                                                 </select>
 
                                             </div>
@@ -378,10 +265,11 @@
                                                     <option value="<%=value%>">Rs <%=value %> </option>
 
                                                     <% } %>
-
                                                 </select>
 
                                             </div>
+
+
 
                                             <div class="col-md-2">
 
@@ -407,7 +295,6 @@
                                                 </select>
 
                                             </div>
-
 
 
 
@@ -437,8 +324,6 @@
 
                                     </div>
 
-
-
                                 </div>
 
                             </div><br><br><br><br><br><br>
@@ -449,60 +334,95 @@
 
                                     <div id="property_success"></div>
 
-                                    <div class="property-grid">
+                                    <div class="property-listing">
 
                                         <% if(rent.length) {%>
 
-                                        <ul class="grid-holder col-3 isotope" style="position: relative; overflow: hidden; height: 700px;">
+                                        <ul>
                                             <% for(var i=0;i< rent.length;i++) { 
                                                 var rentDetails = rent[i]; %>
-                                            <li class="grid-item type-rent isotope-item" style="position: absolute; left: 0px; top: 0px; transform: translate(533px, 350px);">
+                                            <li class="type-rent col-md-12">
 
-                                                <div class="property-block">
+                                                <div class="col-md-4">
 
                                                     <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>" class="property-featured-image">
+                                                        <div class="overlay" style="line-height:151px"><i class="fa fa-search"></i></div>
 
-                                                        <img src="<%=base_url %>uploads/rent/<%=rentDetails.image %>" style="height: 170px" alt="Spacel4all">
+                                                        <img src="<%=base_url %>uploads/rent/<%= rentDetails.image %>" style="height: 180px; width:100%" alt="Spacel4all">
 
-                                                        <span class="images-count"> <%=rentDetails.city %> </span>
-
-                                                        <span class="badges" style="color: #000">RENT</span>
+                                                        <span class="images-count"> <%= rentDetails.city_name %> </span>
 
                                                     </a>
 
-                                                    <div class="property-info" style="line-height: 5px">
+                                                </div>
 
-                                                        <h4><a href="<%=base_url %>home/rent_details/<?=$row['rent_id']?>" style="text-overflow: ellipsis;width: 100px;overflow: hidden;"><%=rentDetails.property_sub_type_name %></a>
-                                                        </h4>
+                                                <div class="col-md-8">
 
-                                                        <hr><span><%=rentDetails.property_type_name %></span>
-                                                        <hr>
+                                                    <div class="row">
 
-                                                        <span class="location"><%=rentDetails.locality_name %>,
-                                                            <%=rentDetails.city_name %></span>
-                                                        <hr>
+                                                        <div class="col-md-8">
 
-                                                        <% if(rentDetails.property_sub_type == '14' || rentDetails.property_type == '1') { %>
+                                                            <div class="property-info" style="line-height: 5px">
 
-                                                        <span><%=rentDetails.builtup_area %> Sq.Ft</span>
-                                                        <hr>
+                                                                <h3><a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"> <%=rentDetails.property_sub_type_name %></a></h3>
 
-                                                        <% }else {%>
+                                                                <hr><span><%=rentDetails.property_name %></span>
+                                                                <hr>
 
-                                                        <span><%=rentDetails.bedrooms %> BHK</span>
-                                                        <hr>
+                                                                <span class="location"> <%=rentDetails.locality_name %>, <%=rentDetails.city_name %></span>
+                                                                <hr>
+
+                                                                <span>
+                                                                    <% if(rentDetails.price) { %>
+                                                                    <span class="WebRupee">Rs.</span>
+                                                                    <% } %>
+                                                                    <%=rentDetails.price %>
+                                                                </span>
+                                                                <hr>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-4 pad-2 brbtm">
+
+                                                            <ul class="">
+                                                                <br />
+                                                                <li>
+                                                                    <a onclick="add_Compare('rent','<%= rentDetails.rent_id %>',this)">
+                                                                        <button type="button" class="btn btn-default">
+                                                                            <i class="fa fa-th-list"></i>&nbsp;
+                                                                            Compare&nbsp;&nbsp;&nbsp;
+                                                                        </button>
+                                                                    </a>
+                                                                    <br /><br />
+                                                                </li>
+                                                                <li> <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>"> <button type="button" class="btn btn-danger"><i class="fa  fa-angle-double-right"></i> View Details</button> </a> </li>
+
+                                                            </ul>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="property-amenities clearfix">
+
+                                                        <span class="parking"><strong>Facing</strong><?=$row['facing']?></span>
+
+                                                        <% if(rentDetails.property_sub_type == '14' || rentDetails.property_type == '1'){ %>
+
+                                                        <span class="baths"><strong><%=rentDetails.builtup_area %></strong>Sq.Ft</span>
+
+                                                        <span class="area"><strong> &nbsp;Posted By</strong><%=rentDetails.posted_by %> &nbsp;</span>
+
+                                                        <% }else { %>
+
+                                                        <span class="baths"><strong><%=rentDetails.bedrooms %></strong>BHK</span>
+
+                                                        <span class="area"><strong><%=rentDetails.bathrooms %></strong>Bathrooms &nbsp;</span>
 
                                                         <% } %>
 
-                                                        <span>
-                                                            <% if(rentDetails.price) { %>
-                                                            <span class="WebRupee">Rs.</span> <% } %>
-                                                            <%=rentDetails.price %></span>
-                                                        <hr><br />
-
-                                                        <a href="<%=base_url %>home/rent_details/<%=rentDetails.rent_id %>">
-                                                            <button type="button" class="btn btn-danger"> <i class="fa fa-angle-double-right"></i>&nbsp; View
-                                                                Details </button> </a>
 
                                                     </div>
 
@@ -510,16 +430,17 @@
 
                                             </li>
                                             <% } %>
-
                                         </ul>
                                         <% }else { %>
                                         <br><br>
                                         <h4 align='center'>No results matching your search !</h4>
                                         <% } %>
+
                                     </div>
 
-
                                 </div>
+
+
                             </div>
 
                         </div>

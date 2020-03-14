@@ -261,7 +261,7 @@ router.post("/add_contact", upload.none(), async function (req, res) {
                 "</table>";
             var subject = "Spaces4all - Contact Details";
             mailservice.sendMail(subject, body);
-            res.send({ success: true, message: "Thank you for use Spaces4all. We will contact you shortly" });
+            res.send({ success: true, message: "Thank you for using Spaces4all. We will contact you shortly !" });
         } else {
             res.send({ success: false, message: "There is some issue while saving your details. Please try again later" });
         }
@@ -439,7 +439,7 @@ router.get("/hot_properties/:cityId", function (req, res) {
                     var price1;
                     if (price > 10000000) {
                         price1 = Math.round(parseFloat(price) / 10000000, 2);
-                        price1 = price1 + " Crore";
+                        price1 = price1 + " Cr";
                     } else if (price > 100000) {
                         price1 = Math.round(parseFloat(price) / 100000, 2);
                         if (price1 == "100") {
@@ -455,7 +455,7 @@ router.get("/hot_properties/:cityId", function (req, res) {
                 finalHotProperties.push(hotProperty);
             }
         }
-        // console.log(finalHotProperties);
+        console.log(finalHotProperties);
         res.render("home/hot_properties", {
             page_name: "properties",
             page_title: "Hot Properties",
@@ -484,22 +484,20 @@ router.get("/exclusive_projects/:cityId", function (req, res) {
                     if (exclusiveProject.project_photo == null) {
                         exclusiveProject.project_photo = "no-photo.jpg";
                     }
-                    var plans = exclusiveProject.plans;
-                    var plansString = "",
-                        finalMinPrice;
-                    if (plans != null && plans != "") {
-                        var plansArray = plans.split(",");
-                        for (var i = 0; i < plansArray.length; i++) {
-                            plansString += plansArray[i] + " BHK";
-                            if (i != plansArray.length - 1) {
-                                plansString += ", ";
-                            }
-                        }
-                        // console.log("plans String = ", plansString);
-                    } else {
-                        plansString = "";
-                    }
-                    exclusiveProject.plans = plansString;
+                    var finalMinPrice;
+                    // if (plans != null && plans != "") {
+                    //     var plansArray = plans.split(",");
+                    //     for (var i = 0; i < plansArray.length; i++) {
+                    //         plansString += plansArray[i] + " BHK";
+                    //         if (i != plansArray.length - 1) {
+                    //             plansString += ", ";
+                    //         }
+                    //     }
+                    //     // console.log("plans String = ", plansString);
+                    // } else {
+                    //     plansString = "";
+                    // }
+                    // exclusiveProject.plans = plansString;
                     if (exclusiveProject.min_price != "") {
                         var price = exclusiveProject.min_price.replace(",", "");
                         var price1;
@@ -677,7 +675,7 @@ router.post(
                     if (uploadImagesResult.success) {
                         res.send({
                             success: true,
-                            message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
+                            message: "Your property has been saved. Thank you for using space4all !"
                         });
                     } else {
                         res.send({
@@ -803,7 +801,7 @@ router.post(
                         if (uploadImagesResult.success) {
                             res.send({
                                 success: true,
-                                message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
+                                message: "Your property has been saved. Thank you for using space4all !"
                             });
                         } else {
                             res.send({
@@ -815,7 +813,7 @@ router.post(
                     } else {
                         res.send({
                             success: true,
-                            message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
+                            message: "Your property has been saved. Thank you for using space4all !"
                         });
                     }
 
@@ -1073,6 +1071,96 @@ router.get("/rent", function (req, res) {
                 bedrooms: bedrooms
             });
         });
+});
+
+router.get("/rent/list_view", function (req, res) {
+    var propertyType = req.query.property_type || "",
+        propertySubType = req.query.property_sub_type || "",
+        city = req.query.city || "",
+        locality = req.query.locality || "",
+        bedrooms = req.query.bedrooms || "",
+        postedBy = req.query.posted_by || "",
+        minPrice = req.query.min_price | "",
+        maxPrice = req.query.max_price || "";
+
+    crudModel
+        .getRentDetails(
+            propertyType,
+            propertySubType,
+            city,
+            locality,
+            bedrooms,
+            postedBy,
+            minPrice,
+            maxPrice
+        )
+        .then(function (rentDetails) {
+            var rentDetailsData = rentDetails.data;
+            for (var i = 0; i < rentDetailsData.length; i++) {
+                var rentDetail = rentDetailsData[i];
+                if (rentDetail.photos == "") {
+                    rentDetail.image = "no-photo.jpg";
+                } else {
+                    var images = rentDetail.photos.split(",");
+                    rentDetail.image = images[images.length - 1];
+                }
+                if (rentDetail.price) {
+                    var price = rentDetail.price;
+                    price = price.replace(",", "");
+                    if (price > 100000) {
+                        price = parseFloat(price) / 100000;
+                        price = price + "Lac";
+                        rentDetail.price = price;
+                    } else {
+                        rentDetail.price = price;
+                    }
+                } else {
+                    rentDetail.price = "Price on Request";
+                }
+                rentDetailsData[i] = rentDetail;
+            }
+            // console.log(rentDetailsData);
+            res.render("home/rent_list_view", {
+                page_title: "Rent",
+                page_name: "Rent",
+                posted_by: postedBy,
+                rent: rentDetailsData,
+                property_type: propertyType,
+                property_sub_type: propertySubType,
+                city: city,
+                locality: locality,
+                min_price: minPrice,
+                max_price: maxPrice,
+                bedrooms: bedrooms
+            });
+        });
+});
+
+router.get("/rent_details/:id?", async function (req, res) {
+    var id = req.params.id
+    if (id) {
+        var rentDetails = await crudModel.getRentDetailsById(id);
+        // console.log(rentDetails);
+        if (rentDetails.success && rentDetails.data) {
+            // res.render("home/rent_details", {
+            //     page_name: "property_details",
+            //     page_title: "Property Details",
+            //     has_details: true,
+            //     rent_details: rentDetails.data,
+            //     rent_id: id
+            // });
+        } else {
+            // res.render("home/rent_details", {
+            //     page_name: "property_details",
+            //     page_title: "Property Details",
+            //     has_details: false,
+            //     rent_id: id
+            // });
+        }
+    } else {
+        res.redirect('/');
+    }
+    res.redirect('/');
 });
 
 router.get("/post_requirement", function (req, res) {

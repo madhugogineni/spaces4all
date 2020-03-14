@@ -1,0 +1,24 @@
+.hot-properties,.exclusive-properties {
+    .property-listing {
+        .property {
+            padding-left: 0px !important;
+            .image-container {
+                padding-left: 0px !important;
+                .image {
+                    height: 310px;
+                }
+            }
+        }
+    }
+}
+
+
+@media only screen and (min-width: 992px) {
+    .hot-properties,.exclusive-properties {
+        .property-listing {
+            .property {
+                height: 310px;
+            }
+        }
+    }
+}

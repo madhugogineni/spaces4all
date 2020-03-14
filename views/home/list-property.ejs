@@ -36,21 +36,6 @@
                 document.getElementById("property_sub_type").innerHTML = "";
                 return;
             }
-            // $.ajax({
-            //   type: 'GET',
-            //   url: '<%= api_url %>get_property_sub_types',
-            //   data: {
-            //     property_type: str
-            //   },
-            //   success: function (response) {
-            //     var result = '<option value="">---SELECT---</option>';
-            //     for (var i = 0; i < response.length; i++) {
-            //       result += '<option value="' + response[i].property_sub_type_id + '">' + response[i].sub_type + '</option>';
-            //     }
-            //     $("#property_sub_type").find('option').remove().end();
-            //     $("#property_sub_type").append(result);
-            //   }
-            // });
             getPropertySubTypes(str, "#property_sub_type");
         }
 
@@ -175,29 +160,31 @@
 
 <body class="home">
 
-<div class="body">
+    <div class="body">
 
-    <!-- Start Site Header -->
+        <!-- Start Site Header -->
 
-    <% include includes/header.ejs %>
+        <% include includes/header.ejs %>
 
-    <!-- End Site Header -->
+        <!-- End Site Header -->
 
-    <!-- Site Showcase -->
+        <!-- Site Showcase -->
 
-    <div class="site-showcase">
+        <div class="site-showcase">
 
-        <!-- Start Page Header -->
+            <!-- Start Page Header -->
 
-        <div class="parallax page-header" style="background-image:url(assets/images/page-header1.jpg);">
+            <div class="parallax page-header" style="background-image:url(assets/images/page-header1.jpg);">
 
-            <div class="container">
+                <div class="container">
 
-                <div class="row">
+                    <div class="row">
 
-                    <div class="col-md-12">
+                        <div class="col-md-12">
 
-                        <h1>Submit a Property</h1>
+                            <h1>Submit a Property</h1>
+
+                        </div>
 
                     </div>
 
@@ -205,387 +192,63 @@
 
             </div>
 
+            <!-- End Page Header -->
+
         </div>
 
-        <!-- End Page Header -->
+        <!-- Start Content -->
 
-    </div>
+        <div class="main" role="main">
 
-    <!-- Start Content -->
+            <div id="content" class="content full">
 
-    <div class="main" role="main">
+                <div class="container">
 
-        <div id="content" class="content full">
+                    <div class="page">
 
-            <div class="container">
+                        <div class="row">
 
-                <div class="page">
+                            <div class="col-md-12">
 
-                    <div class="row">
+                                <form action="<%= base_url %>home/add_list_property" method="POST" id="list_property" enctype="multipart/form-data">
 
-                        <div class="col-md-12">
+                                    <div class="block-heading" id="details">
 
-                            <form action="<%= base_url %>home/add_list_property" method="POST" id="list_property"
-                                  enctype="multipart/form-data">
-
-                                <div class="block-heading" id="details">
-
-                                    <h4><span class="heading-icon"><i class="fa fa-user"></i></span>About You</h4>
-
-                                </div>
-
-                                <div class="padding-as25 margin-30 lgray-bg">
-
-                                    <div class="row">
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>NAME*</label>
-
-                                            <input type="text" name="name" id="name" class="form-control" value=""
-                                                   placeholder="Name"
-                                                   required="required">
-
-                                            <!-- <?php if ($this->session->flashdata('name')) {?><b style="color: red"><?=$this->session->flashdata('name')?></b><?php }?> -->
-
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>EMAIL ID*</label>
-
-                                            <input type="email" name="email" id="email" class="form-control" value=""
-                                                   placeholder="Email Id"
-                                                   required="required">
-
-                                            <!-- <?php if ($this->session->flashdata('email')) {?><b style="color: red"><?=$this->session->flashdata('email')?></b><?php }?> -->
-
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>MOBILE*</label>
-
-                                            <input type="text" name="phone" id="phone" class="form-control" value=""
-                                                   placeholder="Mobile"
-                                                   required="required">
-
-                                            <!-- <?php if ($this->session->flashdata('phone')) {?><b style="color: red"><?=$this->session->flashdata('phone')?></b><?php }?> -->
-
-                                        </div>
+                                        <h4><span class="heading-icon"><i class="fa fa-user"></i></span>About You</h4>
 
                                     </div>
 
-
-                                </div>
-
-                                <div class="block-heading">
-
-                                    <h4><span class="heading-icon"><i class="fa fa-home"></i></span>Your Property
-                                        Details</h4>
-
-                                </div>
-
-                                <div class="padding-as25 margin-30 lgray-bg">
-
-                                    <div class="row">
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>PROPERTY NAME*:</label>
-
-                                            <input type="text" name="property_name" id="property_name"
-                                                   class="form-control" value=""
-                                                   placeholder="Property Name" required="required">
-
-                                            <!-- <?php if ($this->session->flashdata('property_name')) {?><b style="color: red"><?=$this->session->flashdata('property_name')?></b><?php }?> -->
-
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>PROPERTY TYPE*:</label>
-
-                                            <select name="property_type" id="property_type"
-                                                    onchange="show_sub_type(this.value)"
-                                                    class="form-control margin-0" required="required">
-
-                                                <option value="">---SELECT---</option>
-
-                                                <script> setUpPropertyTypes('#property_type');</script>
-
-                                            </select>
-
-                                            <!-- <?php if ($this->session->flashdata('property_type')) {?><b style="color: red"><?=$this->session->flashdata('property_type')?></b><?php }?> -->
-
-                                        </div>
-
-                                        <div class="col-md-4 col-sm-4">
-
-                                            <label>PROPERTY SUB TYPE*:</label>
-
-                                            <select name="property_sub_type" id="property_sub_type"
-                                                    onchange="hide_bedrooms(this.value)"
-                                                    class="form-control margin-0" required="required">
-
-                                                <!-- <option value="<?=$row1['property_sub_type_id']?>"><?=$row1['sub_type']?></option> -->
-                                                <option value="">---SELECT---</option>
-
-
-                                            </select>
-
-                                            <!-- <?php if ($this->session->flashdata('property_sub_type')) {?><b style="color: red"><?=$this->session->flashdata('property_sub_type')?></b><?php }?> -->
-
-                                        </div>
-
-
-                                    </div>
-
-                                    <div id="normalfields">
+                                    <div class="padding-as25 margin-30 lgray-bg">
 
                                         <div class="row">
 
                                             <div class="col-md-4 col-sm-4">
 
-                                                <label>FACING*:</label>
+                                                <label>NAME: <span class="c-r">*</span></label>
 
-                                                <input type="text" name="facing" id="facing" class="form-control"
-                                                       value=""
-                                                       placeholder="Facing">
+                                                <input type="text" name="name" id="name" class="form-control" value="" placeholder="Name" required="required">
 
-                                                <!-- <?php if ($this->session->flashdata('facing')) {?><b style="color: red"><?=$this->session->flashdata('facing')?></b><?php }?> -->
+                                                <!-- <?php if ($this->session->flashdata('name')) {?><b style="color: red"><?=$this->session->flashdata('name')?></b><?php }?> -->
 
                                             </div>
 
                                             <div class="col-md-4 col-sm-4">
 
-                                                <label>BEDROOMS*:</label>
+                                                <label>EMAIL ID: <span class="c-r">*</span></label>
 
-                                                <select name="bedrooms" id="bedrooms" class="form-control margin-0">
+                                                <input type="email" name="email" id="email" class="form-control" value="" placeholder="Email Id" required="required">
 
-                                                    <option value="">---SELECT---</option>
-                                                    <% for(var i = 1;i <= 8;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                    <% } %>
-
-                                                </select>
-
-                                                <!-- <?php if ($this->session->flashdata('bedrooms')) {?><b style="color: red"><?=$this->session->flashdata('bedrooms')?></b><?php }?> -->
+                                                <!-- <?php if ($this->session->flashdata('email')) {?><b style="color: red"><?=$this->session->flashdata('email')?></b><?php }?> -->
 
                                             </div>
 
                                             <div class="col-md-4 col-sm-4">
 
-                                                <label>BATHROOMS:</label>
+                                                <label>MOBILE: <span class="c-r">*</span></label>
 
-                                                <select name="bathrooms" id="bathrooms" class="form-control margin-0 ">
+                                                <input type="text" name="phone" id="phone" class="form-control" value="" placeholder="Mobile" required="required">
 
-                                                    <option value="">---SELECT---</option>
-
-                                                    <% for(var i = 0;i <= 8;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                    <% } %>
-
-                                                </select>
-
-                                                <!-- <?php if ($this->session->flashdata('bathrooms')) {?><b style="color: red"><?=$this->session->flashdata('bathrooms')?></b><?php }?> -->
-
-                                            </div>
-
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>STATE:</label>
-
-                                                <select name="state" id="state" class="form-control margin-0">
-
-
-                                                    <script> setUpStates('#state'); </script>
-
-
-                                                    <!--  <?php if ($this->session->flashdata('state_value')){if($this->session->flashdata('state_value') == $row['state_id']){echo 'selected';}}?> -->
-
-                                                </select>
-
-                                            </div>
-
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>CITY*:</label>
-
-                                                <select name="city" id="city"
-                                                        onchange="showLocality(this.value,'#locality')"
-                                                        class="form-control margin-0 ">
-                                                    <script>setUpCities('#city'); </script>
-                                                    <!--  <?php if ($this->session->flashdata('city_value')){if($this->session->flashdata('city_value') == $row1['city_id']){echo 'selected';}}?> -->
-                                                </select>
-
-                                                <!-- <?php if ($this->session->flashdata('city')) {?><b style="color: red"><?=$this->session->flashdata('city')?></b><?php }?> -->
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>LOCALITY*:</label>
-
-                                                <select name="locality" id="locality" class="form-control margin-0">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                </select>
-
-                                                <!-- <?php if ($this->session->flashdata('locality')) {?><b style="color: red"><?=$this->session->flashdata('locality')?></b><?php }?> -->
-
-                                            </div>
-
-                                        </div>
-                                        <br>
-
-                                        <div class="row">
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>SALEABLE AREA: *</label>
-
-                                                <input type="text" name="saleable_area" id="saleable_area"
-                                                       class="form-control" value=""
-                                                       placeholder="Saleable Area(Sq.ft / Sq.yds)" required="required">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>QUOTED PRICE: *</label>
-
-                                                <input type="text" name="quoted_price" id="quoted_price"
-                                                       class="form-control" value=""
-                                                       placeholder="Quoted Price" required="required">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>AGE OF CONSTRUCTION:</label>
-
-                                                <input type="text" name="construction_age" id="construction_age"
-                                                       class="form-control" value=""
-                                                       placeholder="Age of Construction">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>FLOOR NO:</label>
-
-                                                <input type="text" name="floor_no" id="floor_no" class="form-control"
-                                                       value=""
-                                                       placeholder="Floor No">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>NO OF FLOORS:</label>
-
-                                                <input type="text" name="floors" id="floors" class="form-control"
-                                                       value=""
-                                                       placeholder="No of Floors">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>CAR PARKING:</label>
-
-                                                <select name="car_parking" id="car_parking"
-                                                        class="form-control margin-0 ">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <% for(var i = 0;i <= 10;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                    <% } %>
-
-                                                    <!--  <?php if ($this->session->flashdata('car_parking_value')){if($this->session->flashdata('car_parking_value') == $j){echo 'selected';}}?> -->
-
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-md-12 col-sm-4">
-
-                                                <label>PROPERTY DESCRIPTION:</label>
-
-                                                <textarea name="description" id="description"
-                                                          class="form-control"></textarea>
-                                                <!-- <?php if ($this->session->flashdata('desc_value')){echo $this->session->flashdata('desc_value');}?> -->
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>UPLOAD PHOTOS:</label>
-
-                                                <input type="file" name="photos[]" class="" multiple="multiple">
-
-                                            </div>
-
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>FURNISHING STATUS:</label>
-
-                                                <select name="furnishing" id="furnishing"
-                                                        class="form-control margin-0 ">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <option value="Unfurnished">Unfurnished</option>
-                                                    <!--  <?php if ($this->session->flashdata('furnishing_value')){if($this->session->flashdata('furnishing_value') == 'Unfurnished'){echo 'selected';}}?> -->
-
-                                                    <option value="Semifurnished">Semifurnished</option>
-                                                    <!--  <?php if ($this->session->flashdata('furnishing_value')){if($this->session->flashdata('furnishing_value') == 'Semifurnished'){echo 'selected';}}?> -->
-
-                                                    <option value="Fullyfurnished">Fullyfurnished</option>
-                                                    <!--  <?php if ($this->session->flashdata('furnishing_value')){if($this->session->flashdata('furnishing_value') == 'Fullyfurnished'){echo 'selected';}}?> -->
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>POSTED BY*:</label>
-
-                                                <select name="posted_by" id="posted_by" class="form-control margin-0">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <option value="Owner">Owner</option>
-                                                    <!--  <?php if ($this->session->flashdata('posted_value')){if($this->session->flashdata('posted_value') == 'Owner'){echo 'selected';}}?> -->
-
-                                                    <option value="Agent">Agent</option>
-                                                    <!--  <?php if ($this->session->flashdata('posted_value')){if($this->session->flashdata('posted_value') == 'Agent'){echo 'selected';}}?> -->
-
-                                                    <option value="Builder">Builder</option>
-                                                    <!--  <?php if ($this->session->flashdata('posted_value')){if($this->session->flashdata('posted_value') == 'Builder'){echo 'selected';}}?> -->
-
-                                                </select>
-
-                                                <!-- <?php if ($this->session->flashdata('posted_by')) {?><b style="color: red"><?=$this->session->flashdata('posted_by')?></b><?php }?> -->
+                                                <!-- <?php if ($this->session->flashdata('phone')) {?><b style="color: red"><?=$this->session->flashdata('phone')?></b><?php }?> -->
 
                                             </div>
 
@@ -594,286 +257,559 @@
 
                                     </div>
 
+                                    <div class="block-heading">
 
-                                    <div id="residentialfields" style="display: none;">
+                                        <h4><span class="heading-icon"><i class="fa fa-home"></i></span>Your Property
+                                            Details</h4>
 
-
-                                        <div class="row">
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>FACING*:</label>
-
-                                                <input type="text" name="facing1" id="facing1" class="form-control"
-                                                       placeholder="Facing">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>CITY*:</label>
-
-                                                <select name="city1" id="city1"
-                                                        onchange="showLocality(this.value,'#locality1')"
-                                                        class="form-control margin-0 ">
-
-                                                    <script>setUpCities('#city1');</script>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>LOCALITY*:</label>
-
-                                                <select name="locality1" id="locality1" class="form-control margin-0">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                </select>
-
-                                            </div>
-
-
-                                        </div>
-
-                                        <div class="row">
-
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>STATE:</label>
-
-                                                <select name="state1" id="state1" class="form-control margin-0">
-                                                    <script>setUpStates('#state1');</script>
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>PLOT AREA(SQYDS)*:</label>
-
-                                                <input type="text" name="plot_area" id="plot_area" class="form-control"
-                                                       placeholder="Plot Area(Sq.yds)">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>QUOTED PRICE:</label>
-
-                                                <input type="text" name="quoted_price1" id="quoted_price1"
-                                                       class="form-control" value=""
-                                                       placeholder="Quoted Price">
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>FLOORS ALLOWED FOR CONSTRUCTION:</label>
-
-                                                <select name="floors1" id="floors1" class="form-control margin-0 ">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <% for(var i = 0;i <= 20;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                    <% } %>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>NO OF OPEN SIDES:</label>
-
-                                                <select name="open_slides" id="open_slides"
-                                                        class="form-control margin-0 ">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <% for(var i = 0;i <= 10;i++) { %>
-                                                    <option value="<%= i %>"><%= i %></option>
-                                                    <% } %>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>WIDTH OF ROAD(FT):</label>
-
-                                                <input type="text" name="width" id="width" class="form-control"
-                                                       placeholder="Width Of Road Facing The Plot">
-
-                                            </div>
-
-                                        </div>
-
-
-                                        <div class="row">
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>ANY CONSTRUCTION DONE*: </label>
-
-                                                <select name="construction_done" id="construction_done"
-                                                        class="form-control margin-0"
-                                                        required="required">
-
-                                                    <option value="NO">NO</option>
-
-                                                    <option value="YES">YES</option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>BOUNDARY WALL MADE:</label>
-
-                                                <select name="boundary_wall" id="boundary_wall"
-                                                        class="form-control margin-0 ">
-
-                                                    <option value="NO">NO</option>
-
-                                                    <option value="YES">YES</option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>IS IN A GATED COLONY:</label>
-
-                                                <select name="gated_colony" id="gated_colony"
-                                                        class="form-control margin-0 ">
-
-                                                    <option value="NO">NO</option>
-
-                                                    <option value="YES">YES</option>
-
-                                                </select>
-
-                                            </div>
-
-                                        </div>
-                                        <br>
-
-
-                                        <div class="row">
-
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>POSTED BY*:</label>
-
-                                                <select name="posted_by1" id="posted_by1" class="form-control margin-0">
-
-                                                    <option value="">---SELECT---</option>
-
-                                                    <option value="Owner">Owner</option>
-
-                                                    <option value="Agent">Agent</option>
-
-                                                    <option value="Builder">Builder</option>
-
-                                                </select>
-
-                                            </div>
-
-                                            <div class="col-md-4 col-sm-4">
-
-                                                <label>UPLOAD PHOTOS:</label>
-
-                                                <input type="file" name="photos1[]" class="" multiple="multiple">
-
-                                            </div>
-
-                                        </div>
-                                        <br>
-
-                                        <label>DIMENTIONS(IN FEETS):</label> <br>
-
-                                        <div class="row">
-
-                                            <div class="col-md-3 col-sm-3">
-
-                                                <label>EAST:</label>
-
-                                                <input type="text" name="east" id="east" class="form-control">
-
-                                            </div>
-
-                                            <div class="col-md-3 col-sm-3">
-
-                                                <label>WEST:</label>
-
-                                                <input type="text" name="west" id="west" class="form-control">
-
-                                            </div>
-
-                                            <div class="col-md-3 col-sm-3">
-
-                                                <label>NORTH:</label>
-
-                                                <input type="text" name="north" id="north" class="form-control">
-
-                                            </div>
-
-                                            <div class="col-md-3 col-sm-3">
-
-                                                <label>SOUTH:</label>
-
-                                                <input type="text" name="south" id="south" class="form-control">
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-
-                                            <div class="col-md-12 col-sm-4">
-
-                                                <label>PROPERTY DESCRIPTION:</label>
-
-                                                <textarea name="description1" id="description1"
-                                                          class="form-control"></textarea>
-                                                <!-- <?php if ($this->session->flashdata('desc_value')){echo $this->session->flashdata('desc_value');}?> -->
-
-                                            </div>
-
-                                        </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="padding-as25 margin-30 lgray-bg">
 
-                                        <div class="col-md-12">
+                                        <div class="row">
 
-                                            <label>Amenities :</label>
+                                            <div class="col-md-4 col-sm-4">
 
-                                            <div class="checkbox" id="amenity_options">
+                                                <label>PROPERTY NAME: <span class="c-r">*</span></label>
 
-                                                <script> setUpAmenities('#amenity_options');</script>
+                                                <input type="text" name="property_name" id="property_name" class="form-control" value="" placeholder="Property Name" required="required">
+
+                                                <!-- <?php if ($this->session->flashdata('property_name')) {?><b style="color: red"><?=$this->session->flashdata('property_name')?></b><?php }?> -->
+
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-4">
+
+                                                <label>PROPERTY TYPE: <span class="c-r">*</span></label>
+
+                                                <select name="property_type" id="property_type" onchange="show_sub_type(this.value)" class="form-control margin-0" required="required">
+
+                                                    <option value="">---SELECT---</option>
+
+                                                    <script> setUpPropertyTypes('#property_type');</script>
+
+                                                </select>
+
+                                                <!-- <?php if ($this->session->flashdata('property_type')) {?><b style="color: red"><?=$this->session->flashdata('property_type')?></b><?php }?> -->
+
+                                            </div>
+
+                                            <div class="col-md-4 col-sm-4">
+
+                                                <label>PROPERTY SUB TYPE: <span class="c-r">*</span></label>
+
+                                                <select name="property_sub_type" id="property_sub_type" onchange="hide_bedrooms(this.value)" class="form-control margin-0" required="required">
+
+                                                    <!-- <option value="<?=$row1['property_sub_type_id']?>"><?=$row1['sub_type']?></option> -->
+                                                    <option value="">---SELECT---</option>
+
+
+                                                </select>
+
+                                                <!-- <?php if ($this->session->flashdata('property_sub_type')) {?><b style="color: red"><?=$this->session->flashdata('property_sub_type')?></b><?php }?> -->
+
+                                            </div>
+
+
+                                        </div>
+
+                                        <div id="normalfields">
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>FACING: <span class="c-r">*</span></label>
+
+                                                    <!-- <input type="text" name="facing" id="facing" class="form-control" value="" placeholder="Facing"> -->
+                                                    <select name="facing" id="facing" class="form-control" required="true">
+                                                        <option value="">---SELECT---</option>
+                                                        <option value="North">North</option>
+                                                        <option value="South">South</option>
+                                                        <option value="West">West</option>
+                                                        <option value="East">East</option>
+                                                        <option value="North East">North East</option>
+                                                        <option value="North West">North West</option>
+                                                        <option value="South East">South East</option>
+                                                        <option value="South West">South West</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>BEDROOMS: <span class="c-r">*</span></label>
+
+                                                    <select name="bedrooms" id="bedrooms" class="form-control margin-0">
+
+                                                        <option value="">---SELECT---</option>
+                                                        <% for(var i = 1;i <= 8;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                    <!-- <?php if ($this->session->flashdata('bedrooms')) {?><b style="color: red"><?=$this->session->flashdata('bedrooms')?></b><?php }?> -->
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>BATHROOMS:</label>
+
+                                                    <select name="bathrooms" id="bathrooms" class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 8;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                    <!-- <?php if ($this->session->flashdata('bathrooms')) {?><b style="color: red"><?=$this->session->flashdata('bathrooms')?></b><?php }?> -->
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>STATE:</label>
+
+                                                    <select name="state" id="state" class="form-control margin-0">
+
+
+                                                        <script> setUpStates('#state'); </script>
+
+
+                                                        <!--  <?php if ($this->session->flashdata('state_value')){if($this->session->flashdata('state_value') == $row['state_id']){echo 'selected';}}?> -->
+
+                                                    </select>
+
+                                                </div>
+
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>CITY: <span class="c-r">*</span></label>
+
+                                                    <select name="city" id="city" onchange="showLocality(this.value,'#locality')" class="form-control margin-0 ">
+                                                        <script>setUpCities('#city'); </script>
+                                                        <!--  <?php if ($this->session->flashdata('city_value')){if($this->session->flashdata('city_value') == $row1['city_id']){echo 'selected';}}?> -->
+                                                    </select>
+
+                                                    <!-- <?php if ($this->session->flashdata('city')) {?><b style="color: red"><?=$this->session->flashdata('city')?></b><?php }?> -->
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>LOCALITY: <span class="c-r">*</span></label>
+
+                                                    <select name="locality" id="locality" class="form-control margin-0">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                    </select>
+                                                </div>
+
+                                            </div>
+                                            <br>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>SALEABLE AREA: <span class="c-r">*</span></label>
+
+                                                    <input type="text" name="saleable_area" id="saleable_area" class="form-control" value="" placeholder="Saleable Area(Sq.ft / Sq.yds)" required="required">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>AGE OF CONSTRUCTION:</label>
+
+                                                    <input type="text" name="construction_age" id="construction_age" class="form-control" value="" placeholder="Age of Construction">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>CAR PARKING:</label>
+
+                                                    <select name="car_parking" id="car_parking" class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 10;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>FLOOR NO:</label>
+
+                                                    <input type="text" name="floor_no" id="floor_no" class="form-control" value="" placeholder="Floor No">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>NO OF FLOORS:</label>
+
+                                                    <input type="text" name="floors" id="floors" class="form-control" value="" placeholder="No of Floors">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>QUOTED PRICE: <span class="c-r">*</span></label>
+
+                                                    <input type="text" name="quoted_price" id="quoted_price" class="form-control" value="" placeholder="Quoted Price" required="required">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-12 col-sm-4">
+
+                                                    <label>PROPERTY DESCRIPTION:</label>
+
+                                                    <textarea name="description" id="description" class="form-control"></textarea>
+                                                    <!-- <?php if ($this->session->flashdata('desc_value')){echo $this->session->flashdata('desc_value');}?> -->
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>UPLOAD PHOTOS:</label>
+
+                                                    <input type="file" name="photos[]" class="" multiple="multiple">
+
+                                                </div>
+
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>FURNISHING STATUS:</label>
+
+                                                    <select name="furnishing" id="furnishing" class="form-control margin-0 ">
+
+                                                        <option value="">Furnishing Status</option>
+
+                                                        <option value="Unfurnished">Unfurnished</option>
+                                                        <option value="Semifurnished">Semi Furnished</option>
+                                                        <option value="Fullyfurnished">Fully Furnished</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>POSTED BY: <span class="c-r">*</span></label>
+
+                                                    <select name="posted_by" id="posted_by" class="form-control margin-0">
+
+                                                        <option value="">---SELECT---</option>
+                                                        <option value="Agent">Agent</option>
+                                                        <option value="Builder">Builder</option>
+                                                        <option value="Owner">Owner</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="residentialfields" style="display: none;">
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>FACING: <span class="c-r">*</span></label>
+                                                    <!-- <input type="text" name="facing1" id="facing1" class="form-control" placeholder="Facing"> -->
+                                                    <select name="facing1" id="facing1" class="form-control">
+                                                        <option value="">---SELECT---</option>
+                                                        <option value="North">North</option>
+                                                        <option value="South">South</option>
+                                                        <option value="West">West</option>
+                                                        <option value="East">East</option>
+                                                        <option value="North East">North East</option>
+                                                        <option value="North West">North West</option>
+                                                        <option value="South East">South East</option>
+                                                        <option value="South West">South West</option>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>CITY: <span class="c-r">*</span></label>
+
+                                                    <select name="city1" id="city1" onchange="showLocality(this.value,'#locality1')" class="form-control margin-0 ">
+
+                                                        <script>setUpCities('#city1');</script>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>LOCALITY: <span class="c-r">*</span></label>
+
+                                                    <select name="locality1" id="locality1" class="form-control margin-0">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                    </select>
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>STATE:</label>
+
+                                                    <select name="state1" id="state1" class="form-control margin-0">
+                                                        <script>setUpStates('#state1');</script>
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>PLOT AREA(SQYDS): <span class="c-r">*</span></label>
+
+                                                    <input type="text" name="plot_area" id="plot_area" class="form-control" placeholder="Plot Area(Sq.yds)">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>QUOTED PRICE:</label>
+
+                                                    <input type="text" name="quoted_price1" id="quoted_price1" class="form-control" value="" placeholder="Quoted Price">
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>FLOORS ALLOWED FOR CONSTRUCTION:</label>
+
+                                                    <select name="floors1" id="floors1" class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 20;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>NO OF OPEN SIDES:</label>
+
+                                                    <select name="open_slides" id="open_slides" class="form-control margin-0 ">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <% for(var i = 0;i <= 10;i++) { %>
+                                                        <option value="<%= i %>"><%= i %></option>
+                                                        <% } %>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>WIDTH OF ROAD(FT):</label>
+
+                                                    <input type="text" name="width" id="width" class="form-control" placeholder="Width Of Road Facing The Plot">
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row">
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>ANY CONSTRUCTION DONE: <span class="c-r">*</span></label>
+
+                                                    <select name="construction_done" id="construction_done" class="form-control margin-0" required="required">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>BOUNDARY WALL MADE:</label>
+
+                                                    <select name="boundary_wall" id="boundary_wall" class="form-control margin-0 ">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>IS IN A GATED COLONY:</label>
+
+                                                    <select name="gated_colony" id="gated_colony" class="form-control margin-0 ">
+
+                                                        <option value="NO">NO</option>
+
+                                                        <option value="YES">YES</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+                                            <br>
+
+
+                                            <div class="row">
+
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>POSTED BY: <span class="c-r">*</span></label>
+
+                                                    <select name="posted_by1" id="posted_by1" class="form-control margin-0">
+
+                                                        <option value="">---SELECT---</option>
+
+                                                        <option value="Agent">Agent</option>
+
+                                                        <option value="Builder">Builder</option>
+
+                                                        <option value="Owner">Owner</option>
+
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4 col-sm-4">
+
+                                                    <label>UPLOAD PHOTOS:</label>
+
+                                                    <input type="file" name="photos1[]" class="" multiple="multiple">
+
+                                                </div>
+
+                                            </div>
+                                            <br>
+
+                                            <label>DIMENTIONS(IN FEETS):</label> <br>
+
+                                            <div class="row">
+
+                                                <div class="col-md-3 col-sm-3">
+
+                                                    <label>EAST:</label>
+
+                                                    <input type="text" name="east" id="east" class="form-control">
+
+                                                </div>
+
+                                                <div class="col-md-3 col-sm-3">
+
+                                                    <label>WEST:</label>
+
+                                                    <input type="text" name="west" id="west" class="form-control">
+
+                                                </div>
+
+                                                <div class="col-md-3 col-sm-3">
+
+                                                    <label>NORTH:</label>
+
+                                                    <input type="text" name="north" id="north" class="form-control">
+
+                                                </div>
+
+                                                <div class="col-md-3 col-sm-3">
+
+                                                    <label>SOUTH:</label>
+
+                                                    <input type="text" name="south" id="south" class="form-control">
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="col-md-12 col-sm-4">
+
+                                                    <label>PROPERTY DESCRIPTION:</label>
+
+                                                    <textarea name="description1" id="description1" class="form-control"></textarea>
+                                                    <!-- <?php if ($this->session->flashdata('desc_value')){echo $this->session->flashdata('desc_value');}?> -->
+
+                                                </div>
 
                                             </div>
                                         </div>
+
+                                        <div class="row">
+
+                                            <div class="col-md-12">
+
+                                                <label>Amenities :</label>
+
+                                                <div class="checkbox" id="amenity_options">
+
+                                                    <script> setUpAmenities('#amenity_options');</script>
+
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="text-align-center" id="submit-property">
+                                    <div class="text-align-center" id="submit-property">
 
-                                    <button type="submit" name="add_list_property" value="add_list_property"
-                                            id="list_property_submit_button" class="btn btn-primary btn-lg">Submit
-                                    </button>
+                                        <button type="submit" name="add_list_property" value="add_list_property" id="list_property_submit_button" class="btn btn-primary btn-lg">Submit
+                                        </button>
 
-                                </div>
+                                    </div>
 
-                            </form>
+                                </form>
+
+                            </div>
 
                         </div>
 
@@ -885,11 +821,9 @@
 
         </div>
 
-    </div>
+        <!-- Start Site Footer -->
 
-    <!-- Start Site Footer -->
-
-    <% include includes/footer.ejs %>
+        <% include includes/footer.ejs %>
 
 
 </body>

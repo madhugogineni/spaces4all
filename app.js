@@ -82,20 +82,20 @@ app.get("/", function (req, res) {
                     if (latestProject.project_photo == null) {
                         latestProject.project_photo = "no-photo.jpg";
                     }
-                    var plans = latestProject.plans, minPrice = latestProject.min_price;
-                    var plansString = "", finalMinPrice;
-                    if (plans != null && plans != '') {
-                        var plansArray = plans.split(',');
-                        for (var i = 0; i < plansArray.length; i++) {
-                            plansString += plansArray[i] + ' BHK';
-                            if (i != (plansArray.length - 1)) {
-                                plansString += ", ";
-                            }
-                        }
-                    } else {
-                        plansString = '';
-                    }
-                    latestProject.plans = plansString;
+                    var minPrice = latestProject.min_price;
+                    var finalMinPrice;
+                    // if (plans != null && plans != '') {
+                    //     var plansArray = plans.split(',');
+                    //     for (var i = 0; i < plansArray.length; i++) {
+                    //         plansString += plansArray[i] + ' BHK';
+                    //         if (i != (plansArray.length - 1)) {
+                    //             plansString += ", ";
+                    //         }
+                    //     }
+                    // } else {
+                    //     plansString = '';
+                    // }
+                    // latestProject.plans = plansString;
                     if (minPrice != "") {
                         if (minPrice > 10000000) {
                             finalMinPrice = Math.round((parseFloat(minPrice)) / 10000000, 2);
