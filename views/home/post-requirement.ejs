@@ -206,7 +206,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Property Type * :</label>
+                                            <label>Property Type: <span class="c-r">*</span></label>
 
                                             <select name="property_type" id="property_type" onchange="show_sub_type(this.value)" class="form-control margin-0">
 
@@ -217,7 +217,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Property Sub Type * :</label>
+                                            <label>Property Sub Type: <span class="c-r">*</span></label>
 
                                             <select name="property_sub_type" id="property_sub_type" onchange="hide_bedrooms(this.value)" class="form-control margin-0">
 
@@ -234,7 +234,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>State*:</label>
+                                            <label>State: <span class="c-r">*</span></label>
 
                                             <select name="state" id="state" class="form-control margin-0" required="required">
 
@@ -246,7 +246,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>City* :</label>
+                                            <label>City: <span class="c-r">*</span></label>
 
                                             <select name="city" id="city" onchange="showLocality(this.value,'#Showlocality')" class="form-control margin-0 ">
 
@@ -264,7 +264,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Locality* :</label>
+                                            <label>Locality: <span class="c-r">*</span></label>
 
                                             <select name="locality" id="Showlocality" class="form-control margin-0">
                                                 <option value="">---SELECT---</option>
@@ -273,7 +273,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Bedrooms*:</label>
+                                            <label>Bedrooms: <span class="c-r">*</span></label>
 
                                             <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
 
@@ -294,7 +294,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Min Price* :</label>
+                                            <label>Min Price: <span class="c-r">*</span></label>
 
                                             <select id="min_price" name="min_price" class="form-control margin-0 " onchange="Show_max_price(this.value)">
 
@@ -319,7 +319,7 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Max Price* :</label>
+                                            <label>Max Price: <span class="c-r">*</span></label>
 
                                             <select name="max_price" class="form-control margin-0 " id="max_price">
 
@@ -374,9 +374,6 @@
                                             <label>Saleable Area(Max):</label>
 
                                             <input type="text" name="max_area" class="form-control" value="" placeholder="Max Area">
-                                            <!--                                        <?php if ($this->session->flashdata('max_area')) {?><b-->
-                                            <!--                                                style="color: red"><?=$this->-->
-                                            <!--                                            session->flashdata('max_area')?></b><?php }?>-->
                                         </div>
 
                                         <div class="col-md-2 col-sm-4" style="margin-left: -20px">
@@ -409,25 +406,16 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Name* :</label>
+                                            <label>Name: <span class="c-r">*</span></label>
 
                                             <input type="text" name="name" class="form-control" value="" placeholder="Name">
-
-                                            <!--                                        <?php if ($this->session->flashdata('name')) {?><b style="color: red"><?=$this->-->
-                                            <!--                                            session->flashdata('name')?></b><?php }?>-->
-
-
                                         </div>
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Mobile No* :</label>
+                                            <label>Mobile No: <span class="c-r">*</span></label>
 
                                             <input type="text" name="phone" class="form-control" value="" placeholder="Mobile No">
-
-                                            <!--                                        <?php if ($this->session->flashdata('phone')) {?><b-->
-                                            <!--                                                style="color: red"><?=$this->session->flashdata('phone')?></b><?php }?>-->
-
                                         </div>
 
                                     </div>
@@ -436,13 +424,9 @@
 
                                         <div class="col-md-6 col-sm-4">
 
-                                            <label>Email Id* :</label>
+                                            <label>Email Id: <span class="c-r">*</span></label>
 
                                             <input type="text" name="email" class="form-control" value="" placeholder="Email Id">
-
-                                            <!--                                        <?php if ($this->session->flashdata('email')) {?><b-->
-                                            <!--                                                style="color: red"><?=$this->session->flashdata('email')?></b><?php }?>-->
-
                                         </div>
 
                                         <div class="col-md-6 col-sm-4">
@@ -450,11 +434,6 @@
                                             <label>Convenient Time To Call:</label>
 
                                             <input type="text" name="avail_time" class="form-control" value="" placeholder="Available Time">
-
-                                            <!--                                        <?php if ($this->session->flashdata('avail_time')) {?><b-->
-                                            <!--                                                style="color: red"><?=$this->-->
-                                            <!--                                            session->flashdata('avail_time')?></b><?php }?>-->
-
                                         </div>
 
                                     </div>
@@ -466,8 +445,7 @@
 
                                 <div class="text-align-center" id="submit-property">
 
-                                    <button type="submit" name="submit" id="submit_button" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Submit Now
-                                    </button>
+                                    <button type="submit" name="submit" id="submit_button" class="btn btn-primary btn-lg">Submit !</button>
 
                                 </div>
 

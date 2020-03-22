@@ -189,12 +189,9 @@
         <span class="mdi mdi-close" style="float:right;margin-right:5px;" onclick="hideComparisonPopup()"></span>
         <hr />
         <ul class="list-group nomargin">
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/property">Property [<span
-                        id="property_compare_count">0</span>]</a></li>
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/project">Projects [<span
-                        id="project_compare_count">0</span>]</a></li>
-            <li class="list-group-item"><a href="<%=base_url%>home/compare/rent">Rent [<span
-                        id="rent_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/property">Property [<span id="property_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/project">Projects [<span id="project_compare_count">0</span>]</a></li>
+            <li class="list-group-item"><a href="<%=base_url%>home/compare/rent">Rent [<span id="rent_compare_count">0</span>]</a></li>
         </ul>
     </div>
 
@@ -289,47 +286,42 @@
                             <li class=""><a href="javascript:;">Mortgage</a>
 
                                 <ul class="dropdown">
-
                                     <li><a href="<%= base_url %>home/emi_calculator">EMI Calculator</a></li>
-
-                                    <li><a href="<%= base_url %>home/loan_eligibility_check">Loan Eligibility Check</a>
-                                    </li>
-
-                                    <li><a href="<%= base_url %>home/apply_home_loan">Apply home Loan</a></li>
-
+                                    <li><a href="<%= base_url %>home/loan_eligibility_check">Loan Eligibility Check</a> </li>
                                     <li><a href="<%= base_url %>home/req_docs_forloan">Required Documents for Loan</a>
-                                    </li>
-
-                                </ul>
-
+                                    <li><a href="<%= base_url %>home/apply_home_loan">Apply home Loan</a></li>
                             </li>
 
-                            <li class=""><a href="#">Info</a>
+                        </ul>
 
-                                <ul class="dropdown">
+                        </li>
 
-                                    <!-- <li><a href="<%= base_url %>home/information">Information</a></li> -->
+                        <li class=""><a href="#">Info</a>
 
-                                    <!-- <li><a href="<%= base_url %>home/popular_agents">Useful Contacts</a></li> -->
+                            <ul class="dropdown">
 
-                                    <li><a href="<%= base_url %>home/glossarys">Glossary</a></li>
+                                <!-- <li><a href="<%= base_url %>home/information">Information</a></li> -->
 
-                                    <!-- <li><a href="<%= base_url %>home/faqs">Faqs</a></li> -->
+                                <!-- <li><a href="<%= base_url %>home/popular_agents">Useful Contacts</a></li> -->
 
-                                    <!-- <li><a href="<%= base_url %>home/price_trends">Price Trends / Rates</a></li> -->
+                                <li><a href="<%= base_url %>home/glossarys">Glossary</a></li>
 
-                                    <li><a href="<%= base_url %>home/area_conversion_calculator">Area Conversation
-                                            Table</a></li>
+                                <!-- <li><a href="<%= base_url %>home/faqs">Faqs</a></li> -->
 
-                                    <li><a href="<%= base_url %>home/stamp_duty_calculator">Stamp Duty Calculator</a>
-                                    </li>
+                                <!-- <li><a href="<%= base_url %>home/price_trends">Price Trends / Rates</a></li> -->
 
-                                </ul>
+                                <li><a href="<%= base_url %>home/area_conversion_calculator">Area Conversation
+                                        Table</a></li>
 
-                            </li>
+                                <li><a href="<%= base_url %>home/stamp_duty_calculator">Stamp Duty Calculator</a>
+                                </li>
 
-                            <li class=""><a href="<%= base_url %>home/contact" style="border-right: none;"> Contact</a>
-                            </li>
+                            </ul>
+
+                        </li>
+
+                        <li class=""><a href="<%= base_url %>home/contact" style="border-right: none;"> Contact</a>
+                        </li>
 
                         </ul>
 

@@ -225,17 +225,19 @@ router.get("/contact", function (req, res) {
 
 router.post("/add_contact", upload.none(), async function (req, res) {
     let validator = new Validator(req.body, {
-        name: "required|alpha|minLength:3",
+        name: "required|string|minLength:3",
         email: "required|email",
         phone: "required|numeric|maxLength:10|minLength:10",
         message: "required|minLength:10"
     });
 
+    var isValidName = validation.validateName(req.body.name);
+    console.log(isValidName)
     var isValidEmail = validation.validateEmail(req.body.email);
     var isValidComments = validation.validateMessage(req.body.message);
     var validatorResult = await validator.check();
 
-    if (validatorResult && isValidEmail && isValidComments) {
+    if (validatorResult && isValidEmail && isValidComments && isValidName) {
         var insertResult = await crudModel.insertContact(
             req.body.name,
             req.body.email,
@@ -267,6 +269,9 @@ router.post("/add_contact", upload.none(), async function (req, res) {
         }
     } else {
         var errorMsg = "";
+        if (!isValidName) {
+            errorMsg += "Name should only contain letters are spaces ! \n"
+        }
         if (!isValidEmail) {
             errorMsg += "Please enter a valid email id ! \n"
         }
@@ -276,6 +281,7 @@ router.post("/add_contact", upload.none(), async function (req, res) {
         Object.keys(validator.errors).map(function (key) {
             errorMsg += validator.errors[key].message + "\n";
         });
+        console.log(errorMsg)
         res.send({ success: false, message: errorMsg });
     }
 });
@@ -1539,7 +1545,12 @@ router.get("/compare_count/:type", function (req, res) {
     var type = req.params.type;
     res.send({ success: true, count: req.session.compare[type].length || 0 });
 });
-
+router.get('/disclaimer', function (req, res) {
+    res.render('home/disclaimer', {
+        page_title: "Disclaimer",
+        page_name: "disclaimer"
+    });
+})
 
 function getErrorMessage(errors) {
     var errorMsg = "";

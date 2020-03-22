@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+
+<html class="no-js">
+
+<head>
+    <% include includes/includes.ejs %>
+</head>
+<script>
+    $(document).ready(function () {
+
+        $("form#contact_form").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "<%= base_url %>home/add_contact",
+                data: formData,
+                success: function (result) {
+                    alert(result.message)
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    });
+
+</script>
+<style>
+    h4 {
+        text-align: justify;
+    }
+</style>
+
+<body class="home">
+
+    <div class="body">
+        <% include includes/header.ejs %>
+        <!-- End Site Header -->
+        <div class="site-showcase">
+            <div class="main" role="main">
+
+                <div id="content" class="content full">
+
+                    <div class="container">
+
+                        <div class="page">
+
+                            <div class="row">
+
+                                <div class="col-md-12 col-sm-12">
+
+                                    <div class="row">
+                                        <br /><br />
+                                        <h2>Disclaimer</h2>
+                                        <h4>All the information displayed is as posted by the User and displayed on the website for informational
+                                            purposes only. Spaces4all makes no representations and warranties of any kind, whether expressed
+                                            or implied, for the Services and in relation to the accuracy or quality of any information transmitted
+                                            or
+                                            obtained at spaces4all.com. You are hereby strongly advised to verify all information including
+                                            visiting the relevant RERA website before taking any decision based on the contents displayed on
+                                            the website.</h4>
+                                        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Start Site Footer -->
+
+            <% include includes/footer.ejs %>
+
+</body>
+
+</html>

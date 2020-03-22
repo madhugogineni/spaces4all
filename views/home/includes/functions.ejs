@@ -24,7 +24,7 @@
         var principle = amount;
         var emi = Math.ceil(amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure))));
         var total_interest = Math.ceil((amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure)))) * tenure) - amount;
-        var total_amount = amount + total_interest;
+        var total_amount = parseInt(amount) + parseInt(total_interest);
         var response = '<div class="padding-as25 margin-30"><div>';
         response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class="">Rs. ' + emi + ' /-</span></b></div><hr>';
         response += '<div class="row"><h5>Total Amount Payable</h5><b><span class="">Rs. ' + total_amount + ' /-</span></b></div><hr>';
