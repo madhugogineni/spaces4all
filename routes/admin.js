@@ -16,6 +16,7 @@ var upload = multer();
 var areCredentialsWrong = false;
 
 /* amdin routers */
+var functions = require("./function")
 var rentRouter = require('./admin/rent');
 var cityRouter = require('./admin/city');
 var localityRouter = require('./admin/locality');
@@ -51,11 +52,17 @@ var projectRouter = require('./admin/project');
 
 
 router.use(function (req, res, next) {
+
     if (req.session.isAdminLoggedIn) {
         if (req.originalUrl == "/admin/login") {
             res.redirect('/admin')
         } else {
-            next();
+            var isAllowed = functions.validateAction(req)
+            if (isAllowed) {
+                next()
+            } else {
+                res.send({ success: false, message: "You dont have enough permissions to do this action" });
+            }
         }
     } else {
         if (req.originalUrl != "/admin/login") {
@@ -133,15 +140,17 @@ router.post("/login", upload.none(), async function (req, res) {
     var password = req.body.password || "";
     var userCountResponse = await adminModel.getUserCount({ email: email, password: password });
     if (userCountResponse.success) {
-        if (userCountResponse.count > 0) {
+        if (userCountResponse.data.length > 0) {
             req.session.isAdminLoggedIn = true;
+            req.session.user = userCountResponse.data[0];
             res.redirect("/admin");
         } else {
             areCredentialsWrong = true;
             res.redirect("login");
         }
     } else {
-        res.send("Welcome");
+        areCredentialsWrong = true;
+        res.redirect("login");
     }
 });
 

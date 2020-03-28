@@ -61,7 +61,7 @@ module.exports = {
             query = "update projects set ? where project_id='" + projectId + "'";
         } else {
             query = "insert into projects set ?";
-            data.datetime = moment().format(dateFormat);
+            // data.datetime = moment().format(dateFormat);
         }
         return new Promise(function (resolve, reject) {
             con.query(query, data, function (error, result) {

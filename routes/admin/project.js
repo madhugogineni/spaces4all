@@ -262,7 +262,7 @@ router.get('/:project_id', async function (req, res) {
 });
 
 async function addProject(req, projectId) {
-    console.log(req.body.plans_configuration);
+    // console.log(req.body.plans_configuration);
     var projectName = req.body.project_name || "",
         projectType = req.body.project_type || 0,
         projectSubType = req.body.project_sub_type || 0,

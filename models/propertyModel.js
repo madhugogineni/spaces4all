@@ -288,7 +288,7 @@ module.exports = {
     },
 
     addListProperty: function (name, email, phone, propertyName, propertyType, subType, facing, bedrooms, bathrooms, city, locality, state, carParking, quotedPrice, saleableArea, age, floorNo, floors, description, amenities1, furnishing, postedBy, latitude, longitude, posession, status) {
-        var datetime = moment().format(dateFormat);
+        // var datetime = moment().format(dateFormat);
         var query = "insert into list_property set ?";
         return new Promise(function (resolve, reject) {
             con.query(query, {
@@ -318,7 +318,7 @@ module.exports = {
                 lan: longitude,
                 possession: posession,
                 status: status,
-                datetime: datetime,
+                // datetime: datetime,
             }, function (error, result) {
                 if (error) {
                     console.log(error);

@@ -126,7 +126,7 @@ app.get("/", function (req, res) {
                     latest_projects: finalLatestProjects,
                     home_slider: homeSliderData
                 }
-                console.log(responseData)
+                // console.log(responseData)
                 res.render("home/index", responseData);
             });
         });
