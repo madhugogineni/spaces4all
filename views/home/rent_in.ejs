@@ -4,115 +4,39 @@
 
 <head>
 <% include includes/includes.ejs %>
+    
     <script>
-
-
-
+        
         function show_sub_type(str) {
 
-            //alert(1);
-
             if (str == '') {
-
                 $('#bedrooms').attr("disabled", false);
-
                 $('#bathrooms').attr("disabled", false);
-
             }
-
             if (str == '1') {
-
                 $('#bedrooms').attr("disabled", true);
-
                 $('#bathrooms').attr("disabled", true);
-
             }
-
             if (str == '4') {
-
                 $('#bedrooms').attr("disabled", false);
-
                 $('#bathrooms').attr("disabled", false);
-
             }
             getPropertySubTypes(str, "#property_sub_type");
         }
-        function Show_locality(str) {
-
-            //alert(str);
-
-            if (str.length == 0) {
-
-                document.getElementById("Showlocality").innerHTML = "";
-
-                return;
-
-            }
-
-
-
-            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-
-                xmlhttp = new XMLHttpRequest();
-
-            }
-
-            else {// code for IE6, IE5
-
-                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-
-            }
-
-            xmlhttp.onreadystatechange = function () {
-
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-
-                    //alert(xmlhttp.responseText);
-
-                    document.getElementById("Showlocality").innerHTML = xmlhttp.responseText;
-
-                }
-
-            }
-
-            xmlhttp.open("GET", "<?php echo base_url();?>ajax/get_locality/" + str, true);
-
-            xmlhttp.send();
-
-        }
-
-
-
         function hide_bedrooms(str) {
 
             var value = document.getElementById("property_type").value;
-
             if (str == '14') {
-
                 $('#bedrooms').attr("disabled", true);
-
             } else {
-
                 if (value == '1') {
-
                     $('#bedrooms').attr("disabled", true);
-
                 } else {
-
                     $('#bedrooms').attr("disabled", false);
-
                 }
-
             }
-
         }
-
-
-
     </script>
-
-
-
 </head>
 
 <body>
@@ -324,7 +248,7 @@
 
                                                             <option value="Owner">Owner</option>
 
-                                                            <option value="Broker">Broker</option>
+                                                            <option value="Agent">Agent</option>
 
                                                         </select>
 

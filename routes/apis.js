@@ -211,4 +211,26 @@ router.post("/project_enquiry/:project_id", upload.none(), async function (req, 
         }
     }
 });
+
+router.post('/send_services_request', upload.none(), async function (req, res) {
+
+    var data = deepclone(req.body);
+    delete data.page_name;
+    var serverRequestResponse = await crudModel.insertServiceRequests(data);
+    if (serverRequestResponse) {
+        var subject = "Spaces4all - Enquiry Details"
+        var body = "Spaces4all - " + data.name + " has enquired regarding " + data.request_for + " <br><br> " +
+            "<table border='1px'>" +
+            "<tr><td width='100px'>Name</td><td>" + data.name + "</td></tr>" +
+            "<tr><td>Email</td><td>" + data.email + "</td></tr>" +
+            "<tr><td>Phone</td><td>" + data.phone + "</td></tr>" +
+            "<tr><td>City</td><td>" + data.city + "</td></tr>" +
+            "</table>"
+        mailservice.sendMail(subject, body);
+        res.send({ success: true, message: "Thank you for the details. We have the pleasure to contact you soon.!" })
+    } else {
+        res.send({ success: false, message: "Your Request Sending Has Failed ! Please Try Again." })
+    }
+});
+
 module.exports = router;

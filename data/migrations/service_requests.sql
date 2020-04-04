@@ -1,0 +1,1 @@
+ALTER TABLE `services_requests` CHANGE `datetime` `datetime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;

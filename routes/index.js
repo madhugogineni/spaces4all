@@ -192,10 +192,8 @@ router.get('/properties/list_view', async function (req, res) {
 // footer news letter api url are defined here
 
 router.post("/add_news_letter", async function (req, res) {
-    var errorMsg =
-        "<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Sorry ! Your Subscription Has Failed Please Try Again.</strong></div>";
-    var successMsg =
-        "<div class='alert alert-success fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Your Have Successfully Subscribed With Us.</strong></div>";
+    var errorMsg = "Sorry ! Your Subscription Has Failed Please Try Again.";
+    var successMsg = "Your Have Successfully Subscribed With Us.";
     var response = await crudModel.getNewsLetterAvailable(req.body.email);
     if (response == 0) {
         var response1 = await crudModel.insertNewLetterSubscriber(req.body.email);
@@ -203,14 +201,12 @@ router.post("/add_news_letter", async function (req, res) {
             var subject = "Spaces4all - Your Have Successfully Subscribed With Us";
             var html = "You have successfully subscribed with Spaces4all ! Thank you for subscribing.";
             mailservice.sendMail(subject, html, req.body.email)
-            res.send(successMsg);
+            res.send({ success: true, message: successMsg });
         } else {
-            res.send(errorMsg);
+            res.send({ success: false, message: errorMsg });
         }
     } else {
-        res.send(
-            "<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Sorry ! This Email Id Already Subscribed With Us.</strong></div>"
-        );
+        res.send({ success: false, message: "Sorry ! This Email Id Already Subscribed With Us." });
     }
 });
 
@@ -319,7 +315,7 @@ router.get("/stamp_duty_calculator", async function (req, res) {
         page_title: "Stamp Duty Calculator",
         stamp_duty: []
     };
-    var stampDutyResponse = crudModel.getStampDuty();
+    var stampDutyResponse = await crudModel.getStampDuty();
     if (stampDutyResponse.success) {
         data.stamp_duty = stampDutyResponse.data;
     }
@@ -857,12 +853,12 @@ router.get("/rent_in", function (req, res) {
             responseObj.rentDetails = rentDetails.data;
         } //uploads/list_property/
         // console.log(rentDetails.data);
-        res.render("home/rent-in", responseObj);
+        res.render("home/rent_in", responseObj);
     });
 });
 router.get("/rent_out", function (req, res) {
     var responseObj = { page_title: "Rent Out", page_name: "Rent Out" };
-    res.render("home/rent-out", responseObj);
+    res.render("home/rent_out", responseObj);
 });
 router.post(
     "/add_rent_out",
@@ -1550,7 +1546,15 @@ router.get('/disclaimer', function (req, res) {
         page_title: "Disclaimer",
         page_name: "disclaimer"
     });
+});
+
+router.get('/terms', function (req, res) {
+    res.render('home/terms', {
+        page_title: "Terms Of Use",
+        page_name: "terms"
+    });
 })
+
 
 function getErrorMessage(errors) {
     var errorMsg = "";

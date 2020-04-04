@@ -1,24 +1,31 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("form#send_services_request").submit(function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                type: "POST",
+                url: "<%= api_url%>send_services_request",
+                data: formData,
+                success: function (result) {
+                    alert(result.message);
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+        });
+    })
+</script>
 <div class="widget sidebar-widget">
 
-    <form action="<%= base_url%>home/send_services_request" onsubmit="return Submit_Enquiry();" method="post">
+    <form id="send_services_request" action="<%= base_url%>home/send_services_request" onsubmit="return submitEnquiryForm();" method="post">
 
         <h3 class="widgettitle">ENQUIRY FORM</h3>
 
         <div id="errorBox">
 
-
-
         </div>
-
-        <!-- <?php 
-
-if ($this->session->flashdata('request_msg')) {
-
-    echo "<div class='alert alert-success fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>".$this->session->flashdata('request_msg')."</strong></div>";
-
-}
-
-?> -->
 
         <div class="padding-as25 lgray-bg">
 
@@ -63,9 +70,9 @@ if ($this->session->flashdata('request_msg')) {
                 </div>
             </div>
 
-            <input type="hidden" name="request_for" value="<?=$page_title?>">
+            <input type="hidden" name="request_for" value="<%=page_title %>">
 
-            <input type="hidden" name="page_name" value="<?=$page_name?>">
+            <input type="hidden" name="page_name" value="<%=page_name %>">
 
             <div class="row">
 

@@ -26,10 +26,10 @@
         var total_interest = Math.ceil((amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure)))) * tenure) - amount;
         var total_amount = amount + total_interest;
         var response = '<div class="padding-as25 margin-30"><div>';
-        response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class="">Rs. ' + emi + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Amount Payable</h5><b><span class="">Rs. ' + total_amount + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Principle Amount Payable</h5><b><span class="">Rs. ' + principle + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class="">Rs. ' + total_interest + ' /-</span></b></div></div></div>';
+        response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + emi + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + total_amount + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Principle Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + principle + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + total_interest + ' /-</span></b></div></div></div>';
         $('#emi_value').html(response);
     }
 

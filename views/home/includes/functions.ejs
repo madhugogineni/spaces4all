@@ -26,10 +26,10 @@
         var total_interest = Math.ceil((amount * intr / (1 - (Math.pow(1 / (1 + intr), tenure)))) * tenure) - amount;
         var total_amount = parseInt(amount) + parseInt(total_interest);
         var response = '<div class="padding-as25 margin-30"><div>';
-        response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class="">Rs. ' + emi + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Amount Payable</h5><b><span class="">Rs. ' + total_amount + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Principle Amount Payable</h5><b><span class="">Rs. ' + principle + ' /-</span></b></div><hr>';
-        response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class="">Rs. ' + total_interest + ' /-</span></b></div></div></div>';
+        response += '<div class="row"><h5>Your Monthly EMI is</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + emi + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + total_amount + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Principle Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + principle + ' /-</span></b></div><hr>';
+        response += '<div class="row"><h5>Total Intrest Amount Payable</h5><b><span class=""><span class="WebRupee">Rs.</span> ' + total_interest + ' /-</span></b></div></div></div>';
         $('#emi_value').html(response);
     }
 
@@ -491,14 +491,110 @@
                 }
             });
         }
-        $('#modal_ajax1').modal('show', {backdrop: 'true'});
+        $('#modal_ajax1').modal('show', { backdrop: 'true' });
     }
-    function showPhotoModal(target,url) {
-        $('#'+target+' img').attr('src',url);
-        $('#'+target).modal('show', {backdrop: 'true'});
+    function showPhotoModal(target, url) {
+        $('#' + target + ' img').attr('src', url);
+        $('#' + target).modal('show', { backdrop: 'true' });
     }
 
     function getValue(nameSelector) {
         return $("[name=" + nameSelector + "]").val();
+    }
+
+    function submitEnquiryForm() {
+
+        var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
+        var filter = /^[0-9-+]+$/;
+        var name = $("#name").val();
+        var email = $("#email").val();
+        var phone = $("#phone").val();
+        var city = $("#city1").val();
+        if ($("#name").val() == "") {
+
+            $("#name").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name</strong></div>");
+
+            return false;
+
+        } else if ($("#email").val() == "") {
+
+            $("#email").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+
+            return false;
+
+        } else if (!email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+\.(com|in|edu|net)$/gi)) {
+
+            $("#email").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+
+            return false;
+
+        } else if ($("#phone").val() == "") {
+
+            $("#phone").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            return false;
+
+        } else if (phone.length != "10") {
+
+            $("#phone").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            return false;
+
+        } else if (!filter.test(phone)) {
+
+            $("#phone").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid 10 Digit Phone Number</strong></div>");
+
+            return false;
+
+        } else if ($("#city1").val() == "") {
+
+            $("#city1").focus();
+
+            $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter City</strong></div>");
+
+            return false;
+
+        } else {
+            return true;
+        }
+    }
+    function news_letter() {
+
+        var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+\.(com|in|edu|net)$/gi;
+        var email = $("#news_email").val();
+        if (email == "") {
+            $("#news_email").focus();
+            alert("Please Enter Valid Email Id")
+            // $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+            $("#news_email").val('');
+        } else if (!email.match(emailRegex)) {
+            $("#news_email").focus();
+            alert("Please Enter Valid Email Id")
+            // $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
+            $("#news_email").val('');
+        } else {
+            var dataString = 'email=' + email;
+            $.ajax({
+                type: "POST",
+                url: "<%= base_url %>home/add_news_letter",
+                data: dataString,
+                success: function (response) {
+                    alert(response.message);
+                    $("#news_email").val('');
+                }
+            });
+        }
     }
 </script>

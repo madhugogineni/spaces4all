@@ -126,59 +126,6 @@
 
 
     }
-
-
-    function news_letter() {
-
-        var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
-
-        var email = $("#news_email").val();
-
-
-        if (email == "") {
-
-            $("#news_email").focus();
-
-            $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
-
-            $("#news_email").val('');
-
-        } else if (!emailRegex.test(email)) {
-
-            $("#news_email").focus();
-
-            $("#news_letter_response").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id</strong></div>");
-
-            $("#news_email").val('');
-
-        } else {
-
-
-            var dataString = 'email=' + email;
-
-
-            $.ajax({
-
-                type: "POST",
-
-                url: "<%= base_url %>home/add_news_letter",
-
-                data: dataString,
-
-                success: function (response) {
-
-                    jQuery('#news_letter_response').html(response);
-
-                    $("#news_email").val('');
-
-                }
-
-            });
-
-
-        }
-
-    }
 </script>
 
 <!-- Start Site Header -->

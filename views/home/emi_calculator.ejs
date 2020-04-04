@@ -3,29 +3,27 @@
 <html class="no-js">
 
 <head>
-<% include includes/includes.ejs %>
-<script type="text/javascript">
+    <% include includes/includes.ejs %>
+    <script type="text/javascript">
 
-function Search_Emi()
+        function Search_Emi() {
 
-{
+            var amount = $("#amount").val();
 
-	var amount  = $("#amount").val();
+            var interest = $("#interest").val();
 
-	var interest= $("#interest").val();
+            var tenure = $("#tenure").val();
 
-	var tenure = $("#tenure").val();
+            if (!$.isNumeric(amount) || !$.isNumeric(interest) || !$.isNumeric(tenure)) {
 
-	if(!$.isNumeric(amount) || !$.isNumeric(interest) || !$.isNumeric(tenure)){
+                $('#emi_value').html('<h5>Please Enter Numeric Values Only</h5>');
 
-		$('#emi_value').html('<h5>Please Enter Numeric Values Only</h5>');
+            } else {
+                calculateEmi(amount, interest, tenure);
+            }
+        }
 
-    }else {
-		calculateEmi(amount,interest,tenure);
-	}
-}
-
-</script>
+    </script>
 
 
 
@@ -33,157 +31,146 @@ function Search_Emi()
 
 <body>
 
-<div class="body">
+    <div class="body">
 
-  <!-- Start Site Header -->
+        <!-- Start Site Header -->
 
-  <% include includes/header.ejs %>
+        <% include includes/header.ejs %>
 
-  <!-- End Site Header -->
+        <!-- End Site Header -->
 
-  <!-- Site Showcase -->
+        <!-- Site Showcase -->
 
-  <div class="site-showcase">
+        <div class="site-showcase">
 
-  <!-- Start Page Header -->
+            <!-- Start Page Header -->
 
-  <div class="parallax page-header">
+            <div class="parallax page-header">
 
-  		<div class="container">
+                <div class="container">
 
-        	<div class="row">
+                    <div class="row">
 
-            	<div class="col-md-12">
+                        <div class="col-md-12">
 
-  					<h1> EMI CALCULATOR </h1>
+                            <h1> EMI CALCULATOR </h1>
 
-        		</div>
+                        </div>
 
-           </div>
+                    </div>
 
-       </div>
+                </div>
 
-  </div>
+            </div>
 
-  <!-- End Page Header -->
+            <!-- End Page Header -->
 
-  </div>
+        </div>
 
-  <!-- Start Content -->
-  <div class="main" role="main">
+        <!-- Start Content -->
+        <div class="main" role="main">
 
-      <div id="content" class="content full">
+            <div id="content" class="content full">
 
-        	<div class="container">
+                <div class="container">
 
-          		<div class="page">
+                    <div class="page">
 
-        			<div class="row">
+                        <div class="row">
 
-                  <div class="col-md-12">
+                            <div class="col-md-12">
 
-                      <div class="row">
+                                <div class="row">
 
-                      
 
-                  		<div class="col-md-7">
 
-                  		  <form onsubmit="return false;" id="Emi">
+                                    <div class="col-md-7">
 
-                  			
+                                        <form onsubmit="return false;" id="Emi">
 
-                  			<div class="padding-as25 margin-30 lgray-bg">
 
-                              <div class="row">
 
-                                  <div class="col-md-10 col-sm-10">
+                                            <div class="padding-as25 margin-30 lgray-bg">
 
-                                  <label>Enter Loan Amount*</label>
+                                                <div class="row">
 
-                                      <input type="text" name="amount" id="amount" class="form-control" placeholder="Loan Amount ( INR )" required="required">
+                                                    <div class="col-md-10 col-sm-10">
 
-                                  </div> 
+                                                        <label>Enter Loan Amount <span class="c-r">*</span></label>
 
-                              </div>  
+                                                        <input type="text" name="amount" id="amount" class="form-control" placeholder="Loan Amount ( INR )" required="required">
 
-                              <div class="row">
+                                                    </div>
 
-                                  <div class="col-md-10 col-sm-10">
+                                                </div>
 
-                                  <label>Enter Loan Interest*</label>
+                                                <div class="row">
 
-                                      <input type="text" name="interest" id="interest" class="form-control" placeholder="Loan Interest ( % ) " required="required">
+                                                    <div class="col-md-10 col-sm-10">
 
-                                  </div> 
+                                                        <label>Enter Loan Interest <span class="c-r">*</span></label>
 
-                              </div>  
+                                                        <input type="text" name="interest" id="interest" class="form-control" placeholder="Loan Interest ( % ) " required="required">
 
-                              <div class="row">
+                                                    </div>
 
-                                  <div class="col-md-10 col-sm-10">
+                                                </div>
 
-                                  <label>Enter Tenure ( Months )*</label>
+                                                <div class="row">
 
-                                      <input type="text" name="tenure" id="tenure" class="form-control" placeholder="Tenure ( Months ) " required="required">
+                                                    <div class="col-md-10 col-sm-10">
 
-                                  </div> 
+                                                        <label>Enter Tenure ( Months ) <span class="c-r">*</span></label>
 
-                              </div>
+                                                        <input type="text" name="tenure" id="tenure" class="form-control" placeholder="Tenure ( Months ) " required="required">
 
-                              <div class="row">
+                                                    </div>
 
-                                  <div class="col-md-5 col-sm-5 padding-as25">
+                                                </div>
 
-                              			<button type="button" name="submit" onclick="Search_Emi(this.value)" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Calculate</button>
+                                                <div class="row">
 
-                                  </div>
+                                                    <div class="col-md-5 col-sm-5 padding-as25">
 
-                              </div>                             
+                                                        <button type="button" name="submit" onclick="Search_Emi(this.value)" class="btn btn-primary btn-lg"><i class="fa fa-check"></i> Calculate</button>
 
-                          </div>
+                                                    </div>
 
-                          
+                                                </div>
 
-                  		 </form>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-5">
 
-                  			
+                                        <div id="emi_value">
 
-                  		</div>
+                                        </div>
 
-                  		
+                                    </div>
 
-                  		<div class="col-md-5">
+                                </div>
 
-                  			<div id="emi_value">
+                            </div>
 
-                  		 
+                        </div>
 
-                  		 	  </div>
+                    </div>
 
-                  		</div>
+                </div>
 
-                  	  </div>                    
+            </div>
 
-                  </div>
+        </div>
 
-              </div>
+        <!-- Start Site Footer -->
 
-        		</div>
 
-      		</div>
 
-    	</div>
+        <% include includes/footer.ejs %>
 
-  </div>
 
-  <!-- Start Site Footer -->
 
-  
-
-  		<% include includes/footer.ejs %>   
-
-    
-
- </body>
+</body>
 
 </html>
