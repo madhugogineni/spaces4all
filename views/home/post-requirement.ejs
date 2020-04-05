@@ -59,29 +59,49 @@
                 // $("#submit_button").attr("disabled", true);
                 e.preventDefault();
                 var formData = new FormData(this);
-                $.ajax({
-                    type: "POST",
-                    url: "<%= base_url %>home/add_post_requirement",
-                    data: formData,
-                    success: function (result) {
-                        // console.log(result);
-                        // $("success_message").hide();
-                        // $("error_message").hide();
-                        // if (result.success) {
-                        //     $("#success_message strong").text(result.message);
-                        //     $("#success_message").show();
-                        //     $('#form#post_requirement_form').trigger("reset");
-                        // } else {
-                        //     $("#submit_button").attr("disabled", false);
-                        //     $("#error_message strong").text(result.message);
-                        //     $("#error_message").show();
-                        // }
-                        alert(result.message)
-                    },
-                    cache: false,
-                    contentType: false,
-                    processData: false
-                })
+                var isFormValid = true;
+                var minPrice = $("#min_price").val(), maxPrice = $("#max_price").val();
+                var minArea = $("#min_area").val(), maxArea = $("#max_area").val();
+                var email = $("#email").val();
+
+                if (minPrice > maxPrice) {
+                    alert("min price should be less than max price")
+                    isFormValid = false;
+                }
+                if (minArea > maxArea) {
+                    alert("min are should be less than max area")
+                    isFormValid = false;
+                }
+                if (!validateEmail(email)) {
+                    alert("Please enter a valid email")
+                    isFormValid = false;
+                }
+
+                if (isFormValid) {
+                    $.ajax({
+                        type: "POST",
+                        url: "<%= base_url %>home/add_post_requirement",
+                        data: formData,
+                        success: function (result) {
+                            // console.log(result);
+                            // $("success_message").hide();
+                            // $("error_message").hide();
+                            // if (result.success) {
+                            //     $("#success_message strong").text(result.message);
+                            //     $("#success_message").show();
+                            //     $('#form#post_requirement_form').trigger("reset");
+                            // } else {
+                            //     $("#submit_button").attr("disabled", false);
+                            //     $("#error_message strong").text(result.message);
+                            //     $("#error_message").show();
+                            // }
+                            alert(result.message)
+                        },
+                        cache: false,
+                        contentType: false,
+                        processData: false
+                    })
+                }
             });
         });
     </script>
@@ -135,171 +155,158 @@
                 <div class="container">
 
                     <div class="page">
+                    </div>
 
-                        <!-- <div class="row">
+                    <div class="col-md-12">
+                        <form action="<%= base_url %>home/add_post_requirement" id="post_requirement_form" method="post">
 
-                        <div class="col-md-4">
+                            <div class="block-heading" id="details">
+
+                                <h4>
+                                    <span class="heading-icon"><i class="fa fa-user"></i></span>POST YOUR REQUIREMENT
+                                </h4>
+
+                            </div>
 
                             <div class="padding-as25 margin-30 lgray-bg">
 
-                                <div style="height: 844px"></div>
+                                <div class="row">
 
-                        </div>
 
-                    </div> -->
-                        <!-- <div class="alert alert-success fade in" id="success_message" style="display:none"><a href="#" data-dismiss="alert" class="close">x</a><strong></strong></div>
-                        <div class="alert alert-error fade in" id="error_message" style="display:none"><a href="#" data-dismiss="alert" class="close">x</a><strong></strong> -->
-                        </div>
+                                    <div class="col-md-6 col-sm-4">
 
-                        <div class="col-md-12">
-                            <form action="<%= base_url %>home/add_post_requirement" id="post_requirement_form" method="post">
+                                        <label>Contract Type:</label>
 
-                                <div class="block-heading" id="details">
+                                        <select name="type" id="type" class="form-control margin-0">
 
-                                    <h4><span class="heading-icon"><i class="fa fa-user"></i></span>POST YOUR REQUIREMENT
-                                    </h4>
+                                            <option value="BUY">BUY</option>
+
+                                            <option value="RENT">RENT</option>
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Time Period (Want Within):</label>
+
+                                        <select name="duration" id="duration" class="form-control margin-0">
+
+                                            <option value="Immediate">Immediate</option>
+
+                                            <option value="Below 6 Months">With in 6 Months</option>
+
+                                            <option value="Below 1 Year">With in 1 Year</option>
+
+                                            <option value="Above 1 Year">After 1 Year</option>
+
+                                        </select>
+
+                                    </div>
 
                                 </div>
+                                <br>
 
-                                <div class="padding-as25 margin-30 lgray-bg">
-
-                                    <div class="row">
+                                <div class="row">
 
 
-                                        <div class="col-md-6 col-sm-4">
+                                    <div class="col-md-6 col-sm-4">
 
-                                            <label>Contract Type:</label>
+                                        <label>Property Type: <span class="c-r">*</span></label>
 
-                                            <select name="type" id="type" class="form-control margin-0">
+                                        <select name="property_type" id="property_type" onchange="show_sub_type(this.value)" class="form-control margin-0">
 
-                                                <option value="BUY">BUY</option>
-
-                                                <option value="RENT">RENT</option>
-
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>Time Period (Want Within):</label>
-
-                                            <select name="duration" id="duration" class="form-control margin-0">
-
-                                                <option value="Immediate">Immediate</option>
-
-                                                <option value="Below 6 Months">With in 6 Months</option>
-
-                                                <option value="Below 1 Year">With in 1 Year</option>
-
-                                                <option value="Above 1 Year">After 1 Year</option>
-
-                                            </select>
-
-                                        </div>
+                                            <option value="">---SELECT---</option>
+                                        </select>
 
                                     </div>
-                                    <br>
 
-                                    <div class="row">
+                                    <div class="col-md-6 col-sm-4">
 
+                                        <label>Property Sub Type: <span class="c-r">*</span></label>
 
-                                        <div class="col-md-6 col-sm-4">
+                                        <select name="property_sub_type" id="property_sub_type" onchange="hide_bedrooms(this.value)" class="form-control margin-0">
 
-                                            <label>Property Type: <span class="c-r">*</span></label>
+                                            <option value="">---SELECT---</option>
 
-                                            <select name="property_type" id="property_type" onchange="show_sub_type(this.value)" class="form-control margin-0">
-
-                                                <option value="">---SELECT---</option>
-                                            </select>
-
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>Property Sub Type: <span class="c-r">*</span></label>
-
-                                            <select name="property_sub_type" id="property_sub_type" onchange="hide_bedrooms(this.value)" class="form-control margin-0">
-
-                                                <option value="">---SELECT---</option>
-
-                                            </select>
-
-                                        </div>
+                                        </select>
 
                                     </div>
-                                    <br>
 
-                                    <div class="row">
+                                </div>
+                                <br>
 
-                                        <div class="col-md-6 col-sm-4">
+                                <div class="row">
 
-                                            <label>State: <span class="c-r">*</span></label>
+                                    <div class="col-md-6 col-sm-4">
 
-                                            <select name="state" id="state" class="form-control margin-0" required="required">
+                                        <label>State: <span class="c-r">*</span></label>
 
-                                                <option value="">---SELECT---</option>
+                                        <select name="state" id="state" class="form-control margin-0" required="required">
 
-                                            </select>
+                                            <option value="">---SELECT---</option>
 
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>City: <span class="c-r">*</span></label>
-
-                                            <select name="city" id="city" onchange="showLocality(this.value,'#Showlocality')" class="form-control margin-0 ">
-
-                                                <option value="">---SELECT---</option>
-
-                                            </select>
-
-                                        </div>
-
+                                        </select>
 
                                     </div>
-                                    <br>
 
-                                    <div class="row">
+                                    <div class="col-md-6 col-sm-4">
 
-                                        <div class="col-md-6 col-sm-4">
+                                        <label>City: <span class="c-r">*</span></label>
 
-                                            <label>Locality: <span class="c-r">*</span></label>
+                                        <select name="city" id="city" onchange="showLocality(this.value,'#Showlocality')" class="form-control margin-0 ">
 
-                                            <select name="locality" id="Showlocality" class="form-control margin-0">
-                                                <option value="">---SELECT---</option>
-                                            </select>
-                                        </div>
+                                            <option value="">---SELECT---</option>
 
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>Bedrooms: <span class="c-r">*</span></label>
-
-                                            <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
-
-                                                <option value="">---SELECT---</option>
-                                                <% for(var i = 1;i <= 8;i++) { %>
-                                                <option value="<%= i %>"><%= i %></option>
-                                                <% } %>
-
-                                            </select>
-
-                                        </div>
+                                        </select>
 
                                     </div>
-                                    <br>
 
 
-                                    <div class="row">
+                                </div>
+                                <br>
 
-                                        <div class="col-md-6 col-sm-4">
+                                <div class="row">
 
-                                            <label>Min Price: <span class="c-r">*</span></label>
+                                    <div class="col-md-6 col-sm-4">
 
-                                            <select id="min_price" name="min_price" class="form-control margin-0 " onchange="Show_max_price(this.value)">
+                                        <label>Locality: <span class="c-r">*</span></label>
 
-                                                <option value="">Min Price</option>
-                                                <% for (var i = 500000; i <= 30000000; i += 1000000) {
+                                        <select name="locality" id="Showlocality" class="form-control margin-0">
+                                            <option value="">---SELECT---</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Bedrooms: <span class="c-r">*</span></label>
+
+                                        <select name="bedrooms" id="bedrooms" class="form-control margin-0 ">
+
+                                            <option value="">---SELECT---</option>
+                                            <% for(var i = 1;i <= 8;i++) { %>
+                                            <option value="<%= i %>"><%= i %></option>
+                                            <% } %>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <br>
+
+
+                                <div class="row">
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Min Price: <span class="c-r">*</span></label>
+
+                                        <select id="min_price" name="min_price" class="form-control margin-0 ">
+
+                                            <option value="">Min Price</option>
+                                            <% for (var i = 500000; i <= 30000000; i += 1000000) {
                                                 var price, value = i;
                                                 if (value >= 10000000) {
                                                     price = parseFloat(value) / 10000000;
@@ -309,22 +316,22 @@
                                                     price = price + " Lac";
                                                 }
                                             %>
-                                                <option value="<%= value %>"> <%= price %></option>
+                                            <option value="<%= value %>"> <%= price %></option>
 
-                                                <% } %>
-                                            </select>
+                                            <% } %>
+                                        </select>
 
-                                        </div>
+                                    </div>
 
 
-                                        <div class="col-md-6 col-sm-4">
+                                    <div class="col-md-6 col-sm-4">
 
-                                            <label>Max Price: <span class="c-r">*</span></label>
+                                        <label>Max Price: <span class="c-r">*</span></label>
 
-                                            <select name="max_price" class="form-control margin-0 " id="max_price">
+                                        <select name="max_price" class="form-control margin-0 " id="max_price">
 
-                                                <option value="">Max Price</option>
-                                                <% for (var i = 1000000; i <= 50000000; i += 1000000) {
+                                            <option value="">Max Price</option>
+                                            <% for (var i = 1000000; i <= 50000000; i += 1000000) {
                                                 var price, value = i;
                                                 if (value >= 10000000) {
                                                     price = parseFloat(value) / 10000000;
@@ -334,124 +341,122 @@
                                                     price = price + " Lac";
                                                 }
                                             %>
-                                                <option value="<%= value %>"> <%= price %></option>
+                                            <option value="<%= value %>"> <%= price %></option>
 
-                                                <% } %>
+                                            <% } %>
 
-                                            </select>
-
-                                        </div>
+                                        </select>
 
                                     </div>
-                                    <br>
+
+                                </div>
+                                <br>
 
 
-                                    <div class="row">
+                                <div class="row">
 
-                                        <div class="col-md-4 col-sm-4">
+                                    <div class="col-md-4 col-sm-4">
 
-                                            <label>Saleable Area(Min):</label>
+                                        <label>Saleable Area(Min):</label>
 
-                                            <input type="text" name="min_area" class="form-control" value="" placeholder="Min Area">
-                                        </div>
+                                        <input type="text" name="min_area" id="min_area" class="form-control" value="" placeholder="Min Area">
+                                    </div>
 
-                                        <div class="col-md-2 col-sm-4">
+                                    <div class="col-md-2 col-sm-4">
 
-                                            <label>&nbsp;</label>
+                                        <label>&nbsp;</label>
 
-                                            <select name="min_area_type" id="min_area_type" class="form-control margin-0" style="margin-left: -20px">
+                                        <select name="min_area_type" id="min_area_type" class="form-control margin-0" style="margin-left: -20px">
 
-                                                <option value="Sq.Ft">Sq.Ft</option>
+                                            <option value="Sq.Ft">Sq.Ft</option>
 
-                                                <option value="Sq.Yards">Sq.yds</option>
+                                            <option value="Sq.Yards">Sq.yds</option>
 
-                                            </select>
+                                        </select>
 
-                                        </div>
+                                    </div>
 
-                                        <div class="col-md-4 col-sm-4">
+                                    <div class="col-md-4 col-sm-4">
 
-                                            <label>Saleable Area(Max):</label>
+                                        <label>Saleable Area(Max):</label>
 
-                                            <input type="text" name="max_area" class="form-control" value="" placeholder="Max Area">
-                                        </div>
+                                        <input type="text" name="max_area" id="max_area" class="form-control" value="" placeholder="Max Area">
+                                    </div>
 
-                                        <div class="col-md-2 col-sm-4" style="margin-left: -20px">
+                                    <div class="col-md-2 col-sm-4" style="margin-left: -20px">
 
-                                            <label>&nbsp;</label>
+                                        <label>&nbsp;</label>
 
-                                            <select name="max_area_type" id="max_area_type" class="form-control margin-0">
+                                        <select name="max_area_type" id="max_area_type" class="form-control margin-0">
 
-                                                <option value="Sq.Ft">Sq.Ft</option>
+                                            <option value="Sq.Ft">Sq.Ft</option>
 
-                                                <option value="Sq.Yards">Sq.yds</option>
+                                            <option value="Sq.Yards">Sq.yds</option>
 
-                                            </select>
-
-                                        </div>
+                                        </select>
 
                                     </div>
 
                                 </div>
 
-                                <div class="block-heading" id="details">
+                            </div>
 
-                                    <h4><span class="heading-icon"><i class="fa fa-user"></i></span>DETAILS</h4>
+                            <div class="block-heading" id="details">
 
-                                </div>
+                                <h4><span class="heading-icon"><i class="fa fa-user"></i></span>DETAILS</h4>
 
-                                <div class="padding-as25 margin-30 lgray-bg">
+                            </div>
 
-                                    <div class="row">
+                            <div class="padding-as25 margin-30 lgray-bg">
 
-                                        <div class="col-md-6 col-sm-4">
+                                <div class="row">
 
-                                            <label>Name: <span class="c-r">*</span></label>
+                                    <div class="col-md-6 col-sm-4">
 
-                                            <input type="text" name="name" class="form-control" value="" placeholder="Name">
-                                        </div>
+                                        <label>Name: <span class="c-r">*</span></label>
 
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>Mobile No: <span class="c-r">*</span></label>
-
-                                            <input type="text" name="phone" class="form-control" value="" placeholder="Mobile No">
-                                        </div>
-
+                                        <input type="text" name="name" class="form-control" value="" placeholder="Name">
                                     </div>
 
-                                    <div class="row">
+                                    <div class="col-md-6 col-sm-4">
 
-                                        <div class="col-md-6 col-sm-4">
+                                        <label>Mobile No: <span class="c-r">*</span></label>
 
-                                            <label>Email Id: <span class="c-r">*</span></label>
-
-                                            <input type="text" name="email" class="form-control" value="" placeholder="Email Id">
-                                        </div>
-
-                                        <div class="col-md-6 col-sm-4">
-
-                                            <label>Convenient Time To Call:</label>
-
-                                            <input type="text" name="avail_time" class="form-control" value="" placeholder="Available Time">
-                                        </div>
-
+                                        <input type="text" name="phone" maxlength="10" minlength="10" class="form-control" value="" placeholder="Mobile No">
                                     </div>
-                                    <br>
-
 
                                 </div>
 
+                                <div class="row">
 
-                                <div class="text-align-center" id="submit-property">
+                                    <div class="col-md-6 col-sm-4">
 
-                                    <button type="submit" name="submit" id="submit_button" class="btn btn-primary btn-lg">Submit !</button>
+                                        <label>Email Id: <span class="c-r">*</span></label>
+
+                                        <input type="email" name="email" id="email" class="form-control" value="" placeholder="Email Id">
+                                    </div>
+
+                                    <div class="col-md-6 col-sm-4">
+
+                                        <label>Convenient Time To Call:</label>
+
+                                        <input type="text" name="avail_time" class="form-control" value="" placeholder="Available Time">
+                                    </div>
 
                                 </div>
+                                <br>
 
-                            </form>
 
-                        </div>
+                            </div>
+
+
+                            <div class="text-align-center" id="submit-property">
+
+                                <button type="submit" name="submit" id="submit_button" class="btn btn-primary btn-lg">Submit !</button>
+
+                            </div>
+
+                        </form>
 
                     </div>
 
@@ -460,6 +465,8 @@
             </div>
 
         </div>
+
+    </div>
 
     </div>
 

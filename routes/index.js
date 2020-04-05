@@ -228,7 +228,6 @@ router.post("/add_contact", upload.none(), async function (req, res) {
     });
 
     var isValidName = validation.validateName(req.body.name);
-    console.log(isValidName)
     var isValidEmail = validation.validateEmail(req.body.email);
     var isValidComments = validation.validateMessage(req.body.message);
     var validatorResult = await validator.check();
@@ -1192,12 +1191,13 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
     } else {
         validatorRules.bedrooms = "required";
     }
+    var minPrice = req.body.min_price, maxPrice = req.body.max_price, minArea = req.body.min_area, maxArea = req.body.max_area;
     let validator = new Validator(req.body, validatorRules);
     var validatorResult = await validator.check();
-    if (!validatorResult) {
-        var errorMessage = getErrorMessage(validator.errors);
-        res.send({ success: false, message: errorMessage });
-    } else {
+    var isValidEmail = validation.validateEmail(req.body.email);
+    var arePricesValid = maxPrice > minPrice ? true : false
+    var areAreasValid = maxArea > minArea ? true : false
+    if (validatorResult && isValidEmail && arePricesValid && areAreasValid) {
         var propertyType = req.body.property_type || 0;
         var propertySubType = req.body.property_sub_type || 0;
         var bedrooms = req.body.bedrooms || "";
@@ -1310,6 +1310,18 @@ router.post("/add_post_requirement", upload.none(), async function (req, res) {
                 message: "Your Requirement Has Not Posted ! Please Try Again. !"
             });
         }
+    } else {
+        if (!isValidEmail) {
+            res.send({ success: false, message: "Enter a valid email !" });
+        }
+        if (!areAreasValid) {
+            res.send({ success: false, message: "Min Area should be less than Max Area" });
+        }
+        if (!arePricesValid) {
+            res.send({ success: false, message: "Min Price should be less than Max Price" });
+        }
+        var errorMessage = getErrorMessage(validator.errors);
+        res.send({ success: false, message: errorMessage });
     }
 });
 
@@ -1559,7 +1571,7 @@ router.get('/terms', function (req, res) {
 function getErrorMessage(errors) {
     var errorMsg = "";
     Object.keys(errors).map(function (key) {
-        errorMsg += errors[key].message + "<br/>";
+        errorMsg += errors[key].message + "\n";
     });
     return errorMsg;
 }

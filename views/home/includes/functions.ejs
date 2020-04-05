@@ -597,4 +597,8 @@
             });
         }
     }
+    function validateEmail(email) {
+        var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+\.(com|in|edu|net)$/gi;
+        return email.match(/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9]+\.(com|in|edu|net)$/gi) == null ? false : true
+    }
 </script>

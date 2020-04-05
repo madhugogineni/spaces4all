@@ -9,7 +9,7 @@ module.exports = {
             var validationError = validator.errors;
             var errorMsg = "";
             for (var keys in validationError) {
-                errorMsg += validationError[keys].message + "<br/>";
+                errorMsg += validationError[keys].message + "\n";
             }
             response.message = errorMsg;
         }
