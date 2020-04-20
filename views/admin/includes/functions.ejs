@@ -2,7 +2,6 @@
     function calculateStampDuty() {
         var propertyValue = $('input[name=stampduty_property_value]').val(),
             stampdutyId = $('select[name=stamp_duty_id]').val();
-        console.log(stampdutyId);
         if (propertyValue != "" && stampdutyId != "") {
             $.ajax({
                 type: "GET",
@@ -12,7 +11,6 @@
                     propertyValue: propertyValue
                 },
                 success: function (response) {
-                    console.log(response);
                     $("input[name=stamp_duty").val(response);
                 }
             });
@@ -205,7 +203,7 @@
     }
 
     function send_Property_Callback() {
-        console.log($("#call_project").val());
+        // console.log($("#call_project").val());
         var filter = /^[0-9-+]+$/;
 
         var name = $("#call_name").val();
@@ -362,7 +360,6 @@
     }
 
     function getProjectSubTypes(str, divId, selectedType) {
-        console.log(str, divId, selectedType)
         if (str) {
             $.ajax({
                 type: 'GET',
@@ -397,7 +394,7 @@
                 property_type: propertyType
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
             }
         })
     }
@@ -417,7 +414,7 @@
                 comments: comments
             },
             success: function (response) {
-                console.log(response);
+                // console.log(response);
             }
         });
     }
@@ -439,7 +436,6 @@
             url: "<%= base_url %>home/compare_count/" + type,
             success: function (response) {
                 if (response.success) {
-                    console.log('#' + type + "_compare_count");
                     $('#' + type + "_compare_count").html(response.count);
                     var offset = $(element).offset();
                     var topOffset = offset.top;//- $(window).scrollTop();
@@ -507,24 +503,43 @@
         $(tableId).append(newRow);
     }
 
+    function addRowToPlansConfigurationTablePlot(tableId) {
+        var newRow = $("<tr>");
+        var cols = "";
+        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="plot-size" class="form-control"/></td>';
+        cols += '<td class="col-sm-2"><a id="ibtnDel" class="deleteRow btn btn-sm btn-danger">Delete Row</a></td>';
+
+        newRow.append(cols);
+        $(tableId).append(newRow);
+    }
+
     function removeRowFromPlansConfigurationTable() {
         $(this).closest("tr").remove();
     }
 
-    function setUpPlanConfigurationRows(tableId, data) {
+    function setUpPlanConfigurationRows(data, projectSubType) {
+        var tableId;
         if (data != "") {
             data = JSON.parse(data);
-            console.log(data);
-            data.forEach(function (plan) {
-                addRowToPlansConfigurationTable(tableId);
-            });
-        } else {
+            if (projectSubType != 17) {
+                tableId = "#order-list";
+                data.forEach(function (plan) {
+                    addRowToPlansConfigurationTable(tableId);
+                });
+                setTimeout(function () {
+                    setUpPlanConfigurationValues(tableId, data);
+                }, 1000);
+            } else {
+                tableId = "#order-list-plot";
+                data.forEach(function (plan) {
+                    addRowToPlansConfigurationTablePlot(tableId);
+                });
+                setTimeout(function () {
+                    setUpPlanConfigurationValuesPlot(tableId, data);
+                }, 1000);
 
+            }
         }
-        setTimeout(function () {
-            setUpPlanConfigurationValues(tableId, data);
-        }, 1000);
-
     }
 
     function setUpPlanConfigurationValues(tableId, data) {
@@ -552,6 +567,32 @@
                     })
                 }
             }
+        }
+    }
+
+    function setUpPlanConfigurationValuesPlot(tableId, data) {
+        var table = document.getElementById(tableId.substr(1));
+        
+        for (var i = 0; i < table.rows.length; i++) {
+            var planObject = data[i];
+            var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
+            trObject.find('td:eq(0) input').val(planObject.size);
+        }
+    }
+    
+    function changeVisibilityBasedOnProjectSubType(value) {
+        if (value == 13 || value == 17) {
+            $("#plans-specifications *").attr("disabled", "disabled");
+            $("#plans-specifications").hide();
+            if (value == 17) {
+                $("#plans-specifications-plot *").removeAttr("disabled");
+                $("#plans-specifications-plot").show();
+            }
+        } else {
+            $("#plans-specifications *").removeAttr("disabled");
+            $("#plans-specifications-plot *").attr("disabled", "disabled");
+            $("#plans-specifications-plot").hide();
+            $("#plans-specifications").show();
         }
     }
 

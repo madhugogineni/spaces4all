@@ -9,8 +9,15 @@
             addRowToPlansConfigurationTable("#order-list");
         });
 
+        $("#addrow-plot").on("click", function () {
+            addRowToPlansConfigurationTablePlot("#order-list-plot");
+        });
 
         $("table.order-list").on("click", "#ibtnDel", function (event) {
+            removeRowFromPlansConfigurationTable();
+        });
+
+        $("table.order-list-plot").on("click", "#ibtnDel", function (event) {
             removeRowFromPlansConfigurationTable();
         });
 
@@ -19,40 +26,63 @@
             var formData = new FormData(this);
             var table = document.getElementById("order-list");
             var plansObject = [];
-            for (var i = 0; i < table.rows.length; i++) {
-                var row = table.rows[i];
-                var planObject = {};
+            if (![13, 17].indexOf(projectSubType)) {
 
-                for (var j = 0, col; col = row.cells[j]; j++) {
-                    var trObject = $('#order-list tbody tr:eq(' + i + ')');
-                    if (j == 0) {
-                        var plan = trObject.find('td:eq(' + j + ') select option:selected').val();
-                        // plan = plan.replace(" BHK", "");
-                        if (plan == undefined || plan == "") {
-                            break;
+                var table = document.getElementById("order-list");
+                var plansObject = [];
+                for (var i = 0; i < table.rows.length; i++) {
+                    var row = table.rows[i];
+                    var planObject = {};
+
+                    for (var j = 0, col; col = row.cells[j]; j++) {
+                        var trObject = $('#order-list tbody tr:eq(' + i + ')');
+                        if (j == 0) {
+                            var plan = trObject.find('td:eq(' + j + ') select option:selected').val();
+                            if (plan == undefined || plan == "") {
+                                break;
+                            }
+                            planObject.plan = plan;
                         }
-                        planObject.plan = plan;
+                        if (j == 1) {
+                            planObject.size = trObject.find('td:eq(' + j + ') input').val();
+                        }
+                        if (j == 2) {
+                            planObject.price = trObject.find('td:eq(' + j + ') input').val();
+                        }
+                        if (j == 3) {
+                            var values = [];
+                            $.each(trObject.find('td:eq(' + j + ') input[name="direction1[]"]:checked'), function () {
+                                values.push($(this).val());
+                            });
+                            planObject.facing = values;
+                        }
                     }
-                    if (j == 1) {
-                        planObject.size = trObject.find('td:eq(' + j + ') input').val();
-                    }
-                    if (j == 2) {
-                        planObject.price = trObject.find('td:eq(' + j + ') input').val();
-                    }
-                    if (j == 3) {
-                        var values = []
-                        $.each(trObject.find('td:eq(' + j + ') input[name="direction1[]"]:checked'), function () {
-                            values.push($(this).val());
-                        });
-                        planObject.facing = values;
+                    if (Object.keys(planObject).length !== 0) {
+                        plansObject.push(planObject);
                     }
                 }
-                if (Object.keys(planObject).length !== 0) {
-                    plansObject.push(planObject);
-                }
+
+                formData.append('plans_configuration', JSON.stringify(plansObject));
             }
 
-            formData.append('plans_configuration', JSON.stringify(plansObject));
+            if (projectSubType == 17) {
+                var table = document.getElementById("order-list-plot");
+                var plansObject = [];
+                for (var i = 0; i < table.rows.length; i++) {
+                    var row = table.rows[i];
+                    var planObject = {};
+
+                    // for (var j = 0, col; col = row.cells[j]; j++) {
+                    var trObject = $('#order-list-plot tbody tr:eq(' + i + ')');
+                    planObject.size = trObject.find('td:eq(0) input').val();
+                    // }
+                    if (Object.keys(planObject).length !== 0) {
+                        plansObject.push(planObject);
+                    }
+                }
+
+                formData.append('plans_configuration', JSON.stringify(plansObject));
+            }
             $.ajax({
                 type: "POST",
                 url: "<%= base_url %>admin/projects/update/<%= project_id %>",
@@ -66,6 +96,7 @@
             });
         });
     })
+    
 </script>
 <!-- Content Wrapper. Contains page content -->
 
@@ -122,8 +153,7 @@
 
                     <div class="box-body">
 
-                        <form action="<%= base_url %>admin/projects/update/<%= project_id %>" method="post"
-                            enctype="multipart/form-data" id="project_form">
+                        <form action="<%= base_url %>admin/projects/update/<%= project_id %>" method="post" enctype="multipart/form-data" id="project_form">
 
                             <div class="row">
 
@@ -136,18 +166,13 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Project Name</label>
-                                                <input type="text" class="form-control" id="" name="project_name"
-                                                    placeholder="Enter Project Name"
-                                                    value="<%= project_details.project_name %>" required="required">
+                                                <input type="text" class="form-control" id="" name="project_name" placeholder="Enter Project Name" value="<%= project_details.project_name %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Project Type</label> <select
-                                                    name="project_type" id="project_type"
-                                                    onchange="getProjectSubTypes(this.value,'#project_sub_type')"
-                                                    class="form-control margin-0" required="required">
+                                                <label for="exampleInputEmail1">Project Type</label> <select name="project_type" id="project_type" onchange="getProjectSubTypes(this.value,'#project_sub_type')" class="form-control margin-0" required="required">
 
                                                     <option value="">---SELECT---</option>
 
@@ -158,8 +183,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Project Sub Type</label>
-                                                <select name="project_sub_type" id="project_sub_type"
-                                                    class="form-control margin-0" required="required">
+                                                <select name="project_sub_type" id="project_sub_type" class="form-control margin-0" required="required">
 
                                                 </select>
 
@@ -167,9 +191,7 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Posted By</label> <select
-                                                    name="posted_by" id="posted_by" class="form-control margin-0"
-                                                    required="required">
+                                                <label for="exampleInputEmail1">Posted By</label> <select name="posted_by" id="posted_by" class="form-control margin-0" required="required">
 
                                                     <option value="">---SELECT---</option>
 
@@ -186,17 +208,13 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Group Name</label>
-                                                <input type="text" class="form-control" id="" name="group_name"
-                                                    placeholder="Enter Group Name"
-                                                    value="<%= project_details.group_name %>" required="required">
+                                                <input type="text" class="form-control" id="" name="group_name" placeholder="Enter Group Name" value="<%= project_details.group_name %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">City</label> <select name="city"
-                                                    id="city" onchange="showLocality(this.value,'#locality')"
-                                                    class="form-control margin-0 " required="required">
+                                                <label for="exampleInputEmail1">City</label> <select name="city" id="city" onchange="showLocality(this.value,'#locality')" class="form-control margin-0 " required="required">
 
 
                                                 </select>
@@ -213,8 +231,7 @@
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Status</label> <select name="status"
-                                                    id="status" class="form-control margin-0" required="required">
+                                                <label for="exampleInputEmail1">Status</label> <select name="status" id="status" class="form-control margin-0" required="required">
 
                                                     <option value="Available">Available</option>
 
@@ -232,12 +249,10 @@
 
                                                 <div class='input-group date' id=''>
 
-                                                    <input type="date" name="launch_date"
-                                                        value="<%= launchDateString %>" class="form-control" />
+                                                    <input type="date" name="launch_date" value="<%= launchDateString %>" class="form-control" />
                                                     <!-- launch date -->
 
-                                                    <span class="input-group-addon"> <span
-                                                            class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
 
                                                     </span>
 
@@ -251,11 +266,9 @@
 
                                                 <div class='input-group date' id=''>
 
-                                                    <input type="date" name="possesion_date" class="form-control"
-                                                        value="<%= possessionDateString %>" />
+                                                    <input type="date" name="possesion_date" class="form-control" value="<%= possessionDateString %>" />
                                                     <!-- possession date -->
-                                                    <span class="input-group-addon"> <span
-                                                            class="glyphicon glyphicon-calendar"></span>
+                                                    <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
 
                                                     </span>
 
@@ -266,36 +279,28 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">No Of Buildings</label>
-                                                <input type="text" class="form-control" id="" name="buildings"
-                                                    placeholder="Enter No Of Buildings"
-                                                    value="<%= project_details.no_of_buildings %>">
+                                                <input type="text" class="form-control" id="" name="buildings" placeholder="Enter No Of Buildings" value="<%= project_details.no_of_buildings %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">No Of Floors</label>
-                                                <input type="text" class="form-control" id="" name="floors"
-                                                    placeholder="Enter No Of Floors"
-                                                    value="<%= project_details.no_of_floors %>">
+                                                <input type="text" class="form-control" id="" name="floors" placeholder="Enter No Of Floors" value="<%= project_details.no_of_floors %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Total Area</label>
-                                                <input type="text" class="form-control" id="" name="total_area"
-                                                    placeholder="Enter Total Area"
-                                                    value="<%= project_details.total_area %>">
+                                                <input type="text" class="form-control" id="" name="total_area" placeholder="Enter Total Area" value="<%= project_details.total_area %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Total Units</label>
-                                                <input type="text" class="form-control" id="" name="total_units"
-                                                    placeholder="Enter Total Units"
-                                                    value="<%= project_details.total_units %>">
+                                                <input type="text" class="form-control" id="" name="total_units" placeholder="Enter Total Units" value="<%= project_details.total_units %>">
 
                                             </div>
 
@@ -312,8 +317,7 @@
 
                                                 <label for="exampleInputEmail1">Plans</label>
 
-                                                <select name="plans[]" id="example-getting-started" class="form-control"
-                                                    multiple="multiple" required="required">
+                                                <select name="plans[]" id="example-getting-started" class="form-control" multiple="multiple" required="required">
 
                                                     <% for(var i = 1;i <= 10;i++){ %>
 
@@ -329,62 +333,48 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Min Builtup Area</label>
-                                                <input type="text" class="form-control" id="" name="min_builtup"
-                                                    placeholder="Enter Min Builtup Area"
-                                                    value="<%= project_details.min_builtup_area %>" required="required">
+                                                <input type="text" class="form-control" id="" name="min_builtup" placeholder="Enter Min Builtup Area" value="<%= project_details.min_builtup_area %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Max Builtup Area</label>
-                                                <input type="text" class="form-control" id="" name="max_builtup"
-                                                    placeholder="Enter Max Builtup Area"
-                                                    value="<%= project_details.max_builtup_area %>">
+                                                <input type="text" class="form-control" id="" name="max_builtup" placeholder="Enter Max Builtup Area" value="<%= project_details.max_builtup_area %>">
 
                                             </div>
 
                                             <div class="form-group">
 
-                                                <label for="exampleInputEmail1">Min Price</label> <input type="text"
-                                                    class="form-control" id="" name="min_price"
-                                                    placeholder="Enter Min Price"
-                                                    value="<%= project_details.min_price %>">
+                                                <label for="exampleInputEmail1">Min Price</label> <input type="text" class="form-control" id="" name="min_price" placeholder="Enter Min Price" value="<%= project_details.min_price %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Max Price</label>
-                                                <input type="text" class="form-control" id="" name="max_price"
-                                                    placeholder="Enter Max Price"
-                                                    value="<%= project_details.max_price %>">
+                                                <input type="text" class="form-control" id="" name="max_price" placeholder="Enter Max Price" value="<%= project_details.max_price %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Maintenanace Charge</label>
-                                                <input type="text" class="form-control" id="" name="maintenance"
-                                                    placeholder="Enter Maintenanace Charge"
-                                                    value="<%= project_details.maintenance_charge %>">
+                                                <input type="text" class="form-control" id="" name="maintenance" placeholder="Enter Maintenanace Charge" value="<%= project_details.maintenance_charge %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Floor Rise</label>
-                                                <input type="text" class="form-control" id="" name="floor_rise"
-                                                    placeholder="Enter Floor Rise"
-                                                    value="<%= project_details.floor_rise %>">
+                                                <input type="text" class="form-control" id="" name="floor_rise" placeholder="Enter Floor Rise" value="<%= project_details.floor_rise %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Rera Id</label>
-                                                <input type="text" class="form-control" id="rera_id" name="rera_id"
-                                                    placeholder="Enter Rera Id" value="<%= project_details.rera_id %>">
+                                                <input type="text" class="form-control" id="rera_id" name="rera_id" placeholder="Enter Rera Id" value="<%= project_details.rera_id %>">
 
                                             </div>
                                             <br>
@@ -393,9 +383,7 @@
 
                                                 <label for="exampleInputEmail1">Commencement Certificate</label>
 
-                                                <input type="checkbox" class="minimal" id="" name="commencement"
-                                                    value="Yes" <% if(project_details.commencement == 'Yes'){ %>
-                                                    <%= 'checked' %> <% } %>>
+                                                <input type="checkbox" class="minimal" id="" name="commencement" value="Yes" <% if(project_details.commencement == 'Yes'){ %> <%= 'checked' %> <% } %>>
 
                                             </div>
                                             <br>
@@ -404,9 +392,7 @@
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Name</label>
-                                                <input type="text" class="form-control" id="" name="person_name"
-                                                    placeholder="Enter Name" value="<%= project_details.name %>"
-                                                    required="required">
+                                                <input type="text" class="form-control" id="" name="person_name" placeholder="Enter Name" value="<%= project_details.name %>" required="required">
 
                                             </div>
 
@@ -414,27 +400,21 @@
 
                                                 <label for="exampleInputEmail1">Mobile</label>
 
-                                                <input type="text" class="form-control" id="" name="mobile"
-                                                    placeholder="Enter Mobile" value="<%= project_details.mobile %>"
-                                                    required="required">
+                                                <input type="text" class="form-control" id="" name="mobile" placeholder="Enter Mobile" value="<%= project_details.mobile %>" required="required">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Office Phone</label>
-                                                <input type="text" class="form-control" id="" name="office_phone"
-                                                    placeholder="Enter Office Phone"
-                                                    value="<%= project_details.office_phone %>">
+                                                <input type="text" class="form-control" id="" name="office_phone" placeholder="Enter Office Phone" value="<%= project_details.office_phone %>">
 
                                             </div>
 
                                             <div class="form-group">
 
                                                 <label for="exampleInputEmail1">Email</label>
-                                                <input type="email" class="form-control" id="" name="email"
-                                                    placeholder="Enter Email" value="<%= project_details.email %>"
-                                                    required="required">
+                                                <input type="email" class="form-control" id="" name="email" placeholder="Enter Email" value="<%= project_details.email %>" required="required">
 
                                             </div>
 
@@ -483,8 +463,35 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="5" style="text-align: left;">
-                                                    <input type="button" class="btn btn-warning" id="addrow"
-                                                        value="Add Row" />
+                                                    <input type="button" class="btn btn-warning" id="addrow" value="Add Row" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+
+                            </div>
+
+                            <div class="row" id="plans-specifications-plot" style="padding-left: 30px">
+
+                                <div class="col-md-12">
+
+                                    <label for="plans">Plans</label>
+                                    <table id="order-list-plot" class=" table order-list-plot">
+                                        <thead>
+                                            <tr>
+                                                <td>Size</td>
+                                                <td>Delete</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="5" style="text-align: left;">
+                                                    <input type="button" class="btn btn-warning" id="addrow-plot" value="Add Row" />
                                                 </td>
                                             </tr>
                                             <tr>
@@ -501,8 +508,7 @@
 
                                     <label for="specifications">Specifications</label>
 
-                                    <textarea id="editor1" class="text1" name="specifications" rows="10" min="10"
-                                        style="width: 100%"><%= project_details.specifications %></textarea>
+                                    <textarea id="editor1" class="text1" name="specifications" rows="10" min="10" style="width: 100%"><%= project_details.specifications %></textarea>
 
                                 </div>
 
@@ -515,8 +521,7 @@
 
                                     <label for="description">Description</label>
 
-                                    <textarea id="editor" class="text2" name="description" rows="10" style="width: 100%"
-                                        min="10">
+                                    <textarea id="editor" class="text2" name="description" rows="10" style="width: 100%" min="10">
                                             <%= project_details.description %></textarea>
 
                                 </div>
@@ -933,8 +938,7 @@
 <script src='<%= base_url %>admin/plugins/fastclick/fastclick.min.js'></script>
 <script src="<%= base_url %>admin/dist/js/app.min.js" type="text/javascript"></script>
 <script src="<%= base_url %>admin/dist/js/demo.js" type="text/javascript"></script>
-<script src="<%= base_url %>admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"
-    type="text/javascript"></script>
+<script src="<%= base_url %>admin/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -958,14 +962,14 @@
     selectOption("plans[]", "<%= project_details.plans %>");
     setUpAmenities('#amenity_options')
     setUpBanks("#approved_banks");
-    setUpPlanConfigurationRows("#order-list", '<%- project_details.plans_configuration %>');
-    // addRowToPlansConfigurationTable("#order-list")
+    setUpPlanConfigurationRows('<%- project_details.plans_configuration %>', '<%= project_details.project_sub_type %>');
     setTimeout(function () {
         selectAmenities("<%= project_details.amenities %>");
     }, 500)
     setTimeout(function () {
         selectBanks("<%= project_details.approved_banks %>");
     }, 500)
+    changeVisibilityBasedOnProjectSubType('<%= project_details.project_sub_type %>');
 
 
 </script>
