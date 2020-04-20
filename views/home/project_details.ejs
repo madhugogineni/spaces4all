@@ -188,6 +188,7 @@
                             </div>
                         </div>
                     </div>
+                    <% if([13,17].indexOf(project.project_sub_type) < 0) {%>
                     <div class="row floor-plan">
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <h1 class="sub-heading">FLOOR PLANS</h1>
@@ -218,6 +219,31 @@
                             </table>
                         </div>
                     </div>
+                    <% } %>
+                    <% if(project.project_sub_type == 17) { %>
+                        <h1 class="sub-heading">PLOT SIZES</h1>
+
+                        <div class="row floor-plan">
+                        <div class="col-xs-12 col-sm-4 col-md-4">
+                            <table class="table table-hovered floor-plan-table">
+                                <thead>
+                                    <tr>
+                                        <th>Area</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(var i = 0;i < project.plans_configuration.length;i++) {
+                                    var planConfiguration = project.plans_configuration[i]; %>
+                                    <tr>
+                                        <td><%= planConfiguration.size %> Sq yards</td>
+                                    </tr>
+
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <% } %>
                     <div class="row amenities">
                         <div class="col-xs-12 col-sm-12 col-md-12">
                             <h1 class="sub-heading">AMENITIES</h1>

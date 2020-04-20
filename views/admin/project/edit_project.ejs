@@ -14,17 +14,18 @@
         });
 
         $("table.order-list").on("click", "#ibtnDel", function (event) {
-            removeRowFromPlansConfigurationTable();
+            removeRowFromPlansConfigurationTable(this);
         });
 
         $("table.order-list-plot").on("click", "#ibtnDel", function (event) {
-            removeRowFromPlansConfigurationTable();
+            removeRowFromPlansConfigurationTable(this);
         });
 
         $("form#project_form").submit(function (e) {
             e.preventDefault();
             var formData = new FormData(this);
-            var table = document.getElementById("order-list");
+            var projectSubType = $("#project_sub_type").val();
+
             var plansObject = [];
             if (![13, 17].indexOf(projectSubType)) {
 
@@ -68,14 +69,16 @@
             if (projectSubType == 17) {
                 var table = document.getElementById("order-list-plot");
                 var plansObject = [];
+                console.log(table)
                 for (var i = 0; i < table.rows.length; i++) {
                     var row = table.rows[i];
                     var planObject = {};
 
-                    // for (var j = 0, col; col = row.cells[j]; j++) {
-                    var trObject = $('#order-list-plot tbody tr:eq(' + i + ')');
-                    planObject.size = trObject.find('td:eq(0) input').val();
-                    // }
+                    var size = $('#order-list-plot tbody tr:eq(' + i + ')').find('td:eq(0) input').val();
+                    if (size == undefined || size == "") {
+                        break;
+                    }
+                    planObject.size = size;
                     if (Object.keys(planObject).length !== 0) {
                         plansObject.push(planObject);
                     }
@@ -96,7 +99,7 @@
             });
         });
     })
-    
+
 </script>
 <!-- Content Wrapper. Contains page content -->
 
@@ -276,17 +279,17 @@
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group"  id="buildings_container">
 
                                                 <label for="exampleInputEmail1">No Of Buildings</label>
-                                                <input type="text" class="form-control" id="" name="buildings" placeholder="Enter No Of Buildings" value="<%= project_details.no_of_buildings %>">
+                                                <input type="text" class="form-control" id="no_of_buildings" name="buildings" placeholder="Enter No Of Buildings" value="<%= project_details.no_of_buildings %>">
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group"  id="floors_container">
 
                                                 <label for="exampleInputEmail1">No Of Floors</label>
-                                                <input type="text" class="form-control" id="" name="floors" placeholder="Enter No Of Floors" value="<%= project_details.no_of_floors %>">
+                                                <input type="text" class="form-control" id="no_of_floors" name="floors" placeholder="Enter No Of Floors" value="<%= project_details.no_of_floors %>">
 
                                             </div>
 
@@ -364,14 +367,14 @@
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group"  id="floor_rise_container">
 
                                                 <label for="exampleInputEmail1">Floor Rise</label>
                                                 <input type="text" class="form-control" id="" name="floor_rise" placeholder="Enter Floor Rise" value="<%= project_details.floor_rise %>">
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id="rera_id_container">
 
                                                 <label for="exampleInputEmail1">Rera Id</label>
                                                 <input type="text" class="form-control" id="rera_id" name="rera_id" placeholder="Enter Rera Id" value="<%= project_details.rera_id %>">

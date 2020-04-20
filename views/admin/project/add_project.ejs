@@ -13,11 +13,11 @@
         });
 
         $("table.order-list").on("click", "#ibtnDel", function (event) {
-            removeRowFromPlansConfigurationTable();
+            removeRowFromPlansConfigurationTable(this);
         });
 
         $("table.order-list-plot").on("click", "#ibtnDel", function (event) {
-            removeRowFromPlansConfigurationTable();
+            removeRowFromPlansConfigurationTable(this);
         });
 
         $("form#add_project_form").submit(function (e) {
@@ -69,16 +69,16 @@
                 for (var i = 0; i < table.rows.length; i++) {
                     var row = table.rows[i];
                     var planObject = {};
-
-                    // for (var j = 0, col; col = row.cells[j]; j++) {
-                    var trObject = $('#order-list-plot tbody tr:eq(' + i + ')');
-                    planObject.size = trObject.find('td:eq(0) input').val();
-                    // }
+                    var size = $('#order-list-plot tbody tr:eq(' + i + ')').find('td:eq(0) input').val();
+                    if (size == undefined || size == "") {
+                        break;
+                    }
+                    planObject.size = size;
                     if (Object.keys(planObject).length !== 0) {
                         plansObject.push(planObject);
                     }
                 }
-                
+
                 formData.append('plans_configuration', JSON.stringify(plansObject));
             }
 
@@ -283,15 +283,15 @@
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id="buildings_container">
 
                                                 <label for="exampleInputEmail1">No Of Buildings</label>
-                                                <input type="text" class="form-control" id="" name="buildings" placeholder="Enter No Of Buildings" required="required">
+                                                <input type="number" class="form-control" id="no_of_buildings" name="buildings" placeholder="Enter No Of Buildings">
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id="floors_container">
 
-                                                <label for="exampleInputEmail1">No Of Floors</label> <input type="text" class="form-control" id="" name="floors" placeholder="Enter No Of Floors">
+                                                <label for="exampleInputEmail1">No Of Floors</label> <input type="number" class="form-control" id="no_of_floors" name="floors" placeholder="Enter No Of Floors">
 
                                             </div>
 
@@ -364,16 +364,17 @@
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id="floor_rise_container">
 
                                                 <label for="exampleInputEmail1">Floor Rise</label>
                                                 <input type="text" class="form-control" id="" name="floor_rise" placeholder="Enter Floor Rise">
 
                                             </div>
 
-                                            <div class="form-group">
+                                            <div class="form-group" id="rera_id_container">
 
                                                 <label for="exampleInputEmail1">Rera Id</label>
+                                                
                                                 <input type="text" class="form-control" id="rera_id" name="rera_id" placeholder="Enter Rera Id">
 
                                             </div>

@@ -205,6 +205,7 @@ router.get('/edit/:project_id', async function (req, res) {
         } else {
             data.project_details = undefined;
         }
+        console.log(data);
         res.render('admin/project/edit_project', data);
     } else {
         res.redirect('/admin/')

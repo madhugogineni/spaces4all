@@ -513,8 +513,8 @@
         $(tableId).append(newRow);
     }
 
-    function removeRowFromPlansConfigurationTable() {
-        $(this).closest("tr").remove();
+    function removeRowFromPlansConfigurationTable(target) {
+        $(target).closest("tr").remove();
     }
 
     function setUpPlanConfigurationRows(data, projectSubType) {
@@ -572,27 +572,46 @@
 
     function setUpPlanConfigurationValuesPlot(tableId, data) {
         var table = document.getElementById(tableId.substr(1));
-        
+
         for (var i = 0; i < table.rows.length; i++) {
             var planObject = data[i];
             var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
-            trObject.find('td:eq(0) input').val(planObject.size);
+            if (planObject) {
+                trObject.find('td:eq(0) input').val(planObject.size);
+            }
         }
     }
-    
+
     function changeVisibilityBasedOnProjectSubType(value) {
         if (value == 13 || value == 17) {
             $("#plans-specifications *").attr("disabled", "disabled");
             $("#plans-specifications").hide();
-            if (value == 17) {
-                $("#plans-specifications-plot *").removeAttr("disabled");
-                $("#plans-specifications-plot").show();
-            }
         } else {
             $("#plans-specifications *").removeAttr("disabled");
+            $("#plans-specifications").show();
+        }
+        if (value == 17) {
+            $("#plans-specifications-plot *").removeAttr("disabled");
+            $("#plans-specifications-plot").show();
+            $("#buildings_container").attr("disabled", "disabled");
+            $("#buildings_container").hide();
+            $("#floors_container").attr("disabled", "disabled");
+            $("#floors_container").hide();
+            $("#rera_id_container").attr("disabled", "disabled");
+            $("#rera_id_container").hide();
+            $("#floor_rise_container").attr("disabled", "disabled");
+            $("#floor_rise_container").hide();
+        } else {
             $("#plans-specifications-plot *").attr("disabled", "disabled");
             $("#plans-specifications-plot").hide();
-            $("#plans-specifications").show();
+            $("#buildings_container").removeAttr("disabled");
+            $("#buildings_container").show();
+            $("#floors_container").removeAttr("disabled");
+            $("#floors_container").show();
+            $("#rera_id_container").removeAttr("disabled");
+            $("#rera_id_container").show();
+            $("#floor_rise_container").removeAttr("disabled");
+            $("#floor_rise_container").show();
         }
     }
 
