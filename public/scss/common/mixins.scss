@@ -14,6 +14,6 @@
 
 @mixin align-content-to-center {
   display: flex !important;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
 }

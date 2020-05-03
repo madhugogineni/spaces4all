@@ -31,6 +31,7 @@
 
     &-details {
       @include align-content-to-center;
+      justify-content: left;
       height: 50px;
       border-left: 1px solid $gray67;
 
@@ -39,6 +40,7 @@
       }
 
       .specifications {
+        margin-top: 5px;
         @include font($size: 15px);
 
         span {
@@ -185,7 +187,6 @@
       .builder-name {
         height: 30px;
         padding-right: 30px;
-        justify-content: center !important;
       }
 
       &-details {
@@ -226,7 +227,6 @@
       .quick-links {
         height: 30px;
         padding-top: 10px;
-        justify-content: center !important;
 
       }
     }
