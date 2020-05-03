@@ -50,6 +50,7 @@
     .quick-links {
       height: 50px;
       @include align-content-to-center;
+      justify-content: flex-end !important;
 
       span {
         @include font($size: 20px);
@@ -184,6 +185,7 @@
       .builder-name {
         height: 30px;
         padding-right: 30px;
+        justify-content: center !important;
       }
 
       &-details {
@@ -191,7 +193,7 @@
 
         .description,
         .specifications {
-          margin-top: 5px;
+          margin-top: 15px;
           text-align: center;
         }
       }
@@ -222,7 +224,10 @@
       }
 
       .quick-links {
-        
+        height: 30px;
+        padding-top: 10px;
+        justify-content: center !important;
+
       }
     }
   }
