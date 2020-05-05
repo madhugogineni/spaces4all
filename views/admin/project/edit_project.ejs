@@ -27,7 +27,7 @@
             var projectSubType = $("#project_sub_type").val();
 
             var plansObject = [];
-            if (![13, 17].indexOf(projectSubType)) {
+            if ([13, 17].indexOf(projectSubType) < 0) {
 
                 var table = document.getElementById("order-list");
                 var plansObject = [];
@@ -62,30 +62,28 @@
                         plansObject.push(planObject);
                     }
                 }
-
                 formData.append('plans_configuration', JSON.stringify(plansObject));
-            }
-
-            if (projectSubType == 17) {
-                var table = document.getElementById("order-list-plot");
-                var plansObject = [];
-                console.log(table)
-                for (var i = 0; i < table.rows.length; i++) {
-                    var row = table.rows[i];
-                    var planObject = {};
-
-                    var size = $('#order-list-plot tbody tr:eq(' + i + ')').find('td:eq(0) input').val();
-                    if (size == undefined || size == "") {
-                        break;
+            } else {
+                if (projectSubType == 17) {
+                    var table = document.getElementById("order-list-plot");
+                    var plansObject = [];
+                    for (var i = 0; i < table.rows.length; i++) {
+                        var row = table.rows[i];
+                        var planObject = {};
+                        var size = $('#order-list-plot tbody tr:eq(' + i + ')').find('td:eq(0) input').val();
+                        if (size == undefined || size == "") {
+                            break;
+                        }
+                        planObject.size = size;
+                        if (Object.keys(planObject).length !== 0) {
+                            plansObject.push(planObject);
+                        }
                     }
-                    planObject.size = size;
-                    if (Object.keys(planObject).length !== 0) {
-                        plansObject.push(planObject);
-                    }
+
+                    formData.append('plans_configuration', JSON.stringify(plansObject));
                 }
-
-                formData.append('plans_configuration', JSON.stringify(plansObject));
             }
+            
             $.ajax({
                 type: "POST",
                 url: "<%= base_url %>admin/projects/update/<%= project_id %>",
@@ -279,14 +277,14 @@
 
                                             </div>
 
-                                            <div class="form-group"  id="buildings_container">
+                                            <div class="form-group" id="buildings_container">
 
                                                 <label for="exampleInputEmail1">No Of Buildings</label>
                                                 <input type="text" class="form-control" id="no_of_buildings" name="buildings" placeholder="Enter No Of Buildings" value="<%= project_details.no_of_buildings %>">
 
                                             </div>
 
-                                            <div class="form-group"  id="floors_container">
+                                            <div class="form-group" id="floors_container">
 
                                                 <label for="exampleInputEmail1">No Of Floors</label>
                                                 <input type="text" class="form-control" id="no_of_floors" name="floors" placeholder="Enter No Of Floors" value="<%= project_details.no_of_floors %>">
@@ -367,7 +365,7 @@
 
                                             </div>
 
-                                            <div class="form-group"  id="floor_rise_container">
+                                            <div class="form-group" id="floor_rise_container">
 
                                                 <label for="exampleInputEmail1">Floor Rise</label>
                                                 <input type="text" class="form-control" id="" name="floor_rise" placeholder="Enter Floor Rise" value="<%= project_details.floor_rise %>">
