@@ -6,23 +6,6 @@
     <!--    <link rel="stylesheet" type="text/css" href="<%= base_url %>stylesheets/index.css">-->
     <script>
 
-        function ShowButton(str) {
-
-
-            if (str == 'BUY') {
-
-                document.getElementById("action_type").innerHTML = "<button type='submit' name='search_type' value='BUY' formaction='<%= base_url %>home/properties' class='btn btn-primary btn-block btn-lg'><i class='fa fa-search'></i> Search</button>";
-
-            }
-
-            if (str == 'RENT') {
-
-                document.getElementById("action_type").innerHTML = "<button type='submit' name='search_type' value='RENT' formaction='<%= base_url %>home/rent' class='btn btn-primary btn-block btn-lg'><i class='fa fa-search'></i> Search</button>";
-
-            }
-
-        }
-
         function showAjaxModal1(propertyId) {
             var modalBody = '<div id="errorBox3"></div>' +
                 '<div class="row">' +

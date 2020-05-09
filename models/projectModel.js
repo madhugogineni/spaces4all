@@ -290,7 +290,8 @@ module.exports = {
             query += " AND (projects.project_name LIKE '%" + parameters.search_field + "%'";
             query += " OR projects.rera_id LIKE '%" + parameters.search_field + "%'";
             query += " OR locality.locality LIKE '%" + parameters.search_field + "%'";
-            query += " OR projects.group_name LIKE '%" + parameters.search_field + "%' )";
+            query += " OR projects.group_name LIKE '%" + parameters.search_field + "%'";
+            query += " OR project_sub_type.sub_type LIKE '%" + parameters.search_field + "%' )";
         }
         if (!parameters.is_admin) {
             query += " AND projects.project_status ='1'";

@@ -196,11 +196,19 @@
                             <div class="dib list_label">Furnishing Status</div>
                             <div class="dib list_content"> <%= property_details.furnishing_status %></div>
                         </li>
-                        <li>
-                            <div class="dib list_label">Floor No</div>
-                            <div class="dib list_content"> <%= property_details.floor_no %> Floor</div>
-                        </li>
-                        <li>
+                        <% if(property_details.property_sub_type_name != PROPERTY_SUB_TYPE_INDEPENDENT_HOUSE && property_details.property_sub_type_name != PROPERTY_SUB_TYPE_VILLA) { %>
+                            <li>
+                                <div class="dib list_label">Floor No</div>
+                                <div class="dib list_content"> <%= property_details.floor_no %> Floor</div>
+                            </li>
+                        <% }%>
+                        <% if(property_details.property_sub_type_name == PROPERTY_SUB_TYPE_INDEPENDENT_HOUSE || property_details.property_sub_type_name == PROPERTY_SUB_TYPE_VILLA) { %>
+                            <li>
+                                <div class="dib list_label">Plot Size</div>
+                                <div class="dib list_content"> <%= property_details.saleable_area %> sq. ft</div>
+                            </li>
+                        <% } %>
+                            <li>
                             <div class="dib list_label">No of Floors</div>
                             <div class="dib list_content"> <%= property_details.floors %> Floors</div>
                         </li>

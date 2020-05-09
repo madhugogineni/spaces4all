@@ -720,6 +720,10 @@
   white-space: nowrap;
   margin-top: 10px;
 }
+.project-details-page .project-details .specifications ul, .project-details-page .project-details .specifications ol {
+  margin-left: 20px;
+  list-style: inherit !important;
+}
 .project-details-page .project-details .gallery li {
   display: inline-block;
 }

@@ -120,7 +120,8 @@ module.exports = {
         if (parameters.search_field != "" && parameters.search_field != undefined) {
             query += " AND (list_property.property_name LIKE '%" + parameters.search_field + "%'";
             query += " OR locality.locality LIKE '%" + parameters.search_field + "%'";
-            query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%')";
+            query += " OR list_property.rera_id LIKE '%" + parameters.search_field + "%'";
+            query += " OR property_sub_type.sub_type LIKE '%" + parameters.search_field + "%')";
         }
         query += " AND list_property.status='1' ORDER BY datetime DESC ";
         // console.log(query);

@@ -161,6 +161,12 @@
         }
       }
     }
+    .specifications {
+      ul,ol {
+        margin-left: 20px;
+        list-style: inherit !important; 
+      }
+    }
     .gallery {
       li {
         display: inline-block;
