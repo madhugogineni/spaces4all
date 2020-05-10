@@ -188,8 +188,8 @@
                                                                 <ul class="">
 
                                                                     <li><span class="location">
-                                                                            <%= exclusive_project.locality_name %>,
-                                                                            <?=$city?></span>
+                                                                            <%= exclusive_project.locality_name %>, <%=exclusive_project.city_name %>
+                                                                            </span>
                                                                     </li>
                                                                     <hr>
 
@@ -209,13 +209,12 @@
 
                                                                     <li><span>Status :
                                                                             <%= exclusive_project.status %></span></li>
-                                                                    <hr>
 
                                                                 </ul>
 
-                                                                <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>">
+                                                                <!-- <a href="<%= base_url %>home/project_details/<%= exclusive_project.project_id %>">
                                                                     <button type="button" class="btn btn-danger">View Details &raquo;</button>
-                                                                </a>
+                                                                </a> -->
 
                                                             </div>
 

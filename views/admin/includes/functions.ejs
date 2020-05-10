@@ -492,8 +492,8 @@
         var newRow = $("<tr>");
         var cols = "";
         cols += '<td class="col-sm-3"><select name="plan" id="example-getting-started" class="form-control" required="required"><option value="1">1 BHK</option><option value="2">2 BHK</option><option value="3">3 BHK</option><option value="4">4 BHK</option><option value="5">5 BHK</option><option value="6">6 BHK</option><option value="7">7 BHK</option><option value="8">8 BHK</option><option value="9">9 BHK</option><option value="10">10 BHK</option></select></td>';
-        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="size" class="form-control"/></td>';
-        cols += '<td class="col-sm-3"><input type="text" placeholder="Enter Price per Sqft" name="price" class="form-control"/></td>';
+        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="size" class="form-control" required/></td>';
+        cols += '<td class="col-sm-3"><input type="text" placeholder="Enter Price per Sqft" name="price" class="form-control" required/></td>';
         cols += '<td class="col-sm-3"><div class="container-fluid">';
         cols += '<input type="checkbox" name="direction1[]" value="North"/>&nbsp;North<br/><input type="checkbox" name="direction1[]" value="South"/>&nbsp;South<br/><input type="checkbox" name="direction1[]" value="East"/>&nbsp;East<br/><input type="checkbox" name="direction1[]" value="West"/>&nbsp;West</div></td>';
         // cols += '<input type="checkbox" name="direction'+counter+'[]" value="North"/>&nbsp;North<br/><input type="checkbox" name="direction'+counter+'[]" value="South"/>&nbsp;South<br/><input type="checkbox" name="direction'+counter+'[]" value="East"/>&nbsp;East<br/><input type="checkbox" name="direction'+counter+'[]" value="West"/>&nbsp;West</div></td>';
@@ -506,7 +506,8 @@
     function addRowToPlansConfigurationTablePlot(tableId) {
         var newRow = $("<tr>");
         var cols = "";
-        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="plot-size" class="form-control"/></td>';
+        cols += '<td class="col-sm-3"><input type="number" placeholder="Enter Size (Sqft)" name="plot-size" class="form-control" required/></td>';
+        cols += '<td class="col-sm-3"><select name="unit" id="unit" class="form-control" required="required"><option value="">---SELECT---</option><option value="sqft">Sq. Ft</option><option value="sqyd">Sq. Yard</option></select></td>';
         cols += '<td class="col-sm-2"><a id="ibtnDel" class="deleteRow btn btn-sm btn-danger">Delete Row</a></td>';
 
         newRow.append(cols);

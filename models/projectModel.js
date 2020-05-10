@@ -333,9 +333,9 @@ module.exports = {
             con.query("SELECT projects.*, project_type.type as project_type_name, project_sub_type.sub_type as project_sub_type_name, city.city as city_name," +
                 " locality.locality as locality_name,project_photos.photo as project_photo FROM projects inner join project_type on" +
                 " projects.project_type = project_type.project_type_id inner join project_sub_type on projects.project_sub_type = project_sub_type.project_sub_type_id" +
-                " inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id left join project_photos on" +
+                " inner join city on projects.city = city.city_id inner join locality on projects.locality = locality.locality_id left join (select * from project_photos order by project_photos.photo_id DESC ) project_photos on" +
                 " projects.project_id = project_photos.project_id where projects.project_id !=0 and projects.project_status=1 and projects.exclusive='1' and" +
-                " projects.city=" + city + " ORDER BY datetime DESC;", function (error, result) {
+                " projects.city=" + city + " ORDER BY datetime DESC, project_photos.photo_id DESC;", function (error, result) {
                     if (error) {
                         console.log(error);
                     }

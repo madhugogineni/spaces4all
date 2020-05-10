@@ -21,11 +21,13 @@
         });
 
         $("form#add_project_form").submit(function (e) {
+            var isValid = true;
+            var errorMessage = "";
             e.preventDefault();
             var formData = new FormData(this);
 
             var projectSubType = $("#project_sub_type").val();
-
+            projectSubType = parseInt(projectSubType);
             if ([13, 17].indexOf(projectSubType) < 0) {
 
                 var table = document.getElementById("order-list");
@@ -38,7 +40,7 @@
                         var trObject = $('#order-list tbody tr:eq(' + i + ')');
                         if (j == 0) {
                             var plan = trObject.find('td:eq(' + j + ') select option:selected').val();
-                            if (plan == undefined || plan == "") {
+                            if (!plan) {
                                 break;
                             }
                             planObject.plan = plan;
@@ -69,11 +71,19 @@
                     for (var i = 0; i < table.rows.length; i++) {
                         var row = table.rows[i];
                         var planObject = {};
-                        var size = $('#order-list-plot tbody tr:eq(' + i + ')').find('td:eq(0) input').val();
-                        if (size == undefined || size == "") {
-                            break;
+                        for (var j = 0, col; col = row.cells[j]; j++) {
+                            var trObject = $('#order-list-plot tbody tr:eq(' + i + ')');
+                            if (j == 0) {
+                                var size = trObject.find('td:eq(' + j + ') input').val();
+                                if (!size) {
+                                    break;
+                                }
+                                planObject.size = size;
+                            }
+                            if (j == 1) {
+                                planObject.unit = trObject.find('td:eq(' + j + ') select option:selected').val();
+                            }
                         }
-                        planObject.size = size;
                         if (Object.keys(planObject).length !== 0) {
                             plansObject.push(planObject);
                         }
@@ -484,6 +494,7 @@
                                         <thead>
                                             <tr>
                                                 <td>Size</td>
+                                                <td>Unit</td>
                                                 <td>Delete</td>
                                             </tr>
                                         </thead>

@@ -476,13 +476,14 @@ router.get("/exclusive_projects/:cityId", function (req, res) {
     crudModel
         .getExclusiveProjectDetails(cityId)
         .then(function (exclusiveProjects) {
+            // console.log(exclusiveProjects);
             var finalExclusiveProjects = [];
             var projectIds = [];
             for (var i = 0; i < exclusiveProjects.length; i++) {
                 var exclusiveProject = exclusiveProjects[i];
                 if (!projectIds.includes(exclusiveProject.project_id)) {
                     projectIds.push(exclusiveProject.project_id);
-                    if (exclusiveProject.project_photo == null) {
+                    if (exclusiveProject.project_photo == null || exclusiveProject.project_photo == '') {
                         exclusiveProject.project_photo = "no-photo.jpg";
                     }
                     var finalMinPrice;
@@ -508,7 +509,7 @@ router.get("/exclusive_projects/:cityId", function (req, res) {
                         } else if (price > 100000) {
                             price1 = Math.round(parseFloat(price) / 100000, 2);
                             if (price1 == "100") {
-                                price1 = "1 Crore";
+                                price1 = "1 Cr";
                             } else {
                                 price1 = price1 + " Lac";
                             }
@@ -521,7 +522,7 @@ router.get("/exclusive_projects/:cityId", function (req, res) {
                     finalExclusiveProjects.push(exclusiveProject);
                 }
             }
-            // console.log(finalExclusiveProjects);
+            console.log(finalExclusiveProjects);
             res.render("home/exclusive-projects", {
                 page_name: "Exclusive Projects",
                 page_title: "Exclusive Projects",
@@ -1413,6 +1414,7 @@ router.get('/project_details/:id', async function (req, res) {
         } else {
             res.redirect('/');
         }
+        console.log(data)
         res.render('home/project_details', data);
     } else {
         res.redirect('/');
