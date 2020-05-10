@@ -551,22 +551,14 @@
             var planObject = data[i];
             for (var j = 0, col; col = row.cells[j]; j++) {
                 var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
-                if (j == 0) {
-                    trObject.find('td:eq(' + j + ') select option[value ="' + planObject.plan + '"]').attr('selected', 'selected');
-                }
-                if (j == 1) {
-                    trObject.find('td:eq(' + j + ') input').val(planObject.size);
-                }
-                if (j == 2) {
-                    trObject.find('td:eq(' + j + ') input').val(planObject.price);
-                }
-                if (j == 3) {
-                    trObject.find('td:eq(' + j + ') input[name="direction1[]"]').each(function () {
-                        if (planObject.facing.includes($(this).val())) {
-                            $(this).prop('checked', true)
-                        }
-                    })
-                }
+                trObject.find('td:eq(0) select option[value ="' + planObject.plan + '"]').attr('selected', 'selected');
+                trObject.find('td:eq(1) input').val(planObject.size);
+                trObject.find('td:eq(2) input').val(planObject.price);
+                trObject.find('td:eq(3) input[name="direction1[]"]').each(function () {
+                    if (planObject.facing.includes($(this).val())) {
+                        $(this).prop('checked', true)
+                    }
+                })
             }
         }
     }
@@ -575,10 +567,14 @@
         var table = document.getElementById(tableId.substr(1));
 
         for (var i = 0; i < table.rows.length; i++) {
+            var row = table.rows[i];
             var planObject = data[i];
-            var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
-            if (planObject) {
-                trObject.find('td:eq(0) input').val(planObject.size);
+            for (var j = 0, col; col = row.cells[j]; j++) {
+                var trObject = $(tableId + ' tbody tr:eq(' + i + ')');
+                if (planObject) {
+                    trObject.find('td:eq(0) input').val(planObject.size);
+                    trObject.find('td:eq(1) select option[value ="' + planObject.unit + '"]').attr('selected', 'selected');
+                }
             }
         }
     }

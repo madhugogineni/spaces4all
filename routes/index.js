@@ -1414,7 +1414,6 @@ router.get('/project_details/:id', async function (req, res) {
         } else {
             res.redirect('/');
         }
-        console.log(data)
         res.render('home/project_details', data);
     } else {
         res.redirect('/');
