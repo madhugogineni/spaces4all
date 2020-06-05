@@ -9,6 +9,7 @@ var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
+var mailService = require('../../services/email')
 
 router.get('/', async function (req, res) {
     var listProperty = await crudModel.getProperties(req.query);
@@ -82,6 +83,7 @@ router.post('/update/:property_id', upload.none(),
         var propertyId = req.params.property_id;
         var isError = false;
         if (propertyId) {
+            var data = deepclone(req.body);
             if (req.body.property_sub_type == 14 || req.body.property_sub_type == 18) {
                 let validator = new Validator(req.body, {
                     plot_area: "numeric",
@@ -92,7 +94,6 @@ router.post('/update/:property_id', upload.none(),
                     north: "numeric",
                     south: "numeric"
                 });
-
                 var validatorResult = await validator.check();
 
                 if (!validatorResult) {
@@ -103,8 +104,6 @@ router.post('/update/:property_id', upload.none(),
                     }
                     res.send({ success: false, message: errorMsg });
                 } else {
-                    var data = deepclone(req.body);
-                    var date = utils.getDate();
                     var city1 = await crudModel.getCityById(req.body.city);
                     var cityName = ""
                     if (city1.success) {
@@ -193,7 +192,6 @@ router.post('/update/:property_id', upload.none(),
                     res.send({ success: false, message: errorMsg });
                     res.end();
                 } else {
-                    var data = deepclone(req.body);
                     data.amenities = data.amenities1 ? data.amenities1.toString() : "";
                     delete data.amenities1;
                     data.possession = "";
@@ -209,7 +207,6 @@ router.post('/update/:property_id', upload.none(),
                     delete data.west;
                     delete data.north;
                     delete data.south;
-                    var date = utils.getDate();
                     var city1 = await crudModel.getCityById(req.body.city);
                     var cityName = ""
                     if (city1.success) {
@@ -242,6 +239,11 @@ router.post('/update/:property_id', upload.none(),
                     success: true,
                     message: "Thank you for your trust in space4all. Just wait few hours, we are on the job. !"
                 });
+
+                var subject = "Property Update Alert"
+                var body = data.name + "with property id " + propertyId + "has been updated at " + utils.getDate() + "<br>";
+                body += "Check it at https://spaces4all.com/home/property_details/" + propertyId + " ."
+                mailService.sendMail(subject, body)
             }
         } else {
             res.redirect('/admin')

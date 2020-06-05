@@ -9,6 +9,8 @@ var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
 var deepclone = require('lodash.clonedeep');
+var mailService = require("../../services/email");
+
 router.get('/', async function (req, res) {
     var data = {
         page_name: 'project',
@@ -43,6 +45,7 @@ router.get('/add', function (req, res) {
 router.post('/add', upload.none(), async function (req, res) {
     var addProjectResponse = await addProject(req);
     if (addProjectResponse.success) {
+
         res.send({ success: true, message: "Successfully created !" })
     } else {
         isAddErrorPresent = true;
@@ -362,6 +365,20 @@ async function addProject(req, projectId) {
         'rera_id': reraId,
         'plans_configuration': plansConfiguration
     }, projectId);
+    if (addProjectResponse.success) {
+        var subject, body
+        var date = utils.getDate();
+        if (projectId) {
+            subject = "Project Update Alert"
+            body = projectName + " has been added at " + date
+        } else {
+            subject = "New Project Alert"
+            body = projectName + " has been added at " + date
+        }
+        console.log(subject)
+        console.log(body)
+        mailService.sendMail(subject, body)
+    }
     return addProjectResponse;
 }
 
