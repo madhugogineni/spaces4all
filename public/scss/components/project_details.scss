@@ -93,6 +93,7 @@
       .rera {
         margin-top: 20px;
         margin-bottom: 20px;
+
         ul {
           li {
             display: inline-block;
@@ -102,6 +103,7 @@
             text-align: center;
             border: 1px solid $tealBlue;
             border-left: none;
+
             &:first-child {
               background-color: $tealBlue;
               color: $white;
@@ -109,11 +111,41 @@
           }
         }
       }
+
+      .overview-iconlist {
+        li {
+          float: left;
+          width: 33%;
+          height: 90px;
+
+          .overview-icon {
+            float: left;
+            font-size: 40px;
+            font-weight: 300px !important;
+            margin: 10px 20px 0px 10px;
+          }
+
+          .overview-details {
+            float: left;
+            padding-top: 12px;
+            @include font($size: 15px,$weight: 500);
+
+            b {
+              // padding-top: 2px;
+              @include font($color: $tealBlue);
+            }
+
+            // display: inline-block;
+          }
+
+        }
+      }
     }
+
     .floor-plan {
       .floor-plan-table {
         thead {
-          background-color: $floorPlanHeaderColor;
+          background-color: $tealBlue;
           color: $white;
 
           th {
@@ -130,6 +162,7 @@
           tr:nth-child(2) {
             background-color: $stripedTableBG2;
           }
+
           td {
             padding: 13px;
             border: 1px solid $white;
@@ -161,26 +194,32 @@
         }
       }
     }
+
     .specifications {
-      ul,ol {
+
+      ul,
+      ol {
         margin-left: 20px;
-        list-style: inherit !important; 
+        list-style: inherit !important;
       }
     }
+
     .gallery {
       li {
         display: inline-block;
+
         img {
           width: 300px;
           height: 250px;
           cursor: pointer;
         }
+
         span {
           display: block;
           padding: 12px;
           text-transform: uppercase;
           background-color: $lightBlack;
-          @include font($size: 15px,$color: $white,$weight: bold);
+          @include font($size: 15px, $color: $white, $weight: bold);
         }
       }
     }
@@ -204,6 +243,7 @@
           text-align: center;
         }
       }
+
       .image-container {
         margin-top: 10px;
       }
@@ -227,8 +267,7 @@
         @include align-content-to-center;
       }
 
-      &-details {
-      }
+      &-details {}
 
       .quick-links {
         height: 30px;

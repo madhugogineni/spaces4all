@@ -137,27 +137,33 @@
                         <div class="hidden-xs col-sm-2 col-md-2 builder-name"><%= project.project_name %></div>
                         <div class="col-xs-12 col-sm-7 col-md-7 project-header-details">
                             <div class="row">
+                                <% var areaString = project.min_builtup_area+" - "+ project.max_builtup_area %>
+                                <%  if(project.project_sub_type_name == PROJECT_SUB_TYPE_PLOTS) {
+                                        areaString += " Sq. yd"
+                                    }else {
+                                            areaString += " Sq. Ft"
+                                    } 
+                                %>
+                                <% var plansString  
+                                if(project.project_type_name == "Residential") { 
+                                    plansString = project.plans + " BHK"
+                                    } else { 
+                                        if(project.project_sub_type_name == "Plots") { 
+                                            plansString = "Plots"
+                                        }else { 
+                                            plansString = "Commercial Project"
+                                        } 
+                                    }
+                                %>
                                 <div class="col-xs-12 col-sm-12 col-md-12 description">
-                                    <% if(project.project_type_name == "Residential") { %>
-                                    <%= project.plans %> BHK
-                                    <% } else { 
-                                        if(project.project_sub_type_name == "Plots") { %>
-                                    Plots
-                                    <% }else { %>
-                                    Commercial Project
-                                    <% } }%>
+                                    <%= plansString %>
 
                                     at <%= project.locality_name %>,<%= project.city_name %>
                                 </div>
                                 <div class="col-xs-12 col-sm-12 col-md-12 specifications">
                                     Area:
                                     <span>
-                                        <%= project.min_builtup_area %> - <%= project.max_builtup_area %>
-                                        <%if(project.project_sub_type_name == PROJECT_SUB_TYPE_PLOTS) {%>
-                                        Sq. yd
-                                        <% }else { %>
-                                        Sq. Ft
-                                        <% } %>
+                                        <%= areaString %>
                                     </span>
                                     |
                                     Starting Price: <span><%= project.min_price_formatted %></span> |
@@ -199,6 +205,103 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <%- project.description %>
+                                </div>
+                            </div>
+                            <div class="row mt20px">
+                                <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
+                                    <ul class="overview-iconlist">
+                                        <li class="p10px">
+                                            <i class="fa fa-building-o overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Property Type
+                                                    <br />
+                                                    <b><%= project.project_type_name %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-home overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Unit
+                                                    <br />
+                                                    <b><%= plansString %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-linode overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Area Range
+                                                    <br />
+                                                    <b><%= areaString %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-columns overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    No of Floors
+                                                    <br />
+                                                    <b><%= project.no_of_floors %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-object-ungroup overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    No of Units
+                                                    <br />
+                                                    <b><%= project.total_units %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-bandcamp overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Total Area
+                                                    <br />
+                                                    <b><%= project.total_area %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-map-marker overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Location
+                                                    <br />
+                                                    <b><%= project.locality_name %>, <br /><%=project.city_name %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-inr overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Starting Price
+                                                    <br />
+                                                    <b><%= project.min_price_formatted %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+                                        <li class="p10px">
+                                            <i class="fa fa-hourglass-o overview-icon"></i>
+                                            <p>
+                                                <span class="overview-details">
+                                                    Status
+                                                    <br />
+                                                    <b><%= getYear(project.possesion_date) %></b>
+                                                </span>
+                                            </p>
+                                        </li>
+
+                                    </ul>
                                 </div>
                             </div>
                         </div>

@@ -685,6 +685,26 @@
   background-color: #0a5384;
   color: white;
 }
+.project-details-page .project-details .overview .overview-iconlist li {
+  float: left;
+  width: 33%;
+  height: 90px;
+}
+.project-details-page .project-details .overview .overview-iconlist li .overview-icon {
+  float: left;
+  font-size: 40px;
+  font-weight: 300px !important;
+  margin: 10px 20px 0px 10px;
+}
+.project-details-page .project-details .overview .overview-iconlist li .overview-details {
+  float: left;
+  padding-top: 12px;
+  font-size: 15px;
+  font-weight: 500;
+}
+.project-details-page .project-details .overview .overview-iconlist li .overview-details b {
+  color: #0a5384;
+}
 .project-details-page .project-details .floor-plan .floor-plan-table thead {
   background-color: #0a5384;
   color: white;
@@ -723,7 +743,8 @@
   white-space: nowrap;
   margin-top: 10px;
 }
-.project-details-page .project-details .specifications ul, .project-details-page .project-details .specifications ol {
+.project-details-page .project-details .specifications ul,
+.project-details-page .project-details .specifications ol {
   margin-left: 20px;
   list-style: inherit !important;
 }
