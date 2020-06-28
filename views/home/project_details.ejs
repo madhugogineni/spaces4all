@@ -15,7 +15,8 @@
 
     <meta name="author" content="">
 
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
 
     <link href="<%= base_url %>css/bootstrap.css" rel="stylesheet" type="text/css">
 
@@ -173,7 +174,8 @@
                             </div>
                         </div>
                         <div class="hidden-xs col-sm-3 col-md-2 quick-links">
-                            <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a href="#enquiry_form"> Contact Us</a>
+                            <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a
+                                href="#enquiry_form"> Contact Us</a>
                         </div>
                     </div>
                     <div class="row image-container">
@@ -210,97 +212,20 @@
                             <div class="row mt20px">
                                 <div class="col-xs-12 col-sm-12 col-md-10 col-md-offset-1">
                                     <ul class="overview-iconlist">
-                                        <li class="p10px">
-                                            <i class="fa fa-building-o overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Property Type
-                                                    <br />
-                                                    <b><%= project.project_type_name %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-home overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Unit
-                                                    <br />
-                                                    <b><%= plansString %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-linode overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Area Range
-                                                    <br />
-                                                    <b><%= areaString %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-columns overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    No of Floors
-                                                    <br />
-                                                    <b><%= project.no_of_floors %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-object-ungroup overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    No of Units
-                                                    <br />
-                                                    <b><%= project.total_units %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-bandcamp overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Total Area
-                                                    <br />
-                                                    <b><%= project.total_area %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-map-marker overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Location
-                                                    <br />
-                                                    <b><%= project.locality_name %>, <br /><%=project.city_name %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-inr overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Starting Price
-                                                    <br />
-                                                    <b><%= project.min_price_formatted %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-                                        <li class="p10px">
-                                            <i class="fa fa-hourglass-o overview-icon"></i>
-                                            <p>
-                                                <span class="overview-details">
-                                                    Status
-                                                    <br />
-                                                    <b><%= getYear(project.possesion_date) %></b>
-                                                </span>
-                                            </p>
-                                        </li>
-
+                                        <%
+                                        switch(project.project_sub_type_name) {
+                                            case PROJECT_SUB_TYPE_VILLA:
+                                            case PROJECT_SUB_TYPE_ROW_HOUSE: %>
+                                                <%include project_overview_list/villa.ejs %>
+                                                <% break;
+                                            case PROJECT_SUB_TYPE_FLAT: %>
+                                                <%include project_overview_list/flat.ejs %>
+                                                <% break;
+                                            default: %>
+                                                <%include project_overview_list/flat.ejs %>
+                                                <% break;
+                                            } 
+                                        %>
                                     </ul>
                                 </div>
                             </div>
@@ -382,7 +307,8 @@
                                         %>
                                         <li class="p10px">
                                             <i class="<%= amenity_data.amenity_icon %> amenity-icon"></i>
-                                            <span class="amenity-name"> <%= amenity_data.amenity %> </span>
+                                            <span class="amenity-name"> <%= amenity_data.amenity %>
+                                            </span>
                                         </li>
                                         <% } %>
                                         <% } else { %>
@@ -417,7 +343,9 @@
                                             var photo_data = project.photos[i];
                                         %>
                                         <li class="p10px">
-                                            <img src="<%= base_url %>uploads/projects/<%= photo_data.photo %>" alt="Photo Not Available" onclick="showPhotoModal('photo-modal','<%= base_url %>uploads/projects/<%= photo_data.photo %>')">
+                                            <img src="<%= base_url %>uploads/projects/<%= photo_data.photo %>"
+                                                alt="Photo Not Available"
+                                                onclick="showPhotoModal('photo-modal','<%= base_url %>uploads/projects/<%= photo_data.photo %>')">
                                             <span>CLICK ON IMAGE</span>
                                         </li>
                                         <% } %>
@@ -440,19 +368,26 @@
                                         <div class="col-md-7 margin-15">
 
                                             <div class="form-group">
-                                                <input type="text" id="name" name="name" class="form-control input-sm" placeholder="Name*" required="required">
+                                                <input type="text" id="name" name="name" class="form-control input-sm"
+                                                    placeholder="Name*" required="required">
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="email" id="email" name="email" class="form-control input-sm" placeholder="Email*" required="required">
+                                                <input type="email" id="email" name="email"
+                                                    class="form-control input-sm" placeholder="Email*"
+                                                    required="required">
                                             </div>
 
                                             <div class="form-group">
-                                                <input type="text" id="phone" name="phone" class="form-control input-sm" placeholder="Phone*" required="required">
+                                                <input type="text" id="phone" name="phone" class="form-control input-sm"
+                                                    placeholder="Phone*" required="required">
                                             </div>
                                             <div class="form-group">
-                                                <textarea cols="6" rows="3" id="comments" name="comments" required="required" class="form-control input-lg" placeholder="Comments"></textarea>
-                                                <button type="submit" class="btn btn-primary"> Submit </button>
+                                                <textarea cols="6" rows="3" id="comments" name="comments"
+                                                    required="required" class="form-control input-lg"
+                                                    placeholder="Comments"></textarea>
+                                                <button type="submit" class="btn btn-primary">
+                                                    Submit </button>
 
                                             </div>
 
@@ -582,7 +517,8 @@
 
                                 <div class="form-group">
 
-                                    <label for="state">State</label> <input class="form-control" id="state" name="state" placeholder="Enter State Name" type="text" required="required">
+                                    <label for="state">State</label> <input class="form-control" id="state" name="state"
+                                        placeholder="Enter State Name" type="text" required="required">
 
                                 </div>
 
