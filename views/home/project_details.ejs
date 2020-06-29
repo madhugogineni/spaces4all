@@ -132,6 +132,7 @@
             }%>
 
             <div class="project-details-page">
+
                 <% // to added powered by add powered-by to css%>
                 <div class="container-fluid project-header">
                     <div class="row">
@@ -173,13 +174,55 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="hidden-xs col-sm-3 col-md-2 quick-links">
-                            <a href="<%= base_url %>">Home</a> &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp; <a
-                                href="#enquiry_form"> Contact Us</a>
-                        </div>
                     </div>
                     <div class="row image-container">
                         <div class="col-xs-12 col-sm-12 col-md-12 image">
+                            <div class="sidenav">
+                                <ul>
+                                    <li>
+                                        <a href="<%= base_url %>">
+                                            <i class="fas fa-home small-icons"></i>
+                                            <div class="name"> Home </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#overview">
+                                            <i class="fas fa-clipboard-list small-icons"></i>
+                                            <div class="name"> Overview </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#floor-plans">
+                                            <i class="fas fa-map small-icons"></i>
+                                            <div class="name"> Floor Plans </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#amenities">
+                                            <i class="fas fa-box small-icons"></i>
+                                            <div class="name"> Amenities </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#specifications">
+                                            <i class="fa fa-th-list small-icons"></i>
+                                            <div class="name"> Specifications </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#gallery">
+                                            <i class="far fa-image small-icons"></i>
+                                            <div class="name"> Gallery </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#contact-us">
+                                            <i class="fas fa-address-card small-icons"></i>
+                                            <div class="name"> Contact Us </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                             <img src="<%= base_url %>uploads/projects/<%= mainImage %>" alt="Project Image" />
                         </div>
                     </div>
@@ -187,7 +230,7 @@
                 <div class="container project-details">
                     <div class="row overview">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">OVERVIEW</h1>
+                            <h1 id="overview" class="sub-heading">OVERVIEW</h1>
                             <div class="row rera">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <ul>
@@ -216,14 +259,14 @@
                                         switch(project.project_sub_type_name) {
                                             case PROJECT_SUB_TYPE_VILLA:
                                             case PROJECT_SUB_TYPE_ROW_HOUSE: %>
-                                                <%include project_overview_list/villa.ejs %>
-                                                <% break;
+                                        <%include project_overview_list/villa.ejs %>
+                                        <% break;
                                             case PROJECT_SUB_TYPE_FLAT: %>
-                                                <%include project_overview_list/flat.ejs %>
-                                                <% break;
+                                        <%include project_overview_list/flat.ejs %>
+                                        <% break;
                                             default: %>
-                                                <%include project_overview_list/flat.ejs %>
-                                                <% break;
+                                        <%include project_overview_list/flat.ejs %>
+                                        <% break;
                                             } 
                                         %>
                                     </ul>
@@ -234,7 +277,7 @@
                     <% if([13,17].indexOf(project.project_sub_type) < 0) {%>
                     <div class="row floor-plan">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">FLOOR PLANS</h1>
+                            <h1 id="floor-plans" class="sub-heading">FLOOR PLANS</h1>
                             <table class="table table-hovered floor-plan-table">
                                 <thead>
                                     <tr>
@@ -266,7 +309,7 @@
                     </div>
                     <% } %>
                     <% if(project.project_sub_type == 17) { %>
-                    <h1 class="sub-heading">PLOT SIZES</h1>
+                    <h1 id="floor-plans" class="sub-heading">PLOT SIZES</h1>
 
                     <div class="row floor-plan">
                         <div class="col-xs-12 col-sm-4 col-md-4">
@@ -297,7 +340,7 @@
                     <% } %>
                     <div class="row amenities">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">AMENITIES</h1>
+                            <h1 id="amenities" class="sub-heading">AMENITIES</h1>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <ul class="mt5px">
@@ -322,7 +365,7 @@
                     </div>
                     <div class="row specifications">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">SPECIFICATIONS</h1>
+                            <h1 id="specifications" class="sub-heading">SPECIFICATIONS</h1>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <%- project.specifications %>
@@ -334,7 +377,7 @@
 
                     <div class="row gallery">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">GALLERY</h1>
+                            <h1 id="gallery" class="sub-heading">GALLERY</h1>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <ul class="mt5px">
@@ -360,7 +403,7 @@
                     </div>
                     <div class="row" id="enquiry_form">
                         <div class="col-xs-12 col-sm-12 col-md-12">
-                            <h1 class="sub-heading">ENQUIRY FORM</h1>
+                            <h1 id="contact-us" class="sub-heading">ENQUIRY FORM</h1>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12">
                                     <div id="enquiry_response"></div>

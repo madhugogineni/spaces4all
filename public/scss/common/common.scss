@@ -194,3 +194,9 @@
 .c-r {
   @include font($color: red);
 }
+
+.small-icons {
+  font-size: 20px;
+  font-weight: 300px !important;
+  margin: 10px 20px 0px 10px;
+}

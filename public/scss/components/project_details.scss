@@ -1,5 +1,31 @@
 .project-details-page {
 
+  .sidenav {
+    position: fixed;
+    z-index: 1;
+    top: 180px;
+    left: 0;
+    // overflow-x: hidden;
+    // padding-top: 20px;
+
+    ul {
+      li {
+        margin-bottom: 2px;
+        background-color: $black;
+        opacity: 0.8;
+        @include font($color: $white, $size: 10px);
+        padding: 2px 5px 5px 5px;
+        i {
+          padding-left: 15px;
+        }
+        .name {
+          text-align: center;
+          @include font($size: 12px);
+        }
+      }
+    }
+  }
+
   .powered-by {
     background-color: $lightGray;
     text-align: center;
@@ -128,7 +154,7 @@
           .overview-details {
             float: left;
             padding-top: 12px;
-            @include font($size: 15px,$weight: 500);
+            @include font($size: 15px, $weight: 500);
 
             b {
               // padding-top: 2px;
