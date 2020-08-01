@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html class="no-js">
+
+<head>
+    <% include ../includes/includes.ejs %>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("form#unsubscribe-form").submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    type: "POST",
+                    url: "<%= base_url %>home/email/unsubscribe",
+                    data: formData,
+                    success: function (result) {
+                        alert(result.message)
+                        window.close()
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="body">
+
+        <!-- Start Site Header -->
+
+        <% include ../includes/header.ejs %>
+
+        <!-- End Site Header -->
+
+        <!-- Site Showcase -->
+
+        <div class="site-showcase">
+
+            <!-- Start Page Header -->
+
+            <div class="parallax page-header">
+
+                <div class="container">
+
+                    <div class="row">
+
+                        <div class="col-md-12">
+
+                            <h1>Unsubscribe Email</h1>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- End Page Header -->
+
+        </div>
+
+        <!-- Start Content -->
+
+        <div class="main" role="main">
+
+            <div id="content" class="content full">
+
+                <div class="container">
+
+                    <div class="page">
+
+                        <div class="row">
+
+                            <div class="col-md-12">
+
+                                <form action="<%= base_url %>home/email/unsubscribe" id="unsubscribe-form"
+                                    method="post">
+
+                                    <div class="padding-as25 margin-30 lgray-bg">
+                                        <div class="row">
+                                            <div class="col-md-6 col-sm-10">
+                                                <label>Email <span class="c-r">*</span></label>
+                                                <input type="email" name="email" id="email" class="form-control"
+                                                    required placeholder="Email">
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-5">
+                                                <button type="submit" name="submit" class="btn btn-primary btn-lg">
+                                                    Unsubscribe
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Start Site Footer -->
+        <% include ../includes/footer.ejs %>
+</body>
+
+</html>

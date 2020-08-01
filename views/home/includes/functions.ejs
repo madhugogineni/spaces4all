@@ -74,7 +74,7 @@
             method: "GET",
             url: "<%= api_url %>get_cities",
             success: function (response) {
-                var result = '<option value="">---City---</option>';
+                var result = '<option value="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;City</option>';
                 if (response.success) {
                     var cities = response.data;
                     for (var i = 0; i < cities.length; i++) {

@@ -14,10 +14,12 @@ var mailservice = require("../services/email");
 var urls = require("../external-config/url-config");
 var utils = require('../services/utils');
 var deepclone = require('lodash.clonedeep');
+var emailRouter = require('./home/emails')
 
 var loanErrorMsg = "",
     loanError = false;
 
+router.use("/email", emailRouter)
 router.get("/index", function (req, res) {
     res.redirect("/");
 });
