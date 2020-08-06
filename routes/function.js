@@ -1,7 +1,7 @@
 module.exports = {
     validateAction: function (req) {
         var user = req.session.user;
-        if (req.originalUrl.indexOf("/admin/projects/update/") > -1 || req.originalUrl.indexOf("/admin/list_property/update/") > -1) {
+        if (req.originalUrl.indexOf("/admin/projects/update/") > -1 || req.originalUrl.indexOf("/admin/list_property/update/") > -1 || req.originalUrl.indexOf("/admin/list_property/delete/") > -1 || req.originalUrl.indexOf("/admin/projects/delete/") > -1) {
             if (user) {
                 if (user.role == "ADMIN") {
                     return true;
