@@ -600,7 +600,7 @@
 .project-details-page .sidenav {
   position: fixed;
   z-index: 1;
-  top: 180px;
+  top: 140px;
   left: 0;
 }
 .project-details-page .sidenav ul li {
@@ -629,7 +629,6 @@
 }
 .project-details-page .project-header {
   height: 70px;
-  padding: 10px 0px 0px 0px;
   background-color: #f4f4f4;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
@@ -640,7 +639,7 @@
   display: flex !important;
   justify-content: center;
   align-items: center;
-  height: 50px;
+  height: 70px;
   overflow: hidden;
   text-align: center;
   padding-left: 30px !important;
@@ -653,7 +652,7 @@
   justify-content: center;
   align-items: center;
   justify-content: left;
-  height: 50px;
+  height: 70px;
   border-left: 1px solid #ababab;
 }
 .project-details-page .project-header-details .description {
