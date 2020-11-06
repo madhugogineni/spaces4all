@@ -401,7 +401,7 @@ router.post("/add_home_loan", upload.none(), async function (req, res) {
                 data.mobile +
                 "</td></tr>" +
                 "<tr><td>DOB</td><td>" +
-                moment(data.dob).format('d-m-Y'); +
+                moment(data.dob).format('D-M-Y'); +
                     "</td></tr>" +
                     "<tr><td>City</td><td>" +
                     data.city +
