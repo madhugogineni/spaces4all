@@ -4,159 +4,104 @@
 <head>
     <% include includes/includes.ejs %>
     <script type="text/javascript">
-        function Validate_Form() {
-
-            var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
-
-            var filter = /^[0-9-+]+$/;
-
-            var purpose = $("#purpose").val();
-
-            var bank = $("#bank").val();
-
-            var loan_amount = $("#loan_amount").val();
-
-            var annual_income = $("#annual_income").val();
-
-            var name = $("#name").val();
-
-            var email = $("#email").val();
-
-            var phone = $("#mobile").val();
-
-            var dob = $("#dob").val();
-
-            var city = $("#city").val();
-
-
-
-            if (purpose == "") {
-
-                $("#purpose").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Select Purpose ?</strong></div>");
-
-                return false;
-
-            } else if (bank == "") {
-
-                $("#bank").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Select A Bank ?</strong></div>");
-
-                return false;
-
-            } else if (loan_amount == "") {
-
-                $("#loan_amount").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Loan Amount ?</strong></div>");
-
-                return false;
-
-            } else if (!filter.test(loan_amount)) {
-
-                $("#loan_amount").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Loan Amount Should Be Numeric Value </strong></div>");
-
-                return false;
-
-            } else if (annual_income == "") {
-
-                $("#annual_income").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Annual Income ?</strong></div>");
-
-                return false;
-
-            } else if (!filter.test(annual_income)) {
-
-                $("#annual_income").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Annual Income Should Be Numeric Value ?</strong></div>");
-
-                return false;
-
-            } else if (name == "") {
-
-                $("#name").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Name ?</strong></div>");
-
-                return false;
-
-            } else if (name.length <= "2") {
-
-                $("#name").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Name Should Be Min 3 Charactors ?</strong></div>");
-
-                return false;
-
-            } else if (email == "") {
-
-                $("#email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Email Id ?</strong></div>");
-
-                return false;
-
-            } else if (!emailRegex.test(email)) {
-
-                $("#email").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Valid Email Id ?</strong></div>");
-
-                return false;
-
-            } else if (phone == "") {
-
-                $("#mobile").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Phone Number ?</strong></div>");
-
-                return false;
-
-            } else if (!filter.test(phone)) {
-
-                $("#mobile").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Phone Number Should Be Numeric Values ?</strong></div>");
-
-                return false;
-
-            } else if (phone.length != "10") {
-
-                $("#mobile").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Phone Number Should Be 10 Charactors ?</strong></div>");
-
-                return false;
-
-            } else if (dob == "") {
-
-                $("#dob").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter Date Of Birth ?</strong></div>");
-
-                return false;
-
-            } else if (city == "") {
-
-                $("#city").focus();
-
-                $("#errorBox").html("<div class='alert alert-error fade in'> <a href='#' data-dismiss='alert' class='close'>x</a> <strong>Please Enter City ?</strong></div>");
-
-                return false;
-
-            } else {
-
-                return true;
-
-            }
-
-        }
+        $(document).ready(function () {
+            $("form#home_loan_form").submit(function (e) {
+                // $("#submit_button").attr("disabled", true);
+                var emailRegex = /^[A-Za-z0-9._]*\@[A-Za-z]*\.[A-Za-z]{2,5}$/;
+                var numberRegex = /^[0-9-+]+$/;
+                var purpose = $("#purpose").val();
+                var bank = $("#bank").val();
+                var loanAmount = $("#loan_amount").val();
+                var annualIncome = $("#annual_income").val();
+                var name = $("#name").val();
+                var email = $("#email").val();
+                var phone = $("#mobile").val();
+                var dob = $("#dob").val();
+                var city = $("#city").val();
+
+                if (!purpose) {
+                    alert('Please select purpose')
+                    return false
+                }
+                if (!bank) {
+                    alert('Please select bank')
+                    return false
+                }
+                if (!loanAmount) {
+                    alert('Please enter loan amount')
+                    return false
+                } else {
+                    if (!numberRegex.test(loanAmount)) {
+                        alert('Loan amount should be a number')
+                        return false
+                    }
+                }
+                if (!annualIncome) {
+                    alert('Please type annual income')
+                    return false
+                } else {
+                    if (!numberRegex.test(annualIncome)) {
+                        alert('Annual Income should be a number')
+                        return false
+                    }
+                }
+                if (!name) {
+                    alert('Please enter name')
+                    return false
+                } else {
+                    if (name.length < 3) {
+                        alert('Name should be greater than 3 characters')
+                        return false
+                    }
+                }
+                if (!email) {
+                    alert('Please enter email')
+                    return false
+                } else {
+                    if (!emailRegex.test(email)) {
+                        alert('Email should can contain characters, numbers, dot(.) and underscore(_)')
+                        return false
+                    }
+                }
+                if (!phone) {
+                    alert('Please type phone number')
+                    return false
+                } else {
+                    if (!numberRegex.test(phone)) {
+                        alert('Phone number should contain only numbers')
+                        return false
+                    }
+                    if (phone.length != 10) {
+                        alert('Phone number should have 10 numbers')
+                        return false
+                    }
+                }
+                if (!dob) {
+                    alert('Please enter dob')
+                    return false
+                }
+                if (!city) {
+                    alert('Please enter city')
+                    return false
+                }
+                e.preventDefault();
+                var formData = new FormData(this);
+                // for (var value of formData.values()) {
+                //     console.log(value);
+                // }
+                $.ajax({
+                    type: "POST",
+                    url: "<%= base_url %>home/add_home_loan",
+                    data: formData,
+                    success: function (result) {
+                        alert(result.message)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                })
+            });
+        });
 
     </script>
 
@@ -216,10 +161,9 @@
 
                             <div class="col-md-12">
 
-                                <form action="<%= base_url %>home/add_home_loan" onsubmit="return Validate_Form();"
-                                    method="post">
+                                <form id="home_loan_form" action="<%= base_url %>home/add_home_loan" method="post">
 
-                                    <% console.log("=====");console.log(loanErrorMsg); if(!loanError) {
+                                    <% console.log(loanErrorMsg); if(!loanError) {
                                         if(loanErrorMsg != "") {  %>
                                     <div class="block-heading" id="" align="center">
                                         <h4 style="color: green"><%= loanErrorMsg %></h4>
@@ -248,13 +192,12 @@
                                                     <option value="Buy Under-Construction Home">Buy Under-Construction
                                                         Home</option>
 
-                                                    <option value="Buy a Plot Of Land">Buy a Plot Of Land</option>
+                                                    <option value="Buy a Plot Of Land">Buy a Plot/Land</option>
 
                                                     <option value="Transfer Existing Home Loan">Transfer Existing Home
                                                         Loan</option>
 
-                                                    <option value="Repair &amp; Renovate Own Home">Repair &amp; Renovate
-                                                        Own Home</option>
+                                                    <option value="Repair &amp; Renovate Own Home">Repair and Renovation</option>
 
                                                 </select>
 
@@ -284,93 +227,63 @@
 
                             <div class="col-md-6 col-sm-10">
 
-                                <label>Loan Amount (Rs)* </label> <input type="text" name="loan_amount" id="loan_amount"
-                                    class="form-control" placeholder="Loan Amount (Rs)" value="">
+                                <label>Loan Amount (Rs)* </label> <input type="number" name="loan_amount"
+                                    id="loan_amount" class="form-control" placeholder="Loan Amount (Rs)" value="">
 
                             </div>
 
                         </div>
 
                         <div class="row">
-
                             <div class="col-md-6 col-sm-10">
-
                                 <label>Annual Income*</label>
-
-                                <input type="text" id="annual_income" name="annual_income" class="form-control"
+                                <input type="number" id="annual_income" name="annual_income" class="form-control"
                                     placeholder="Annual Income (Rs)" value="">
-
                             </div>
-
                         </div>
 
                         <div class="row">
-
                             <div class="col-md-6 col-sm-10">
-
-                                <label>Name*</label> <input type="text" name="name" id="name" class="form-control"
-                                    placeholder=" Enter Name" value="">
-
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-10">
-
-                                <label>Mobile*</label> <input type="text" name="mobile" id="mobile" class="form-control"
-                                    placeholder=" Enter Mobile" value="">
-
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-10">
-
-                                <label>Email*</label> <input type="text" name="email" id="email" class="form-control"
-                                    placeholder=" Enter Email" value="">
-
-                            </div>
-
-                        </div>
-
-                        <div class="row">
-
-                            <div class="col-md-6 col-sm-10">
-
-                                <label>DOB*</label> <input type="date" name="dob" id="dob" class="form-control"
+                                <label>Name*</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder=" Enter Name"
                                     value="">
-
                             </div>
+                        </div>
 
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">
+                                <label>Mobile*</label>
+                                <input type="number" name="mobile" id="mobile" class="form-control"
+                                    placeholder=" Enter Mobile" value="" size='10' maxlength="10">
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-6 col-sm-10">
+                                <label>Email*</label>
+                                <input type="text" name="email" id="email" class="form-control"
+                                    placeholder=" Enter Email" value="">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 col-sm-10">
+                                <label>DOB*</label>
+                                <input type="date" name="dob" id="dob" class="form-control" value="">
+                            </div>
                         </div>
 
                         <div class="row">
 
                             <div class="col-md-6 col-sm-10">
-
-                                <label>City*</label> <input type="text" name="city" id="city" class="form-control"
-                                    placeholder=" Enter City" value="">
-
+                                <label>City*</label>
+                                <input type="text" name="city" id="city" class="form-control" placeholder=" Enter City"
+                                    value="">
                             </div>
-
                         </div>
-
-
-
                         <div class="row">
-
                             <div class="col-md-12 col-sm-5">
-
-                                <button type="submit" name="submit" class="btn btn-primary btn-lg">
-
-                                    <i class="fa fa-check"></i> Apply Now
-
-                                </button>
-
+                                <button type="submit" name="submit" class="btn btn-primary btn-lg">Apply Now</button>
                             </div>
 
                         </div>

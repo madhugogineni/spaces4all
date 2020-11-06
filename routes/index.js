@@ -357,9 +357,9 @@ router.get("/apply_home_loan", async function (req, res) {
 
 });
 
-router.post("/add_home_loan", function (req, res) {
+router.post("/add_home_loan",upload.none(), async function (req, res) {
     var data = req.body;
-    crudModel
+    var response = await crudModel
         .insertLoanRequest(
             data.purpose,
             data.bank,
@@ -370,52 +370,52 @@ router.post("/add_home_loan", function (req, res) {
             data.email,
             data.dob,
             data.city
-        )
-        .then(function (response) {
-            if (response.success) {
-                var html = "Spaces4all - " +
-                    data.name +
-                    " has requested for loan. <br><br> " +
-                    "<table border='1px'>" +
-                    "<tr><td width='100px'>Purpose</td><td>" +
-                    data.purpose +
-                    "</td></tr>" +
-                    "<tr><td>Bank</td><td>" +
-                    data.bank_name +
-                    "</td></tr>" +
-                    "<tr><td>Loan Amount</td><td>" +
-                    data.loan_amount +
-                    "</td></tr>" +
-                    "<tr><td>Annual Income</td><td>" +
-                    data.annual_income +
-                    "</td></tr>" +
-                    "<tr><td>Name</td><td>" +
-                    data.name +
-                    "</td></tr>" +
-                    "<tr><td>Email</td><td>" +
-                    data.email +
-                    "</td></tr>" +
-                    "<tr><td>Phone</td><td>" +
-                    data.mobile +
-                    "</td></tr>" +
-                    "<tr><td>DOB</td><td>" +
-                    data.dob +
-                    "</td></tr>" +
-                    "<tr><td>City</td><td>" +
-                    data.city +
-                    "</td></tr>" +
-                    "</table>";
-                var subject = "Spaces4all - Loan Request Details";
-                mailservice.sendMail(subject, html);
-                loanError = false;
-                loanErrorMsg =
-                    "Thank you for your trust in spaces4all. Please wait for our call for more.";
-            } else {
-                loanError = true;
-                loanErrorMsg = "Sorry for the inconvenience. Try again later.";
-            }
-            res.redirect("apply_home_loan");
-        });
+        );
+    if (response.success) {
+        var bankDetails = await crudModel.getBanksById(data.bank);
+        // console.log(bankDetails);
+        if (bankDetails.success) {
+            var html = "Spaces4all - " +
+                data.name +
+                " has requested for loan. <br><br> " +
+                "<table border='1px'>" +
+                "<tr><td width='100px'>Purpose</td><td>" +
+                data.purpose +
+                "</td></tr>" +
+                "<tr><td>Bank</td><td>" +
+                bankDetails.data[0].bank_name +
+                "</td></tr>" +
+                "<tr><td>Loan Amount</td><td>" +
+                data.loan_amount +
+                "</td></tr>" +
+                "<tr><td>Annual Income</td><td>" +
+                data.annual_income +
+                "</td></tr>" +
+                "<tr><td>Name</td><td>" +
+                data.name +
+                "</td></tr>" +
+                "<tr><td>Email</td><td>" +
+                data.email +
+                "</td></tr>" +
+                "<tr><td>Phone</td><td>" +
+                data.mobile +
+                "</td></tr>" +
+                "<tr><td>DOB</td><td>" +
+                data.dob +
+                "</td></tr>" +
+                "<tr><td>City</td><td>" +
+                data.city +
+                "</td></tr>" +
+                "</table>";
+            var subject = "Spaces4all - Loan Request Details";
+            mailservice.sendMail(subject, html);
+            res.send({ success: true, message: 'Thank you for your trust in spaces4all. We will be back to you shortly!' })
+        } else {
+            res.send({ success: false, message: 'Sorry for the inconvenience. Please try after sometime!' })
+        }
+    } else {
+        res.send({ success: false, message: 'Sorry for the inconvenience. Please try after sometime!' })
+    }
 });
 
 router.get("/req_docs_forloan", function (req, res) {
