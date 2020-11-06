@@ -357,7 +357,7 @@ router.get("/apply_home_loan", async function (req, res) {
 
 });
 
-router.post("/add_home_loan",upload.none(), async function (req, res) {
+router.post("/add_home_loan", upload.none(), async function (req, res) {
     var data = req.body;
     var response = await crudModel
         .insertLoanRequest(
@@ -401,12 +401,12 @@ router.post("/add_home_loan",upload.none(), async function (req, res) {
                 data.mobile +
                 "</td></tr>" +
                 "<tr><td>DOB</td><td>" +
-                data.dob +
-                "</td></tr>" +
-                "<tr><td>City</td><td>" +
-                data.city +
-                "</td></tr>" +
-                "</table>";
+                moment(data.dob).format('d-m-Y'); +
+                    "</td></tr>" +
+                    "<tr><td>City</td><td>" +
+                    data.city +
+                    "</td></tr>" +
+                    "</table>";
             var subject = "Spaces4all - Loan Request Details";
             mailservice.sendMail(subject, html);
             res.send({ success: true, message: 'Thank you for your trust in spaces4all. We will be back to you shortly!' })
