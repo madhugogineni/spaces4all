@@ -9,10 +9,15 @@ var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
 var apiRouter = require('./routes/apis');
 var enviornmentConfig = require('./external-config/environment');
+var otherConfig = require('./external-config/other');
 var cors = require('cors');
+const multer = require('multer');
+const isEmpty = require('lodash.isempty');
+const upload = multer();
+const stocksModel = require('./models/stocksModel');
 
 var app = express();
-app.use(session({ secret: 'sekhar gogineni' }));
+app.use(session({ secret: otherConfig.sessionSecret }));
 var corsOptions = {
     origin: 'https://www.spaces4all.com',
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -84,18 +89,6 @@ app.get("/", function (req, res) {
                     }
                     var minPrice = latestProject.min_price;
                     var finalMinPrice;
-                    // if (plans != null && plans != '') {
-                    //     var plansArray = plans.split(',');
-                    //     for (var i = 0; i < plansArray.length; i++) {
-                    //         plansString += plansArray[i] + ' BHK';
-                    //         if (i != (plansArray.length - 1)) {
-                    //             plansString += ", ";
-                    //         }
-                    //     }
-                    // } else {
-                    //     plansString = '';
-                    // }
-                    // latestProject.plans = plansString;
                     if (minPrice != "") {
                         if (minPrice > 10000000) {
                             finalMinPrice = Math.round((parseFloat(minPrice)) / 10000000, 2);
@@ -132,6 +125,29 @@ app.get("/", function (req, res) {
         });
     });
 });
+
+app.get('/get-stocks', async function (req, res) {
+    try {
+        validateAppKeyAndSecret(req.headers);
+        var stocksList = await stocksModel.getEnabledStocks();
+        res.send(stocksList);
+        res.end();
+    } catch (e) {
+        res.status(400).send({ success: false, message: e.message });
+    }
+});
+
+function validateAppKeyAndSecret(headers) {
+    var appKey = headers['app-key'];
+    var appSecret = headers['app-secret'];
+    if (isEmpty(appKey) || isEmpty(appSecret)) {
+        throw new Error('Please send App Key and App secret');
+    }
+    if (appKey != otherConfig.stocksKey || appSecret != otherConfig.stocksSecret) {
+        throw new Error('App key or secret are wrong');
+    }
+}
+
 app.use('/home', indexRouter);
 app.use('/admin', adminRouter);
 app.use('/apis', apiRouter);

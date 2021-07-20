@@ -387,6 +387,39 @@
                 </a>
             </li>
 
+            <li class="treeview <% if (page_name == 'add_stock' || page_name == 'stocks' || page_name == 'download_stock_data') {
+
+                'active';
+                } %>">
+
+                <a href="#"><i class="fa fa-star"></i> <span>Stocks</span></a>
+
+                <ul class="treeview-menu">
+
+                    <li
+                    <% if (page_name == 'add_stock') {%>
+                        <%= "class='active'" %> 
+                    <%} %>
+                    >
+                        <a href="<%= base_url %>admin/stocks">
+                            <i class="fa fa-star"></i>
+                            <span>Stocks</span>
+                        </a>
+                    </li>
+
+                    <li
+                    <% if (page_name == 'project_enquiry') { %>
+                        <%= "class='active'" %>
+                    <% } %>
+                    >
+                        <a href="<%= base_url %>admin/stocks/download">
+                            <i class="fa fa-star"></i>
+                            <span>Download Data</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
 
         </ul>
 

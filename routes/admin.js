@@ -49,10 +49,9 @@ var sendMailsRouter = require('./admin/send_mails');
 var mailTemplatesRouter = require('./admin/mail_templates');
 var listPropertyRouter = require('./admin/list_property');
 var projectRouter = require('./admin/project');
-
+var stocksRouter = require('./admin/stocks');
 
 router.use(function (req, res, next) {
-
     if (req.session.isAdminLoggedIn) {
         if (req.originalUrl == "/admin/login") {
             res.redirect('/admin')
@@ -104,6 +103,7 @@ router.use('/send_mails', sendMailsRouter);
 router.use('/mailer', mailTemplatesRouter);
 router.use('/list_property', listPropertyRouter);
 router.use('/projects', projectRouter);
+router.use('/stocks', stocksRouter);
 
 /* GET users listing. */
 router.get('/', async function (req, res) {

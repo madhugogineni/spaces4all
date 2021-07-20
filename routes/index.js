@@ -546,16 +546,7 @@ router.get("/list_property", function (req, res) {
         page_title: "List Property"
     });
 });
-// router.post("/list_property", function (req, res) {
 
-// 	var obj = { page_name: "List Property", page_title: "List Property" };
-// 	if (validationError) {
-// 		obj.error = validationError;
-// 	}
-// 	console.log(obj);
-// 	res.render("home/list-property", obj);
-// 	delete validationError;
-// });
 router.post(
     "/add_list_property",
     upload.fields([
