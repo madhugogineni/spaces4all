@@ -137,6 +137,16 @@ app.get('/get-stocks', async function (req, res) {
     }
 });
 
+app.post('/post-stock-data', async function (req, res) {
+    try {
+        validateAppKeyAndSecret(req.headers);
+        res.send(req.body);
+        res.end();
+    } catch (e) {
+        res.status(400).send({ success: false, message: e.message });
+    }
+});
+
 function validateAppKeyAndSecret(headers) {
     var appKey = headers['app-key'];
     var appSecret = headers['app-secret'];
