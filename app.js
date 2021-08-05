@@ -140,6 +140,7 @@ app.get('/get-stocks', async function (req, res) {
 app.post('/post-stock-data', async function (req, res) {
     try {
         validateAppKeyAndSecret(req.headers);
+        console.log(req.body);
         res.send(req.body);
         res.end();
     } catch (e) {
