@@ -15,6 +15,9 @@ const multer = require('multer');
 const isEmpty = require('lodash.isempty');
 const upload = multer();
 const stocksModel = require('./models/stocksModel');
+const stockDataModel = require('./models/stockDataModel');
+var deepclone = require('lodash.clonedeep');
+const moment = require('moment');
 
 var app = express();
 app.use(session({ secret: otherConfig.sessionSecret }));
@@ -137,10 +140,42 @@ app.get('/get-stocks', async function (req, res) {
     }
 });
 
-app.post('/post-stock-data', async function (req, res) {
+app.post('/post-stock-data', upload.none(), async function (req, res) {
     try {
         validateAppKeyAndSecret(req.headers);
-        console.log(req.body);
+        var stocks = deepclone(req.body);
+        var stockKeys = Object.keys(stocks);
+        for (var i = 0; i < Object.keys(stocks).length; i++) {
+            try {
+
+                var code = stockKeys[i];
+                var stockData = stocks[code];
+                var stock = await stocksModel.getStockByCode(code);
+                var data = {
+                    stock_id: stock.data[0].id,
+                    cur_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                    total_volume: stockData.deliverables.stock_price_volume_data.volume.Today.cvol,
+                    delivery_volume: stockData.deliverables.stock_price_volume_data.volume.Today.delivery,
+                    day_high: stockData.details.HP,
+                    day_low: stockData.details.LP,
+                    open_price: stockData.details.OPN,
+                    closing_price: stockData.details.pricecurrent,
+                    week_high_52: stockData.details['52H'],
+                    week_low_52: stockData.details['52L'],
+                    market_cap: stockData.details.MKTCAP,
+                    lower_circuit: stockData.details.lower_circuit_limit,
+                    upper_circuit: stockData.details.upper_circuit_limit,
+                    prev_close: stockData.details.priceprevclose,
+                    price_change: stockData.details.pricechange,
+                    pe_ratio: stockData.details.PE,
+                    other_attributes: JSON.stringify(stocks)
+                }
+                var response = await stockDataModel.add(data);
+            } catch (e) {
+                console.log(e.message);
+            }
+
+        }
         res.send(req.body);
         res.end();
     } catch (e) {
