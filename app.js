@@ -149,6 +149,7 @@ app.post('/post-stock-data', async function (req, res) {
             try {
                 var code = stockKeys[i];
                 var stockData = stocks[code];
+                console.log(stockData);
                 var stock = await stocksModel.getStockByCode(code);
                 var data = {
                     stock_id: stock.data[0].id,
@@ -167,10 +168,8 @@ app.post('/post-stock-data', async function (req, res) {
                     prev_close: stockData.details.priceprevclose,
                     price_change: stockData.details.pricechange,
                     pe_ratio: stockData.details.PE,
-                    other_attributes: JSON.stringify(stocks)
+                    other_attributes: JSON.stringify(stockData)
                 }
-                console.log(code);
-                console.log(stockData);
                 console.log(data);
                 var response = await stockDataModel.add(data);
             } catch (e) {
