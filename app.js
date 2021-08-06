@@ -147,7 +147,6 @@ app.post('/post-stock-data', async function (req, res) {
         var stockKeys = Object.keys(stocks);
         for (var i = 0; i < Object.keys(stocks).length; i++) {
             try {
-
                 var code = stockKeys[i];
                 var stockData = stocks[code];
                 var stock = await stocksModel.getStockByCode(code);
@@ -170,6 +169,9 @@ app.post('/post-stock-data', async function (req, res) {
                     pe_ratio: stockData.details.PE,
                     other_attributes: JSON.stringify(stocks)
                 }
+                console.log(code);
+                console.log(stockData);
+                console.log(data);
                 var response = await stockDataModel.add(data);
             } catch (e) {
                 console.log(e.message);
