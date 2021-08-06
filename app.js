@@ -140,7 +140,7 @@ app.get('/get-stocks', async function (req, res) {
     }
 });
 
-app.post('/post-stock-data', upload.none(), async function (req, res) {
+app.post('/post-stock-data', async function (req, res) {
     try {
         validateAppKeyAndSecret(req.headers);
         var stocks = deepclone(req.body);
