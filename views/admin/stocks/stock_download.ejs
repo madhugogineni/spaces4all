@@ -151,7 +151,7 @@
                                 <% if(search_by=='stock' ) {%>
                                     <table class="table table-bordered table-striped" style="overflow:scroll;">
                                         <thead>
-                                            <td>Date</td>
+                                            <td style="width:85px;">Date</td>
                                             <td>Total Volume</td>
                                             <td>Delivery %</td>
                                             <td>Day Low - Day High</td>
@@ -168,7 +168,7 @@
                                             <% for(var i=0;i<stock_data.data.length;i++) { var
                                                 stockRow=stock_data.data[i]; %>
                                                 <tr>
-                                                    <td>
+                                                    <td style="width:85px;">
                                                         <%=stockRow.cur_date %>
                                                     </td>
                                                     <td>

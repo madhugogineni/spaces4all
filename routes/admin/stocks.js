@@ -71,7 +71,7 @@ router.get('/download', async function (req, res) {
             var latestStockData = await stockDataModel.getLastMonthStockData(params.stock);
             if (latestStockData.success) {
                 latestStockData.data.forEach(function (item) {
-                    item.cur_date = moment(item.cur_date).format('YYYY-MM-DD');
+                    item.cur_date = moment(item.cur_date).format('DD-MM-YY');
                 });
                 data.stock_data.data = latestStockData.data || [];
             }
@@ -79,27 +79,29 @@ router.get('/download', async function (req, res) {
         case 'metric':
             data.metric = params.metric;
             var metricStockData = await stockDataModel.getMetricStockData(params.metric);
+            console.log(metricStockData);
             var dateList = [];
             var stockData = {};
             if (metricStockData.success) {
                 metricStockData.data.forEach(function (item) {
-                    item.cur_date = moment(item.cur_date).format('YYYY-MM-DD');
-                    if (stockData[item.stock_id] === undefined) {
-                        stockData[item.stock_id] = {
+                    item.cur_date = moment(item.cur_date).format('DD-MM-YY');
+                    if (stockData[item.name] === undefined) {
+                        stockData[item.name] = {
                             name: item.name,
                             code: item.code
                         }
                     }
-                    if (!stockData[item.stock_id][item.cur_date]) {
-                        stockData[item.stock_id][item.cur_date] = item[data.metric];
+                    if (!stockData[item.name][item.cur_date]) {
+                        stockData[item.name][item.cur_date] = item[data.metric];
                     }
                 });
                 data.stock_data.data = stockData;
             }
             for (var i = 0; i < 30; i++) {
-                dateList.push(moment().subtract(i, 'days').format('YYYY-MM-DD'));
+                dateList.push(moment().subtract(i, 'days').format('DD-MM-YY'));
             }
             data.stock_data.date_list = dateList;
+            console.log(data);
             break;
         default: break;
     }
