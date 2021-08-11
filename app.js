@@ -149,11 +149,10 @@ app.post('/post-stock-data', async function (req, res) {
             try {
                 var code = stockKeys[i];
                 var stockData = stocks[code];
-                console.log(stockData);
                 var stock = await stocksModel.getStockByCode(code);
                 var data = {
                     stock_id: stock.data[0].id,
-                    cur_date: moment().format('YYYY-MM-DD HH:mm:ss'),
+                    cur_date: moment().format('YYYY-MM-DD'),
                     total_volume: stockData.deliverables.stock_price_volume_data.volume.Today.cvol,
                     delivery_volume: stockData.deliverables.stock_price_volume_data.volume.Today.delivery,
                     day_high: stockData.details.HP,
@@ -170,7 +169,6 @@ app.post('/post-stock-data', async function (req, res) {
                     pe_ratio: stockData.details.PE,
                     other_attributes: JSON.stringify(stockData)
                 }
-                console.log(data);
                 var response = await stockDataModel.add(data);
             } catch (e) {
                 console.log(e.message);
