@@ -142,6 +142,7 @@ app.get('/get-stocks', async function (req, res) {
 
 app.post('/post-stock-data', async function (req, res) {
     try {
+        console.log(req.body);
         validateAppKeyAndSecret(req.headers);
         var stocks = deepclone(req.body);
         var stockKeys = Object.keys(stocks);
