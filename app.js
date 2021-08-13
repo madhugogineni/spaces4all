@@ -144,18 +144,23 @@ app.post('/post-stock-data', async function (req, res) {
     try {
         validateAppKeyAndSecret(req.headers);
         var stocks = deepclone(req.body);
-        console.log(stocks);
         var stockKeys = Object.keys(stocks);
         for (var i = 0; i < Object.keys(stocks).length; i++) {
             try {
                 var code = stockKeys[i];
                 var stockData = stocks[code];
-                var stock = await stocksModel.getStockByCode(code);
+                var stock = await stocksModel.getStockByCode(code)
+                console.log(stockData)
+                var totalVolume = deliveryVolume = 0;
+                if(stockData && stockData.deliverables) {
+                    totalVolume = stockData.deliverables.stock_price_volume_data.volume.Today.cvol;
+                    deliveryVolume = stockData.deliverables.stock_price_volume_data.volume.Today.delivery;
+                }
                 var data = {
                     stock_id: stock.data[0].id,
                     cur_date: moment().format('YYYY-MM-DD'),
-                    total_volume: stockData.deliverables?.stock_price_volume_data?.volume?.Today?.cvol || 0,
-                    delivery_volume: stockData.deliverables?.stock_price_volume_data?.volume?.Today?.delivery || 0,
+                    total_volume: totalVolume,
+                    delivery_volume: deliveryVolume,
                     day_high: stockData.details.HP,
                     day_low: stockData.details.LP,
                     open_price: stockData.details.OPN,
