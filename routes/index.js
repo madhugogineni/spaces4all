@@ -204,11 +204,14 @@ router.post("/add_news_letter", async function (req, res) {
             var html = "You have successfully subscribed with Spaces4all ! Thank you for subscribing.";
             mailservice.sendMail(subject, html, req.body.email)
             res.send({ success: true, message: successMsg });
+            res.end();
         } else {
             res.send({ success: false, message: errorMsg });
+            res.end();
         }
     } else {
         res.send({ success: false, message: "Sorry ! This Email Id Already Subscribed With Us." });
+        res.end();
     }
 });
 
