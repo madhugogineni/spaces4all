@@ -79,7 +79,6 @@ router.get('/download', async function (req, res) {
         case 'metric':
             data.metric = params.metric;
             var metricStockData = await stockDataModel.getMetricStockData(params.metric);
-            console.log(metricStockData);
             var dateList = [];
             var stockData = {};
             if (metricStockData.success) {
@@ -101,7 +100,6 @@ router.get('/download', async function (req, res) {
                 dateList.push(moment().subtract(i, 'days').format('DD-MM-YY'));
             }
             data.stock_data.date_list = dateList;
-            console.log(data);
             break;
         default: break;
     }
@@ -112,6 +110,8 @@ router.get('/download', async function (req, res) {
             var data = await stockDataModel.getList(params);
         }
     }
+    console.log(data);
+
     res.render('admin/stocks/stock_download', data);
 });
 
