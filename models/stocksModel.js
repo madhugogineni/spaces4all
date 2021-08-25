@@ -4,7 +4,7 @@ var dateFormat = "YYYY-MM-DD HH:mm:ss";
 module.exports = {
     getStocks: function () {
         return new Promise(function (resolve, reject) {
-            con.query("select * from stocks", function (error, result) {
+            con.query("select * from stocks order by name asc", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({ success: false });

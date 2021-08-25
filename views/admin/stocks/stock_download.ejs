@@ -14,6 +14,12 @@
                 display: table;
                 width: 100%;
             } */
+            .inline-block {
+                display: inline-block;
+            }
+            .hide{
+                display:none;
+            }
         </style>
         <script>
             var searchByField = $('#search_by');
@@ -40,29 +46,30 @@
             }
             function changeView(searchByValue) {
                 $('#search_by').val(searchByValue);
-                $('#metric_container').attr('hidden', true);
-                $('#stock_container').attr('hidden', true);
+                $('#metric_container').addClass('hide');
+                $('#stock_container').addClass('hide');
                 $('#metric').attr('disabled', true);
                 $('#stock').attr('disabled', true);
                 $('#metric_button').attr('disabled', true)
                 $('#stock_button').attr('disabled', true)
                 switch (searchByValue) {
                     case 'stock':
+                        $('#stock_container').removeClass('hide');
                         $('#stock_container').attr('hidden', false);
                         $('#stock').attr('disabled', false);
                         $('#metric_button').attr('disabled', false)
                         break;
                     case 'metric':
-                        $('#metric_container').attr('hidden', false);
+                        $('#metric_container').removeClass('hide');
                         $('#metric').attr('disabled', false);
                         $('#stock_button').attr('disabled', false)
                         break;
                     default:
-                        $('#metric_container').attr('hidden', true);
+                        $('#metric_container').addClass('hide');
+                        $('#stock_container').addClass('hide');
                         $('#stock_container').attr('hidden', true);
                         $('#metric').attr('disabled', true);
                         $('#stock').attr('disabled', true);
-
                         break;
                 }
             }
@@ -124,13 +131,13 @@
                                             <option value="stock">Stock</option>
                                         </select> -->
                                         <br />
-                                        <div id="stock_container" hidden>
+                                        <div id="stock_container" class="inline-block hide">
                                             <label>Stocks</label>
                                             <select id="stock" name="stock" disabled required>
                                                 <option value=""> -------- </option>
                                             </select>
                                         </div>
-                                        <div id="metric_container" hidden>
+                                        <div id="metric_container" class="inline-block hide">
                                             <label>Metrics</label>
                                             <select id="metric" name="metric" disabled required>
                                                 <option value=""> -------- </option>
