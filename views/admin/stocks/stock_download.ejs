@@ -17,8 +17,9 @@
             .inline-block {
                 display: inline-block;
             }
-            .hide{
-                display:none;
+
+            .hide {
+                display: none;
             }
         </style>
         <script>
@@ -121,9 +122,9 @@
                                     <form method="GET" action="/admin/stocks/download">
                                         <label>Search By</label>
                                         <input type="hidden" id="search_by" name="search_by" />
-                                        <button type="button" id="metric_button"
+                                        <button type="button" id="metric_button" style="width:76px;"
                                             onclick="changeView('metric')">Metric</button>
-                                        <button type="button" id="stock_button"
+                                        <button type="button" id="stock_button" style="width:76px;"
                                             onclick="changeView('stock')">Stock</button>
                                         <!-- <select id="search_by" name="search_by" onchange="changeView()">
                                             <option value="">----------</option>
