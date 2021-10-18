@@ -1,0 +1,262 @@
+<!-- Left side column. contains the logo and sidebar -->
+<style>
+    /* table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            table tbody {
+                display: table;
+                width: 100%;
+            } */
+    .inline-block {
+        display: inline-block;
+    }
+
+    .hide {
+        display: none;
+    }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+
+<body>
+    <% include ../../admin/includes/includes.ejs %>
+        <script>
+            var searchByField = $('#search_by');
+            function updateValues(name, code, id) {
+                setUpValue('name1', name);
+                setUpValue('code1', code);
+                setUpValue('id', id);
+                showAjaxModal('', 'stocks');
+            }
+
+            function setUpStocks(stocks) {
+                stocks = JSON.parse(stocks);
+                if (stocks.length > 0) {
+                    var result = '';
+                    result += '<option value="">---------</option>';
+                    for (var i = 0; i < stocks.length; i++) {
+                        var row = stocks[i];
+                        result += '<option value="' + row.id + '">' + row.name + '</option>'
+                    }
+                    $('#stock').find('option').remove().end();
+                    $('#stock').append(result);
+                }
+            }
+            function changeView(searchByValue) {
+                $('#search_by').val(searchByValue);
+                $('#metric_container').addClass('hide');
+                $('#stock_container').addClass('hide');
+                $('#metric').attr('disabled', true);
+                $('#stock').attr('disabled', true);
+                $('#metric_button').attr('disabled', true)
+                $('#stock_button').attr('disabled', true)
+                switch (searchByValue) {
+                    case 'stock':
+                        $('#stock_container').removeClass('hide');
+                        $('#stock_container').attr('hidden', false);
+                        $('#stock').attr('disabled', false);
+                        $('#metric_button').attr('disabled', false)
+                        break;
+                    case 'metric':
+                        $('#metric_container').removeClass('hide');
+                        $('#metric').attr('disabled', false);
+                        $('#stock_button').attr('disabled', false)
+                        break;
+                    default:
+                        $('#metric_container').addClass('hide');
+                        $('#stock_container').addClass('hide');
+                        $('#stock_container').attr('hidden', true);
+                        $('#metric').attr('disabled', true);
+                        $('#stock').attr('disabled', true);
+                        break;
+                }
+            }
+        </script>
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    <%= page_title %>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="<%= base_url %>admin"><i class="fa fa-home"></i> Home</a></li>
+                    <li class="active">
+                        <%= page_title %>
+                    </li>
+                </ol>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="box">
+                            <div class="box-header">
+                                <!-- <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <h2 style="text-align: center;">Stock Details</h2>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <br /> -->
+                                <div class="col-md-12">
+                                    <form method="GET" action="/home/stocks">
+                                        <label>Search By</label>
+                                        <input type="hidden" id="search_by" name="search_by" />
+                                        <button type="button" id="metric_button" style="width:76px;"
+                                            onclick="changeView('metric')">Metric</button>
+                                        <button type="button" id="stock_button" style="width:76px;"
+                                            onclick="changeView('stock')">Stock</button>
+                                        <!-- <select id="search_by" name="search_by" onchange="changeView()">
+                                            <option value="">----------</option>
+                                            <option value="metric">Metric</option>
+                                            <option value="stock">Stock</option>
+                                        </select> -->
+                                        <br />
+                                        <div id="stock_container" class="inline-block hide">
+                                            <label>Stocks</label>
+                                            <select id="stock" name="stock" disabled required>
+                                                <option value=""> -------- </option>
+                                            </select>
+                                        </div>
+                                        <div id="metric_container" class="inline-block hide">
+                                            <label>Metrics</label>
+                                            <select id="metric" name="metric" disabled required>
+                                                <option value=""> -------- </option>
+                                                <option value="total_volume">Total Volume</option>
+                                                <option value="delivery_volume">Delivery Volume</option>
+                                                <option value="day_high">Day High</option>
+                                                <option value="day_low">Day Low</option>
+                                                <option value="open_price">Open Price</option>
+                                                <option value="closing_price">Closing Price</option>
+                                                <option value="week_high_52">52 Week High</option>
+                                                <option value="week_low_52">52 Week Low</option>
+                                                <option value="market_cap">Market Cap</option>
+                                                <option value="lower_circuit">Lower Circuit</option>
+                                                <option value="upper_circuit">Upper Circuit</option>
+                                                <option value="prev_close">Previous Close</option>
+                                                <option value="price_change">Price Change</option>
+                                                <option value="pe_ration">P/E Ratio</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit">Search</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+
+                            <div class="box-body" style="overflow-x: auto;">
+                                <% if(search_by=='stock' ) {%>
+                                    <table class="table table-bordered table-striped" style="overflow:scroll;">
+                                        <thead>
+                                            <td style="width:85px;">Date</td>
+                                            <td>Previous Close Price</td>
+                                            <td>Open Price</td>
+                                            <td>Close Price</td>
+                                            <td>Day Low - Day High</td>
+                                            <td>Price Change</td>
+                                            <td>Lower Circuit - Upper Circuit</td>
+                                            <td>Total Volume</td>
+                                            <td>Delivery %</td>
+                                            <td>52Week Low - 52 Week High</td>
+                                            <td>Market Cap (Cr)</td>
+                                            <td>P/E Ratio</td>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i=0;i<stock_data.data.length;i++) { var
+                                                stockRow=stock_data.data[i]; %>
+                                                <tr>
+                                                    <td style="width:85px;">
+                                                        <%=stockRow.cur_date %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.prev_close %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.open_price %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.closing_price %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.day_low %> - <%=stockRow.day_high %>
+                                                    </td>
+                                                    <td>
+                                                        <%=(stockRow.price_change * 100 / 100).toFixed(2) %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.lower_circuit %> - <%=stockRow.upper_circuit %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.total_volume %>
+                                                    </td>
+                                                    <td>
+                                                        <%=((stockRow.delivery_volume /stockRow.total_volume) *
+                                                            100).toFixed(2) %>
+                                                    </td>
+
+                                                    <td>
+                                                        <%=stockRow.week_low_52 %> - <%=stockRow.week_high_52 %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.market_cap %>
+                                                    </td>
+                                                    <td>
+                                                        <%=stockRow.pe_ratio %>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
+                                    <% } else if(search_by=='metric' ) { %>
+                                        <table class="table table-bordered table-striped" style="overflow-x: auto;">
+                                            <thead>
+                                                <td>StockName/Date</td>
+                                                <% stock_data.date_list.forEach(function(date) { %>
+                                                    <td>
+                                                        <%=date %>
+                                                    </td>
+                                                    <% }) %>
+                                            </thead>
+                                            <tbody>
+                                                <% for(var i in stock_data.data) { var stockRow=stock_data.data[i]; %>
+                                                    <tr>
+                                                        <td>
+                                                            <%=stockRow.name %>
+                                                        </td>
+                                                        <% stock_data.date_list.forEach(function(date) { %>
+                                                            <td>
+                                                                <%=stockRow[date] %>
+                                                            </td>
+                                                            <% }) %>
+                                                    </tr>
+                                                    <% } %>
+                                            </tbody>
+                                        </table>
+                                        <% }%>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <% include ../includes/footer.ejs %>
+</body>
+
+<!-- Modal -->
+<!-- (Ajax Modal)-->
+<script>
+    setUpStocks('<%-JSON.stringify(stocks_list) %>')
+    var searchBy = '<%=search_by%>';
+    var stock = '<%=stock %>';
+    var metric = '<%=metric %>';
+    if (searchBy) {
+        setUpValue('search_by', searchBy);
+        changeView(searchBy);
+    }
+    if (stock)
+        selectOption('stock', stock);
+    if (metric)
+        selectOption('metric', metric);
+</script>

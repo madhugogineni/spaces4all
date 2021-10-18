@@ -6,6 +6,8 @@ var multer = require("multer");
 var moment = require("moment");
 var fs = require("fs");
 var crudModel = require("../models/crudModel");
+var stocksModel = require('../models/stocksModel');
+var stockDataModel = require('../models/stockDataModel');
 var nodeGeocoder = require("node-geocoder");
 var geocoderoptions = require("../external-config/geocoding-config");
 var geocoder = nodeGeocoder(geocoderoptions);
@@ -128,7 +130,7 @@ router.get('/properties', async function (req, res) {
         properties: []
     };
     var response1 = await crudModel.getPropertiesCount(req.query);
-    console.log(response1);
+    // console.log(response1);
     if (response1.success) {
         var count = response1.data.count;
         var pages = Math.ceil(count / rowCount);
@@ -1563,6 +1565,78 @@ router.get('/terms', function (req, res) {
         page_name: "terms"
     });
 })
+
+router.get('/stocks', async function (req, res) {
+    var params = req.query;
+    var data = {
+        page_name: 'Stock Download',
+        page_title: 'Stock Download',
+        search_by: '',
+        metric: '',
+        stock: '',
+        stock_data: {
+            data: [],
+            date_list: []
+        },
+    };
+    if (params.search_by) {
+        data.search_by = params.search_by;
+    }
+
+    var stocksList = await stocksModel.getStocks();
+    if (stocksList.success) {
+        data.stocks_list = stocksList.data;
+    }
+
+    switch (params.search_by) {
+        case 'stock':
+            data.stock = params.stock;
+            var latestStockData = await stockDataModel.getLastMonthStockData(params.stock);
+            if (latestStockData.success) {
+                latestStockData.data.forEach(function (item) {
+                    item.cur_date = moment(item.cur_date).format('DD-MM-YY');
+                });
+                data.stock_data.data = latestStockData.data || [];
+            }
+            break;
+        case 'metric':
+            data.metric = params.metric;
+            var metricStockData = await stockDataModel.getMetricStockData(params.metric);
+            var dateList = [];
+            var stockData = {};
+            if (metricStockData.success) {
+                metricStockData.data.forEach(function (item) {
+                    item.cur_date = moment(item.cur_date).format('DD-MM-YY');
+                    if (stockData[item.name] === undefined) {
+                        stockData[item.name] = {
+                            name: item.name,
+                            code: item.code
+                        }
+                    }
+                    if (!stockData[item.name][item.cur_date]) {
+                        stockData[item.name][item.cur_date] = item[data.metric];
+                    }
+                });
+                data.stock_data.data = stockData;
+            }
+            for (var i = 0; i < 30; i++) {
+                dateList.push(moment().subtract(i, 'days').format('DD-MM-YY'));
+            }
+            data.stock_data.date_list = dateList;
+            break;
+        default: break;
+    }
+
+    if (params.search_by == 'by_stock') {
+        if (params.stock_name) {
+
+            var data = await stockDataModel.getList(params);
+        }
+    }
+    // console.log(data);
+
+    res.render('home/stocks/stock_download', data);
+});
 
 
 function getErrorMessage(errors) {
