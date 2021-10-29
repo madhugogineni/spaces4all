@@ -18,7 +18,7 @@ module.exports = {
     getLastMonthStockData: function (stockId) {
         var monthAgoDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
         return new Promise(function (resolve, reject) {
-            con.query("SELECT sd1.* FROM stock_data sd1 LEFT JOIN stock_data sd2  ON (sd1.stock_id = sd2.stock_id AND sd1.cur_date = sd2.cur_date AND sd1.id < sd2.id) WHERE sd2.id IS NULL and sd1.stock_id = " + stockId + " and sd1.cur_date > '" + monthAgoDate + "' order by cur_date desc", function (error, result) {
+            con.query("select * from stock_data where id in (select max(id) from stock_data where stock_id = " + stockId + " and created_at > '" + monthAgoDate + "' group by cur_date) and created_at > '" + monthAgoDate + "' order by cur_date desc", function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({ success: false });
@@ -31,7 +31,8 @@ module.exports = {
     getMetricStockData: function (metric) {
         var monthAgoDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
         return new Promise(function (resolve, reject) {
-            con.query("SELECT sd1." + metric + ",sd1.stock_id, sd1.cur_date, s.code, s.name FROM stock_data sd1 LEFT JOIN stock_data sd2  ON (sd1.stock_id = sd2.stock_id AND sd1.cur_date = sd2.cur_date AND sd1.id < sd2.id) inner join stocks as s on s.id = sd1.stock_id WHERE sd2.id IS NULL and sd1.cur_date > '" + monthAgoDate + "' order by s.name asc", function (error, result) {
+            var query = "select sd." + metric + ",sd.stock_id,sd.cur_date,s.code,s.name from stock_data as sd inner join stocks as s on sd.stock_id = s.id where sd.id in (select max(id) from stock_data group by cur_date,stock_id) and sd.cur_date > '" + monthAgoDate + "' order by s.name asc"
+            con.query(query, function (error, result) {
                 if (error) {
                     console.log(error);
                     resolve({ success: false });

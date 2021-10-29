@@ -151,7 +151,7 @@ app.post('/post-stock-data', async function (req, res) {
                 var stockId = stockKeys[i];
                 var stockData = stocks[stockId];
                 var totalVolume = deliveryVolume = 0;
-                if(stockData && stockData.deliverables) {
+                if (stockData && stockData.deliverables) {
                     totalVolume = stockData.deliverables.stock_price_volume_data.volume.Today.cvol;
                     deliveryVolume = stockData.deliverables.stock_price_volume_data.volume.Today.delivery;
                 }
