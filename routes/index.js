@@ -1569,8 +1569,8 @@ router.get('/terms', function (req, res) {
 router.get('/stocks', async function (req, res) {
     var params = req.query;
     var data = {
-        page_name: 'Stock Download',
-        page_title: 'Stock Download',
+        page_name: 'Stock Data',
+        page_title: 'Stock Data',
         search_by: '',
         metric: '',
         stock: '',

@@ -75,7 +75,7 @@
                 }
             }
         </script>
-        <div class="content-wrapper">
+        <div style="height:100%;background-color: #EDF0F5">
             <!-- Content Header (Page header) -->
             <section class="content-header">
                 <h1>
@@ -102,12 +102,11 @@
                                 <br /> -->
                                 <div class="col-md-12">
                                     <form method="GET" action="/home/stocks">
-                                        <label>Search By</label>
                                         <input type="hidden" id="search_by" name="search_by" />
-                                        <button type="button" id="metric_button" style="width:76px;"
-                                            onclick="changeView('metric')">Metric</button>
                                         <button type="button" id="stock_button" style="width:76px;"
                                             onclick="changeView('stock')">Stock</button>
+                                        <button type="button" id="metric_button" style="width:76px;"
+                                            onclick="changeView('metric')">Metric</button>
                                         <!-- <select id="search_by" name="search_by" onchange="changeView()">
                                             <option value="">----------</option>
                                             <option value="metric">Metric</option>
@@ -136,7 +135,7 @@
                                                 <option value="lower_circuit">Lower Circuit</option>
                                                 <option value="upper_circuit">Upper Circuit</option>
                                                 <option value="prev_close">Previous Close</option>
-                                                <option value="price_change">Price Change</option>
+                                                <option value="price_change">Price Change(Rs.)</option>
                                                 <option value="pe_ration">P/E Ratio</option>
                                             </select>
                                         </div>
@@ -155,7 +154,7 @@
                                             <td>Open Price</td>
                                             <td>Close Price</td>
                                             <td>Day Low - Day High</td>
-                                            <td>Price Change</td>
+                                            <td>Price Change(Rs.)</td>
                                             <td>Lower Circuit - Upper Circuit</td>
                                             <td>Total Volume</td>
                                             <td>Delivery %</td>
