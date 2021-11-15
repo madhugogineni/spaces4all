@@ -7,7 +7,6 @@
         display: none;
     }
 </style>
-
 <body>
     <% include ../../admin/includes/includes.ejs %>
         <script>
@@ -32,7 +31,7 @@
                     $('#stock').append(result);
                 }
             }
-
+            
             function changeView(searchByValue) {
                 $('#search_by').val(searchByValue);
                 $('#metric_container').addClass('hide');
@@ -130,9 +129,9 @@
                                             <td>Price Change (Rs.)</td>
                                             <td>Total Volume</td>
                                             <td>Delivery %</td>
-                                            <td>Lower Circuit - <br/>Upper Circuit</td>
+                                            <td>Lower Circuit - Upper Circuit</td>
                                             <td>Day Low - Day High</td>
-                                            <td>52Week Low -<br/> 52 Week High</td>
+                                            <td>52 Week Low - 52 Week High</td>
                                             <td>Market Cap (Cr)</td>
                                             <td>P/E Ratio</td>
                                         </thead>
