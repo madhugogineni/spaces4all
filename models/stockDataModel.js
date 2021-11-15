@@ -16,7 +16,7 @@ module.exports = {
     },
 
     getLastMonthStockData: function (stockId) {
-        var monthAgoDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        var monthAgoDate = moment().subtract(2, 'months').format('YYYY-MM-DD');
         return new Promise(function (resolve, reject) {
             con.query("select * from stock_data where id in (select max(id) from stock_data where stock_id = " + stockId + " and created_at > '" + monthAgoDate + "' group by cur_date) and created_at > '" + monthAgoDate + "' order by cur_date desc", function (error, result) {
                 if (error) {
@@ -29,7 +29,7 @@ module.exports = {
     },
 
     getMetricStockData: function (metric) {
-        var monthAgoDate = moment().subtract(1, 'months').format('YYYY-MM-DD');
+        var monthAgoDate = moment().subtract(2, 'months').format('YYYY-MM-DD');
         return new Promise(function (resolve, reject) {
             var query = "select sd." + metric + ",sd.stock_id,sd.cur_date,s.code,s.name from stock_data as sd inner join stocks as s on sd.stock_id = s.id where sd.id in (select max(id) from stock_data group by cur_date,stock_id) and sd.cur_date > '" + monthAgoDate + "' order by s.name asc"
             con.query(query, function (error, result) {
